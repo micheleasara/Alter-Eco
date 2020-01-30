@@ -1,3 +1,3 @@
-# CarbonFootprintApp
+# Alter Eco
 
-MSc Group Project - Carbon Footprint calculator App
+MSc Group Project - Alter Eco
