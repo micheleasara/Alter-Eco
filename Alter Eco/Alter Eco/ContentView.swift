@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import CoreMotion
 
 struct ContentView: View {
     
@@ -15,6 +16,7 @@ struct ContentView: View {
         Text("Hello World, this is our new Git Repo!")
         
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
