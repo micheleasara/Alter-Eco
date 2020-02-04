@@ -21,23 +21,23 @@ struct ContentView: View {
     ZStack{
       
           DetailView()
-      SplashScreen()
-        .opacity(showSplash ? 1 : 0)
-        .onAppear {
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+          SplashScreen()
+            .opacity(showSplash ? 1 : 0)
+            .onAppear {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+             
          
-     
-          //  MapView(coordinate: CLLocationCoordinate2DMake(37.331820, -122.03118))
-            //    .edgesIgnoringSafeArea(.all)
-            SplashScreen.shouldAnimate = false
-            withAnimation() {
-              self.showSplash = false
-           
-            }
-            
+              //  MapView(coordinate: CLLocationCoordinate2DMake(37.331820, -122.03118))
+                //    .edgesIgnoringSafeArea(.all)
+                SplashScreen.shouldAnimate = false
+                withAnimation() {
+                  self.showSplash = false
+               
+                }
+                
+              }
+                
           }
-            
-      }
         
     }
     

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCC23E97FDF00F86F66 /* DetailView.swift */; };
-		57453FCF23E97FEF00F86F66 /* splashscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCE23E97FEF00F86F66 /* splashscreen.swift */; };
+		57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCE23E97FEF00F86F66 /* SplashScreen.swift */; };
 		CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4223E3885100629E73 /* AppDelegate.swift */; };
 		CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4423E3885100629E73 /* SceneDelegate.swift */; };
 		CD200B4723E3885100629E73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4623E3885100629E73 /* ContentView.swift */; };
@@ -37,8 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		57453FCC23E97FDF00F86F66 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DetailView.swift; path = ../../../../Desktop/TrackerGraphs2UI/TrackerGraphs2UI/DetailView.swift; sourceTree = "<group>"; };
-		57453FCE23E97FEF00F86F66 /* splashscreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = splashscreen.swift; path = ../../../../Desktop/TrackerGraphs2UI/TrackerGraphs2UI/splashscreen.swift; sourceTree = "<group>"; };
+		57453FCC23E97FDF00F86F66 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		57453FCE23E97FEF00F86F66 /* SplashScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4223E3885100629E73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD200B4423E3885100629E73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -105,7 +105,7 @@
 			children = (
 				CD200B4223E3885100629E73 /* AppDelegate.swift */,
 				57453FCC23E97FDF00F86F66 /* DetailView.swift */,
-				57453FCE23E97FEF00F86F66 /* splashscreen.swift */,
+				57453FCE23E97FEF00F86F66 /* SplashScreen.swift */,
 				CD200B4423E3885100629E73 /* SceneDelegate.swift */,
 				CD200B4623E3885100629E73 /* ContentView.swift */,
 				CD200B4823E3885700629E73 /* Assets.xcassets */,
@@ -276,7 +276,7 @@
 				CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */,
 				57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */,
 				CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */,
-				57453FCF23E97FEF00F86F66 /* splashscreen.swift in Sources */,
+				57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */,
 				CD200B4723E3885100629E73 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
