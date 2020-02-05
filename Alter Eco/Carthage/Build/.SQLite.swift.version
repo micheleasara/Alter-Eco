@@ -1,0 +1,10 @@
+{
+  "commitish" : "0.12.2",
+  "iOS" : [
+    {
+      "name" : "SQLite",
+      "hash" : "74e11bff2ce1dc4df3eb97c1920d6febdf3a5f60a6c738d4d57cb57127f7e300",
+      "swiftToolchainVersion" : "5.1.3 (swiftlang-1100.0.282.1 clang-1100.0.33.15)"
+    }
+  ]
+}
