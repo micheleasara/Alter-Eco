@@ -15,6 +15,7 @@ import SQLite
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        create_database()
         readActivityData()
         return true
     }
@@ -37,7 +38,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let pedestrianDB = computeDailyTimes(activities: pedestrianActivities)
             for (date, time) in pedestrianDB{
                 print("On \(date) a total of \(time.rounded())s was spent as pedestrian (walking or running)")
+                append_database(append_motion: "pedestrian", append_time: time.rounded(), append_date: date)
             }
+        
+            
             database.updateValue(pedestrianDB, forKey: "pedestrian")
             
             print("\nPrinting automotive times (if any)...")
@@ -45,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let automotiveDB = computeDailyTimes(activities: automotiveActivities)
             for (date, time) in automotiveDB{
                 print("On \(date) a total of \(time.rounded())s was spent as automotive (including cycling)")
+                append_database(append_motion: "automotive", append_time: time.rounded(), append_date: date)
             }
             database.updateValue(automotiveDB, forKey: "automotive")
             
@@ -53,10 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let stationaryDB = computeDailyTimes(activities: pureStationaryActivities)
             for (date, time) in stationaryDB{
                 print("On \(date) a total of \(time.rounded())s was spent as purely stationary")
+                append_database(append_motion: "stationary", append_time: time.rounded(), append_date: date)
             }
             database.updateValue(stationaryDB, forKey: "stationary")
             
             print("\ndatabase has keys: \(database.keys)")
+            
+            print_database()
+            
         }
     }
     
@@ -81,6 +90,89 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return dailyTimes
     }
     
+    func create_database() {
+        do {
+            let path = NSSearchPathForDirectoriesInDomains(
+                .documentDirectory, .userDomainMask, true
+            ).first!
+
+            let db = try Connection("\(path)/motion_db.sqlite3")
+        
+            let motions = Table("motions")
+            let motion_type = Expression<String>("MotionType")
+            let time = Expression<Double>("Time")
+            let date = Expression<String>("Date")
+
+            print("Creates connection")
+            
+            try db.run(motions.create(ifNotExists: true) {
+                t in
+                
+                t.column(motion_type)
+                t.column(time)
+                t.column(date)
+                t.primaryKey(motion_type, date)
+                //t.column(id, primaryKey: true) //, unique: true)
+                })
+
+        } catch {
+                print("Cannot connect to the database")
+        }
+    }
+    
+    func append_database(append_motion: String, append_time: Double, append_date: String) {
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+            .documentDirectory, .userDomainMask, true
+        ).first!
+
+        do {
+            let db = try Connection("\(path)/motion_db.sqlite3")
+        
+            let motions = Table("motions")
+            let motion_type = Expression<String>("MotionType")
+            let time = Expression<Double>("Time")
+            let date = Expression<String>("Date")
+            
+            print("Opens existing database")
+            
+            // INSERT INTO "users" ("name", "email") VALUES ('Alice', 'alice@mac.com')
+            let insert = motions.insert(motion_type <- append_motion, time <- append_time, date <- append_date)
+            
+            do {
+                try db.run(insert)
+            } catch {
+                print("Cannot insert a row to existing table")
+            }
+        } catch {
+            print("Cannot open existing database")
+        }
+    }
+    
+    func print_database() {
+        
+        let path = NSSearchPathForDirectoriesInDomains(
+                    .documentDirectory, .userDomainMask, true
+                ).first!
+        do {
+            let db = try Connection("\(path)/motion_db.sqlite3")
+            do {
+                let motions = Table("motions")
+                let motion_type = Expression<String>("MotionType")
+                let time = Expression<Double>("Time")
+                let date = Expression<String>("Date")
+            
+                for motion in try db.prepare(motions) {
+                    print("motion_type: \(String(describing: motion[motion_type])), time: \(motion[time]), date: \(motion[date])")
+                }
+            } catch {
+                print("Cannot print")
+            }
+        } catch {
+            print("Cannot connect to database to print")
+        }
+    }
+
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
