@@ -30,66 +30,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func getActivities(motionActivities:[CMMotionActivity]?, error:Error?){
         if var activities = motionActivities {
-            activities = activities.filter{$0.confidence == .high || $0.confidence == .medium}
-            var database:[String:Dictionary<String, Any>?] = [:]
+            var database : [String:Dictionary<CMMotionActivity.ActivityType, Double>] = [:]
             
-            print("\nPrinting pedestrian times (if any)...")
-            let pedestrianActivities = activities.filter{$0.walking || $0.running}
-            let pedestrianDB = computeDailyTimes(activities: pedestrianActivities)
-            for (date, time) in pedestrianDB{
-                print("On \(date) a total of \(time.rounded())s was spent as pedestrian (walking or running)")
-                append_database(append_motion: "pedestrian", append_time: time.rounded(), append_date: date)
-            }
+            activities = activities.filter{($0.confidence == .high || $0.confidence == .medium) &&
+                $0.getActivityType != CMMotionActivity.ActivityType.unknown}
+            activities.sort{$1.startDate > $0.startDate}
+            
+            let groupedByDay = Dictionary(grouping: activities) { Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: $0.startDate)}
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeStyle = .none
+            dateFormatter.dateStyle = .short
         
-            
-            database.updateValue(pedestrianDB, forKey: "pedestrian")
-            
-            print("\nPrinting automotive times (if any)...")
-            let automotiveActivities = activities.filter{$0.automotive || $0.cycling}
-            let automotiveDB = computeDailyTimes(activities: automotiveActivities)
-            for (date, time) in automotiveDB{
-                print("On \(date) a total of \(time.rounded())s was spent as automotive (including cycling)")
-                append_database(append_motion: "automotive", append_time: time.rounded(), append_date: date)
-            }
-            database.updateValue(automotiveDB, forKey: "automotive")
-            
-            print("\nPrinting stationary times (if any)...")
-            let pureStationaryActivities = activities.filter{$0.stationary && !$0.automotive && !$0.cycling && !$0.running && !$0.walking}
-            let stationaryDB = computeDailyTimes(activities: pureStationaryActivities)
-            for (date, time) in stationaryDB{
-                print("On \(date) a total of \(time.rounded())s was spent as purely stationary")
-                append_database(append_motion: "stationary", append_time: time.rounded(), append_date: date)
-            }
-            database.updateValue(stationaryDB, forKey: "stationary")
-            
-            print("\ndatabase has keys: \(database.keys)")
-            
-            print_database()
-            
-        }
-    }
-    
-    func computeDailyTimes(activities:[CMMotionActivity]) -> Dictionary<String, TimeInterval>{
-        
-        let groupedByDay = Dictionary(grouping: activities) { Calendar(identifier: .gregorian).dateComponents([.day, .month, .year], from: $0.startDate)}
-        
-        var dailyTimes : [String:TimeInterval] = [:]
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .none
-        
-        for (dateComponents, activitiesDay) in groupedByDay{
-            let dates = activitiesDay.map{$0.startDate}
-            if (dates.count > 1){
+            for (dateComponents, activitiesDay) in groupedByDay{
+                var previousActivity : CMMotionActivity? = nil
+                var totalTimeByActivity : [CMMotionActivity.ActivityType:Double] =
+                    [CMMotionActivity.ActivityType.automotive:0,
+                     CMMotionActivity.ActivityType.walking:0,
+                     CMMotionActivity.ActivityType.pureStationary:0]
+                
+                for activity in activitiesDay{
+                    if let previous = previousActivity {
+                        var totalTime = totalTimeByActivity[previous.getActivityType]!
+                        totalTime += activity.startDate.timeIntervalSince(previous.startDate)
+                        totalTimeByActivity.updateValue(totalTime, forKey: previous.getActivityType)
+                    }
+                    previousActivity = activity
+                }
+                
                 let date = Calendar(identifier: .gregorian).date(from: dateComponents)!
-                dailyTimes.updateValue(dates.max()!.timeIntervalSince(dates.min()!),
-                                         forKey: dateFormatter.string(from: date))
+                database.updateValue(totalTimeByActivity, forKey: dateFormatter.string(from: date))
+                previousActivity = nil
+            }
+            for (date, timeDict) in database{
+                print("On \(date) we have:\n")
+                for (activityType, total) in timeDict{
+                    print("\(CMMotionActivity.activityTypeToString(activity: activityType)):\(total.rounded())s")
+                }
             }
         }
-        
-        return dailyTimes
     }
-    
+
     func create_database() {
         do {
             let path = NSSearchPathForDirectoriesInDomains(
@@ -188,3 +168,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+extension CMMotionActivity{
+    enum ActivityType {
+        case pureStationary
+        case walking
+        case automotive
+        case unknown
+    }
+    var getActivityType:ActivityType{
+        if automotive  || cycling { return ActivityType.automotive }
+        if walking || running { return ActivityType.walking }
+        if stationary { return ActivityType.pureStationary }
+        return ActivityType.unknown
+    }
+    static func activityTypeToString(activity:ActivityType) -> String{
+        switch activity {
+        case .automotive:
+            return "automotive"
+        case .pureStationary:
+            return "pureStationary"
+        case .walking:
+            return "walking"
+        default:
+            return "unknown"
+        }
+    }
+}
