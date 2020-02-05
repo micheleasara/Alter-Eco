@@ -65,6 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("On \(date) we have:\n")
                 for (activityType, total) in timeDict{
                     print("\(CMMotionActivity.activityTypeToString(activity: activityType)):\(total.rounded())s")
+                    append_database(append_motion: "pedestrian", append_time: time.rounded(), append_date: date)
                 }
             }
         }
@@ -154,6 +155,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: UISceneSession Lifecycle
+    func retrieve_database(query_motion_type: String, query_date: String) -> Double {
+            
+            let path = NSSearchPathForDirectoriesInDomains(
+                        .documentDirectory, .userDomainMask, true
+                    ).first!
+            do {
+                let db = try Connection("\(path)/motion_db.sqlite3")
+                
+                do {
+                    let motions = Table("motions")
+                    let motion_type = Expression<String>("MotionType")
+                    let time = Expression<Double>("Time")
+                    let date = Expression<String>("Date")
+                    
+    //                for motion in try db.prepare(motions.filter(motion_type == query_motion_type && date == query_date)) {
+    //                    return motion[time]
+    //                }
+                    for motion in try db.prepare(motions.where(motion_type == query_motion_type && date == query_date)) {
+                        print("motion time: \(motion[time])")
+                        return motion[time]
+                    }
+                } catch {
+                    print("Cannot print")
+                }
+            } catch {
+                print("Cannot connect to database to print")
+            }
+            
+            print("Got to 0.5")
+            return 0.5
+        }
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
