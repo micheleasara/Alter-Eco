@@ -20,11 +20,11 @@ struct ContentView: View {
   var body: some View {
     ZStack{
       
-          DetailView()
+          
           SplashScreen()
             .opacity(showSplash ? 1 : 0)
             .onAppear {
-              DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+              DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
              
          
               //  MapView(coordinate: CLLocationCoordinate2DMake(37.331820, -122.03118))
@@ -38,7 +38,9 @@ struct ContentView: View {
               }
                 
           }
-        
+        if (!showSplash) {
+            DetailView()
+        }
     }
     
   }
@@ -47,7 +49,7 @@ struct ContentView: View {
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView()
+        ContentView()
   }
 }
 #endif

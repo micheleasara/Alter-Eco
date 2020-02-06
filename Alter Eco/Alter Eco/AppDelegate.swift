@@ -64,11 +64,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             for (date, timeDict) in database{
                 print("On \(date) we have:\n")
                 for (activityType, total) in timeDict{
-                    print("\(CMMotionActivity.activityTypeToString(activity: activityType)):\(total.rounded())s")
-                    append_database(append_motion: "pedestrian", append_time: time.rounded(), append_date: date)
+                    //print("\(CMMotionActivity.activityTypeToString(activity: activityType)):\(total.rounded())s")
+                    append_database(append_motion: CMMotionActivity.activityTypeToString(activity: activityType), append_time: total.rounded(), append_date: date)
                 }
             }
         }
+        
+        print_database()
     }
 
     func create_database() {

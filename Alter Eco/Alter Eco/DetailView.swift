@@ -13,20 +13,20 @@ import SwiftUI
 struct DayDataPoint: Identifiable {
     let id = UUID()
     let transportmode: String
-    let value: CGFloat
+    var value: CGFloat
 }
 
-
+let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
 //let dayInfo = ["Walking": 1,"Running": 2,"Car": 3,"Bike": 4,"Unknown": 5]
 
 struct DetailView: View {
 //transport mode and value to be pulled from the database!
 //if the number of transport modes changes then the HStack below needs to change
-    static let data: [DayDataPoint] = [
-    .init(transportmode: "Walking", value: 0.6),
-    .init(transportmode: "Running", value: 0.4),
-    .init(transportmode: "Car", value: 0.8),
+    static var data: [DayDataPoint] = [
+        .init(transportmode: "Walking", value: CGFloat(appDelegate.retrieve_database(query_motion_type: "walking", query_date: "06/02/2020")) ),
+    .init(transportmode: "Running", value: CGFloat(appDelegate.retrieve_database(query_motion_type: "running", query_date: "06/02/2020"))),
+    .init(transportmode: "Car", value: CGFloat(appDelegate.retrieve_database(query_motion_type: "automotive", query_date: "06/02/2020"))),
     .init(transportmode: "Bike", value: 0.7),
     .init(transportmode: "Bike", value: 0.7),
      ]
@@ -46,8 +46,11 @@ struct DetailView: View {
              .init(transportmode: "Bike", value: 0.7),
              .init(transportmode: "Unknown", value: 0.4),
       ]
+    
+    static let datapoints_norm: [DayDataPoint] = normalise_data(datapoints: data)
+    
     @State var dataSet = [
-        data, afternoonData, eveningData
+        datapoints_norm, afternoonData, eveningData
     ]
     
     var spacing: CGFloat = 24
@@ -88,6 +91,28 @@ struct DetailView: View {
             }
         }
     }
+}
+
+
+func normalise_data(datapoints: [DayDataPoint]) -> [DayDataPoint] {
+    var max = CGFloat(0)
+    for element in datapoints {
+        let current_max = element.value
+        if current_max > max {
+            max = current_max
+        }
+    }
+    
+    var element_norm: DayDataPoint
+    var datapoints_norm: [DayDataPoint] = []
+    
+    for element in datapoints {
+        element_norm = element
+        element_norm.value = element.value / (max * 1.1)
+        datapoints_norm.append(element_norm)
+    }
+    
+    return datapoints_norm
 }
 
 struct StackedBarView: View {

@@ -61,16 +61,16 @@ struct SplashScreen: View {
             .scaleEffect(uScale * uZoomFactor)
             .frame(width: 45, height: 45, alignment: .center)
             
-            Rectangle()
-                //.offset(x: 50, y: 0)
-                .fill(squareColor)
-                .scaleEffect(squareScale * uZoomFactor)
-                
-                .frame(width: uSquareLength, height: uSquareLength, alignment: .center)
-                .onAppear() {
-                    self.squareColor = self.fuberBlue
-            }
-            
+//            Rectangle()
+//                //.offset(x: 50, y: 0)
+//                .fill(squareColor)
+//                .scaleEffect(squareScale * uZoomFactor)
+//                
+//                .frame(width: uSquareLength, height: uSquareLength, alignment: .center)
+//                .onAppear() {
+//                    self.squareColor = self.fuberBlue
+//            }
+//            
             Spacer()
         }
         .background(Color.black)
