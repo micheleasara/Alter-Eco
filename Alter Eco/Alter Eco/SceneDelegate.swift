@@ -1,16 +1,43 @@
 //
 //  SceneDelegate.swift
-//  Alter Eco
+//  tracker
 //
-//  Created by Satisfaction on 30/01/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
+//  Created by Maxime Redstone on 12/02/2020.
+//  Copyright © 2020 Maxime Redstone. All rights reserved.
 //
 
 import UIKit
 import SwiftUI
+import CoreLocation
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelegate {
+    
+    let manager = CLLocationManager()
+    var previousLoc: CLLocation? = nil
+    var lastUpdate: Date? = nil
+    var trackingData = TrackingData()
+    let SPEED_THRESHOLD:Double = 7 // 7m/s is roughly 25km/h
+    
+     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last!
+//        print("Called")
+        if let previousLocUnwrapped = previousLoc {
+            trackingData.time = location.timestamp.timeIntervalSince(lastUpdate!).rounded()
+            trackingData.distance = location.distance(from: previousLocUnwrapped).rounded()
+            trackingData.speed = trackingData.distance/trackingData.time
+            trackingData.transportMode = trackingData.speed >= SPEED_THRESHOLD ? "Automotive":"Not automotive"
+        }
+        lastUpdate = location.timestamp
+        previousLoc = location
+        
+         // Do something with the location.
+        
+    
+     }
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
+    
     var window: UIWindow?
 
 
@@ -27,6 +54,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
+            
+            manager.requestAlwaysAuthorization()
+            manager.delegate = self
+            manager.distanceFilter = 50
+            manager.desiredAccuracy = kCLLocationAccuracyBest
+            window.rootViewController = UIHostingController(rootView: ContentView().environmentObject(trackingData))
+            manager.startUpdatingLocation()
+            
             window.makeKeyAndVisible()
         }
     }

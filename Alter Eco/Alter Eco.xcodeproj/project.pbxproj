@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCC23E97FDF00F86F66 /* DetailView.swift */; };
 		57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCE23E97FEF00F86F66 /* SplashScreen.swift */; };
+		9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; };
+		9C93607C23EB8D5B00E2E056 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9CCD858B23F449D00091D5DD /* tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCD858A23F449D00091D5DD /* tracker.swift */; };
 		CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4223E3885100629E73 /* AppDelegate.swift */; };
 		CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4423E3885100629E73 /* SceneDelegate.swift */; };
 		CD200B4723E3885100629E73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4623E3885100629E73 /* ContentView.swift */; };
@@ -17,8 +20,6 @@
 		CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */; };
 		CD200B5A23E3885800629E73 /* Alter_EcoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B5923E3885800629E73 /* Alter_EcoTests.swift */; };
 		CD200B6523E3885800629E73 /* Alter_EcoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B6423E3885800629E73 /* Alter_EcoUITests.swift */; };
-		CDBF3C9423EB0AF0008046F9 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; };
-		CDBF3C9523EB0AF0008046F9 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CDBF3C9623EB0AFA008046F9 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C8E23EB05F0008046F9 /* libsqlite3.0.tbd */; };
 		CDBF3C9723EB0AFA008046F9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C8D23EB05E1008046F9 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
@@ -41,13 +42,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CDBF3C8C23EB05D2008046F9 /* Embed Frameworks */ = {
+		9C93607D23EB8D5B00E2E056 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CDBF3C9523EB0AF0008046F9 /* SQLite.framework in Embed Frameworks */,
+				9C93607C23EB8D5B00E2E056 /* SQLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,6 +58,7 @@
 /* Begin PBXFileReference section */
 		57453FCC23E97FDF00F86F66 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		57453FCE23E97FEF00F86F66 /* SplashScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		9CCD858A23F449D00091D5DD /* tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tracker.swift; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4223E3885100629E73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD200B4423E3885100629E73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -83,7 +85,7 @@
 			files = (
 				CDBF3C9723EB0AFA008046F9 /* libsqlite3.tbd in Frameworks */,
 				CDBF3C9623EB0AFA008046F9 /* libsqlite3.0.tbd in Frameworks */,
-				CDBF3C9423EB0AF0008046F9 /* SQLite.framework in Frameworks */,
+				9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +138,7 @@
 				CD200B4823E3885700629E73 /* Assets.xcassets */,
 				CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */,
 				CD200B5023E3885700629E73 /* Info.plist */,
+				9CCD858A23F449D00091D5DD /* tracker.swift */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
 			);
 			path = "Alter Eco";
@@ -187,7 +190,7 @@
 				CD200B3B23E3885100629E73 /* Sources */,
 				CD200B3C23E3885100629E73 /* Frameworks */,
 				CD200B3D23E3885100629E73 /* Resources */,
-				CDBF3C8C23EB05D2008046F9 /* Embed Frameworks */,
+				9C93607D23EB8D5B00E2E056 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -311,6 +314,7 @@
 			files = (
 				CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */,
 				57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */,
+				9CCD858B23F449D00091D5DD /* tracker.swift in Sources */,
 				CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */,
 				57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */,
 				CD200B4723E3885100629E73 /* ContentView.swift in Sources */,
@@ -478,9 +482,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -491,8 +496,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ahwfh-se-ofAlter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcov2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -502,9 +508,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -515,8 +522,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ahwfh-se-ofAlter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcov2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

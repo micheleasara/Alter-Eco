@@ -15,8 +15,11 @@ import SQLite
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        create_database()
-        readActivityData()
+        //create_database()
+        //readActivityData()
+        let tracker = Tracker()
+        tracker.start()
+        //print_database()
         return true
     }
     

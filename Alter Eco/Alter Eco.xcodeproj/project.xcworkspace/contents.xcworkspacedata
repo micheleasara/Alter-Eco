@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Alter Eco.xcodeproj">
+      location = "self:../Alter Eco">
    </FileRef>
 </Workspace>
