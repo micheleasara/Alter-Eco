@@ -49,6 +49,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             trackingData.transportMode = trackingData.speed >= AUTOMOTIVE_SPEED_THRESHOLD ? "Automotive":"Not automotive"
             
             // check for underground station
+            // TODO: A better approach perhaps would be the following, by monitoring regions around stations 
+            // https://stackoverflow.com/questions/52350209/see-if-the-user-is-near-a-location-swift-4
             setUndergroundStation(aroundLocation: location)
         }
 
@@ -106,7 +108,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             window.makeKeyAndVisible()
         }
     }
-
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

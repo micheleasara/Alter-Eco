@@ -76,6 +76,7 @@
 		CDBF3C8D23EB05E1008046F9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		CDBF3C8E23EB05F0008046F9 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		CDBF3C9323EB0AF0008046F9 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
+		DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SKToVictoria_car_30kmh.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				CD200B5923E3885800629E73 /* Alter_EcoTests.swift */,
+				DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */,
 				CD200B5B23E3885800629E73 /* Info.plist */,
 			);
 			path = "Alter EcoTests";
@@ -485,7 +487,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				DEVELOPMENT_TEAM = C52APMS34X;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -496,7 +498,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEcov2;
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -511,7 +513,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				DEVELOPMENT_TEAM = C52APMS34X;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -522,7 +524,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEcov2;
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
