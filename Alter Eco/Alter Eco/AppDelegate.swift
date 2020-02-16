@@ -17,8 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         //create_database()
         //readActivityData()
-        let tracker = Tracker()
-        tracker.start()
         //print_database()
         return true
     }

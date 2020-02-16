@@ -9,31 +9,71 @@
 import UIKit
 import SwiftUI
 import CoreLocation
+import MapKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelegate {
-    
+    // define threshold to identify an automotive type of motion
+    // 4.5m/s is roughly 16km/h
+    let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4.5
+    // request gps update every 50m
+    let GPS_UPDATE_DISTANCE_THRESHOLD:Double = 50
+    // define tolerance value for gps updates
+    let GPS_UPDATE_DISTANCE_TOLERANCE:Double = 5
+    // define minimum confidence for valid location updates
+    let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
+
     let manager = CLLocationManager()
+    // contains location from previous valid update
     var previousLoc: CLLocation? = nil
-    var lastUpdate: Date? = nil
+    // shared among views
     var trackingData = TrackingData()
-    let SPEED_THRESHOLD:Double = 7 // 7m/s is roughly 25km/h
+    
     
      func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+        // ensure location is accurate enough
         let location = locations.last!
-//        print("Called")
+        guard location.horizontalAccuracy >= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return}
+        
         if let previousLocUnwrapped = previousLoc {
-            trackingData.time = location.timestamp.timeIntervalSince(lastUpdate!).rounded()
-            trackingData.distance = location.distance(from: previousLocUnwrapped).rounded()
+            // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
+            let distance = location.distance(from: previousLocUnwrapped).rounded()
+            guard distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD else {return}
+            // ensure we get no fake instantaneous movements
+            let time = location.timestamp.timeIntervalSince(previousLocUnwrapped.timestamp).rounded()
+            guard time > 0 else {return}
+            
+            // store and display data
+            trackingData.time = time
+            trackingData.distance = distance
             trackingData.speed = trackingData.distance/trackingData.time
-            trackingData.transportMode = trackingData.speed >= SPEED_THRESHOLD ? "Automotive":"Not automotive"
+            trackingData.transportMode = trackingData.speed >= AUTOMOTIVE_SPEED_THRESHOLD ? "Automotive":"Not automotive"
+            
+            // check for underground station
+            setUndergroundStation(aroundLocation: location)
         }
-        lastUpdate = location.timestamp
+
         previousLoc = location
-        
-         // Do something with the location.
-        
-    
      }
+    
+    func setUndergroundStation(aroundLocation location:CLLocation){
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = "underground station"
+        request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+        request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
+        
+        MKLocalSearch(request: request).start { (response, error) in
+            guard let response = response else {return}
+            guard response.mapItems.count > 0 else {return}
+            for result in response.mapItems {
+                if result.isCurrentLocation {
+                    self.trackingData.station = result.name!
+                    return
+                }
+            }
+            self.trackingData.station = "Not in a tube station"
+        }
+    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error.localizedDescription)
     }
@@ -59,6 +99,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             manager.delegate = self
             manager.distanceFilter = 50
             manager.desiredAccuracy = kCLLocationAccuracyBest
+            
             window.rootViewController = UIHostingController(rootView: ContentView().environmentObject(trackingData))
             manager.startUpdatingLocation()
             

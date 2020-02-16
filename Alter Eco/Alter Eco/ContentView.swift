@@ -14,13 +14,14 @@ struct ContentView: View{
     
     var body: some View {
         VStack {
-            Text("Hello you, thanks for testing our app")
-            Text("Should update every 50 meters \n Automotive if above 25 km/h \nIgnore the first readings\n")
+            Text("Should update every 50 meters\n")
             
-            Text("Distance: \(trackingData.distance) m")
-            Text("Time elapsed: \(trackingData.time) s")
-            Text("Average Speed: \(trackingData.speed) m/s")
-            Text("Mode of transport: \(trackingData.transportMode)")
+            Text("Distance: \(trackingData.distance, specifier: "%.0f") m")
+            Text("Time elapsed: \(trackingData.time, specifier: "%.0f") s")
+            Text("Average Speed: \(trackingData.speed, specifier: "%.2f") m/s")
+            
+            Text("\nMode of transport: \(trackingData.transportMode)")
+            Text("\(trackingData.station)")
         }
     }
 }
