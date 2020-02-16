@@ -32,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
      func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
         // ensure location is accurate enough
         let location = locations.last!
-        guard location.horizontalAccuracy >= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return}
+        guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return}
         
         if let previousLocUnwrapped = previousLoc {
             // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
