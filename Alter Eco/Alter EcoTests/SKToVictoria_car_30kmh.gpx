@@ -10,6 +10,10 @@ Alternative gpx generator with no timestamps:
 https://www.alltrails.com/explore/map/new/?referrer=gpsies
 Tool to add timestamps given an average speed
 https://gotoes.org/strava/Add_Timestamps_To_GPX.php
+
+For the right formatting I used this regex:
+\s*<trkpt\s(.+)\n(.+)\n\s*<\/trkpt>
+To replace matches using the captured groups (e.g. <wpt $1$2</wpt>)
 -->
 <gpx>
 <wpt lon="-0.17863" lat="51.4954"><time>2020-02-16T19:18:48Z</time></wpt>
