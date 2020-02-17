@@ -15,9 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     // define threshold to identify an automotive type of motion
     // 4.5m/s is roughly 16km/h
     let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4.5
-    // request gps update every 50m
+    // defines how many meters to request a gps update
     let GPS_UPDATE_DISTANCE_THRESHOLD:Double = 50
-    // define tolerance value for gps updates
+    // define tolerance value in meters for gps updates
     let GPS_UPDATE_DISTANCE_TOLERANCE:Double = 5
     // define minimum confidence for valid location updates
     let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
@@ -60,19 +60,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     func setUndergroundStation(aroundLocation location:CLLocation){
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = "underground station"
-        request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
+        request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
         request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
         
         MKLocalSearch(request: request).start { (response, error) in
-            guard let response = response else {return}
-            guard response.mapItems.count > 0 else {return}
-            for result in response.mapItems {
-                if result.isCurrentLocation {
-                    self.trackingData.station = result.name!
-                    return
+            var station = "Not in a tube station"
+            if let response = response {
+                for result in response.mapItems {
+                    // user is in a station if distance from current position is less or equal to threshold
+                    let distance = location.distance(from: CLLocation(latitude: result.placemark.coordinate.latitude, longitude: result.placemark.coordinate.longitude))
+                    if (distance <= self.GPS_UPDATE_CONFIDENCE_THRESHOLD){
+                        station = result.name!
+                    }
                 }
             }
-            self.trackingData.station = "Not in a tube station"
+            self.trackingData.station = station
         }
     }
     

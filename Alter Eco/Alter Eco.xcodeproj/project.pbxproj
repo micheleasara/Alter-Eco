@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCC23E97FDF00F86F66 /* DetailView.swift */; };
-		57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCE23E97FEF00F86F66 /* SplashScreen.swift */; };
 		9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; };
 		9C93607C23EB8D5B00E2E056 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CCD858B23F449D00091D5DD /* tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCD858A23F449D00091D5DD /* tracker.swift */; };
@@ -57,7 +56,6 @@
 
 /* Begin PBXFileReference section */
 		57453FCC23E97FDF00F86F66 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		57453FCE23E97FEF00F86F66 /* SplashScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		9CCD858A23F449D00091D5DD /* tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tracker.swift; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4223E3885100629E73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +75,7 @@
 		CDBF3C8E23EB05F0008046F9 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		CDBF3C9323EB0AF0008046F9 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
 		DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SKToVictoria_car_30kmh.gpx; sourceTree = "<group>"; };
+		DEA899E523FAB524006A7743 /* EarlsCourtStation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = EarlsCourtStation.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,7 +132,6 @@
 			children = (
 				CD200B4223E3885100629E73 /* AppDelegate.swift */,
 				57453FCC23E97FDF00F86F66 /* DetailView.swift */,
-				57453FCE23E97FEF00F86F66 /* SplashScreen.swift */,
 				CD200B4423E3885100629E73 /* SceneDelegate.swift */,
 				CD200B4623E3885100629E73 /* ContentView.swift */,
 				CD200B4823E3885700629E73 /* Assets.xcassets */,
@@ -157,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				CD200B5923E3885800629E73 /* Alter_EcoTests.swift */,
+				DEA899E523FAB524006A7743 /* EarlsCourtStation.gpx */,
 				DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */,
 				CD200B5B23E3885800629E73 /* Info.plist */,
 			);
@@ -318,7 +317,6 @@
 				57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */,
 				9CCD858B23F449D00091D5DD /* tracker.swift in Sources */,
 				CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */,
-				57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */,
 				CD200B4723E3885100629E73 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
