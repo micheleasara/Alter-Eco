@@ -21,18 +21,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     let GPS_UPDATE_DISTANCE_TOLERANCE:Double = 5
     // define minimum confidence for valid location updates
     let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
-
+    // define max number of measurements stored in array
+    let MAX_MEASUREMENTS = 101
+    
     let manager = CLLocationManager()
     // contains location from previous valid update
     var previousLoc: CLLocation? = nil
     // shared among views
     var trackingData = TrackingData()
     
+    // CREATE ARRAY EVENT LIST
+    var measurements = [MeasurementObject]()
     
-     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
         // ensure location is accurate enough
         let location = locations.last!
         guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return}
+        
+        
         
         if let previousLocUnwrapped = previousLoc {
             // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
@@ -42,20 +48,45 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             let time = location.timestamp.timeIntervalSince(previousLocUnwrapped.timestamp).rounded()
             guard time > 0 else {return}
             
-            // store and display data
-            trackingData.time = time
-            trackingData.distance = distance
-            trackingData.speed = trackingData.distance/trackingData.time
-            trackingData.transportMode = trackingData.speed >= AUTOMOTIVE_SPEED_THRESHOLD ? "Automotive":"Not automotive"
+            // IF EVENT LIST NOT FULL AND EVENT NOT CHANGED:
+                // Create measurement and add to Event list
+                trackingData.time = time
+                // ADD START
+                // ADD TIME END
+                trackingData.distance = distance
+                trackingData.speed = trackingData.distance/trackingData.time
+                trackingData.transportMode = trackingData.speed >= AUTOMOTIVE_SPEED_THRESHOLD ? "Automotive":"Not automotive"
+                
+                // check for underground station
+                // TODO: A better approach perhaps would be the following, by monitoring regions around stations
+                // https://stackoverflow.com/questions/52350209/see-if-the-user-is-near-a-location-swift-4
+                // setUndergroundStation(aroundLocation: location)
             
-            // check for underground station
-            // TODO: A better approach perhaps would be the following, by monitoring regions around stations 
-            // https://stackoverflow.com/questions/52350209/see-if-the-user-is-near-a-location-swift-4
-            setUndergroundStation(aroundLocation: location)
+            // ELSE IF EVENT CHANGED:
+                // PUT LAST TWO MEASUREMENTS INTO NEW LIST THEN DISCARD THEM
+                // COMPUTE DURATION OF EVENT, STORE IN DB, FLUSH ARRAY EVENT LIST
+            
+            // ELSE IF FULL:
+                // COMPUTE DURATION OF EVENT, STORE IN DB, FLUSH ARRAY EVENT LIST
+
         }
 
         previousLoc = location
      }
+    
+    func isFull(measurements:[MeasurementObject]) -> Bool {
+        return measurements.count >= MAX_MEASUREMENTS
+    }
+    
+    func hasEventChanged(measurements:[MeasurementObject]) -> Bool {
+        if measurements.count < 3 {return false}
+        
+        let rootType = measurements[0].motionType
+        let lastType = measurements.last!.motionType
+        let secondLastType = measurements[measurements.count-2].motionType
+        
+        return lastType == secondLastType && lastType != rootType
+    }
     
     func setUndergroundStation(aroundLocation location:CLLocation){
         let request = MKLocalSearch.Request()
