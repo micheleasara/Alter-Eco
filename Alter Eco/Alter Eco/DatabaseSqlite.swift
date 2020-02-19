@@ -71,30 +71,30 @@ func appendToDatabase(event: MeasuredActivity) {
     }
 }
 
-func printDatabase() {
-    
-    let path = NSSearchPathForDirectoriesInDomains(
-                .documentDirectory, .userDomainMask, true
-            ).first!
-    do {
-        let db = try Connection("\(path)/motion_db.sqlite3")
-        do {
-            let motions = Table("motions")
-            let motionType = Expression<String>("motionType")
-            let dateStart = Expression<Date>("dateStart")
-            let dateEnd = Expression<Date>("dateEnd")
-            let distance = Expression<Double>("distance")
-        
-            for motion in try db.prepare(motions) {
-                print("motionType: \(String(describing: motion[motionType])), dateStart: \(motion[dateStart]), dateEnd: \(motion[dateEnd]), distance: \(motion[distance])")
-            }
-        } catch {
-            print("Cannot print")
-        }
-    } catch {
-        print("Cannot connect to database to print")
-    }
-}
+//func printDatabase() {
+//    
+//    let path = NSSearchPathForDirectoriesInDomains(
+//                .documentDirectory, .userDomainMask, true
+//            ).first!
+//    do {
+//        let db = try Connection("\(path)/motion_db.sqlite3")
+//        do {
+//            let motions = Table("motions")
+//            let motionType = Expression<String>("motionType")
+//            let dateStart = Expression<Date>("dateStart")
+//            let dateEnd = Expression<Date>("dateEnd")
+//            let distance = Expression<Double>("distance")
+//        
+//            for motion in try db.prepare(motions) {
+//                print("motionType: \(String(describing: motion[motionType])), dateStart: \(motion[dateStart]), dateEnd: \(motion[dateEnd]), distance: \(motion[distance])")
+//            }
+//        } catch {
+//            print("Cannot print")
+//        }
+//    } catch {
+//        print("Cannot connect to database to print")
+//    }
+//}
 
 // MARK: UISceneSession Lifecycle
 func retrieveFromDatabase(queryDate: Date) -> MeasuredActivity? {

@@ -59,17 +59,3 @@ func stringToMotionType(type:String) -> MotionType {
         return .unknown
     }
 }
-
-func dateToString(date:Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .short
-    dateFormatter.timeStyle = .full
-    return dateFormatter.string(from: date)
-}
-
-func stringToDate(string: String) -> Date? {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .short
-    dateFormatter.timeStyle = .full
-    return dateFormatter.date(from: string)
-}
