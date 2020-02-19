@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import CoreLocation
 @testable import Alter_Eco
 
 class TrackingTest: XCTestCase {
@@ -34,45 +35,154 @@ class TrackingTest: XCTestCase {
     }
     
     func testFullReturnsTrueIfListIsFull(){
-        var measurements = [MeasurementObject]()
-        for _ in 1...101{
-            measurements.append(MeasurementObject(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+        var measurements = [MeasuredActivity]()
+        for _ in 1...scene.MAX_MEASUREMENTS {
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
         }
         XCTAssert(scene.isFull(measurements: measurements))
     }
     
     func testFullReturnsFalseIfListIsNotFull(){
-        var measurements = [MeasurementObject]()
+        var measurements = [MeasuredActivity]()
         for _ in 1...10{
-            measurements.append(MeasurementObject(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
         }
         XCTAssertFalse(scene.isFull(measurements: measurements))
     }
     
     func testEventHasNotChangedIfLessThanThreeMeasurements(){
-        var measurements = [MeasurementObject]()
+        var measurements = [MeasuredActivity]()
         for _ in 1...2{
-            measurements.append(MeasurementObject(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
         }
         XCTAssertFalse(scene.hasEventChanged(measurements: measurements))
     }
     
     func testEventHasNotChangedIfLastTwoMeasurementsAreDifferentType(){
-        var measurements = [MeasurementObject]()
+        var measurements = [MeasuredActivity]()
         for _ in 1...4{
-            measurements.append(MeasurementObject(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
         }
-        measurements.append(MeasurementObject(motionType: MotionType.walking, distance: 100, start: Date(), end: Date()))
+        measurements.append(MeasuredActivity(motionType: MotionType.walking, distance: 100, start: Date(), end: Date()))
         XCTAssertFalse(scene.hasEventChanged(measurements: measurements))
     }
     
     func testEventHasChangedIfLastTwoMeasurementsAreSameTypeAndDifferentFromRoot(){
-        var measurements = [MeasurementObject]()
+        var measurements = [MeasuredActivity]()
         for _ in 1...4{
-            measurements.append(MeasurementObject(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
         }
-        measurements.append(MeasurementObject(motionType: MotionType.walking, distance: 100, start: Date(), end: Date()))
-        measurements.append(MeasurementObject(motionType: MotionType.walking, distance: 100, start: Date(), end: Date()))
+        measurements.append(MeasuredActivity(motionType: MotionType.walking, distance: 100, start: Date(), end: Date()))
+        measurements.append(MeasuredActivity(motionType: MotionType.walking, distance: 100, start: Date(), end: Date()))
         XCTAssert(scene.hasEventChanged(measurements: measurements))
+    }
+    
+    func testFakingValidMovementAppendsToMeasurementsList() {
+        let accuracy = scene.GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let previousLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date())
+        
+        let currentLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4954, longitude: -0.17863), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 10, since: previousLocation.timestamp))
+        
+        scene.previousLoc = previousLocation
+        
+        scene.locationManager(scene.manager, didUpdateLocations: [currentLocation])
+
+        XCTAssert(scene.measurements.count == 1)
+    }
+    
+    func testComputingEventDistance() {
+        var measurements = [MeasuredActivity]()
+        for _ in 1...10{
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+        }
+        
+        let duration = scene.computeEventDistance(measurements: measurements)
+        
+        XCTAssert(duration == 1000)
+    }
+    
+    func testComputingMotionTypeEquipartitioned() {
+            var measurements = [MeasuredActivity]()
+            var date = Date()
+            for _ in 1...10 {
+                measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+                date = Date(timeInterval: 10, since: date)
+            }
+        
+            for _ in 1...10 {
+                measurements.append(MeasuredActivity(motionType: MotionType.walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+                date = Date(timeInterval: 10, since: date)
+            }
+
+            let motionType = scene.computeEventMotionType(measurements: measurements)
+            
+        XCTAssert(motionType == MotionType.car, "Expected car, got "+motionTypeToString(type: MotionType.car))
+    }
+    
+    func testComputingMotionTypeMoreWalking() {
+        var measurements = [MeasuredActivity]()
+        var date = Date()
+        for _ in 1...3 {
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+    
+        for _ in 1...10 {
+            measurements.append(MeasuredActivity(motionType: MotionType.walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+
+        let motionType = scene.computeEventMotionType(measurements: measurements)
+        
+        XCTAssert(motionType == MotionType.walking, "Expected walking, got "+motionTypeToString(type: MotionType.walking))
+    }
+
+    func testComputingMotionTypeMoreCar() {
+        var measurements = [MeasuredActivity]()
+        var date = Date()
+        for _ in 1...10 {
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+    
+        for _ in 1...5 {
+            measurements.append(MeasuredActivity(motionType: MotionType.walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+
+        let motionType = scene.computeEventMotionType(measurements: measurements)
+        
+        XCTAssert(motionType == MotionType.car, "Expected car, got "+motionTypeToString(type: MotionType.car))
+    }
+    
+    func testTwoEqualEventsResultEqual() {
+        let date = Date()
+        let eventOne = MeasuredActivity(motionType: .car, distance: 11, start: date, end: Date(timeInterval: 10, since: date))
+        
+        let eventTwo = MeasuredActivity(motionType: .car, distance: 11, start: date, end: eventOne.end)
+        
+        XCTAssert(eventTwo == eventOne, "Expected equality between two events")
+    }
+    
+    func testTwoUnequalEventsResultDifferent() {
+        let date = Date()
+        let eventOne = MeasuredActivity(motionType: .car, distance: 11, start: date, end: Date(timeInterval: 10, since: date))
+        
+        let eventTwo = MeasuredActivity(motionType: .car, distance: 11, start: Date(timeInterval: 1000, since: date), end: eventOne.end)
+        
+        XCTAssertFalse(eventTwo == eventOne, "Expected inequality between two events")
+    }
+    
+    func testDatabaseIO() {
+        let date = Date()
+        let event = MeasuredActivity(motionType: .car, distance: 11.0, start: date, end: Date(timeInterval: 10, since: date))
+        
+        createDatabase()
+        
+        appendToDatabase(event: event)
+        
+        let eventRetrieved = retrieveFromDatabase(queryDate: date)!
+
+        XCTAssert(event == eventRetrieved, "Expected same event")
     }
 }

@@ -10,8 +10,9 @@
 		57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCC23E97FDF00F86F66 /* DetailView.swift */; };
 		9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; };
 		9C93607C23EB8D5B00E2E056 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9CA8B18E23FD9BC8005E6526 /* DatabaseSqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */; };
 		9CCD858B23F449D00091D5DD /* tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCD858A23F449D00091D5DD /* tracker.swift */; };
-		9CE739A123FC007C0008C4EF /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE739A023FC007C0008C4EF /* Measurement.swift */; };
+		9CE739A123FC007C0008C4EF /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */; };
 		9CE739B423FC0D4C0008C4EF /* SceneDelegateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE739AC23FC0AC30008C4EF /* SceneDelegateTest.swift */; };
 		CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4223E3885100629E73 /* AppDelegate.swift */; };
 		CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4423E3885100629E73 /* SceneDelegate.swift */; };
@@ -64,8 +65,9 @@
 
 /* Begin PBXFileReference section */
 		57453FCC23E97FDF00F86F66 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSqlite.swift; sourceTree = "<group>"; };
 		9CCD858A23F449D00091D5DD /* tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tracker.swift; sourceTree = "<group>"; };
-		9CE739A023FC007C0008C4EF /* Measurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measurement.swift; sourceTree = "<group>"; };
+		9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasuredActivity.swift; sourceTree = "<group>"; };
 		9CE739AA23FC0AC30008C4EF /* TrackingTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackingTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CE739AC23FC0AC30008C4EF /* SceneDelegateTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateTest.swift; sourceTree = "<group>"; };
 		9CE739AE23FC0AC30008C4EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				CD200B4223E3885100629E73 /* AppDelegate.swift */,
+				9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */,
 				57453FCC23E97FDF00F86F66 /* DetailView.swift */,
 				CD200B4423E3885100629E73 /* SceneDelegate.swift */,
 				CD200B4623E3885100629E73 /* ContentView.swift */,
@@ -165,7 +168,7 @@
 				CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */,
 				CD200B5023E3885700629E73 /* Info.plist */,
 				9CCD858A23F449D00091D5DD /* tracker.swift */,
-				9CE739A023FC007C0008C4EF /* Measurement.swift */,
+				9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */,
 				DEA899E523FAB524006A7743 /* EarlsCourtStation.gpx */,
 				DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
@@ -370,8 +373,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CE739A123FC007C0008C4EF /* Measurement.swift in Sources */,
+				9CE739A123FC007C0008C4EF /* MeasuredActivity.swift in Sources */,
 				CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */,
+				9CA8B18E23FD9BC8005E6526 /* DatabaseSqlite.swift in Sources */,
 				57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */,
 				9CCD858B23F449D00091D5DD /* tracker.swift in Sources */,
 				CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */,
@@ -587,7 +591,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -598,7 +602,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -613,7 +617,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -624,7 +628,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker;
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

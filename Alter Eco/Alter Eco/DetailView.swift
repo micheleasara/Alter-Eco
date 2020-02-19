@@ -24,9 +24,9 @@ struct DetailView: View {
 //transport mode and value to be pulled from the database!
 //if the number of transport modes changes then the HStack below needs to change
     static var data: [DayDataPoint] = [
-        .init(transportmode: "Walking", value: CGFloat(appDelegate.retrieve_database(query_motion_type: "walking", query_date: "06/02/2020")) ),
-    .init(transportmode: "Running", value: CGFloat(appDelegate.retrieve_database(query_motion_type: "running", query_date: "06/02/2020"))),
-    .init(transportmode: "Car", value: CGFloat(appDelegate.retrieve_database(query_motion_type: "automotive", query_date: "06/02/2020"))),
+//        .init(transportmode: "Walking", value: CGFloat(retrieveFromDatabase(queryDate: dateToString(date: Date()))!.distance) ),
+//        .init(transportmode: "Running", value: CGFloat(retrieveFromDatabase(queryDate: dateToString(date: Date()))!.distance)),
+//        .init(transportmode: "Car", value: CGFloat(retrieveFromDatabase(queryDate: dateToString(date: Date()))!.distance)),
     .init(transportmode: "Bike", value: 0.7),
     .init(transportmode: "Bike", value: 0.7),
      ]

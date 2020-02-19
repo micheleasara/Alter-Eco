@@ -31,14 +31,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     var trackingData = TrackingData()
     
     // CREATE ARRAY EVENT LIST
-    var measurements = [MeasurementObject]()
+    var measurements = [MeasuredActivity]()
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
         // ensure location is accurate enough
         let location = locations.last!
         guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return}
-        
-        
         
         if let previousLocUnwrapped = previousLoc {
             // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
@@ -47,38 +45,51 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             // ensure we get no fake instantaneous movements
             let time = location.timestamp.timeIntervalSince(previousLocUnwrapped.timestamp).rounded()
             guard time > 0 else {return}
+            let calendar = Calendar(identifier: .gregorian)
             
-            // IF EVENT LIST NOT FULL AND EVENT NOT CHANGED:
-                // Create measurement and add to Event list
-                trackingData.time = time
-                // ADD START
-                // ADD TIME END
-                trackingData.distance = distance
-                trackingData.speed = trackingData.distance/trackingData.time
-                trackingData.transportMode = trackingData.speed >= AUTOMOTIVE_SPEED_THRESHOLD ? "Automotive":"Not automotive"
+            if calendar.dateComponents([.day, .month, .year], from: location.timestamp) != calendar.dateComponents([.day, .month, .year], from: previousLocUnwrapped.timestamp) {
+                let event = prepareNewEventList(measurements: measurements)
+                appendToDatabase(event: event)
+            }
+            else if (!isFull(measurements: measurements) && !hasEventChanged(measurements: measurements)) {
+                let motionType:MotionType = distance / time >= AUTOMOTIVE_SPEED_THRESHOLD ? .car : .walking
                 
+                let measurement = MeasuredActivity(motionType: motionType, distance: distance, start: previousLocUnwrapped.timestamp, end: location.timestamp)
+                
+                measurements.append(measurement)
+
                 // check for underground station
                 // TODO: A better approach perhaps would be the following, by monitoring regions around stations
                 // https://stackoverflow.com/questions/52350209/see-if-the-user-is-near-a-location-swift-4
                 // setUndergroundStation(aroundLocation: location)
+            }
+            else if (hasEventChanged(measurements: measurements)) {
+                let event = computeAverageEvent(measurements: Array(measurements[..<(measurements.count-2)]))
+                appendToDatabase(event: event)
+                
+                measurements = Array(measurements[(measurements.count-2)...])
+            }
             
-            // ELSE IF EVENT CHANGED:
-                // PUT LAST TWO MEASUREMENTS INTO NEW LIST THEN DISCARD THEM
-                // COMPUTE DURATION OF EVENT, STORE IN DB, FLUSH ARRAY EVENT LIST
-            
-            // ELSE IF FULL:
-                // COMPUTE DURATION OF EVENT, STORE IN DB, FLUSH ARRAY EVENT LIST
-
+            else if (isFull(measurements: measurements)) {
+                let event = prepareNewEventList(measurements: measurements)
+                appendToDatabase(event: event)
+            }
         }
 
         previousLoc = location
      }
     
-    func isFull(measurements:[MeasurementObject]) -> Bool {
+    func prepareNewEventList(measurements: [MeasuredActivity]) -> MeasuredActivity {
+        let event = computeAverageEvent(measurements: measurements)
+        self.measurements.removeAll()
+        return event
+    }
+    
+    func isFull(measurements:[MeasuredActivity]) -> Bool {
         return measurements.count >= MAX_MEASUREMENTS
     }
     
-    func hasEventChanged(measurements:[MeasurementObject]) -> Bool {
+    func hasEventChanged(measurements:[MeasuredActivity]) -> Bool {
         if measurements.count < 3 {return false}
         
         let rootType = measurements[0].motionType
@@ -87,8 +98,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         
         return lastType == secondLastType && lastType != rootType
     }
+   
+    func computeEventDistance(measurements:[MeasuredActivity]) -> Double {
+        var distance = 0.0
+        for measurement in measurements {
+            distance += measurement.distance
+        }
+        
+        return distance
+    }
+
+    func computeEventMotionType(measurements:[MeasuredActivity]) -> MotionType {
+        var carCounter = 0
+        var walkingCounter = 0
+        
+        for measurement in measurements {
+            if measurement.motionType == MotionType.car {
+                carCounter += 1
+            }
+            else if measurement.motionType == MotionType.walking {
+                walkingCounter += 1
+            }
+        }
+        
+        // TODO DICTIONARY OF WEIGHTS
+        if carCounter*2 > walkingCounter {
+            return MotionType.car
+        }
+        else {
+            return MotionType.walking
+        }
+    }
     
-    func setUndergroundStation(aroundLocation location:CLLocation){
+    func computeAverageEvent(measurements:[MeasuredActivity]) -> MeasuredActivity {
+        let event = MeasuredActivity(motionType: computeEventMotionType(measurements: measurements), distance: computeEventDistance(measurements: measurements), start: measurements.first!.start, end: measurements[measurements.count-1].end)
+        return event
+    }
+    
+    func setUndergroundStation(aroundLocation location:CLLocation) {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = "underground station"
         request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
