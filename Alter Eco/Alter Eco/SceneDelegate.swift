@@ -57,7 +57,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 let measurement = MeasuredActivity(motionType: motionType, distance: distance, start: previousLocUnwrapped.timestamp, end: location.timestamp)
                 
                 measurements.append(measurement)
-
+                
+                trackingData.distance = distance
+                trackingData.speed = distance / time
+                trackingData.time = time
+                trackingData.transportMode = motionTypeToString(type: motionType)
+                
+                //setUndergroundStation(aroundLocation: location)
                 // check for underground station
                 // TODO: A better approach perhaps would be the following, by monitoring regions around stations
                 // https://stackoverflow.com/questions/52350209/see-if-the-user-is-near-a-location-swift-4
@@ -152,12 +158,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                     }
                 }
             }
-            self.trackingData.station = station
+            //self.trackingData.station = station
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
+        print("Error was: ", error.localizedDescription)
     }
     
     var window: UIWindow?
@@ -182,7 +188,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             manager.distanceFilter = 50
             manager.desiredAccuracy = kCLLocationAccuracyBest
             
-            window.rootViewController = UIHostingController(rootView: ContentView().environmentObject(trackingData))
+            window.rootViewController = UIHostingController(rootView: contentView.environmentObject(trackingData))
             manager.startUpdatingLocation()
             
             window.makeKeyAndVisible()
