@@ -33,13 +33,6 @@
 			remoteGlobalIDString = CD200B3E23E3885100629E73;
 			remoteInfo = "Alter Eco";
 		};
-		CD200B5623E3885800629E73 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CD200B3723E3885100629E73 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CD200B3E23E3885100629E73;
-			remoteInfo = "Alter Eco";
-		};
 		CD200B6123E3885800629E73 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD200B3723E3885100629E73 /* Project object */;
@@ -79,7 +72,6 @@
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B4E23E3885700629E73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD200B5523E3885800629E73 /* Alter EcoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B6023E3885800629E73 /* Alter EcoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B6423E3885800629E73 /* Alter_EcoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoUITests.swift; sourceTree = "<group>"; };
 		CD200B6623E3885800629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -105,13 +97,6 @@
 				CDBF3C9723EB0AFA008046F9 /* libsqlite3.tbd in Frameworks */,
 				CDBF3C9623EB0AFA008046F9 /* libsqlite3.0.tbd in Frameworks */,
 				9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5223E3885800629E73 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,7 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				CD200B3F23E3885100629E73 /* Alter Eco.app */,
-				CD200B5523E3885800629E73 /* Alter EcoTests.xctest */,
 				CD200B6023E3885800629E73 /* Alter EcoUITests.xctest */,
 				9CE739AA23FC0AC30008C4EF /* TrackingTest.xctest */,
 			);
@@ -242,24 +226,6 @@
 			productReference = CD200B3F23E3885100629E73 /* Alter Eco.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CD200B5423E3885800629E73 /* Alter EcoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CD200B6C23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoTests" */;
-			buildPhases = (
-				CD200B5123E3885800629E73 /* Sources */,
-				CD200B5223E3885800629E73 /* Frameworks */,
-				CD200B5323E3885800629E73 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CD200B5723E3885800629E73 /* PBXTargetDependency */,
-			);
-			name = "Alter EcoTests";
-			productName = "Alter EcoTests";
-			productReference = CD200B5523E3885800629E73 /* Alter EcoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		CD200B5F23E3885800629E73 /* Alter EcoUITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD200B6F23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoUITests" */;
@@ -295,10 +261,6 @@
 					CD200B3E23E3885100629E73 = {
 						CreatedOnToolsVersion = 11.3;
 					};
-					CD200B5423E3885800629E73 = {
-						CreatedOnToolsVersion = 11.3;
-						TestTargetID = CD200B3E23E3885100629E73;
-					};
 					CD200B5F23E3885800629E73 = {
 						CreatedOnToolsVersion = 11.3;
 						TestTargetID = CD200B3E23E3885100629E73;
@@ -319,7 +281,6 @@
 			projectRoot = "";
 			targets = (
 				CD200B3E23E3885100629E73 /* Alter Eco */,
-				CD200B5423E3885800629E73 /* Alter EcoTests */,
 				CD200B5F23E3885800629E73 /* Alter EcoUITests */,
 				9CE739A923FC0AC30008C4EF /* TrackingTest */,
 			);
@@ -341,13 +302,6 @@
 				CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
 				CD200B4923E3885700629E73 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5323E3885800629E73 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,13 +337,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CD200B5123E3885800629E73 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		CD200B5C23E3885800629E73 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -405,11 +352,6 @@
 			isa = PBXTargetDependency;
 			target = CD200B3E23E3885100629E73 /* Alter Eco */;
 			targetProxy = 9CE739AF23FC0AC30008C4EF /* PBXContainerItemProxy */;
-		};
-		CD200B5723E3885800629E73 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CD200B3E23E3885100629E73 /* Alter Eco */;
-			targetProxy = CD200B5623E3885800629E73 /* PBXContainerItemProxy */;
 		};
 		CD200B6223E3885800629E73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -636,48 +578,6 @@
 			};
 			name = Release;
 		};
-		CD200B6D23E3885800629E73 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
-			};
-			name = Debug;
-		};
-		CD200B6E23E3885800629E73 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
-			};
-			name = Release;
-		};
 		CD200B7023E3885800629E73 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -742,15 +642,6 @@
 			buildConfigurations = (
 				CD200B6A23E3885800629E73 /* Debug */,
 				CD200B6B23E3885800629E73 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CD200B6C23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CD200B6D23E3885800629E73 /* Debug */,
-				CD200B6E23E3885800629E73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
