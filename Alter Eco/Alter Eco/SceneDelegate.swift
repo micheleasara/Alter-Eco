@@ -51,7 +51,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             
             let calendar = Calendar(identifier: .gregorian)
             if calendar.dateComponents([.day, .month, .year], from: location.timestamp) != calendar.dateComponents([.day, .month, .year], from: previousLocUnwrapped.timestamp) {
-                let event = prepareNewEventList(measurements: measurements)
+                let event = computeAverageEvent(measurements: measurements)
+                self.measurements.removeAll()
                 appendToDatabase(event: event)
             }
             else if (!isFull(measurements: measurements) && !hasEventChanged(measurements: measurements)) {
@@ -72,7 +73,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             }
             
             else if (isFull(measurements: measurements)) {
-                let event = prepareNewEventList(measurements: measurements)
+                let event = computeAverageEvent(measurements: measurements)
+                self.measurements.removeAll()
                 appendToDatabase(event: event)
             }
             
@@ -85,12 +87,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
 
         previousLoc = location
      }
-    
-    func prepareNewEventList(measurements: [MeasuredActivity]) -> MeasuredActivity {
-        let event = computeAverageEvent(measurements: measurements)
-        self.measurements.removeAll()
-        return event
-    }
     
     func isFull(measurements:[MeasuredActivity]) -> Bool {
         return measurements.count >= MAX_MEASUREMENTS
@@ -123,12 +119,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             if measurement.motionType == MotionType.car {
                 carCounter += 1
             }
-            else if measurement.motionType == MotionType.walking {
+            else {
                 walkingCounter += 1
             }
         }
         
-        // TODO DICTIONARY OF WEIGHTS
+        // TODO: DICTIONARY OF WEIGHTS
         if carCounter*2 > walkingCounter {
             return MotionType.car
         }
@@ -147,7 +143,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
 //        request.naturalLanguageQuery = "underground station"
 //        request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
 //        request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
-//        
+//
 //        MKLocalSearch(request: request).start { (response, error) in
 //            var station = "Not in a tube station"
 //            if let response = response {
@@ -187,15 +183,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             manager.requestAlwaysAuthorization()
             manager.allowsBackgroundLocationUpdates = true
             manager.delegate = self
-            manager.distanceFilter = 50
+            manager.distanceFilter = GPS_UPDATE_DISTANCE_THRESHOLD
             manager.desiredAccuracy = kCLLocationAccuracyBest
             
+            // set trackingData as environment object to allow access within contentView
             window.rootViewController = UIHostingController(rootView: contentView.environmentObject(trackingData))
             
             window.makeKeyAndVisible()
             manager.startUpdatingLocation()
         }
     }
+    
     
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

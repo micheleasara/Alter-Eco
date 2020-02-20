@@ -59,8 +59,6 @@ func appendToDatabase(event: MeasuredActivity) {
         
         // INSERT INTO "users" ("name", "email") VALUES ('Alice', 'alice@mac.com')
         let insert = motions.insert(motionType <- motionTypeToString(type: event.motionType), dateStart <- event.start, dateEnd <- event.end, distance <- event.distance)
-//        let date = Date()
-//        let insert = motions.insert(motionType <- "Test1", dateStart <- date, dateEnd <- Date(timeInterval: 10, since: date), distance <- 10)
         do {
             try db.run(insert)
         } catch {
@@ -114,7 +112,6 @@ func retrieveFromDatabase(queryDate: Date) -> MeasuredActivity? {
                 
                 for motion in try db.prepare(motions.where(dateStart == queryDate)) {
                     let event = MeasuredActivity(motionType: stringToMotionType(type: motion[motionType]), distance: motion[distance], start: motion[dateStart], end: motion[dateEnd])
-                    print("MotionType: ", motionTypeToString(type: event.motionType), " ", event.distance, " ", event.start, " " ,event.end)
                     return event
                 }
             } catch {

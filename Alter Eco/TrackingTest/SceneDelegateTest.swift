@@ -29,21 +29,21 @@ class TrackingTest: XCTestCase {
 //        }
 //    }
     
-    func testFullReturnsTrueIfListIsFull(){
-        var measurements = [MeasuredActivity]()
-        for _ in 1...scene.MAX_MEASUREMENTS {
-            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
-        }
-        XCTAssert(scene.isFull(measurements: measurements))
-    }
-    
-    func testFullReturnsFalseIfListIsNotFull(){
-        var measurements = [MeasuredActivity]()
-        for _ in 1...10{
-            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
-        }
-        XCTAssertFalse(scene.isFull(measurements: measurements))
-    }
+//    func testFullReturnsTrueIfListIsFull(){
+//        var measurements = [MeasuredActivity]()
+//        for _ in 1...scene.MAX_MEASUREMENTS {
+//            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+//        }
+//        XCTAssert(scene.isFull(measurements: measurements))
+//    }
+//    
+//    func testFullReturnsFalseIfListIsNotFull(){
+//        var measurements = [MeasuredActivity]()
+//        for _ in 1...10{
+//            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
+//        }
+//        XCTAssertFalse(scene.isFull(measurements: measurements))
+//    }
     
     func testEventHasNotChangedIfLessThanThreeMeasurements(){
         var measurements = [MeasuredActivity]()
@@ -83,17 +83,6 @@ class TrackingTest: XCTestCase {
         scene.locationManager(scene.manager, didUpdateLocations: [currentLocation])
 
         XCTAssert(scene.measurements.count == 1, "Expected only one item in the measurements list, but got " + String(scene.measurements.count))
-    }
-    
-    func testEventDistanceIsTheSumOfAllMeasuredDistances() {
-        var measurements = [MeasuredActivity]()
-        for _ in 1...10{
-            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
-        }
-        
-        let duration = scene.computeEventDistance(measurements: measurements)
-        
-        XCTAssert(duration == 1000, "Total event distance should be the sum of all measured distances")
     }
     
     func testAverageOfEquipartitionedMotionTypesResultsInMotionTypeWithHighestWeight() {
@@ -180,4 +169,24 @@ class TrackingTest: XCTestCase {
 
         XCTAssert(event == eventRetrieved, "Expected same event")
     }
+    
+    func testAverageEventFromListResultsIdenticalToSampleProvided() {
+        var measurements = [MeasuredActivity]()
+        var date = Date()
+        
+        for _ in 1...3 {
+            measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        for _ in 1...10 {
+            measurements.append(MeasuredActivity(motionType: MotionType.walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        
+        let answer = scene.computeAverageEvent(measurements: measurements)
+        let sampleAnswer = MeasuredActivity(motionType: .walking, distance: 1300, start: measurements[0].start, end: measurements.last!.end )
+        
+        XCTAssert(answer == sampleAnswer, "Average event was not computed correctly")
+    }
+    
 }

@@ -11,7 +11,7 @@
 		9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; };
 		9C93607C23EB8D5B00E2E056 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CA8B18E23FD9BC8005E6526 /* DatabaseSqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */; };
-		9CCD858B23F449D00091D5DD /* tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCD858A23F449D00091D5DD /* tracker.swift */; };
+		9CCD858B23F449D00091D5DD /* TrackingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCD858A23F449D00091D5DD /* TrackingData.swift */; };
 		9CE739A123FC007C0008C4EF /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */; };
 		9CE739B423FC0D4C0008C4EF /* SceneDelegateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE739AC23FC0AC30008C4EF /* SceneDelegateTest.swift */; };
 		CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4223E3885100629E73 /* AppDelegate.swift */; };
@@ -59,7 +59,7 @@
 /* Begin PBXFileReference section */
 		57453FCC23E97FDF00F86F66 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSqlite.swift; sourceTree = "<group>"; };
-		9CCD858A23F449D00091D5DD /* tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tracker.swift; sourceTree = "<group>"; };
+		9CCD858A23F449D00091D5DD /* TrackingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingData.swift; sourceTree = "<group>"; };
 		9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasuredActivity.swift; sourceTree = "<group>"; };
 		9CE739AA23FC0AC30008C4EF /* TrackingTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackingTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CE739AC23FC0AC30008C4EF /* SceneDelegateTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateTest.swift; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 				CD200B4823E3885700629E73 /* Assets.xcassets */,
 				CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */,
 				CD200B5023E3885700629E73 /* Info.plist */,
-				9CCD858A23F449D00091D5DD /* tracker.swift */,
+				9CCD858A23F449D00091D5DD /* TrackingData.swift */,
 				9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */,
 				DEA899E523FAB524006A7743 /* EarlsCourtStation.gpx */,
 				DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */,
@@ -331,7 +331,7 @@
 				CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */,
 				9CA8B18E23FD9BC8005E6526 /* DatabaseSqlite.swift in Sources */,
 				57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */,
-				9CCD858B23F449D00091D5DD /* tracker.swift in Sources */,
+				9CCD858B23F449D00091D5DD /* TrackingData.swift in Sources */,
 				CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */,
 				CD200B4723E3885100629E73 /* ContentView.swift in Sources */,
 			);
