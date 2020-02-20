@@ -1,15 +1,357 @@
-//
-//  ContentView.swift
-//  TrackerGraphs2UI
-//
-//  Created by e withnell on 19/01/2020.
-//  Copyright © 2020 e withnell. All rights reserved.
-//
-
 import SwiftUI
 
-//import a struct here?
+enum DataParts: Int, CaseIterable, Hashable, Identifiable {
+    case day = 0
+    case week
+    case month
+    case year
+    case car
+    case walk
+    
+    var name: String {
+        return "\(self)".capitalized
+    }
+    var id: DataParts {self}
+}
 
+enum Transport: Int, CaseIterable, Hashable, Identifiable {
+    case all = 0
+    case car
+    case walk
+    case tube
+    
+    var name: String {
+        return "\(self)".capitalized
+    }
+    
+    
+    var id: Transport {self}
+}
+
+enum DaySpecifics: CaseIterable, Hashable, Identifiable {
+    case zerohour
+    case twohour
+    case threehour
+    case fourhour
+    case fivehour
+    case sixhour
+    case sevenhour
+    case eighthour
+    case ninehour
+    case tenhour
+    case elevenhour
+    case twelvehour
+    case thirteenhour
+    case fourteenhour
+    case fifteenhour
+    case sixteenhour
+    case seventeenhour
+    case eighteenhour
+    case nineteenhour
+    case twentyhour
+    case twentyonehour
+    case twentytwohour
+    case twentythreehour
+    case twentyfourhour
+    
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+    case saturday
+    case sunday
+    
+    case oneday
+    case twoday
+    case threeday
+    case fourday
+    case fiveday
+    case sixday
+    case sevenday
+    
+    
+    case january
+    case febuary
+    case march
+    case april
+    case may
+    case june
+    case july
+    case august
+    case september
+    case october
+    case november
+    case december
+    
+    case fourteen
+    case fifteen
+    case sixteen
+    case seventeen
+    case eighteen
+    case nineteen
+    case twenty
+
+    
+    
+    var shortName: String {
+        if (self==DaySpecifics.fourteen)
+        { return "2014"}
+        if (self==DaySpecifics.fifteen)
+        { return "2015"}
+        if (self==DaySpecifics.sixteen)
+        { return "2016"}
+        if (self==DaySpecifics.seventeen)
+        { return "2017"}
+        if (self==DaySpecifics.eighteen)
+        { return "2018"}
+        if (self==DaySpecifics.nineteen)
+        { return "2019"}
+        if (self==DaySpecifics.twenty)
+        { return "2020"}
+        if (self==DaySpecifics.zerohour)
+        { return "00"}
+        if (self==DaySpecifics.twohour)
+        { return "02"}
+        if (self==DaySpecifics.fourhour)
+        { return "04"}
+        if (self==DaySpecifics.sixhour)
+        { return "06"}
+        if (self==DaySpecifics.eighthour)
+        { return "08"}
+        if (self==DaySpecifics.tenhour)
+        { return "10"}
+        if (self==DaySpecifics.twelvehour)
+        { return "12"}
+        if (self==DaySpecifics.fourteenhour)
+        { return "14"}
+        if (self==DaySpecifics.sixteenhour)
+        { return "16"}
+        if (self==DaySpecifics.eighteenhour)
+        { return "18"}
+        if (self==DaySpecifics.twentyhour)
+        { return "20"}
+        if (self==DaySpecifics.twentytwohour)
+        { return "22"}
+        if (self==DaySpecifics.twentyfourhour)
+        { return "24"}
+        else
+        {return String("\(self)".prefix(2)).capitalized}
+    }
+    var id: DaySpecifics {self}
+    
+}
+
+
+
+struct DetailView: View {
+    
+    @State var pickerSelectedItem = 0
+    @State var pickerSelectedTwoItem = 0
+    @State var days: [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Int)])] =
+           [
+                (
+                  
+                    DataParts.day,
+                        [
+                            (DaySpecifics.twohour, 10),
+                            (DaySpecifics.fourhour, 20),
+                            (DaySpecifics.sixhour, 30),
+                            (DaySpecifics.eighthour, 40),
+                            (DaySpecifics.tenhour, 50),
+                            (DaySpecifics.twelvehour, 60),
+                            (DaySpecifics.fourteenhour, 70),
+                            (DaySpecifics.sixteenhour, 70),
+                            (DaySpecifics.eighteenhour, 70),
+                            (DaySpecifics.twentyhour, 70),
+                            (DaySpecifics.twentytwohour, 70),
+                            (DaySpecifics.twentyfourhour, 70),
+                        ]
+                ),
+                (
+                    DataParts.week,
+                  
+                        [
+                            (DaySpecifics.sunday, 10),
+                            (DaySpecifics.monday, 20),
+                            (DaySpecifics.tuesday, 30),
+                            (DaySpecifics.wednesday, 40),
+                            (DaySpecifics.thursday, 50),
+                            (DaySpecifics.friday, 60),
+                            (DaySpecifics.saturday, 70)
+
+                        ]
+                ),
+                (
+                    DataParts.month,
+          
+                        [
+                            (DaySpecifics.january, 110),
+                            (DaySpecifics.febuary, 120),
+                            (DaySpecifics.march, 130),
+                            (DaySpecifics.april, 110),
+                            (DaySpecifics.may, 110),
+                            (DaySpecifics.june, 120),
+                            (DaySpecifics.july, 130),
+                            (DaySpecifics.august, 110),
+                            (DaySpecifics.september, 110),
+                            (DaySpecifics.october, 120),
+                            (DaySpecifics.november, 130),
+                            (DaySpecifics.december, 110),
+                                                    
+
+                        ]
+                ),
+                
+                (
+                    DataParts.year,
+ 
+                        [
+                            (DaySpecifics.fourteen, 110),
+                            (DaySpecifics.fifteen, 110),
+                            (DaySpecifics.sixteen, 110),
+                            (DaySpecifics.seventeen, 110),
+                            (DaySpecifics.eighteen, 110),
+                            (DaySpecifics.nineteen, 120),
+                            (DaySpecifics.twenty, 130),
+
+                        ]
+                ),
+////
+//
+        ]
+    
+    var body: some View {
+        ZStack {
+            
+            Color("background").edgesIgnoringSafeArea(.all)
+            
+            VStack {
+                Divider()
+                                      
+                Text("Hello, Alter Eco-er")
+                .foregroundColor(Color("title_colour"))
+                .font(.largeTitle)
+                
+                Picker(selection: $pickerSelectedItem.animation(), label: Text("")) {
+          
+                    Text(DataParts.day.name).tag(DataParts.day.rawValue)
+                    Text(DataParts.week.name).tag(DataParts.week.rawValue)
+                    Text(DataParts.month.name).tag(DataParts.month.rawValue)
+                    Text(DataParts.year.name).tag(DataParts.year.rawValue)
+                    
+                }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal, 24)
+                    .animation(.default)
+                
+                
+                
+              HStack (spacing: 5) {
+                
+                if ((pickerSelectedItem==DataParts.day.rawValue)||(pickerSelectedItem==DataParts.month.rawValue))
+                {
+                   ForEach(0..<self.days[pickerSelectedItem].carbonByDate.count, id: \.self)
+                     { i in
+                      
+                        
+                        BarViewLong(
+                            value: self.days[self.pickerSelectedItem].carbonByDate[i].carbon,
+                            label: self.days[self.pickerSelectedItem].carbonByDate[i].day.shortName
+                            
+                        )}
+                    }
+                else
+                {
+                ForEach(0..<self.days[pickerSelectedItem].carbonByDate.count, id: \.self)
+                  { i in
+                   
+                     
+                     BarView(
+                         value: self.days[self.pickerSelectedItem].carbonByDate[i].carbon,
+                         label: self.days[self.pickerSelectedItem].carbonByDate[i].day.shortName
+                         
+                     )}
+                }}
+              .padding(.top, 24)
+               .animation(.default)
+                
+                Picker(selection: $pickerSelectedTwoItem.animation(), label: Image("")) {
+                    
+                                               
+                Image("all").tag(Transport.all.rawValue)
+                Image("car2")
+                    .resizable()
+                    .frame(width: 1.0, height: 1.0)
+                .tag(Transport.car.rawValue)
+                    
+                
+                    
+                Image("walk2").tag(Transport.walk.rawValue)
+                Image("train2").tag(Transport.tube.rawValue)
+                
+
+                  }.pickerStyle(SegmentedPickerStyle())
+                 .padding(.horizontal, 140)
+               .animation(.default)
+                                      
+            
+                
+            }//vs
+        }//zs
+        
+    }
+}
+
+
+struct BarView:  View {
+    
+    var value: Int
+    var label: String
+    
+    var body: some View {
+        VStack {
+            ZStack(alignment: .bottom) {
+                Capsule().frame(width: 30, height: CGFloat(200))
+                    .foregroundColor(Color("app_background"))
+                Rectangle().frame(width: 47, height: CGFloat(value))
+                    .foregroundColor(Color("graphBars"))
+            }
+            Text(label)
+                .padding(.top,CGFloat(8))
+        }
+    }
+}
+
+struct BarViewLong:  View {
+    
+    var value: Int
+    var label: String
+    
+    var body: some View {
+        VStack {
+            ZStack(alignment: .bottom) {
+                Capsule().frame(width: 26, height: CGFloat(200))
+                    .foregroundColor(Color("app_background"))
+                Rectangle().frame(width: 26, height: CGFloat(value))
+                    .foregroundColor(Color("graphBars"))
+            }
+            Text(label)
+                .padding(.top,CGFloat(8))
+      
+        }
+    }
+}
+
+struct DetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        DetailView()
+    }
+}
+
+
+
+/*
 struct DayDataPoint: Identifiable {
     let id = UUID()
     let transportmode: String
@@ -60,14 +402,24 @@ struct DetailView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                Color("appBackground")
+                Color("appbackground")
                     .edgesIgnoringSafeArea(.all)
+                
                 VStack (spacing: 16) {
+                   
+                    HStack {
+                        Divider()
+                       
+                        Text("Hello, Alter Eco-er")
+                        .foregroundColor(Color("title_colour"))
+                        .font(.largeTitle)
+                    }
                     Spacer()
+                    
                     Text("Carbon Consumed")
                         .font(.system(size: 32))
-                        .fontWeight(.heavy)
-                        .foregroundColor(Color.white)
+                        .fontWeight(.regular)
+                        .foregroundColor(Color("graphBars"))
                         .padding(.bottom, 0)
                     
                     Picker(selection: self.$selectedTime, label: Text("XXX")) {
@@ -83,8 +435,6 @@ struct DetailView: View {
                         StackedBarView(dataPoint: self.dataSet[self.selectedTime][2], width: (geometry.size.width - 6 * self.spacing) / 5)
                         StackedBarView(dataPoint: self.dataSet[self.selectedTime][3], width: (geometry.size.width - 6 * self.spacing) / 5)
                         StackedBarView(dataPoint: self.dataSet[self.selectedTime][4], width: (geometry.size.width - 6 * self.spacing) / 5)
-//                        StackedBarView(dataPoint: self.dataSet[self.selectedTime][5], width: (geometry.size.width - 7 * self.spacing) / 6)
-//                      //  StackedBarView(dataPoint: self.dataSet[self.selectedTime][6], width: (geometry.size.width - 8 * self.spacing) / 6)
                     }.animation(.default)
                     Spacer()
                 }
@@ -120,13 +470,14 @@ struct StackedBarView: View {
     var width: CGFloat
     var body: some View {
         VStack {
+        
             ZStack (alignment: .bottom) {
                 Capsule()
                     .frame(width: width, height: 200)
-                    .overlay(RoundedRectangle(cornerRadius: 20).fill(Color(.sRGB, red: 74/255, green: 231/255, blue: 184/255)))
+                    .overlay(RoundedRectangle(cornerRadius: 20).fill(Color("graphBarBackground")))
                 Capsule()
                     .frame(width: width, height: dataPoint.value * 200)
-                    .overlay(RoundedRectangle(cornerRadius: 20).fill(Color.white))
+                    .overlay(RoundedRectangle(cornerRadius: 20).fill(Color("graphBars")))
                 
             }.padding(.bottom, 8)
             Text(dataPoint.transportmode)
@@ -145,3 +496,4 @@ extension AnyTransition {
         return .asymmetric(insertion: insertion, removal: removal)
     }
 }
+*/
