@@ -142,26 +142,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         return event
     }
     
-    func setUndergroundStation(aroundLocation location:CLLocation) {
-        let request = MKLocalSearch.Request()
-        request.naturalLanguageQuery = "underground station"
-        request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
-        request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
-        
-        MKLocalSearch(request: request).start { (response, error) in
-            var station = "Not in a tube station"
-            if let response = response {
-                for result in response.mapItems {
-                    // user is in a station if distance from current position is less or equal to threshold
-                    let distance = location.distance(from: CLLocation(latitude: result.placemark.coordinate.latitude, longitude: result.placemark.coordinate.longitude))
-                    if (distance <= self.GPS_UPDATE_CONFIDENCE_THRESHOLD){
-                        station = result.name!
-                    }
-                }
-            }
-            //self.trackingData.station = station
-        }
-    }
+//    func setUndergroundStation(aroundLocation location:CLLocation) {
+//        let request = MKLocalSearch.Request()
+//        request.naturalLanguageQuery = "underground station"
+//        request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 100, longitudinalMeters: 100)
+//        request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
+//        
+//        MKLocalSearch(request: request).start { (response, error) in
+//            var station = "Not in a tube station"
+//            if let response = response {
+//                for result in response.mapItems {
+//                    // user is in a station if distance from current position is less or equal to threshold
+//                    let distance = location.distance(from: CLLocation(latitude: result.placemark.coordinate.latitude, longitude: result.placemark.coordinate.longitude))
+//                    if (distance <= self.GPS_UPDATE_CONFIDENCE_THRESHOLD){
+//                        station = result.name!
+//                    }
+//                }
+//            }
+//            //self.trackingData.station = station
+//        }
+//    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error while retrieving location: ", error.localizedDescription)

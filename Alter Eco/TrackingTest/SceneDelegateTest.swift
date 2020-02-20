@@ -14,25 +14,20 @@ class TrackingTest: XCTestCase {
 
     let scene = SceneDelegate()
     
-    override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
+//    override func setUp() {
+//        // Put setup code here. This method is called before the invocation of each test method in the class.
+//    }
+//
+//    override func tearDown() {
+//        // Put teardown code here. This method is called after the invocation of each test method in the class.
+//    }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+//    func testPerformanceExample() {
+//        // This is an example of a performance test case.
+//        measure {
+//            // Put the code you want to measure the time of here.
+//        }
+//    }
     
     func testFullReturnsTrueIfListIsFull(){
         var measurements = [MeasuredActivity]()
@@ -77,7 +72,7 @@ class TrackingTest: XCTestCase {
         XCTAssert(scene.hasEventChanged(measurements: measurements))
     }
     
-    func testFakingValidMovementAppendsToMeasurementsList() {
+    func testValidMovementIsAppendedToMeasurementsList() {
         let accuracy = scene.GPS_UPDATE_CONFIDENCE_THRESHOLD
         let previousLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date())
         
@@ -87,10 +82,10 @@ class TrackingTest: XCTestCase {
         
         scene.locationManager(scene.manager, didUpdateLocations: [currentLocation])
 
-        XCTAssert(scene.measurements.count == 1)
+        XCTAssert(scene.measurements.count == 1, "Expected only one item in the measurements list, but got " + String(scene.measurements.count))
     }
     
-    func testComputingEventDistance() {
+    func testEventDistanceIsTheSumOfAllMeasuredDistances() {
         var measurements = [MeasuredActivity]()
         for _ in 1...10{
             measurements.append(MeasuredActivity(motionType: MotionType.car, distance: 100, start: Date(), end: Date()))
@@ -98,10 +93,10 @@ class TrackingTest: XCTestCase {
         
         let duration = scene.computeEventDistance(measurements: measurements)
         
-        XCTAssert(duration == 1000)
+        XCTAssert(duration == 1000, "Total event distance should be the sum of all measured distances")
     }
     
-    func testComputingMotionTypeEquipartitioned() {
+    func testAverageOfEquipartitionedMotionTypesResultsInMotionTypeWithHighestWeight() {
             var measurements = [MeasuredActivity]()
             var date = Date()
             for _ in 1...10 {
@@ -119,7 +114,7 @@ class TrackingTest: XCTestCase {
         XCTAssert(motionType == MotionType.car, "Expected car, got "+motionTypeToString(type: MotionType.car))
     }
     
-    func testComputingMotionTypeMoreWalking() {
+    func testAverageMotionTypeWithSufficientlyMoreWalkingResultsInWalking() {
         var measurements = [MeasuredActivity]()
         var date = Date()
         for _ in 1...3 {
@@ -137,7 +132,7 @@ class TrackingTest: XCTestCase {
         XCTAssert(motionType == MotionType.walking, "Expected walking, got "+motionTypeToString(type: MotionType.walking))
     }
 
-    func testComputingMotionTypeMoreCar() {
+    func testAverageMotionTypeWithSufficientlyMoreCarResultsInCar() {
         var measurements = [MeasuredActivity]()
         var date = Date()
         for _ in 1...10 {
@@ -173,7 +168,7 @@ class TrackingTest: XCTestCase {
         XCTAssertFalse(eventTwo == eventOne, "Expected inequality between two events")
     }
     
-    func testDatabaseIO() {
+    func testDatabaseIOIsConsistent() {
         let date = Date()
         let event = MeasuredActivity(motionType: .car, distance: 11.0, start: date, end: Date(timeInterval: 10, since: date))
         
