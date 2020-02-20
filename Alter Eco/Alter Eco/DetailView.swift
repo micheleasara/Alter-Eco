@@ -1,5 +1,6 @@
-import SwiftUI
 
+import SwiftUI
+ 
 enum DataParts: Int, CaseIterable, Hashable, Identifiable {
     case day = 0
     case week
@@ -13,7 +14,7 @@ enum DataParts: Int, CaseIterable, Hashable, Identifiable {
     }
     var id: DataParts {self}
 }
-
+ 
 enum Transport: Int, CaseIterable, Hashable, Identifiable {
     case all = 0
     case car
@@ -27,13 +28,13 @@ enum Transport: Int, CaseIterable, Hashable, Identifiable {
     
     var id: Transport {self}
 }
-
+ 
 enum Combined: Int, CaseIterable, Hashable, Identifiable {
     case dayall = 0
     case daycar
     case daywalk
     
-
+ 
     
     var name: String {
         return "\(self)".capitalized
@@ -42,9 +43,9 @@ enum Combined: Int, CaseIterable, Hashable, Identifiable {
     
     var id: Combined {self}
 }
-
-
-
+ 
+ 
+ 
 enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     case zerohour
     case twohour
@@ -108,7 +109,7 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     case eighteen
     case nineteen
     case twenty
-
+ 
     
     
     var shortName: String {
@@ -158,7 +159,7 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     var id: DaySpecifics {self}
     
 }
-
+ 
 struct DetailView: View {
     
     @State var pickerSelectedItem = 0
@@ -200,7 +201,7 @@ struct DetailView: View {
                             (DaySpecifics.twentyhour, 70),
                             (DaySpecifics.twentytwohour, 70),
                             (DaySpecifics.twentyfourhour, 70),
-
+ 
                         ]
                 ),
                 (
@@ -219,7 +220,7 @@ struct DetailView: View {
                             (DaySpecifics.twentyhour, 70),
                             (DaySpecifics.twentytwohour, 70),
                             (DaySpecifics.twentyfourhour, 70),
-
+ 
                         ]
                 ),
 //                (
@@ -358,7 +359,7 @@ struct DetailView: View {
                 Image("walk2").tag(Transport.walk.rawValue)
                 Image("train2").tag(Transport.tube.rawValue)
                 
-
+ 
                   }.pickerStyle(SegmentedPickerStyle())
                  .padding(.horizontal, CGFloat(140))
                .animation(.default)
@@ -370,8 +371,8 @@ struct DetailView: View {
         
     }
 }
-
-
+ 
+ 
 struct BarView:  View {
     
     var value: Int
@@ -390,7 +391,7 @@ struct BarView:  View {
         }
     }
 }
-
+ 
 struct BarViewLong:  View {
     
     var value: Int
@@ -410,26 +411,26 @@ struct BarViewLong:  View {
         }
     }
 }
-
+ 
 struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
         DetailView()
     }
 }
-
-
-
+ 
+ 
+ 
 /*
 struct DayDataPoint: Identifiable {
     let id = UUID()
     let transportmode: String
     var value: CGFloat
 }
-
+ 
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
-
+ 
 //let dayInfo = ["Walking": 1,"Running": 2,"Car": 3,"Bike": 4,"Unknown": 5]
-
+ 
 struct DetailView: View {
 //transport mode and value to be pulled from the database!
 //if the number of transport modes changes then the HStack below needs to change
@@ -510,8 +511,8 @@ struct DetailView: View {
         }
     }
 }
-
-
+ 
+ 
 func normalise_data(datapoints: [DayDataPoint]) -> [DayDataPoint] {
     var max = CGFloat(0)
     for element in datapoints {
@@ -532,7 +533,7 @@ func normalise_data(datapoints: [DayDataPoint]) -> [DayDataPoint] {
     
     return datapoints_norm
 }
-
+ 
 struct StackedBarView: View {
     var dataPoint: DayDataPoint
     var width: CGFloat
@@ -554,7 +555,7 @@ struct StackedBarView: View {
         
     }
 }
-
+ 
 extension AnyTransition {
     static var moveAndFade: AnyTransition {
         let insertion = AnyTransition.move(edge: .trailing)
