@@ -29,7 +29,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     var previousLoc: CLLocation? = nil
     // shared among views
     var trackingData = TrackingData()
-    
     // CREATE ARRAY EVENT LIST
     var measurements = [MeasuredActivity]()
     
@@ -38,6 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         let location = locations.last!
         guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return}
         
+        // ensure this is not the first location we are receiving
         if let previousLocUnwrapped = previousLoc {
             // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
             let distance = location.distance(from: previousLocUnwrapped).rounded()
@@ -45,23 +45,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             // ensure we get no fake instantaneous movements
             let time = location.timestamp.timeIntervalSince(previousLocUnwrapped.timestamp).rounded()
             guard time > 0 else {return}
-            let calendar = Calendar(identifier: .gregorian)
+            let motionType:MotionType = distance / time >= AUTOMOTIVE_SPEED_THRESHOLD ? .car : .walking
             
+            
+            let calendar = Calendar(identifier: .gregorian)
             if calendar.dateComponents([.day, .month, .year], from: location.timestamp) != calendar.dateComponents([.day, .month, .year], from: previousLocUnwrapped.timestamp) {
                 let event = prepareNewEventList(measurements: measurements)
                 appendToDatabase(event: event)
             }
             else if (!isFull(measurements: measurements) && !hasEventChanged(measurements: measurements)) {
-                let motionType:MotionType = distance / time >= AUTOMOTIVE_SPEED_THRESHOLD ? .car : .walking
-                
                 let measurement = MeasuredActivity(motionType: motionType, distance: distance, start: previousLocUnwrapped.timestamp, end: location.timestamp)
-                
                 measurements.append(measurement)
-                
-                trackingData.distance = distance
-                trackingData.speed = distance / time
-                trackingData.time = time
-                trackingData.transportMode = motionTypeToString(type: motionType)
                 
                 //setUndergroundStation(aroundLocation: location)
                 // check for underground station
@@ -80,6 +74,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 let event = prepareNewEventList(measurements: measurements)
                 appendToDatabase(event: event)
             }
+            
+            // DEBUGGING
+            trackingData.distance = distance
+            trackingData.speed = distance / time
+            trackingData.time = time
+            trackingData.transportMode = motionTypeToString(type: motionType)
         }
 
         previousLoc = location
@@ -163,7 +163,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error was: ", error.localizedDescription)
+        print("Error while retrieving location: ", error.localizedDescription)
     }
     
     var window: UIWindow?
@@ -189,9 +189,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             manager.desiredAccuracy = kCLLocationAccuracyBest
             
             window.rootViewController = UIHostingController(rootView: contentView.environmentObject(trackingData))
-            manager.startUpdatingLocation()
             
             window.makeKeyAndVisible()
+            manager.startUpdatingLocation()
         }
     }
     
