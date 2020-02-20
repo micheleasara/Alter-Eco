@@ -33,6 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     var measurements = [MeasuredActivity]()
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
+        print("received a location")
         // ensure location is accurate enough
         let location = locations.last!
         guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return}
@@ -184,6 +185,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             self.window = window
             
             manager.requestAlwaysAuthorization()
+            manager.allowsBackgroundLocationUpdates = true
             manager.delegate = self
             manager.distanceFilter = 50
             manager.desiredAccuracy = kCLLocationAccuracyBest
