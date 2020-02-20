@@ -8,23 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCC23E97FDF00F86F66 /* DetailView.swift */; };
-		57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57453FCE23E97FEF00F86F66 /* SplashScreen.swift */; };
+		9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; };
+		9C93607C23EB8D5B00E2E056 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9CA8B18E23FD9BC8005E6526 /* DatabaseSqlite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */; };
+		9CCD858B23F449D00091D5DD /* TrackingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CCD858A23F449D00091D5DD /* TrackingData.swift */; };
+		9CE739A123FC007C0008C4EF /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */; };
+		9CE739B423FC0D4C0008C4EF /* SceneDelegateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE739AC23FC0AC30008C4EF /* SceneDelegateTest.swift */; };
 		CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4223E3885100629E73 /* AppDelegate.swift */; };
 		CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4423E3885100629E73 /* SceneDelegate.swift */; };
 		CD200B4723E3885100629E73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4623E3885100629E73 /* ContentView.swift */; };
 		CD200B4923E3885700629E73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4823E3885700629E73 /* Assets.xcassets */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */; };
-		CD200B5A23E3885800629E73 /* Alter_EcoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B5923E3885800629E73 /* Alter_EcoTests.swift */; };
 		CD200B6523E3885800629E73 /* Alter_EcoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B6423E3885800629E73 /* Alter_EcoUITests.swift */; };
-		CDBF3C9423EB0AF0008046F9 /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; };
-		CDBF3C9523EB0AF0008046F9 /* SQLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C9323EB0AF0008046F9 /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CDBF3C9623EB0AFA008046F9 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C8E23EB05F0008046F9 /* libsqlite3.0.tbd */; };
 		CDBF3C9723EB0AFA008046F9 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CDBF3C8D23EB05E1008046F9 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CD200B5623E3885800629E73 /* PBXContainerItemProxy */ = {
+		9CE739AF23FC0AC30008C4EF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD200B3723E3885100629E73 /* Project object */;
 			proxyType = 1;
@@ -41,13 +43,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CDBF3C8C23EB05D2008046F9 /* Embed Frameworks */ = {
+		9C93607D23EB8D5B00E2E056 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CDBF3C9523EB0AF0008046F9 /* SQLite.framework in Embed Frameworks */,
+				9C93607C23EB8D5B00E2E056 /* SQLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,7 +58,12 @@
 
 /* Begin PBXFileReference section */
 		57453FCC23E97FDF00F86F66 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		57453FCE23E97FEF00F86F66 /* SplashScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseSqlite.swift; sourceTree = "<group>"; };
+		9CCD858A23F449D00091D5DD /* TrackingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingData.swift; sourceTree = "<group>"; };
+		9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasuredActivity.swift; sourceTree = "<group>"; };
+		9CE739AA23FC0AC30008C4EF /* TrackingTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackingTest.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CE739AC23FC0AC30008C4EF /* SceneDelegateTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegateTest.swift; sourceTree = "<group>"; };
+		9CE739AE23FC0AC30008C4EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4223E3885100629E73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD200B4423E3885100629E73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,32 +72,31 @@
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B4E23E3885700629E73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD200B5523E3885800629E73 /* Alter EcoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD200B5923E3885800629E73 /* Alter_EcoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoTests.swift; sourceTree = "<group>"; };
-		CD200B5B23E3885800629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD200B6023E3885800629E73 /* Alter EcoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B6423E3885800629E73 /* Alter_EcoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoUITests.swift; sourceTree = "<group>"; };
 		CD200B6623E3885800629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CDBF3C8D23EB05E1008046F9 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		CDBF3C8E23EB05F0008046F9 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		CDBF3C9323EB0AF0008046F9 /* SQLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SQLite.framework; path = Carthage/Build/iOS/SQLite.framework; sourceTree = "<group>"; };
+		DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SKToVictoria_car_30kmh.gpx; sourceTree = "<group>"; };
+		DEA899E523FAB524006A7743 /* EarlsCourtStation.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = EarlsCourtStation.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9CE739A723FC0AC30008C4EF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD200B3C23E3885100629E73 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				CDBF3C9723EB0AFA008046F9 /* libsqlite3.tbd in Frameworks */,
 				CDBF3C9623EB0AFA008046F9 /* libsqlite3.0.tbd in Frameworks */,
-				CDBF3C9423EB0AF0008046F9 /* SQLite.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5223E3885800629E73 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				9C93607B23EB8D5B00E2E056 /* SQLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,12 +110,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9CE739AB23FC0AC30008C4EF /* TrackingTest */ = {
+			isa = PBXGroup;
+			children = (
+				9CE739AC23FC0AC30008C4EF /* SceneDelegateTest.swift */,
+				9CE739AE23FC0AC30008C4EF /* Info.plist */,
+			);
+			path = TrackingTest;
+			sourceTree = "<group>";
+		};
 		CD200B3623E3885100629E73 = {
 			isa = PBXGroup;
 			children = (
 				CD200B4123E3885100629E73 /* Alter Eco */,
-				CD200B5823E3885800629E73 /* Alter EcoTests */,
 				CD200B6323E3885800629E73 /* Alter EcoUITests */,
+				9CE739AB23FC0AC30008C4EF /* TrackingTest */,
 				CD200B4023E3885100629E73 /* Products */,
 				CDBF3C8823EB05D1008046F9 /* Frameworks */,
 			);
@@ -119,8 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				CD200B3F23E3885100629E73 /* Alter Eco.app */,
-				CD200B5523E3885800629E73 /* Alter EcoTests.xctest */,
 				CD200B6023E3885800629E73 /* Alter EcoUITests.xctest */,
+				9CE739AA23FC0AC30008C4EF /* TrackingTest.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -129,13 +144,17 @@
 			isa = PBXGroup;
 			children = (
 				CD200B4223E3885100629E73 /* AppDelegate.swift */,
+				9CA8B18D23FD9BC8005E6526 /* DatabaseSqlite.swift */,
 				57453FCC23E97FDF00F86F66 /* DetailView.swift */,
-				57453FCE23E97FEF00F86F66 /* SplashScreen.swift */,
 				CD200B4423E3885100629E73 /* SceneDelegate.swift */,
 				CD200B4623E3885100629E73 /* ContentView.swift */,
 				CD200B4823E3885700629E73 /* Assets.xcassets */,
 				CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */,
 				CD200B5023E3885700629E73 /* Info.plist */,
+				9CCD858A23F449D00091D5DD /* TrackingData.swift */,
+				9CE739A023FC007C0008C4EF /* MeasuredActivity.swift */,
+				DEA899E523FAB524006A7743 /* EarlsCourtStation.gpx */,
+				DE25F46423F9ABD8000A92B9 /* SKToVictoria_car_30kmh.gpx */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
 			);
 			path = "Alter Eco";
@@ -147,15 +166,6 @@
 				CD200B4B23E3885700629E73 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		CD200B5823E3885800629E73 /* Alter EcoTests */ = {
-			isa = PBXGroup;
-			children = (
-				CD200B5923E3885800629E73 /* Alter_EcoTests.swift */,
-				CD200B5B23E3885800629E73 /* Info.plist */,
-			);
-			path = "Alter EcoTests";
 			sourceTree = "<group>";
 		};
 		CD200B6323E3885800629E73 /* Alter EcoUITests */ = {
@@ -180,6 +190,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9CE739A923FC0AC30008C4EF /* TrackingTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CE739B123FC0AC30008C4EF /* Build configuration list for PBXNativeTarget "TrackingTest" */;
+			buildPhases = (
+				9CE739A623FC0AC30008C4EF /* Sources */,
+				9CE739A723FC0AC30008C4EF /* Frameworks */,
+				9CE739A823FC0AC30008C4EF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9CE739B023FC0AC30008C4EF /* PBXTargetDependency */,
+			);
+			name = TrackingTest;
+			productName = TrackingTest;
+			productReference = 9CE739AA23FC0AC30008C4EF /* TrackingTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		CD200B3E23E3885100629E73 /* Alter Eco */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD200B6923E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter Eco" */;
@@ -187,7 +215,7 @@
 				CD200B3B23E3885100629E73 /* Sources */,
 				CD200B3C23E3885100629E73 /* Frameworks */,
 				CD200B3D23E3885100629E73 /* Resources */,
-				CDBF3C8C23EB05D2008046F9 /* Embed Frameworks */,
+				9C93607D23EB8D5B00E2E056 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -197,24 +225,6 @@
 			productName = "Alter Eco";
 			productReference = CD200B3F23E3885100629E73 /* Alter Eco.app */;
 			productType = "com.apple.product-type.application";
-		};
-		CD200B5423E3885800629E73 /* Alter EcoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CD200B6C23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoTests" */;
-			buildPhases = (
-				CD200B5123E3885800629E73 /* Sources */,
-				CD200B5223E3885800629E73 /* Frameworks */,
-				CD200B5323E3885800629E73 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CD200B5723E3885800629E73 /* PBXTargetDependency */,
-			);
-			name = "Alter EcoTests";
-			productName = "Alter EcoTests";
-			productReference = CD200B5523E3885800629E73 /* Alter EcoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		CD200B5F23E3885800629E73 /* Alter EcoUITests */ = {
 			isa = PBXNativeTarget;
@@ -244,12 +254,12 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Imperial College London";
 				TargetAttributes = {
+					9CE739A923FC0AC30008C4EF = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = CD200B3E23E3885100629E73;
+					};
 					CD200B3E23E3885100629E73 = {
 						CreatedOnToolsVersion = 11.3;
-					};
-					CD200B5423E3885800629E73 = {
-						CreatedOnToolsVersion = 11.3;
-						TestTargetID = CD200B3E23E3885100629E73;
 					};
 					CD200B5F23E3885800629E73 = {
 						CreatedOnToolsVersion = 11.3;
@@ -271,13 +281,20 @@
 			projectRoot = "";
 			targets = (
 				CD200B3E23E3885100629E73 /* Alter Eco */,
-				CD200B5423E3885800629E73 /* Alter EcoTests */,
 				CD200B5F23E3885800629E73 /* Alter EcoUITests */,
+				9CE739A923FC0AC30008C4EF /* TrackingTest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9CE739A823FC0AC30008C4EF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD200B3D23E3885100629E73 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -285,13 +302,6 @@
 				CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
 				CD200B4923E3885700629E73 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5323E3885800629E73 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,23 +315,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9CE739A623FC0AC30008C4EF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CE739B423FC0D4C0008C4EF /* SceneDelegateTest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD200B3B23E3885100629E73 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CE739A123FC007C0008C4EF /* MeasuredActivity.swift in Sources */,
 				CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */,
+				9CA8B18E23FD9BC8005E6526 /* DatabaseSqlite.swift in Sources */,
 				57453FCD23E97FDF00F86F66 /* DetailView.swift in Sources */,
+				9CCD858B23F449D00091D5DD /* TrackingData.swift in Sources */,
 				CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */,
-				57453FCF23E97FEF00F86F66 /* SplashScreen.swift in Sources */,
 				CD200B4723E3885100629E73 /* ContentView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5123E3885800629E73 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CD200B5A23E3885800629E73 /* Alter_EcoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,10 +348,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CD200B5723E3885800629E73 /* PBXTargetDependency */ = {
+		9CE739B023FC0AC30008C4EF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CD200B3E23E3885100629E73 /* Alter Eco */;
-			targetProxy = CD200B5623E3885800629E73 /* PBXContainerItemProxy */;
+			targetProxy = 9CE739AF23FC0AC30008C4EF /* PBXContainerItemProxy */;
 		};
 		CD200B6223E3885800629E73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -360,6 +372,46 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		9CE739B223FC0AC30008C4EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				INFOPLIST_FILE = TrackingTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = imperial.TrackingTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
+			};
+			name = Debug;
+		};
+		9CE739B323FC0AC30008C4EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				INFOPLIST_FILE = TrackingTest/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = imperial.TrackingTest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
+			};
+			name = Release;
+		};
 		CD200B6723E3885800629E73 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -478,9 +530,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -491,8 +544,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ahwfh-se-ofAlter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -502,9 +556,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -515,52 +570,11 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "ahwfh-se-ofAlter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoTracker2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		CD200B6D23E3885800629E73 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
-			};
-			name = Debug;
-		};
-		CD200B6E23E3885800629E73 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoTests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
 			};
 			name = Release;
 		};
@@ -605,6 +619,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9CE739B123FC0AC30008C4EF /* Build configuration list for PBXNativeTarget "TrackingTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CE739B223FC0AC30008C4EF /* Debug */,
+				9CE739B323FC0AC30008C4EF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CD200B3A23E3885100629E73 /* Build configuration list for PBXProject "Alter Eco" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -619,15 +642,6 @@
 			buildConfigurations = (
 				CD200B6A23E3885800629E73 /* Debug */,
 				CD200B6B23E3885800629E73 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CD200B6C23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CD200B6D23E3885800629E73 /* Debug */,
-				CD200B6E23E3885800629E73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
