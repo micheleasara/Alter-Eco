@@ -2,6 +2,24 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Alter Eco.xcodeproj">
+      location = "group:/Users/maxime/carbonfootprintapp/Alter Eco/Alter Eco/Alter EcoUITests">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/maxime/carbonfootprintapp/Alter Eco/Alter Eco/BackendTest">
+   </FileRef>
+   <FileRef
+      location = "group:AppDelegate.swift">
+   </FileRef>
+   <FileRef
+      location = "group:ContentView.swift">
+   </FileRef>
+   <FileRef
+      location = "group:/Users/maxime/carbonfootprintapp/Alter Eco/Alter Eco/MeasuredActivity.swift">
+   </FileRef>
+   <FileRef
+      location = "group:SceneDelegate.swift">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>
