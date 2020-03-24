@@ -56,7 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "/Users/benedettadelfino/Desktop/carbonfootprintapp/Alter Eco/Alter Eco/Assets.xcassets"; sourceTree = "<absolute>"; };
+		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		9CD594172429686800B1D0B4 /* TrackingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingData.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
 		9CD594192429686900B1D0B4 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
