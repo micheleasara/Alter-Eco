@@ -14,9 +14,7 @@ struct ScoreView: View {
 
             HStack {
                 Text("My score: 635 points")
-                
-                Image("silver_medal")
-                    .scaleEffect(0.5)
+                    .font(.title)
             }
         }
     }
