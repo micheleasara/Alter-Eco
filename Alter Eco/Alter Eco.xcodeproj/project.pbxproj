@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
 		9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594172429686800B1D0B4 /* TrackingData.swift */; };
 		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
 		9CD594212429686900B1D0B4 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594192429686900B1D0B4 /* ScoreView.swift */; };
@@ -16,7 +17,6 @@
 		9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */; };
 		9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */; };
 		9CD59433242968DF00B1D0B4 /* DataClassGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */; };
-		9CD59434242968DF00B1D0B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CD59428242968DE00B1D0B4 /* Assets.xcassets */; };
 		9CD59435242968DF00B1D0B4 /* gridlines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD59429242968DE00B1D0B4 /* gridlines.swift */; };
 		9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
 		9CD59437242968DF00B1D0B4 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942B242968DE00B1D0B4 /* GraphView.swift */; };
@@ -56,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "/Users/benedettadelfino/Desktop/carbonfootprintapp/Alter Eco/Alter Eco/Assets.xcassets"; sourceTree = "<absolute>"; };
 		9CD594172429686800B1D0B4 /* TrackingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingData.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
 		9CD594192429686900B1D0B4 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
@@ -65,7 +66,6 @@
 		9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMeasurements.swift; sourceTree = "<group>"; };
 		9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToSupermarket.gpx; sourceTree = "<group>"; };
 		9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClassGraph.swift; sourceTree = "<group>"; };
-		9CD59428242968DE00B1D0B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9CD59429242968DE00B1D0B4 /* gridlines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = gridlines.swift; sourceTree = "<group>"; };
 		9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EarlsCourtStation.gpx; sourceTree = "<group>"; };
 		9CD5942B242968DE00B1D0B4 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
@@ -166,9 +166,9 @@
 				9CD594402429691E00B1D0B4 /* ContentView.swift */,
 				9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */,
 				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
-				9CD59428242968DE00B1D0B4 /* Assets.xcassets */,
 				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
 				9CD59431242968DF00B1D0B4 /* Database.xcdatamodeld */,
+				55DA632A242AC557002CCD07 /* Assets.xcassets */,
 				9CD59430242968DF00B1D0B4 /* DatabaseSqlite.swift */,
 				9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */,
 				9CD5942E242968DE00B1D0B4 /* DetailView.swift */,
@@ -321,8 +321,8 @@
 				9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */,
 				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
 				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
+				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
 				CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */,
-				9CD59434242968DF00B1D0B4 /* Assets.xcassets in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
