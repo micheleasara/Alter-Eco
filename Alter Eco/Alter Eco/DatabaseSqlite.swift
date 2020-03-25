@@ -1,17 +1,13 @@
-//
-//  DatabaseSqlite.swift
-//  Alter Eco
-//
-//  Created by Maxime Redstone on 19/02/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import Foundation
 import SwiftUI
 import CoreData
 
-let CARBON_UNIT_CAR: Double = 498
-let CARBON_UNIT_TRAIN: Double = 160
+//all the constants for carbon conversions come from:
+//https://www.carbonindependent.org/21.html
+//all units below have been converted to grams/kilometer
+
+let CARBON_UNIT_CAR: Double = 499
+let CARBON_UNIT_TRAIN: Double = 161
 let CARBON_UNIT_PLANE: Double = 512
 let CARBON_UNIT_WALKING: Double = 0
 

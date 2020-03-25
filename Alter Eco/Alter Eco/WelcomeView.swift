@@ -7,7 +7,7 @@ struct WelcomeView: View {
     var body: some View {
         
         HStack {
-            Text("Hello Alter Ecoer")
+            Text("My Alter Eco")
             .foregroundColor(Color("title_colour"))
             .font(.largeTitle)
             

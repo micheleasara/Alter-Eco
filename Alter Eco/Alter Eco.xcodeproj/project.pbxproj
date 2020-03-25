@@ -35,7 +35,6 @@
 		9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */; };
 		9CD5948424296E2700B1D0B4 /* Alter_EcoFullUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
-		CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +88,6 @@
 		9CD5948524296E2700B1D0B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		CD200B4E23E3885700629E73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -184,7 +182,6 @@
 				9CD594172429686800B1D0B4 /* TrackingData.swift */,
 				9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */,
 				9CD5941C2429686900B1D0B4 /* WelcomeView.swift */,
-				CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */,
 				CD200B5023E3885700629E73 /* Info.plist */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
 			);
@@ -322,7 +319,6 @@
 				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
 				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
 				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
-				CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -387,17 +383,6 @@
 			targetProxy = 9CD5948624296E2700B1D0B4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CD200B4E23E3885700629E73 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		9CD5947824296D9300B1D0B4 /* Debug */ = {
