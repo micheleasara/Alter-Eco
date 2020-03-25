@@ -10,6 +10,7 @@ let CARBON_UNIT_CAR: Double = 499
 let CARBON_UNIT_TRAIN: Double = 161
 let CARBON_UNIT_PLANE: Double = 512
 let CARBON_UNIT_WALKING: Double = 0
+let KM_CONVERSION: Double = 0.001
 
 func appendToDatabase(activity: MeasuredActivity) {
      guard let appDelegate =
@@ -438,7 +439,6 @@ func normaliseMonthlyAll() -> Double {
 }
 
 func normaliseYearlyAll() -> Double {
-    
 
      var max_data = max(queryYearlyCarbonAll(year: "2014"),queryYearlyCarbonAll(year: "2015"),queryYearlyCarbonAll(year: "2016"), queryYearlyCarbonAll(year: "2017"),queryYearlyCarbonAll(year: "2018"),queryYearlyCarbonAll(year: "2019"),queryYearlyCarbonAll(year: "2020"))
     
@@ -451,5 +451,20 @@ func normaliseYearlyAll() -> Double {
   return max_data
 }
 
-
-
+func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) -> Double {
+    
+    let dateNow = Date()
+    var measuredActivityKms:Double = 0
+    
+    let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start <= %@ AND start >= %@", MeasuredActivity.motionTypeToString(type: motionType),combineTodayDateWithInterval(date: dateNow, hour: hourEnd) as NSDate, combineTodayDateWithInterval(date: dateNow, hour: hourStart) as NSDate))
+    
+    if (queryMeasuredActivities.count != 0) {
+        for measuredActivity in queryMeasuredActivities {
+            measuredActivityKms += measuredActivity.distance
+        }
+    }
+    
+    measuredActivityKms *= KM_CONVERSION
+    
+    return measuredActivityKms
+}

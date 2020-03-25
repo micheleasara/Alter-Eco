@@ -15,6 +15,7 @@ struct DetailView: View {
                 //welcome, and profile button
                 WelcomeView().padding(.top, CGFloat(screenMeasurements.broadcastedHeight/100))
                 Spacer()
+                
                 //Bar chart view
                 GraphView()
                 Spacer()

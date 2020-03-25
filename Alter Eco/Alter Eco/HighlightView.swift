@@ -9,7 +9,7 @@ struct HighlightView: View {
         ZStack {
         RoundedRectangle(cornerRadius: 25, style: .continuous)
             .fill(Color("fill_colour"))
-            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedHeight)/5)
+            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedHeight)/3)
 
             VStack{
                     Text("Highlights")
