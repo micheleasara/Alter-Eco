@@ -2,10 +2,10 @@ import Foundation
 
 class UserScore {
     public var totalPoints: Double
-    public var date: Date
+    public var date: String
     
-    public init() {
-        self.totalPoints = 5.0
-        self.date = Date()
+    public init(totalPoints: Double, date: String) {
+        self.totalPoints = totalPoints
+        self.date = date
        }
 }
