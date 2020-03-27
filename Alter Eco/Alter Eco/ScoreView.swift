@@ -5,7 +5,7 @@ struct ScoreView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     //find score in database for yesterday
-    let userScore = retrieveScore(query: NSPredicate(format: "date == %@", Calendar.current.date(byAdding: .day, value: -1, to: Date())! as NSDate))
+    let userScore = retrieveScore(query: NSPredicate(format: "dateStr == %@", Calendar.current.date(byAdding: .day, value: -1, to: Date())! as NSDate))
     
     var body: some View {
     
