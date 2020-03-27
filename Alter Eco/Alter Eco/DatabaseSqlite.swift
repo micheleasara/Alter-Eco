@@ -10,6 +10,10 @@ let CARBON_UNIT_CAR: Double = 499
 let CARBON_UNIT_TRAIN: Double = 161
 let CARBON_UNIT_PLANE: Double = 512
 let CARBON_UNIT_WALKING: Double = 0
+let KM_CONVERSION: Double = 0.001
+let WALKING_PTS: Double = 10
+let CAR_PTS: Double = 3
+let TUBE_PTS: Double = 7
 
 func appendToDatabase(activity: MeasuredActivity) {
      guard let appDelegate =
@@ -193,8 +197,6 @@ func queryWeeklyCarbon(motionType: MeasuredActivity.MotionType, weekDayToDisplay
     let myCalendar = Calendar(identifier: .gregorian)
     let dayToday = myCalendar.component(.weekday, from: dateNow) // 1-7 beginning on Sunday
     let weekDayToDisplay = getWeekDayToDisplay(day: weekDayToDisplay)
-    
-   
     
     let queryDate = getWeekDayDate(weekDayToDisplay: weekDayToDisplay, dayToday: dayToday)
     
@@ -438,7 +440,6 @@ func normaliseMonthlyAll() -> Double {
 }
 
 func normaliseYearlyAll() -> Double {
-    
 
      var max_data = max(queryYearlyCarbonAll(year: "2014"),queryYearlyCarbonAll(year: "2015"),queryYearlyCarbonAll(year: "2016"), queryYearlyCarbonAll(year: "2017"),queryYearlyCarbonAll(year: "2018"),queryYearlyCarbonAll(year: "2019"),queryYearlyCarbonAll(year: "2020"))
     
@@ -453,3 +454,230 @@ func normaliseYearlyAll() -> Double {
 
 
 
+
+//score calculation functions
+func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) -> Double {
+    
+    let dateNow = Date()
+    var measuredActivityKms:Double = 0
+    
+    let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start <= %@ AND start >= %@", MeasuredActivity.motionTypeToString(type: motionType),combineTodayDateWithInterval(date: dateNow, hour: hourEnd) as NSDate, combineTodayDateWithInterval(date: dateNow, hour: hourStart) as NSDate))
+    
+    if (queryMeasuredActivities.count != 0) {
+        for measuredActivity in queryMeasuredActivities {
+            measuredActivityKms += measuredActivity.distance
+        }
+    }
+    
+    measuredActivityKms *= KM_CONVERSION
+    
+    return measuredActivityKms
+}
+
+func updateScore(score: UserScore) -> UserScore {
+       //MAKE IT SUCH THAT THE QUERY HAPPENS ONCE A DAY
+       //query walking
+       let walkingKm = queryDailyKm(motionType: MeasuredActivity.MotionType.walking, hourStart: "00:00:00", hourEnd: "23:59:59")
+       
+       //query car
+       let carKm = queryDailyKm(motionType: MeasuredActivity.MotionType.car, hourStart: "00:00:00", hourEnd: "23:59:59")
+       
+       //query tube
+       let tubeKm = queryDailyKm(motionType: MeasuredActivity.MotionType.train, hourStart: "00:00:00", hourEnd: "23:59:59")
+        
+        //query plane
+        //queryDailyKm(motionType: MeasuredActivity.MotionType.plane, hourStart: "00:00:00", hourEnd: "23:59:59")
+        
+       //total kms
+       let totalKm = walkingKm + carKm + tubeKm
+        
+       //prevent division by 0
+       if totalKm == 0 {
+           score.totalPoints += 0
+           let dayTodayStr = stringFromDate(Date())
+           score.date = dayTodayStr
+           return score
+       }
+       
+       else {
+           let walkingPoints = (walkingKm/totalKm) * WALKING_PTS
+           let carPoints = (walkingKm/totalKm) * CAR_PTS
+           let tubePoints = (walkingKm/totalKm) * TUBE_PTS
+           score.totalPoints += walkingPoints + carPoints + tubePoints
+           let dayTodayStr = stringFromDate(Date())
+           score.date = dayTodayStr
+           return score
+       }
+   }
+
+func appendScoreToDatabase(score: UserScore) {
+    
+     guard let appDelegate =
+        UIApplication.shared.delegate as? AppDelegate else {
+       return
+     }
+     
+     let managedContext =
+       appDelegate.persistentContainer.viewContext
+     
+     let entity =
+       NSEntityDescription.entity(forEntityName: "Score",
+                                  in: managedContext)!
+     
+     let eventDB = NSManagedObject(entity: entity,
+                                  insertInto: managedContext)
+     
+    eventDB.setValuesForKeys(["dateStr": score.date, "score": score.totalPoints])
+
+    do {
+       try managedContext.save()
+     } catch let error as NSError {
+       print("Could not save. \(error), \(error.userInfo)")
+     }
+}
+
+func stringFromDate(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd" //yyyy
+    return formatter.string(from: date)
+}
+
+func replaceScore() {
+    
+    let dateNow = Date()
+    let dateTodayStr = stringFromDate(dateNow)
+    let dateYesterday = Calendar.current.date(byAdding: .day,value: -1, to: dateNow)
+    let dateYesterdayStr = stringFromDate(dateYesterday!)
+    
+    var oldScore = UserScore(totalPoints: 0, date: dateYesterdayStr)
+    
+    guard let appDelegate =
+        UIApplication.shared.delegate as? AppDelegate else {
+       return
+     }
+     
+    //fetch old score currently in database
+    let managedContext =
+       appDelegate.persistentContainer.viewContext
+    
+    //print("Day yesterday is: ", dateYesterdayStr)
+    
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Score")
+    fetchRequest.predicate = NSPredicate(format: "dateStr == %@", dateYesterdayStr)
+    
+    do {
+        let queryResult = try managedContext.fetch(fetchRequest)
+//        let scoreDB : NSManagedObject
+//            scoreDB = queryResult[0]
+//
+        //find the attributes of old score
+        for result in queryResult {
+                oldScore.totalPoints = result.value(forKey: "score") as! Double
+        }
+        
+        //print("The old Score totalPoints is: ", oldScore.totalPoints)
+    }
+    
+    catch let error as NSError {
+      print("Could not fetch. \(error), \(error.userInfo)")
+    }
+    
+    //update the score
+//    let newScore = UserScore(totalPoints: 200, date: dateTodayStr) //updateScore(score: oldScore)
+    let newScore = updateScore(score: oldScore)
+    
+    //replace old score with new score in database and update date
+    let entity = NSEntityDescription.entity(forEntityName: "Score",
+                                            in: managedContext)!
+    
+    let scoreDB = NSManagedObject(entity: entity,
+    insertInto: managedContext)
+    
+    //print("The new score is now updated: ", newScore.totalPoints)
+    
+    emptyDatabase()
+    
+    scoreDB.setValuesForKeys(["dateStr": dateTodayStr, "score": newScore.totalPoints])
+    
+    do {
+       try managedContext.save()
+     } catch let error as NSError {
+       print("Could not save. \(error), \(error.userInfo)")
+     }
+}
+
+func emptyDatabase() {
+    
+    guard let appDelegate =
+        UIApplication.shared.delegate as? AppDelegate else {
+       return
+     }
+     
+    //fetch old score currently in database
+    let managedContext =
+       appDelegate.persistentContainer.viewContext
+    
+   // delete all records from Person entity
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Score")
+    let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+    do {
+      try managedContext.execute(deleteRequest)
+    } catch let error as NSError {
+      print("Could not delete all data. \(error), \(error.userInfo)")
+    }
+}
+
+
+func retrieveScore(query: NSPredicate) -> UserScore {
+    
+    let dayToday = Date()
+    let dayTodayStr = stringFromDate(dayToday)
+    var userScore = UserScore(totalPoints: 5, date: dayTodayStr)
+    
+    print(userScore.date)
+    print(userScore.totalPoints)
+
+    guard let appDelegate =
+      UIApplication.shared.delegate as? AppDelegate else {
+        return userScore
+    }
+    
+    let managedContext = appDelegate.persistentContainer.viewContext
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Score")
+    fetchRequest.predicate = query
+    
+    do {
+        let queryResult = try managedContext.fetch(fetchRequest)
+        for result in queryResult {
+            userScore.date = result.value(forKey: "dateStr") as! String
+            userScore.totalPoints = result.value(forKey: "score") as! Double
+        }
+        
+    } catch let error as NSError {
+      print("Could not fetch. \(error), \(error.userInfo)")
+    }
+    
+    return userScore
+}
+
+func printUserScoreDatabase() {
+    
+    guard let appDelegate =
+      UIApplication.shared.delegate as? AppDelegate else {
+        return
+    }
+    
+    let managedContext = appDelegate.persistentContainer.viewContext
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Score")
+    
+    do {
+        let queryResult = try managedContext.fetch(fetchRequest)
+        for result in queryResult {
+            print("Result - score: ", result.value(forKey: "score") as! Double, " and date: ", result.value(forKey: "dateStr") as! String)
+        }
+        
+    } catch let error as NSError {
+      print("Could not fetch. \(error), \(error.userInfo)")
+    }
+}
