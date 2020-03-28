@@ -63,6 +63,12 @@ struct gridlines: View {
             carbonUnit="Units: Carbon kG"
             decimalPlaces="%.1f"
         }
+        else if (maxVal<10)
+        {
+            carbonUnit="Units: Carbon g."
+            decimalPlaces="%.1f"
+        }
+        
         else
         {
             carbonUnit="Units: Carbon g."
