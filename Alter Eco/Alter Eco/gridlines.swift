@@ -52,11 +52,22 @@ struct gridlines: View {
         {maxVal=0}
         let dimensionMultiplier=CGFloat(self.screenMeasurements.broadcastedHeight)/35
         let dimensionAdjustment=CGFloat(self.screenMeasurements.broadcastedHeight)/8.5
-
         
+        var carbonUnit: String
+        var decimalPlaces: String
+        if (maxVal>1000)
+        {maxVal=maxVal/1000
+            carbonUnit="Units:Carbon Kg"
+            decimalPlaces="%.1f"
+        }
+        else
+        {
+            carbonUnit="Units:Carbon grams"
+            decimalPlaces="%.0f"
+        }
         return
             ZStack {
-                Text(String("Units:Carbon grams"))
+                Text(String(carbonUnit))
                 .font(Font.system(size: 12, design: .default))
                     .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/4, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7)
              ForEach(0..<8) { line in
@@ -67,7 +78,7 @@ struct gridlines: View {
                  .offset(y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                  .frame(height: CGFloat(self.screenMeasurements.broadcastedHeight)/5000)
                 .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.2)
-                Text(String(format: "%.0f",((7.0-Double(line))/7.0)*maxVal))
+                Text(String(format: decimalPlaces,((7.0-Double(line))/7.0)*maxVal))
                 .font(Font.system(size: 12, design: .default))
                     .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                  .foregroundColor(Color("tertiary_label"))
