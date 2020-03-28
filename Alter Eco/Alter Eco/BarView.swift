@@ -37,7 +37,8 @@ struct BarView: View {
                         .foregroundColor(Color(colour))
                 }
                 Text(label)
-                    .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
+                    .font(Font.system(size: 12, design: .default)) .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
+                
             }
         }
         return VStack {
@@ -50,7 +51,7 @@ struct BarView: View {
                         .foregroundColor(Color(colour))
                 }
                 Text(label)
-                    .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
+                    .font(Font.system(size: 12, design: .default)) .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
           
             }
         }
