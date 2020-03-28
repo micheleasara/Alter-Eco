@@ -56,7 +56,7 @@ struct gridlines: View {
         
         return
             ZStack {
-                Text(String("Units:Carbon Kg"))
+                Text(String("Units:Carbon grams"))
                 .font(Font.system(size: 12, design: .default))
                     .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/4, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7)
              ForEach(0..<8) { line in
@@ -67,7 +67,7 @@ struct gridlines: View {
                  .offset(y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                  .frame(height: CGFloat(self.screenMeasurements.broadcastedHeight)/5000)
                 .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.2)
-                Text(String(format: "%.1f",((7.0-Double(line))/7.0)*maxVal))
+                Text(String(format: "%.0f",((7.0-Double(line))/7.0)*maxVal))
                 .font(Font.system(size: 12, design: .default))
                     .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                  .foregroundColor(Color("tertiary_label"))
