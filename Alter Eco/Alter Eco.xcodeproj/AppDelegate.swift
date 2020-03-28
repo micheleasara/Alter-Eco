@@ -2,6 +2,7 @@ import UIKit
 import CoreLocation
 import MapKit
 import CoreData
+import BackgroundTasks
 
 // defines the average speed of the tube in London in kmph
 public let AVERAGE_TUBE_SPEED:Double = 33
@@ -24,6 +25,7 @@ public let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+    let scene = SceneDelegate()
     // requests gps updates
     internal let manager = CLLocationManager()
     // estimates activities based on given information (such as location updates)
@@ -33,6 +35,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     // Override point for customization after application launch.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // Register for push notifications:
+        registerForPushNotifications()
+        // Register for background tasks:
+        registerForBackgroundTasks()
         
         // following code is to find path to coredata sqlite file
         // let container = NSPersistentContainer(name: "Database")
@@ -129,5 +136,83 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
+    
+    /*----- START OF BACKGROUND TASK SHIT -------*/
+    
+    func registerForBackgroundTasks() {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.wifi",
+                                        using: DispatchQueue.global())
+        { task in
+            //This task is cast with processing request (BGAppRefreshTask)
+            self.handleAppRefreshTask(task: task as! BGAppRefreshTask)
+            print("Done registering")
+        }
+        
+
+    }
+    
+    func handleAppRefreshTask(task: BGAppRefreshTask) {
+        print("Handling the task")
+        // Set up OperationQueue
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        // Establish task
+        let appRefreshOperation = scene.checkWifi(background: true)
+        // Add operation to queue
+        queue.addOperation {appRefreshOperation}
+        // Set up task expiration handler
+        task.expirationHandler = {
+            queue.cancelAllOperations()
+        }
+        // Set the task as completed when the operation queue empty:
+        let lastOperation = queue.operations.last
+        lastOperation?.completionBlock = {
+            task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
+        }
+        // Schedule another background task:
+        scheduleAppRefresh()
+    }
+    
+    
+    func scheduleAppRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
+        // Fetch no earlier than 10 minutes from now
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 10*60)
+        print("In schedule app refresh")
+        
+        do {
+           try BGTaskScheduler.shared.submit(request)
+        } catch {
+           print("Could not schedule app refresh: \(error)")
+        }
+        print("Ended schedule app refresh")
+    }
+    
+    
+    /*----- END OF BACKGROUND TASK SHIT -------*/
+    
+    /*----- START OF NOTIFICATION SHIT -------*/
+    // Function to register for notifications:
+    func registerForPushNotifications() {
+      UNUserNotificationCenter.current()
+        .requestAuthorization(options: [.alert, .sound, .badge]) {
+          [weak self] granted, error in
+            
+          print("Permission granted: \(granted)")
+          guard granted else { return }
+          self?.getNotificationSettings()
+      }
+    }
+    
+    func getNotificationSettings() {
+      UNUserNotificationCenter.current().getNotificationSettings { settings in
+        print("Notification settings: \(settings)")
+        guard settings.authorizationStatus == .authorized else { return }
+        DispatchQueue.main.async {
+          UIApplication.shared.registerForRemoteNotifications()
+        }
+      }
+    }
+    /*----- END OF NOTIFICATION SHIT -------*/
 
 }
