@@ -37,7 +37,7 @@ struct BarView: View {
                         .foregroundColor(Color(colour))
                 }
                 Text(label)
-                    .font(Font.system(size: 12, design: .default)) .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
+                    .font(Font.system(size: 13.5, design: .default)) .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
                 
             }
         }
@@ -51,7 +51,7 @@ struct BarView: View {
                         .foregroundColor(Color(colour))
                 }
                 Text(label)
-                    .font(Font.system(size: 12, design: .default)) .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
+                    .font(Font.system(size: 13.5, design: .default)) .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
           
             }
         }
