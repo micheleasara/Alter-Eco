@@ -7,6 +7,7 @@ struct BarView: View {
     
     //This value represents the addition of the two pickers and used to change the width value in the bar graph
     var wid: Int
+    @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     var body: some View {
         
@@ -16,30 +17,31 @@ struct BarView: View {
           
                 //Graph for 'days' and 'months'
                 ZStack(alignment: .bottom) {
-                    Capsule().frame(width: 20, height:  CGFloat(200))
+                    Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
-                    Rectangle().frame(width: 20, height: CGFloat(value*130))
+                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/22, height: CGFloat(value*172))
                         .foregroundColor(Color("graphBars"))
                 }
                 Text(label)
-                    .padding(.top,CGFloat(8))
+                    .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
             }
         }
         return VStack {
             //Graph for 'weeks' and 'years'
                 ZStack(alignment: .bottom) {
-                    Capsule().frame(width: 38.5, height: CGFloat(200))
+                    Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/21, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
-                    Rectangle().frame(width: 38.5, height: CGFloat(value*130))
+                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/11, height: CGFloat(value*172))
                         .foregroundColor(Color("graphBars"))
                 }
                 Text(label)
-                    .padding(.top,CGFloat(8))
+                    .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
           
             }
         }
 }
+
 
 

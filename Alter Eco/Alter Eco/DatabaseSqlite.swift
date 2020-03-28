@@ -115,7 +115,7 @@ func computeCarbonUsage(measuredActivities: [MeasuredActivity], type: MeasuredAc
         return 0
     }
     
-    return Double(measuredActivityDistance) * CARBON_UNIT
+    return Double(measuredActivityDistance) * CARBON_UNIT * KM_CONVERSION
     
 }
 

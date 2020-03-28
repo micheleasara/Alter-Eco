@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct gridlines: View {
+     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     var value: Int
     var body: some View {
        var maxVal = normaliseDailyAll()
@@ -47,12 +48,15 @@ struct gridlines: View {
         default:
             maxVal = 70.0
         }
+        if (maxVal==1)
+        {maxVal=0}
+            
         
         return
             ZStack {
-                Text(String("Units:g/km"))
+                Text(String("Units:Carbon Kg"))
                 .font(Font.system(size: 12, design: .default))
-                .offset(x: -170, y: -120)
+                    .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/4, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7)
              ForEach(0..<8) { line in
       
              Rectangle()
@@ -63,7 +67,7 @@ struct gridlines: View {
                  .frame(width: 300.0)
                 Text(String(format: "%.0f",((7.0-Double(line))/7.0)*maxVal))
                 .font(Font.system(size: 12, design: .default))
-                 .offset(x: -170, y: CGFloat(line) * 25.0 - 93)
+                    .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * 25.0 - 93)
                  .foregroundColor(Color("tertiary_label"))
             }
         }
