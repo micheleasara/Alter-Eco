@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E158242FB3EC00FD9B5F /* ProfileView.swift */; };
+		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
 		9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594172429686800B1D0B4 /* TrackingData.swift */; };
@@ -57,6 +59,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2186E158242FB3EC00FD9B5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		9CD594172429686800B1D0B4 /* TrackingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingData.swift; sourceTree = "<group>"; };
@@ -169,8 +173,10 @@
 				5591901D242C0FA400A80ED7 /* UserScore.swift */,
 				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
 				9CD594402429691E00B1D0B4 /* ContentView.swift */,
+				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
 				9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */,
 				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
+				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
 				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
 				9CD59430242968DF00B1D0B4 /* DatabaseSqlite.swift */,
 				9CD594192429686900B1D0B4 /* ScoreView.swift */,
@@ -358,6 +364,7 @@
 				9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */,
 				9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */,
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
+				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
 				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
 				9CD5943A242968DF00B1D0B4 /* DetailView.swift in Sources */,
 				9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */,
@@ -367,6 +374,7 @@
 				9CD59435242968DF00B1D0B4 /* gridlines.swift in Sources */,
 				9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */,
 				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
+				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
 				9CD5943B242968DF00B1D0B4 /* BarView.swift in Sources */,
 				9CD59433242968DF00B1D0B4 /* DataClassGraph.swift in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,

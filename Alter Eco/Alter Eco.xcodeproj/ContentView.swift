@@ -4,6 +4,8 @@ import MapKit
 struct ContentView: View {
 
     @State var showSplash = true
+    @State private var selection = 0
+
     var body: some View {
         ZStack{
             SplashScreen()
@@ -16,7 +18,27 @@ struct ContentView: View {
                 }
             }
             if (!self.showSplash) {
-                DetailView()
+                TabView(selection: $selection){
+                    DetailView()
+                        .tabItem {
+                            VStack {
+                                Image(systemName: "chart.bar.fill")
+                                Text("Stats").font(.title)
+
+                            }
+                        }
+                    .tag(0)
+
+                        ProfileView()
+                            .tabItem {
+                            VStack {
+                                Image(systemName: "person.circle")
+                                Text("Profile").font(.title)
+                            }
+                        }
+                    .tag(1)
+
+                }
             }
         }
     }

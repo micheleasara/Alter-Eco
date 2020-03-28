@@ -681,3 +681,71 @@ func printUserScoreDatabase() {
       print("Could not fetch. \(error), \(error.userInfo)")
     }
 }
+
+///For new stuff for profile page
+
+func getCurrentDay() -> Int {
+    let date = Date()
+    let calendar = Calendar.current
+    let components = calendar.dateComponents([.day], from: date)
+    let dayOfMonth = components.day
+    return dayOfMonth!
+}
+
+
+func queryPastMonth(motionType: MeasuredActivity.MotionType, month: String, carbon: Bool = true) -> Double {
+
+    let dateNow = Date()
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "LLLL"
+    let myCalendar = Calendar(identifier: .gregorian)
+    let monthToday = myCalendar.component(.month, from: dateNow)
+    let monthToDisplay = getMonthToDisplay(month: month)
+    let currentDay = getCurrentDay()
+    let previousMonthDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())
+    let previousMonth = dateFormatter.string(from: previousMonthDate!)
+    let prevMonthToDisplay = getMonthToDisplay(month: previousMonth)
+
+    print("Month is: ", monthToday, " AND month we want is: ", monthToDisplay)
+
+    let endDateTemp = "2020-" + monthToDisplay + "-"
+    let endDate = endDateTemp + String(currentDay) + " 00:00:01 +0000"
+    let startDateTemp = "2020-" + prevMonthToDisplay + "-"
+    let startDate = startDateTemp + String(currentDay) + " 00:00:01 +0000"
+
+    print(endDate)
+    print(startDate)
+
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+
+    let queryDateStart = dateFormatter.date(from: startDate)
+    let queryDateEnd = dateFormatter.date(from: endDate)
+
+    let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start >= %@ AND end <= %@", MeasuredActivity.motionTypeToString(type: motionType), queryDateStart! as NSDate, queryDateEnd! as NSDate))
+    
+    if(carbon == false){
+        var measuredActivityDistance:Double = 0
+        
+        if (queryMeasuredActivities.count != 0) {
+            for measuredActivity in queryMeasuredActivities {
+                measuredActivityDistance = measuredActivityDistance + measuredActivity.distance
+            }
+        }
+        return measuredActivityDistance
+    }
+    
+    let carbonValue = computeCarbonUsage(measuredActivities: queryMeasuredActivities, type: motionType)
+    return carbonValue
+
+}
+
+func queryTotalWeek() -> Double {
+    let total = queryWeeklyCarbonAll(weekDayToDisplay: "Monday") +
+                queryWeeklyCarbonAll(weekDayToDisplay: "Tuesday") +
+                queryWeeklyCarbonAll(weekDayToDisplay: "Wednesday") +
+                queryWeeklyCarbonAll(weekDayToDisplay: "Thursday") +
+                queryWeeklyCarbonAll(weekDayToDisplay: "Friday") +
+                queryWeeklyCarbonAll(weekDayToDisplay: "Saturday") +
+                queryWeeklyCarbonAll(weekDayToDisplay: "Sunday")
+    return total
+}
