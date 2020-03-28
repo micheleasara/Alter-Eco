@@ -20,7 +20,7 @@ struct BarView: View {
                     Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
-                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/22, height: CGFloat(value*172))
+                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/22, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
                         .foregroundColor(Color("graphBars"))
                 }
                 Text(label)
@@ -33,7 +33,7 @@ struct BarView: View {
                     Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/21, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
-                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/11, height: CGFloat(value*172))
+                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/11, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
                         .foregroundColor(Color("graphBars"))
                 }
                 Text(label)

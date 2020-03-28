@@ -50,7 +50,9 @@ struct gridlines: View {
         }
         if (maxVal==1)
         {maxVal=0}
-            
+        let dimensionMultiplier=CGFloat(self.screenMeasurements.broadcastedHeight)/35
+        let dimensionAdjustment=CGFloat(self.screenMeasurements.broadcastedHeight)/8.5
+
         
         return
             ZStack {
@@ -62,12 +64,12 @@ struct gridlines: View {
              Rectangle()
                  .foregroundColor(Color("secondary_label"))
                  .zIndex(-100.0)
-                 .offset(y: CGFloat(line) * 25.0 - 93)
-                 .frame(height: 0.5)
-                 .frame(width: 300.0)
-                Text(String(format: "%.0f",((7.0-Double(line))/7.0)*maxVal))
+                 .offset(y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
+                 .frame(height: CGFloat(self.screenMeasurements.broadcastedHeight)/5000)
+                .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.2)
+                Text(String(format: "%.1f",((7.0-Double(line))/7.0)*maxVal))
                 .font(Font.system(size: 12, design: .default))
-                    .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * 25.0 - 93)
+                    .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                  .foregroundColor(Color("tertiary_label"))
             }
         }
