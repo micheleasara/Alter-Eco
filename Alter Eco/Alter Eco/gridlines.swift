@@ -55,21 +55,30 @@ struct gridlines: View {
         
         var carbonUnit: String
         var decimalPlaces: String
+        
+        //Units change depending on whether the total amount of carbon in grams is over or under 1000
         if (maxVal>1000)
-        {maxVal=maxVal/1000
-            carbonUnit="Units:Carbon Kg"
+        { //represent kilogram amount
+            maxVal=maxVal/1000
+            carbonUnit="Units: Carbon kG"
             decimalPlaces="%.1f"
         }
+        else if (maxVal<10)
+        {
+            carbonUnit="Units: Carbon g."
+            decimalPlaces="%.1f"
+        }
+        
         else
         {
-            carbonUnit="Units:Carbon grams"
+            carbonUnit="Units: Carbon g."
             decimalPlaces="%.0f"
         }
         return
             ZStack {
                 Text(String(carbonUnit))
                 .font(Font.system(size: 12, design: .default))
-                    .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/4, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7)
+                    .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.8, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7.5)
              ForEach(0..<8) { line in
       
              Rectangle()
@@ -77,7 +86,7 @@ struct gridlines: View {
                  .zIndex(-100.0)
                  .offset(y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                  .frame(height: CGFloat(self.screenMeasurements.broadcastedHeight)/5000)
-                .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.2)
+                .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.1)
                 Text(String(format: decimalPlaces,((7.0-Double(line))/7.0)*maxVal))
                 .font(Font.system(size: 12, design: .default))
                     .offset(x: -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
