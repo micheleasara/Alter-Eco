@@ -110,7 +110,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
-        (UIApplication.shared.delegate as! AppDelegate).scheduleAppRefresh()
+        (UIApplication.shared.delegate as! AppDelegate).scheduleBGTwifi()
     }
 
 }

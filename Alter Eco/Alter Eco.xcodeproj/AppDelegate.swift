@@ -144,14 +144,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                                         using: DispatchQueue.global())
         { task in
             //This task is cast with processing request (BGAppRefreshTask)
-            self.handleAppRefreshTask(task: task as! BGAppRefreshTask)
+            self.handleBGTwifi(task: task as! BGAppRefreshTask)
             print("Done registering")
         }
         
 
     }
     
-    func handleAppRefreshTask(task: BGAppRefreshTask) {
+    func handleBGTwifi(task: BGAppRefreshTask) {
         print("Handling the task")
         // Set up OperationQueue
         let queue = OperationQueue()
@@ -170,11 +170,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
         }
         // Schedule another background task:
-        scheduleAppRefresh()
+        scheduleBGTwifi()
     }
     
     
-    func scheduleAppRefresh() {
+    func scheduleBGTwifi() {
         let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
         // Fetch no earlier than 10 minutes from now
         request.earliestBeginDate = Date(timeIntervalSinceNow: 10*60)
