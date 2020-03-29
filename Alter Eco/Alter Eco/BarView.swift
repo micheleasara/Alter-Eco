@@ -24,11 +24,11 @@ struct BarView: View {
             VStack {
                 //Graph for 'days' and 'months'
                 ZStack(alignment: .bottom) {
-                    Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height:
+                    Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/18, height:
                         CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
-                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/22, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
+                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/21, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
                         .foregroundColor(Color(colour))
                 }
                 Text(label)
@@ -39,10 +39,10 @@ struct BarView: View {
         return VStack {
             //Graph for 'weeks' and 'years'
             ZStack(alignment: .bottom) {
-                Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/21, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
+                Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                     .foregroundColor(Color("app_background"))
                     .opacity(0.0)
-                Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/11, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
+                Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/9.2, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
                     .foregroundColor(Color(colour))
                 }
             Text(label)
