@@ -42,7 +42,7 @@ struct BarView: View {
                 Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                     .foregroundColor(Color("app_background"))
                     .opacity(0.0)
-                Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/9.2, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
+                Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/9.5, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
                     .foregroundColor(Color(colour))
                 }
             Text(label)
