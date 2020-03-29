@@ -315,29 +315,24 @@ struct GraphView: View {
            ]
     
     var body: some View {
-        
         //The top picker representing the time (e.g. day vs week) the user would like to view. For example, if the user selects the week picker, the picker would change to a value of 5. These values have been chose to correctly index the dictionary above (when added to the picker value of the transport mode)
         VStack{
-              Picker(selection: $pickerSelectedItem.animation(), label: Text("")) {
-        
-                  Text(DataParts.day.name).tag(0)
-                  Text(DataParts.week.name).tag(5)
-                  Text(DataParts.month.name).tag(10)
-                  Text(DataParts.year.name).tag(15)
-                  
-              }
+            Picker(selection: $pickerSelectedItem.animation(), label: Text("")) {
+                Text(DataParts.day.name).tag(0)
+                Text(DataParts.week.name).tag(5)
+                Text(DataParts.month.name).tag(10)
+                Text(DataParts.year.name).tag(15)
+            }
               .pickerStyle(SegmentedPickerStyle())
               .padding()
               .animation(.default)
-              
             ZStack{
                 gridlines(
-                    value:self.pickerSelectedItem+self.pickerSelectedTwoItem
-                )
+                    value:self.pickerSelectedItem+self.pickerSelectedTwoItem)
                 //The bar chart is constructed here
                 HStack {
-             //The bar displayed depends on the two pickers chosen
-                          ForEach(0..<self.data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
+                    //The bar displayed depends on the two pickers chosen
+                    ForEach(0..<self.data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
                               { i in
                                           
                                   BarView(

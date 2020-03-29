@@ -74,23 +74,13 @@ func executeQuery(query: NSPredicate) -> [MeasuredActivity] {
 func combineTodayDateWithInterval(date: Date, hour: String) -> Date {
 
     let dateFormatter = DateFormatter()
-
     dateFormatter.dateFormat = "yyyy-MM-dd"
     var todayDate = dateFormatter.string(from: date)
-  
-
     todayDate = todayDate + " " + hour + " +0000"
-
-  
-    
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-    
-    
     if let today = dateFormatter.date(from: todayDate) {
-      
         return today
     }
-    
     return date
 }
 
@@ -284,24 +274,14 @@ func queryMonthlyCarbon(motionType: MeasuredActivity.MotionType, month: String) 
     let myCalendar = Calendar(identifier: .gregorian)
     let monthToday = myCalendar.component(.month, from: dateNow) // 1-7 beginning on Sunday
     let monthToDisplay = getMonthToDisplay(month: month)
-    
-    
-    
     let monthStart = "2020-" + monthToDisplay + "-01 00:00:01 +0000"
-    
     let endDayOfMonth = getEndDayOfMonth(month: month)
     let monthEnd = "2020-" + monthToDisplay + "-" + endDayOfMonth + " 23:59:59 +0000"
-    
     let dateFormatter = DateFormatter()
-
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-    
     let queryDateStart = dateFormatter.date(from: monthStart)
-
     let queryDateEnd = dateFormatter.date(from: monthEnd)
-    
     let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start >= %@ AND end <= %@", MeasuredActivity.motionTypeToString(type: motionType), queryDateStart! as NSDate, queryDateEnd! as NSDate))
-    
     let carbonValue = computeCarbonUsage(measuredActivities: queryMeasuredActivities, type: motionType)
 
     return carbonValue
@@ -337,9 +317,6 @@ func queryYearlyCarbon(motionType: MeasuredActivity.MotionType, year: String) ->
         {
             let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start >= %@ AND end <= %@", MeasuredActivity.motionTypeToString(type: motionType), queryDateStart as NSDate, queryDateEnd as NSDate))
             let carbonValue = computeCarbonUsage(measuredActivities: queryMeasuredActivities, type: motionType)
-            
-          
-
             return carbonValue
         }
     }
@@ -393,8 +370,6 @@ func normaliseData(motionType: MeasuredActivity.MotionType, datapart: DataParts)
 func normaliseDailyAll() -> Double {
     
        var max_data = max(queryDailyCarbonAll(hourStart: "00:00:00", hourEnd: "02:00:00"),queryDailyCarbonAll(hourStart: "02:00:00", hourEnd: "04:00:00"), queryDailyCarbonAll(hourStart: "04:00:00", hourEnd: "06:00:00"),queryDailyCarbonAll(hourStart: "06:00:00", hourEnd: "08:00:00"), queryDailyCarbonAll(hourStart: "08:00:00", hourEnd: "10:00:00"),queryDailyCarbonAll(hourStart: "10:00:00", hourEnd: "12:00:00"),queryDailyCarbonAll(hourStart: "12:00:00", hourEnd: "14:00:00"),queryDailyCarbonAll(hourStart: "14:00:00", hourEnd: "16:00:00"), queryDailyCarbonAll(hourStart: "16:00:00", hourEnd: "18:00:00"), queryDailyCarbonAll(hourStart: "18:00:00", hourEnd: "20:00:00"), queryDailyCarbonAll(hourStart: "20:00:00", hourEnd: "22:00:00"),queryDailyCarbonAll(hourStart: "22:00:00", hourEnd: "24:00:00"))
-
-    
     //prevent divide by zero error
     if (max_data==0)
     {
@@ -413,8 +388,6 @@ func normaliseWeeklyAll() -> Double {
     queryWeeklyCarbonAll(weekDayToDisplay: "Thursday"),
     queryWeeklyCarbonAll(weekDayToDisplay: "Friday"),
     queryWeeklyCarbonAll(weekDayToDisplay: "Saturday"))
-
-  
     
     //prevent divide by zero error
     if (max_data==0)
@@ -426,9 +399,7 @@ func normaliseWeeklyAll() -> Double {
 }
 
 func normaliseMonthlyAll() -> Double {
-    
-
-     var max_data = max(queryMonthlyCarbonAll(month: "January"),queryMonthlyCarbonAll(month: "February"),queryMonthlyCarbonAll(month: "March"),queryMonthlyCarbonAll(month: "April"), queryMonthlyCarbonAll(month: "May"),queryMonthlyCarbonAll(month: "June"),queryMonthlyCarbonAll(month: "July"), queryMonthlyCarbonAll(month: "August"),queryMonthlyCarbonAll(month:"September"), queryMonthlyCarbonAll(month: "October"), queryMonthlyCarbonAll(month: "November"),queryMonthlyCarbonAll(month: "December"))
+    var max_data = max(queryMonthlyCarbonAll(month: "January"),queryMonthlyCarbonAll(month: "February"),queryMonthlyCarbonAll(month: "March"),queryMonthlyCarbonAll(month: "April"), queryMonthlyCarbonAll(month: "May"),queryMonthlyCarbonAll(month: "June"),queryMonthlyCarbonAll(month: "July"), queryMonthlyCarbonAll(month: "August"),queryMonthlyCarbonAll(month:"September"), queryMonthlyCarbonAll(month: "October"), queryMonthlyCarbonAll(month: "November"),queryMonthlyCarbonAll(month: "December"))
     
     //prevent divide by zero error
     if (max_data==0)
@@ -440,7 +411,6 @@ func normaliseMonthlyAll() -> Double {
 }
 
 func normaliseYearlyAll() -> Double {
-
      var max_data = max(queryYearlyCarbonAll(year: "2014"),queryYearlyCarbonAll(year: "2015"),queryYearlyCarbonAll(year: "2016"), queryYearlyCarbonAll(year: "2017"),queryYearlyCarbonAll(year: "2018"),queryYearlyCarbonAll(year: "2019"),queryYearlyCarbonAll(year: "2020"))
     
     //prevent divide by zero error
@@ -451,9 +421,6 @@ func normaliseYearlyAll() -> Double {
     
   return max_data
 }
-
-
-
 
 //score calculation functions
 func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) -> Double {
