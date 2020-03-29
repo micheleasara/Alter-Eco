@@ -62,7 +62,7 @@ struct ProfileView: View {
                     Image("trophy")
                         .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
                         .frame(width: 50, height: 50)
-                    Text("Acievements").font(.title)
+                    Text("Achievements").font(.title)
                     Image("trophy")
                         .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
                         .frame(width: 50, height: 50)
