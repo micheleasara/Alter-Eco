@@ -10,9 +10,6 @@ struct WelcomeView: View {
             Text("My Alter Eco")
             .foregroundColor(Color("title_colour"))
             .font(.largeTitle)
-            
-            Image(systemName: "person.crop.circle")
-            .imageScale(.large)
         }
     }
 }

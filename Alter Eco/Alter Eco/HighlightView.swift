@@ -56,7 +56,7 @@ struct HighlightView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
     var body: some View {
-            
+  
         ZStack {
         RoundedRectangle(cornerRadius: 25, style: .continuous)
             .fill(Color("fill_colour"))
@@ -65,8 +65,7 @@ struct HighlightView: View {
         Text(generateSentence())
             .font(.headline)
             .fontWeight(.regular)
-            .padding(CGFloat(screenMeasurements.broadcastedWidth)*0.2)
-
+            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/5)
         }
     }
 }

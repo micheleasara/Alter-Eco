@@ -62,7 +62,7 @@ struct ProfileView: View {
                     Image("trophy")
                         .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
                         .frame(width: 50, height: 50)
-                    Text("Acievements").font(.title)
+                    Text("Achievements").font(.title)
                     Image("trophy")
                         .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
                         .frame(width: 50, height: 50)
@@ -269,7 +269,7 @@ struct ScorePoints: View {
                 .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.1)
             HStack(alignment: .top){
                 Text("Score:").font(.title) .fontWeight(.bold)
-                Text("\(updateScore(score: userScore).totalPoints, specifier: "%.0f")")
+                Text("\(userScore.totalPoints, specifier: "%.0f")")
                     .font(.title)
             }
         }
