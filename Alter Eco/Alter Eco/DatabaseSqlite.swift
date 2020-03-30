@@ -14,6 +14,7 @@ let KM_CONVERSION: Double = 0.001
 let WALKING_PTS: Double = 10
 let CAR_PTS: Double = 3
 let TUBE_PTS: Double = 7
+let MAX_DAYS_IN_FEB: Int = 28
 
 func appendToDatabase(activity: MeasuredActivity) {
      guard let appDelegate =
@@ -272,7 +273,7 @@ func queryMonthlyCarbon(motionType: MeasuredActivity.MotionType, month: String) 
     
     let dateNow = Date()
     let myCalendar = Calendar(identifier: .gregorian)
-    let monthToday = myCalendar.component(.month, from: dateNow) // 1-7 beginning on Sunday
+    let monthToday = myCalendar.component(.month, from: dateNow)
     let monthToDisplay = getMonthToDisplay(month: month)
     let monthStart = "2020-" + monthToDisplay + "-01 00:00:01 +0000"
     let endDayOfMonth = getEndDayOfMonth(month: month)
@@ -659,6 +660,48 @@ func getCurrentDay() -> Int {
     return dayOfMonth!
 }
 
+func getLastDayOfPreviousMonth(month: String) -> Int {
+
+    switch month {
+        case "01":
+            return 31
+        case "02":
+            return 31
+        case "03":
+            return 28
+        case "04":
+            return 31
+        case "05":
+            return 30
+        case "06":
+            return 31
+        case "07":
+            return 30
+        case "08":
+            return 31
+        case "09":
+            return 31
+        case "10":
+            return 30
+        case "11":
+            return 31
+        case "12":
+            return 30
+        default:
+            return 0
+    }
+}
+
+func getprevMonthDay(currentDay: Int, currentMonth: String) -> Int {
+    
+    var previousDay: Int = currentDay
+    
+    if currentDay == 31 || (currentDay == 30 && currentMonth == "03") {
+        previousDay = getLastDayOfPreviousMonth(month: currentMonth)
+    }
+    
+    return previousDay
+}
 
 func queryPastMonth(motionType: MeasuredActivity.MotionType, month: String, carbon: Bool = true) -> Double {
 
@@ -668,17 +711,20 @@ func queryPastMonth(motionType: MeasuredActivity.MotionType, month: String, carb
     let myCalendar = Calendar(identifier: .gregorian)
     let monthToday = myCalendar.component(.month, from: dateNow)
     let monthToDisplay = getMonthToDisplay(month: month)
+    
     let currentDay = getCurrentDay()
+    let previousDay = getprevMonthDay(currentDay: currentDay, currentMonth: monthToDisplay)
+    
     let previousMonthDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())
     let previousMonth = dateFormatter.string(from: previousMonthDate!)
     let prevMonthToDisplay = getMonthToDisplay(month: previousMonth)
-
+    
     print("Month is: ", monthToday, " AND month we want is: ", monthToDisplay)
 
     let endDateTemp = "2020-" + monthToDisplay + "-"
     let endDate = endDateTemp + String(currentDay) + " 00:00:01 +0000"
     let startDateTemp = "2020-" + prevMonthToDisplay + "-"
-    let startDate = startDateTemp + String(currentDay) + " 00:00:01 +0000"
+    let startDate = startDateTemp + String(previousDay) + " 00:00:01 +0000"
 
     print(endDate)
     print(startDate)
