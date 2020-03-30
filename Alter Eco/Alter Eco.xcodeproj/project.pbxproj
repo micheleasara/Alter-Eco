@@ -11,6 +11,14 @@
 		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
+		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
+		9C17CA8524323D1D00378A67 /* WalkHeathrow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */; };
+		9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */; };
+		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
+		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
+		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
+		9C17CA8A24323D1D00378A67 /* WalktoHeathrow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */; };
+		9C17CA8B24323D1D00378A67 /* KingsCrossTubeUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */; };
 		9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594172429686800B1D0B4 /* TrackingData.swift */; };
 		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
 		9CD594212429686900B1D0B4 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594192429686900B1D0B4 /* ScoreView.swift */; };
@@ -63,6 +71,14 @@
 		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
+		9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkHeathrow.gpx; sourceTree = "<group>"; };
+		9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MilanLIN.gpx; sourceTree = "<group>"; };
+		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
+		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
+		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
+		9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalktoHeathrow.gpx; sourceTree = "<group>"; };
+		9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = KingsCrossTubeUCL.gpx; sourceTree = "<group>"; };
 		9CD594172429686800B1D0B4 /* TrackingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingData.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
 		9CD594192429686900B1D0B4 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
@@ -194,6 +210,14 @@
 				9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */,
 				9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */,
 				9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */,
+				9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */,
+				9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */,
+				9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */,
+				9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */,
+				9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */,
+				9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */,
+				9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */,
+				9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */,
 				CD200B5023E3885700629E73 /* Info.plist */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
 			);
@@ -326,12 +350,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C17CA8B24323D1D00378A67 /* KingsCrossTubeUCL.gpx in Resources */,
+				9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */,
 				9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */,
 				9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */,
 				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
+				9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */,
 				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
+				9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */,
+				9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */,
+				9C17CA8A24323D1D00378A67 /* WalktoHeathrow.gpx in Resources */,
 				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
+				9C17CA8524323D1D00378A67 /* WalkHeathrow.gpx in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
+				9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,7 +438,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				INFOPLIST_FILE = "Alter EcoBackEndTest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -426,7 +458,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				INFOPLIST_FILE = "Alter EcoBackEndTest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -446,7 +478,7 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -466,7 +498,7 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -601,14 +633,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoDevelopV1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -621,14 +653,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoDevelopV1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

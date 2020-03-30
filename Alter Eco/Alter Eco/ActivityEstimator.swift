@@ -52,7 +52,7 @@ public class ActivityEstimator {
             let currentStation = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.stations, GPS_THRESHOLD: GPS_UPDATE_CONFIDENCE_THRESHOLD, trackingDataAttribute: 0)
             let currentAirport = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.airports, GPS_THRESHOLD: GPS_UPDATE_AIRPORT_THRESHOLD, trackingDataAttribute: 1)
                         
-            print("CurrentAirport: ", currentAirport!, " and previousAirport: ", previousAirport!)
+            print("CurrentAirport: ", currentAirport, " and previousAirport: ", previousAirport)
             
             // check if we are not in the same day to break the list, with the exception of the train flag and plane flag
             if previousAirport == nil && previousStation == nil && !inSameDay(date1: previousLocation.timestamp, date2: location.timestamp)  {
