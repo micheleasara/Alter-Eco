@@ -2,8 +2,10 @@ import SwiftUI
 
 struct gridlines: View {
      @EnvironmentObject var screenMeasurements: ScreenMeasurements
+    
     var value: Int
     var body: some View {
+        
        var maxVal = normaliseDailyAll()
         switch (value) {
         case 0:

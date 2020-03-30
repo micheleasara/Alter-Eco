@@ -5,6 +5,8 @@ struct ContentView: View {
 
     @State var showSplash = true
     @State private var selection = 0
+    @State private var rect: CGRect = CGRect()
+    @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
     var body: some View {
         ZStack{

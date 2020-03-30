@@ -269,7 +269,7 @@ struct ScorePoints: View {
                 .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.1)
             HStack(alignment: .top){
                 Text("Score:").font(.title) .fontWeight(.bold)
-                Text("\(updateScore(score: userScore).totalPoints, specifier: "%.0f")")
+                Text("\(userScore.totalPoints, specifier: "%.0f")")
                     .font(.title)
             }
         }

@@ -11,25 +11,21 @@ struct DetailView: View {
             Color("app_background")
             
             VStack{
-                
+            
                 //welcome, and profile button
-                WelcomeView().padding(.top, CGFloat(screenMeasurements.broadcastedHeight/100))
-                Spacer()
+                WelcomeView()
                 
                 //Bar chart view
                 GraphView()
-                Spacer()
                 
                 //Scores summary
                 ScoreView()
-                Spacer()
                 
                 //Highlights
                 HighlightView()
-                Spacer()
                     
-            }//vs
-        }//zs
+            }
+        }
     }
 }
 

@@ -16,7 +16,7 @@ struct ScoreView: View {
                     
             HStack {
                 //display the total score
-                Text("Total Score: \(updateScore(score: userScore).totalPoints, specifier: "%.0f")" )
+                Text("Total Score: \(userScore.totalPoints, specifier: "%.0f")" )
                     .font(.title)
             }
         }

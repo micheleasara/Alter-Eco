@@ -56,7 +56,7 @@ struct HighlightView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
     var body: some View {
-            
+  
         ZStack {
         RoundedRectangle(cornerRadius: 25, style: .continuous)
             .fill(Color("fill_colour"))
