@@ -35,7 +35,7 @@ class DatabaseTest: XCTestCase {
         
         //print("User Score: ", retrievedScore.totalPoints, " at date: ", retrievedScore.date)
         
-        XCTAssert(retrievedScore.totalPoints == 100, "Score does not match")
+        XCTAssert(retrievedScore.totalPoints == 109, "Score does not match")
     }
     
     func testReplaceUserScoreToDatabase(){

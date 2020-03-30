@@ -16,6 +16,7 @@ public class MeasuredActivity: Equatable {
         case car
         case walking
         case train
+        case plane
         case unknown
     }
     
@@ -40,14 +41,16 @@ public class MeasuredActivity: Equatable {
             differenceStart < TIME_PRECISION && differenceEnd < TIME_PRECISION)
     }
 
-    public static func getValidMeasuredActivity(location: CLLocation, previousLocation: CLLocation) -> MeasuredActivity? {
+    public static func getValidMeasuredActivity(location: CLLocation, previousLocation: CLLocation, previousAirport: CLLocation?) -> MeasuredActivity? {
         var measuredActivity:MeasuredActivity? = nil
         // ensure location is accurate enough
         guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return nil}
         
         // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
         let distance = location.distance(from: previousLocation).rounded()
-        guard distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD else {return nil}
+        if previousAirport == nil {
+            guard distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD else {return nil}
+        }
         
         // ensure we get no fake instantaneous movements
         let time = location.timestamp.timeIntervalSince(previousLocation.timestamp).rounded()
@@ -105,6 +108,8 @@ public class MeasuredActivity: Equatable {
                 return "walking"
             case .train:
                 return "train"
+            case .plane:
+                return "plane"
             default:
                 return ""
         }
@@ -118,6 +123,8 @@ public class MeasuredActivity: Equatable {
                 return .walking
             case "train":
                 return .train
+            case "plane":
+                return .plane
             default:
                 return .unknown
         }

@@ -84,7 +84,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         // Create the SwiftUI view that provides the window contents.
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let contentView = ContentView().environment(\.managedObjectContext, context)       
-        let detailView = DetailView().environment(\.managedObjectContext, context)
+        _ = DetailView().environment(\.managedObjectContext, context)
 
 
         // Use a UIHostingController as window root view controller.

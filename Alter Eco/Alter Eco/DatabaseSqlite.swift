@@ -271,9 +271,9 @@ func getEndDayOfMonth(month: String) -> String {
 }
 func queryMonthlyCarbon(motionType: MeasuredActivity.MotionType, month: String) -> Double {
     
-    let dateNow = Date()
-    let myCalendar = Calendar(identifier: .gregorian)
-    let monthToday = myCalendar.component(.month, from: dateNow)
+//    let dateNow = Date()
+//    let myCalendar = Calendar(identifier: .gregorian)
+//    let monthToday = myCalendar.component(.month, from: dateNow)
     let monthToDisplay = getMonthToDisplay(month: month)
     let monthStart = "2020-" + monthToDisplay + "-01 00:00:01 +0000"
     let endDayOfMonth = getEndDayOfMonth(month: month)
@@ -520,7 +520,7 @@ func replaceScore(queryDate: Date = Date()) {
     let dateYesterday = Calendar.current.date(byAdding: .day,value: -1, to: dateNow)
     let dateYesterdayStr = stringFromDate(dateYesterday!)
     
-    var oldScore = UserScore(totalPoints: 0, date: dateYesterdayStr)
+    let oldScore = UserScore(totalPoints: 0, date: dateYesterdayStr)
     
     guard let appDelegate =
         UIApplication.shared.delegate as? AppDelegate else {
@@ -604,7 +604,7 @@ func retrieveScore(query: NSPredicate) -> UserScore {
     
     let dayToday = Date()
     let dayTodayStr = stringFromDate(dayToday)
-    var userScore = UserScore(totalPoints: 5, date: dayTodayStr)
+    let userScore = UserScore(totalPoints: 5, date: dayTodayStr)
     
     print(userScore.date)
     print(userScore.totalPoints)

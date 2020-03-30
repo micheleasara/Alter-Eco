@@ -4,7 +4,7 @@ import CoreLocation
 
 class ActivityEstimatorTest: XCTestCase {
 
-    let estimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, maxMeasurements: MAX_MEASUREMENTS, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT)
+    let estimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, maxMeasurements: MAX_MEASUREMENTS, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
 
     func testValidMovementIsAppendedToMeasurementsList() {
         let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD

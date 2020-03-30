@@ -4,24 +4,43 @@ import MapKit
 import CoreData
 import BackgroundTasks
 
-// defines the average speed of the tube in London in kmph
+// define the average speed of the tube in London as 33 kmph converted to 9.16667 m/s
 public let AVERAGE_TUBE_SPEED:Double = 33
+// define average plane speed as (740 - 930) kmph converted to 222 m/s
+public let AVERAGE_PLANE_SPEED:Double = 222
 // define radius of search for stations
 public let STATION_REQUEST_RADIUS:Double = 150
+// define radius of search for station
+public let AIRPORTS_REQUEST_RADIUS:Double = 2500
+// define average radius of airport m
+public let MAX_DISTANCE_WITHIN_AIRPORT:Double = 1000
 // define max number of measurements stored in memory at a time before trying to estimate an activity
 public let MAX_MEASUREMENTS = 1000
 // define how many measurements in a row must be different from the root measurement before an activity is estimated
 public let CHANGE_ACTIVITY_THRESHOLD:Int = 2
+// used for plane motion type, scales how many measurements of type car needed before resetting airport flag
+public let CAR_SCALING:Int = 10
+// used for tube motion type, scales how many measurements of type walking needed before resetting tube flag
+public let WALK_SCALING:Int = 1
 // idle time (in seconds) after which the activity estimator should forget the user was in a station
 public let STATION_TIMEOUT:Double = 90*60
+// idle time (in seconds) after which the activity estimator should forget the user was in an airport
+public let AIRPORT_TIMEOUT:Double = 60*60*24
 // natural language query for train and tube stations nearby
 public let QUERY_TRAIN_STATIONS:String = "underground tube station train subway"
+// natural language query for airports nearby
+public let QUERY_AIRPORTS: String = "airport"
 // defines how many meters to request a gps update
 public let GPS_UPDATE_DISTANCE_THRESHOLD:Double = 50
 // define tolerance value in meters for gps updates
 public let GPS_UPDATE_DISTANCE_TOLERANCE:Double = 5
 // define minimum confidence for valid location updates
 public let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
+// define area near airport still considered as an airport location - Paris airport 5kmx3km
+// tradeoff between wanting to detect all the airport and the time of take off (2h assumed here).
+public let GPS_UPDATE_AIRPORT_THRESHOLD:Double = 4000
+// define two hours waiting time at airport not to be considered as flying time (i.e. better distance estimation)
+public let TWO_HOURS_AIRPORT_WAITING_TIME: Double = 60*60*2
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -29,7 +48,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // requests gps updates
     internal let manager = CLLocationManager()
     // estimates activities based on given information (such as location updates)
-    internal let activityEstimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, maxMeasurements: MAX_MEASUREMENTS, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT)
+    internal let activityEstimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, maxMeasurements: MAX_MEASUREMENTS, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
+    
     // location of last request for stations nearby, to be used with station request radius
     internal var locationUponRequest: CLLocation? = nil
     
@@ -59,24 +79,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let location = locations.last!
         
         if (locationUponRequest == nil || locationUponRequest!.distance(from: location).rounded() >= STATION_REQUEST_RADIUS) {
-            let request = MKLocalSearch.Request()
-            request.naturalLanguageQuery = QUERY_TRAIN_STATIONS
-            request.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: STATION_REQUEST_RADIUS, longitudinalMeters: STATION_REQUEST_RADIUS)
-            request.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
-            
-            MKLocalSearch(request: request).start { (response, error) in
-                if let response = response {
-                    self.activityEstimator.stations = response.mapItems
-                    self.activityEstimator.processLocation(location)
-                }
-            }
-            
-            locationUponRequest = location
+               
+               let requestStations = MKLocalSearch.Request()
+               requestStations.naturalLanguageQuery = QUERY_TRAIN_STATIONS
+               requestStations.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: STATION_REQUEST_RADIUS, longitudinalMeters: STATION_REQUEST_RADIUS)
+               requestStations.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
+               
+               MKLocalSearch(request: requestStations).start { (response, error) in
+                   if let response = response {
+                       self.activityEstimator.stations = response.mapItems
+                       self.activityEstimator.processLocation(location)
+                   }
+                   //print("Stations near me: ", self.activityEstimator.stations)
+               }
+               
+               let requestAirports = MKLocalSearch.Request()
+               requestAirports.naturalLanguageQuery = QUERY_AIRPORTS
+               requestAirports.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: AIRPORTS_REQUEST_RADIUS, longitudinalMeters: AIRPORTS_REQUEST_RADIUS)
+               requestAirports.pointOfInterestFilter = MKPointOfInterestFilter(including: [.airport])
+               
+               MKLocalSearch(request: requestAirports).start { (response, error) in
+                   if let response = response {
+                       self.activityEstimator.airports = response.mapItems
+                       self.activityEstimator.processLocation(location)
+                   }
+                   //print("Airports near me: ", self.activityEstimator.airports)
+               }
+               
+               locationUponRequest = location
+           }
+           
+           else {
+               activityEstimator.processLocation(location)
+           }
         }
-        else {
-            activityEstimator.processLocation(location)
-        }
-     }
+
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error while retrieving location: ", error.localizedDescription)
@@ -157,7 +194,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         // Establish task
-        let appRefreshOperation = scene.checkWifi(background: true)
+        let appRefreshOperation:Void = scene.checkWifi(background: true)
         // Add operation to queue
         queue.addOperation {appRefreshOperation}
         // Set up task expiration handler
