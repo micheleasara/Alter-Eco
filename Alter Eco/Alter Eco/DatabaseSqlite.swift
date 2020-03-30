@@ -14,6 +14,7 @@ let KM_CONVERSION: Double = 0.001
 let WALKING_PTS: Double = 10
 let CAR_PTS: Double = 3
 let TUBE_PTS: Double = 7
+let PLANE_PTS: Double = 0
 let MAX_DAYS_IN_FEB: Int = 28
 
 func appendToDatabase(activity: MeasuredActivity) {
@@ -445,7 +446,7 @@ func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, ho
 }
 
 func updateScore(score: UserScore, queryDate: Date = Date()) -> UserScore {
-       //MAKE IT SUCH THAT THE QUERY HAPPENS ONCE A DAY
+     
        //query walking
     let walkingKm = queryDailyKm(motionType: MeasuredActivity.MotionType.walking,
                                  hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
@@ -458,11 +459,11 @@ func updateScore(score: UserScore, queryDate: Date = Date()) -> UserScore {
     let tubeKm = queryDailyKm(motionType: MeasuredActivity.MotionType.train,
                               hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
         
-        //query plane
-        //queryDailyKm(motionType: MeasuredActivity.MotionType.plane, hourStart: "00:00:00", hourEnd: "23:59:59")
+    let planeKm = queryDailyKm(motionType: MeasuredActivity.MotionType.plane,
+                               hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
         
-       //total kms
-    let totalKm = walkingKm + carKm + tubeKm
+    //total kms
+    let totalKm = walkingKm + carKm + tubeKm + planeKm
         
        //prevent division by 0
        if totalKm == 0 {
@@ -476,7 +477,8 @@ func updateScore(score: UserScore, queryDate: Date = Date()) -> UserScore {
            let walkingPoints = (walkingKm/totalKm) * WALKING_PTS
            let carPoints = (walkingKm/totalKm) * CAR_PTS
            let tubePoints = (walkingKm/totalKm) * TUBE_PTS
-           score.totalPoints += walkingPoints + carPoints + tubePoints
+           let planePoints = (planeKm/totalKm) * PLANE_PTS
+           score.totalPoints += (walkingPoints + carPoints + tubePoints + planePoints)
            let dayTodayStr = stringFromDate(Date())
            score.date = dayTodayStr
            return score
