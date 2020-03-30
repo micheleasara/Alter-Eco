@@ -441,7 +441,7 @@ func normaliseMonthlyAll() -> Double {
 
 func normaliseYearlyAll() -> Double {
 
-     var max_data = max(queryYearlyCarbonAll(year: "2014"),queryYearlyCarbonAll(year: "2015"),queryYearlyCarbonAll(year: "2016"), queryYearlyCarbonAll(year: "2017"),queryYearlyCarbonAll(year: "2018"),queryYearlyCarbonAll(year: "2019"),queryYearlyCarbonAll(year: "2020"))
+    var max_data = max(queryYearlyCarbonAll(year: "2014"),queryYearlyCarbonAll(year: "2015"),queryYearlyCarbonAll(year: "2016"), queryYearlyCarbonAll(year: "2017"),queryYearlyCarbonAll(year: "2018"),queryYearlyCarbonAll(year: "2019"),queryYearlyCarbonAll(year: "2020"))
     
     //prevent divide by zero error
     if (max_data==0)
@@ -456,12 +456,12 @@ func normaliseYearlyAll() -> Double {
 
 
 //score calculation functions
-func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) -> Double {
+func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String, queryDate: Date = Date()) -> Double {
     
-    let dateNow = Date()
+    //let dateNow = Date()
     var measuredActivityKms:Double = 0
     
-    let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start <= %@ AND start >= %@", MeasuredActivity.motionTypeToString(type: motionType),combineTodayDateWithInterval(date: dateNow, hour: hourEnd) as NSDate, combineTodayDateWithInterval(date: dateNow, hour: hourStart) as NSDate))
+    let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start <= %@ AND start >= %@", MeasuredActivity.motionTypeToString(type: motionType),combineTodayDateWithInterval(date: queryDate, hour: hourEnd) as NSDate, combineTodayDateWithInterval(date: queryDate, hour: hourStart) as NSDate))
     
     if (queryMeasuredActivities.count != 0) {
         for measuredActivity in queryMeasuredActivities {
@@ -474,22 +474,25 @@ func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, ho
     return measuredActivityKms
 }
 
-func updateScore(score: UserScore) -> UserScore {
+func updateScore(score: UserScore, queryDate: Date = Date()) -> UserScore {
        //MAKE IT SUCH THAT THE QUERY HAPPENS ONCE A DAY
        //query walking
-       let walkingKm = queryDailyKm(motionType: MeasuredActivity.MotionType.walking, hourStart: "00:00:00", hourEnd: "23:59:59")
+    let walkingKm = queryDailyKm(motionType: MeasuredActivity.MotionType.walking,
+                                 hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
        
        //query car
-       let carKm = queryDailyKm(motionType: MeasuredActivity.MotionType.car, hourStart: "00:00:00", hourEnd: "23:59:59")
+    let carKm = queryDailyKm(motionType: MeasuredActivity.MotionType.car,
+                             hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
        
-       //query tube
-       let tubeKm = queryDailyKm(motionType: MeasuredActivity.MotionType.train, hourStart: "00:00:00", hourEnd: "23:59:59")
+    //query tube
+    let tubeKm = queryDailyKm(motionType: MeasuredActivity.MotionType.train,
+                              hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
         
         //query plane
         //queryDailyKm(motionType: MeasuredActivity.MotionType.plane, hourStart: "00:00:00", hourEnd: "23:59:59")
         
        //total kms
-       let totalKm = walkingKm + carKm + tubeKm
+    let totalKm = walkingKm + carKm + tubeKm
         
        //prevent division by 0
        if totalKm == 0 {
@@ -542,9 +545,9 @@ func stringFromDate(_ date: Date) -> String {
     return formatter.string(from: date)
 }
 
-func replaceScore() {
+func replaceScore(queryDate: Date = Date()) {
     
-    let dateNow = Date()
+    let dateNow = queryDate
     let dateTodayStr = stringFromDate(dateNow)
     let dateYesterday = Calendar.current.date(byAdding: .day,value: -1, to: dateNow)
     let dateYesterdayStr = stringFromDate(dateYesterday!)
@@ -584,7 +587,7 @@ func replaceScore() {
     
     //update the score
 //    let newScore = UserScore(totalPoints: 200, date: dateTodayStr) //updateScore(score: oldScore)
-    let newScore = updateScore(score: oldScore)
+    let newScore = updateScore(score: oldScore, queryDate: queryDate)
     
     //replace old score with new score in database and update date
     let entity = NSEntityDescription.entity(forEntityName: "Score",

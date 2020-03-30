@@ -54,7 +54,7 @@ class ActivityEstimatorTest: XCTestCase {
         let averageActivity = MeasuredActivity.getAverageActivity(measurements: Array(measurements[..<(measurements.count-CHANGE_ACTIVITY_THRESHOLD)]))
 
         // retrieve whatever was put in the database
-        let activityRetrieved = executeQuery(query: NSPredicate(format: "end == %@", measurements[measurements.count - CHANGE_ACTIVITY_THRESHOLD].end as NSDate))[0]
+        let activityRetrieved = executeQuery(query: NSPredicate(format: "end == %@", measurements[measurements.count - CHANGE_ACTIVITY_THRESHOLD - 1].end as NSDate))[0]
         XCTAssert(averageActivity == activityRetrieved, "Event retrieved does not match what was expected")
     }
 
