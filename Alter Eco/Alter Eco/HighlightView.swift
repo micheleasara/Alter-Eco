@@ -65,8 +65,7 @@ struct HighlightView: View {
         Text(generateSentence())
             .font(.headline)
             .fontWeight(.regular)
-            .padding(CGFloat(screenMeasurements.broadcastedWidth)*0.2)
-
+            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/5)
         }
     }
 }
