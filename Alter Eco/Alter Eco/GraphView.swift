@@ -89,18 +89,18 @@ struct GraphView: View {
               (
                 DataParts.dayplane,
              [
-                (DaySpecifics.twohour, 1.0),
-                (DaySpecifics.fourhour, 1.0),
-                 (DaySpecifics.sixhour, 1.0),
-                 (DaySpecifics.eighthour, 1.0),
-                 (DaySpecifics.tenhour, 1.0),
-                 (DaySpecifics.twelvehour, 1.0),
-                 (DaySpecifics.fourteenhour, 1.0),
-                 (DaySpecifics.sixteenhour, 1.0),
-                 (DaySpecifics.eighteenhour, 1.0),
-                 (DaySpecifics.twentyhour, 1.0),
-                 (DaySpecifics.twentytwohour, 1.0),
-                 (DaySpecifics.twentyfourhour, 1.0),
+                (DaySpecifics.twohour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "00:00:00", hourEnd: "02:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.fourhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "02:00:00", hourEnd: "04:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.sixhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "04:00:00", hourEnd: "06:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.eighthour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "06:00:00", hourEnd: "08:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.tenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "08:00:00", hourEnd: "10:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.twelvehour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "10:00:00", hourEnd: "12:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.fourteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "12:00:00", hourEnd: "14:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.sixteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "14:00:00", hourEnd: "16:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.eighteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "16:00:00", hourEnd: "18:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.twentyhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "18:00:00", hourEnd: "20:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.twentytwohour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "20:00:00", hourEnd: "22:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
+                (DaySpecifics.twentyfourhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane, hourStart: "22:00:00", hourEnd: "24:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)),
 
              ]
      ),
@@ -154,13 +154,13 @@ struct GraphView: View {
             ),
               (DataParts.weekplane,
               [
-                (DaySpecifics.sunday, 1.0),
-                (DaySpecifics.monday, 1.0),
-                  (DaySpecifics.tuesday, 1.0),
-                  (DaySpecifics.wednesday, 1.0),
-                  (DaySpecifics.thursday, 1.0),
-                  (DaySpecifics.friday, 1.0),
-                  (DaySpecifics.saturday, 1.0),
+               (DaySpecifics.sunday,queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay: "Sunday")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane) ),
+               (DaySpecifics.monday, queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay: "Monday")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane)),
+               (DaySpecifics.tuesday, queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay: "Tuesday")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane)),
+               (DaySpecifics.wednesday, queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay: "Wednesday")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane)),
+               (DaySpecifics.thursday, queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay: "Thursday")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane)),
+               (DaySpecifics.friday, queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay: "Friday")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane)),
+               (DaySpecifics.saturday, queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay: "Saturday")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane))
 
               ]
               ),
@@ -236,18 +236,19 @@ struct GraphView: View {
           (
         DataParts.monthplane,
             [
-                (DaySpecifics.january, 1.0),
-                (DaySpecifics.febuary, 1.0),
-                (DaySpecifics.march, 1.0),
-                (DaySpecifics.april, 1.0),
-                (DaySpecifics.may, 1.0),
-                (DaySpecifics.june, 1.0),
-                (DaySpecifics.july, 1.0),
-                (DaySpecifics.august, 1.0),
-                (DaySpecifics.september, 1.0),
-                (DaySpecifics.october, 1.0),
-                (DaySpecifics.november, 1.0),
-                (DaySpecifics.december, 1.0),
+               (DaySpecifics.january, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "January")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.febuary, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "February")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.march, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "March")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.april, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "April")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.may, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "May")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.june, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "June")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.july, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "July")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.august, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "August")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.september, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "September")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.october, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "October")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.november, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "November")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
+               (DaySpecifics.december, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "December")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane))
+
             ]
     ),
           (
@@ -302,13 +303,13 @@ struct GraphView: View {
   (
       DataParts.yearplane,
           [
-            (DaySpecifics.fourteen, 1.0),
-              (DaySpecifics.fifteen, 1.0),
-              (DaySpecifics.sixteen, 1.0),
-              (DaySpecifics.seventeen, 1.0),
-              (DaySpecifics.eighteen, 1.0),
-              (DaySpecifics.nineteen, 1.0),
-              (DaySpecifics.twenty, 1.0),
+            (DaySpecifics.fourteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: "2014")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+            (DaySpecifics.fifteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: "2015")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+            (DaySpecifics.sixteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: "2016")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+            (DaySpecifics.seventeen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: "2017")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+            (DaySpecifics.eighteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: "2018")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+            (DaySpecifics.nineteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: "2019")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+            (DaySpecifics.twenty, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: "2020")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane))
           ]
   ),
                   

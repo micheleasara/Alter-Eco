@@ -17,7 +17,7 @@ struct gridlines: View {
         case 3:
             maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.daytrain)
         case 4:
-            maxVal = 70.0
+            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)
         case 5:
             maxVal = normaliseWeeklyAll()
         case 6:
@@ -27,7 +27,7 @@ struct gridlines: View {
         case 8:
             maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.weektrain)
         case 9:
-            maxVal = 70.0
+            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.weekplane)
         case 10:
             maxVal = normaliseMonthlyAll()
         case 11:
@@ -37,7 +37,7 @@ struct gridlines: View {
         case 13:
             maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthtrain)
         case 14:
-            maxVal = 70.0
+            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)
         case 15:
             maxVal = normaliseYearlyAll()
         case 16:
@@ -46,6 +46,8 @@ struct gridlines: View {
             maxVal = normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)
         case 18:
             maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)
+        case 18:
+            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yearplane)
             
         default:
             maxVal = 70.0
