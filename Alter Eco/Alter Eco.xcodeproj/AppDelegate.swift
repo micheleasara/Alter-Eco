@@ -42,9 +42,32 @@ public let GPS_UPDATE_AIRPORT_THRESHOLD:Double = 4000
 // define two hours waiting time at airport not to be considered as flying time (i.e. better distance estimation)
 public let TWO_HOURS_AIRPORT_WAITING_TIME: Double = 60*60*2
 
+extension Date {
+    static var yesterday: Date { return Date().dayBefore }
+    static var tomorrow:  Date { return Date().dayAfter }
+    var dayBefore: Date {
+        return Calendar.current.date(byAdding: .day, value: -1, to: noon)!
+    }
+    var dayAfter: Date {
+        return Calendar.current.date(byAdding: .day, value: 1, to: noon)!
+    }
+    var noon: Date {
+        return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
+    }
+    var showtime: Date {
+        return Calendar.current.date(bySettingHour: 0, minute: 1, second: 0, of: self)!
+    }
+    var checktime: Date {
+        return Calendar.current.date(bySettingHour: 11, minute: 30, second: 0, of: self)!
+    }
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+    // Instantiate the scene
     let scene = SceneDelegate()
+    // Set date last calculated as today
+    var date_last_calculated = Date()
     // requests gps updates
     internal let manager = CLLocationManager()
     // estimates activities based on given information (such as location updates)
@@ -122,6 +145,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
+        if !Calendar.current.isDate(date_last_calculated, inSameDayAs: Date()) {
+            // Replace score and set date_last_calculated to today:
+            replaceScore(queryDate: Date().dayBefore)
+            self.date_last_calculated = Date()
+            // Schedule another background tasks again:
+            scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
+        }
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
     
@@ -174,7 +204,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    /*----- START OF BACKGROUND TASK SHIT -------*/
+    /*   ---------- START OF BACKGROUND TASK SHIT ----------   */
     
     func registerForBackgroundTasks() {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.wifi",
@@ -185,16 +215,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             print("Done registering")
         }
         
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.score",
+                                        using: DispatchQueue.global())
+        { task in
+            //This task is cast with processing request (BGAppRefreshTask)
+            self.handleBGTscore(task: task as! BGAppRefreshTask)
+            print("Done registering")
+        }
+        
 
     }
     
+    /*----- START OF BACKGROUND WIFI STUFF -------*/
     func handleBGTwifi(task: BGAppRefreshTask) {
-        print("Handling the task")
+        print("Handling the wifi task")
         // Set up OperationQueue
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
         // Establish task
-        let appRefreshOperation:Void = scene.checkWifi(background: true)
+        let appRefreshOperation = scene.checkWifi(background: true)
         // Add operation to queue
         queue.addOperation {appRefreshOperation}
         // Set up task expiration handler
@@ -212,21 +251,74 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     
     func scheduleBGTwifi() {
+        // Cancel previous wifi requests:
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.wifi")
+        // Set up new wifi request:
         let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
-        // Fetch no earlier than 10 minutes from now
+        // Schedule no earlier than 10 minutes from now
         request.earliestBeginDate = Date(timeIntervalSinceNow: 10*60)
-        print("In schedule app refresh")
+        print("In schedule wifi app refresh")
         
         do {
            try BGTaskScheduler.shared.submit(request)
         } catch {
-           print("Could not schedule app refresh: \(error)")
+           print("Could not schedule wifi app refresh: \(error)")
         }
-        print("Ended schedule app refresh")
+        
+        print("Ended schedule wifi app refresh")
     }
     
+    /*----- END OF BACKGROUND WIFI STUFF -------*/
     
-    /*----- END OF BACKGROUND TASK SHIT -------*/
+    /*----- START OF BACKGROUND SCORE STUFF -------*/
+    func scheduleBGTscore(schedule_date: Date) {
+        // Cancel previous requests score request:
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.score")
+        // Set up new score request:
+        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.score")
+        // Schedule no earlier than schedule_date input supplied
+        request.earliestBeginDate = schedule_date
+        print("In schedule score app refresh")
+        
+        do {
+           try BGTaskScheduler.shared.submit(request)
+        } catch {
+           print("Could not schedule score app refresh: \(error)")
+        }
+        
+        print("Ended schedule score app refresh")
+    }
+    
+    func handleBGTscore(task: BGAppRefreshTask) {
+        print("Handling the score task")
+        // Check to see if the last time we calculated the score wasn't today:
+        if !Calendar.current.isDate(date_last_calculated, inSameDayAs: Date()){
+            // Evaluate score for yesterday:
+            let appRefreshOperation = replaceScore(queryDate: Date().dayBefore)
+            // Set last time we calculated the score to today:
+            self.date_last_calculated = Date()
+            // Set up OperationQueue
+            let queue = OperationQueue()
+            queue.maxConcurrentOperationCount = 1
+            // Add operation to queue
+            queue.addOperation {appRefreshOperation}
+            // Set up task expiration handler
+            task.expirationHandler = {
+                queue.cancelAllOperations()
+            }
+            // Set the task as completed when the operation queue empty:
+            let lastOperation = queue.operations.last
+            lastOperation?.completionBlock = {
+                task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
+            }
+        }
+        // Schedule another background task:
+        scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
+    }
+    
+    /*----- END OF BACKGROUND SCORE STUFF -------*/
+    
+    /*   ---------- END OF BACKGROUND TASK SHIT ----------   */
     
     /*----- START OF NOTIFICATION SHIT -------*/
     // Function to register for notifications:

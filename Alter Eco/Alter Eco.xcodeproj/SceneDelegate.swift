@@ -61,7 +61,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                     }
                     // Register the relevant notification
                     if background {self.registerWifiNotification()}
-                    
                 }
             } else {
                 print("We're disconnected.")
@@ -80,6 +79,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         let queue = DispatchQueue.global(qos: .background)
         monitor.start(queue: queue)
     }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Create the SwiftUI view that provides the window contents.
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
