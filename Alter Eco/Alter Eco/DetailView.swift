@@ -6,24 +6,25 @@ struct DetailView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     var body: some View {
-            
-        ZStack {
-            Color("app_background")
-            
-            VStack{
-            
-                //welcome, and profile button
-                WelcomeView()
+        ScrollView {
+            ZStack {
+                Color("app_background")
                 
-                //Bar chart view
-                GraphView()
+                VStack{
                 
-                //Scores summary
-                ScoreView()
-                
-                //Highlights
-                HighlightView()
+                    //welcome, and profile button
+                    WelcomeView()
                     
+                    //Bar chart view
+                    GraphView()
+                    
+                    //Scores summary
+                    ScoreView()
+                    
+                    //Highlights
+                    HighlightView()
+                        
+                }
             }
         }
     }
