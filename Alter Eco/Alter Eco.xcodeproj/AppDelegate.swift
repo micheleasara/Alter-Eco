@@ -207,26 +207,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     /*   ---------- START OF BACKGROUND TASK SHIT ----------   */
     
     func registerForBackgroundTasks() {
+        // Register the wifi task
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.wifi",
                                         using: DispatchQueue.global())
         { task in
             //This task is cast with processing request (BGAppRefreshTask)
             self.handleBGTwifi(task: task as! BGAppRefreshTask)
-            print("Done registering")
         }
-        
+        // Register the score task
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.score",
                                         using: DispatchQueue.global())
         { task in
             //This task is cast with processing request (BGAppRefreshTask)
             self.handleBGTscore(task: task as! BGAppRefreshTask)
-            print("Done registering")
         }
         
 
     }
     
     /*----- START OF BACKGROUND WIFI STUFF -------*/
+    func scheduleBGTwifi() {
+        // Cancel previous wifi requests:
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.wifi")
+        // Set up new wifi request:
+        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
+        // Schedule no earlier than 10 minutes from now
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 10*60)
+        
+        do {
+           try BGTaskScheduler.shared.submit(request)
+        } catch {
+           print("Could not schedule wifi app refresh: \(error)")
+        }
+    }
+    
     func handleBGTwifi(task: BGAppRefreshTask) {
         print("Handling the wifi task")
         // Set up OperationQueue
@@ -249,25 +263,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         scheduleBGTwifi()
     }
     
-    
-    func scheduleBGTwifi() {
-        // Cancel previous wifi requests:
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.wifi")
-        // Set up new wifi request:
-        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
-        // Schedule no earlier than 10 minutes from now
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 10*60)
-        print("In schedule wifi app refresh")
-        
-        do {
-           try BGTaskScheduler.shared.submit(request)
-        } catch {
-           print("Could not schedule wifi app refresh: \(error)")
-        }
-        
-        print("Ended schedule wifi app refresh")
-    }
-    
     /*----- END OF BACKGROUND WIFI STUFF -------*/
     
     /*----- START OF BACKGROUND SCORE STUFF -------*/
@@ -278,7 +273,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let request = BGAppRefreshTaskRequest(identifier: "com.altereco.score")
         // Schedule no earlier than schedule_date input supplied
         request.earliestBeginDate = schedule_date
-        print("In schedule score app refresh")
         
         do {
            try BGTaskScheduler.shared.submit(request)
