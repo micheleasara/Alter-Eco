@@ -236,18 +236,18 @@ struct GraphView: View {
           (
         DataParts.monthplane,
             [
-               (DaySpecifics.january, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "January")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.febuary, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "February")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.march, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "March")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.april, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "April")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.may, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "May")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.june, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "June")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.july, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "July")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.august, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "August")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.september, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "September")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.october, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "October")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.november, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "November")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane)),
-               (DaySpecifics.december, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "December")/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthplane))
+               (DaySpecifics.january, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "January")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.febuary, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "February")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.march, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "March")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.april, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "April")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.may, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "May")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.june, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "June")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.july, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "July")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.august, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "August")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.september, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "September")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.october, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "October")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.november, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "November")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)),
+               (DaySpecifics.december, queryMonthlyCarbon(motionType:MeasuredActivity.MotionType.plane, month: "December")/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane))
 
             ]
     ),
@@ -326,7 +326,7 @@ struct GraphView: View {
             }
               .pickerStyle(SegmentedPickerStyle())
               .padding()
-              .animation(.default)
+              
             ZStack{
                 gridlines(
                     value:self.pickerSelectedItem+self.pickerSelectedTwoItem)
@@ -344,7 +344,6 @@ struct GraphView: View {
               }
               
               
-              .animation(.default)
               }
               //Transport option picker
               Picker(selection: $pickerSelectedTwoItem.animation(), label: Image("")) {
@@ -357,7 +356,7 @@ struct GraphView: View {
               }
               .pickerStyle(SegmentedPickerStyle())
               .padding()
-              .animation(.default)
+              
             
         }
     }
