@@ -636,6 +636,34 @@ func retrieveScore(query: NSPredicate) -> UserScore {
     return userScore
 }
 
+func retrieveLatestScore() -> UserScore {
+    
+    let dayToday = Date()
+    let dayTodayStr = stringFromDate(dayToday)
+    let userScore = UserScore(totalPoints: -6, date: dayTodayStr)
+    
+    guard let appDelegate =
+      UIApplication.shared.delegate as? AppDelegate else {
+        return userScore
+    }
+    
+    let managedContext = appDelegate.persistentContainer.viewContext
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Score")
+    
+    do {
+        let queryResult = try managedContext.fetch(fetchRequest)
+        for result in queryResult {
+            userScore.date = result.value(forKey: "dateStr") as! String
+            userScore.totalPoints = result.value(forKey: "score") as! Double
+        }
+        
+    } catch let error as NSError {
+      print("Could not fetch. \(error), \(error.userInfo)")
+    }
+    
+    return userScore
+}
+
 func printUserScoreDatabase() {
     
     guard let appDelegate =
