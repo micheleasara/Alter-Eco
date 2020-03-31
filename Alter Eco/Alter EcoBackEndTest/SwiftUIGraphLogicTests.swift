@@ -12,49 +12,36 @@ import CoreLocation
 @testable import Alter_Eco
 
 class SwiftUIGraphLogicTests: XCTestCase {
+    
+    
     func testDataisCorrectlyNormalised() {
-        //add fake data to database for two specific days
+        let date = Date()
+        let activity = MeasuredActivity(motionType: .car, distance: 11.0, start: date, end: Date(timeInterval: 10, since: date))
+        appendToDatabase(activity: activity)
+        let result = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: "00:00:00", hourEnd: "24:00:00")
         
+        let monthNormalisation=normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.monthcar)        
+        //print (result)
+        //print (monthNormalisation)
         
-       let date = Date()
-           let activity = MeasuredActivity(motionType: .car, distance: 11.0, start: date, end: Date(timeInterval: 10, since: date))
+        XCTAssert(monthNormalisation == result)
+    }
+    
+    func testForCorrectCarbonConversions() {
+             }
 
-           appendToDatabase(activity: activity)
-
-           let activityRetrieved = executeQuery(query: NSPredicate(format: "start == %@", date as NSDate))[0]
-
-           XCTAssert(activity == activityRetrieved, "Expected same activity")
-       }
-
-     //     appendToDatabase(activity: activity)
+    func testGridLinesDisplayCorrectUnitsWhenUnder1000CarbonGrams() {
+          }
+    
+    func testGridLinesDisplayCorrectUnitsWhenOver1000CarbonGrams() {
+    }
+    
+    func testGridLinesDisplayCorrectIntervals() {
     }
 
-        
-        
-        
-
-      //  let result = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: "01:00:00", hourEnd: "02:00:00")
-      
-        
-                
-      //  let monthNormalisation=normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthcar)
-        
-
-        //fake query for that specific day
-      //   XCTAssert(monthNormalisation == result, "Expected car, got " )
-        
-        //normalise data for that day
-
-       
-//    func testGridLinesDisplayCorrectUnits() {
-//
-//          }
-//    func testGridLinesDisplayCorrectIntervals() {
-//
-//    }
-//    func testGraphChangesColourDependingOnComparisonToAverageDailyUKAmount() {
-//
-//    }
+    func testGraphChangesColourDependingOnComparisonToAverageDailyUKAmount() {
+    }
+}
 
 
 

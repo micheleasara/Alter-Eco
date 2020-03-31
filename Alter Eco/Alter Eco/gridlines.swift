@@ -57,7 +57,6 @@ struct gridlines: View {
         if (maxVal==1)
         {
             maxVal=0
-            
         }
         //Values for the dimensions of the gridlines to help ensure they fit on most device screens.
         let dimensionMultiplier=CGFloat(self.screenMeasurements.broadcastedHeight)/35
@@ -105,9 +104,7 @@ struct gridlines: View {
                         .offset(x:
                             -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                         .foregroundColor(Color("tertiary_label"))
-                    
                 }
-                
         }
         
     }

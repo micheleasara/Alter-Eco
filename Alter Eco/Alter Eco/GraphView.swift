@@ -2,22 +2,18 @@ import SwiftUI
 
 
 struct GraphView: View {
-    
     //Two picker variables set to 0 and the values are changed upon the users touch (changed values are found in the code below)
-    
     //The following picker represents the options of 'day' 'week' 'month' 'year'
     @State var pickerSelectedItem = 0
     //The following picker represents the travel options of 'all' 'car' 'walk' 'train' 'plane'
     @State var pickerSelectedTwoItem = 0
-
-    
     //A dictionary data structure for the bar chart.
     //Access by the data type 'DataParts' declared in the file DataClassGraph. This value is determined by the picker sum (e.g. if day + car view is selected the picker sum will be '1' and therefore DataParts.daycar (position 1 in the dictionary) will be displayed).
     @State var data: [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Double)])] =
         [
             (//Access dictionary via this key
                 DataParts.dayall,
-               [//nested dictionary holds the individual values e.g. for day this is the different hourly time points normalised
+               [//The nested dictionary holds the individual values e.g. for day this is the normalised hourly time points
                   (DaySpecifics.twohour, queryDailyCarbonAll(hourStart: "00:00:00", hourEnd: "02:00:00")/normaliseDailyAll()),
                     (DaySpecifics.fourhour, queryDailyCarbonAll(hourStart: "02:00:00", hourEnd: "04:00:00")/normaliseDailyAll()),
                     (DaySpecifics.sixhour, queryDailyCarbonAll(hourStart: "04:00:00", hourEnd: "06:00:00")/normaliseDailyAll()),
@@ -315,8 +311,7 @@ struct GraphView: View {
                   
            ]
     
-    var body: some View {
-        //The top picker represents the time (e.g. day vs week) the user would like to view. For example, if the user selects the week picker, the picker would change to a value of 5. These values have been chosen to correctly index the dictionary above (when added to the picker value of the transport mode)
+    var body: some View {//The top picker represents the time (e.g. day vs week) the user would like to view. For example, if the user selects the week picker, the picker would change to a value of 5. These values have been chosen to correctly index the dictionary above (when added to the picker value of the transport mode)
         VStack{
             Picker(selection: $pickerSelectedItem.animation(), label: Text("")) {
                 Text(DataParts.day.name).tag(0)
@@ -326,35 +321,23 @@ struct GraphView: View {
             }
               .pickerStyle(SegmentedPickerStyle())
               .padding()
-              
-            ZStack{
-                //Gridlines (as declared in gridlines.swift) dynamically change depending on the max value for the view. The value of the sum of the pickers is passed to the gridlines to ensure they adjust for the view. 
+            ZStack{//Gridlines (as declared in gridlines.swift) dynamically change depending on the max value for the view. The value of the sum of the pickers is passed to the gridlines to ensure they adjust for the view.
                 gridlines(value:self.pickerSelectedItem+self.pickerSelectedTwoItem)
                 //The bar chart is constructed here
-                HStack {
-                    //The bar displayed depends on the two pickers chosen
+                HStack {//The bar displayed depends on the two pickers chosen
                     ForEach(0..<self.data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
-                              { i in
-                                          
-                                  BarView(
-                                  value: self.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,
-                                  label: self.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,
-                                  wid: self.pickerSelectedItem
-                                  )}
-              }
-                            
-              }
-              //Transport option picker
-              Picker(selection: $pickerSelectedTwoItem.animation(), label: Image("")) {
-              
-              Text("All").tag(0)
-              Image(systemName: "car").tag(1)
-              Image(systemName: "person").tag(2)
-              Image(systemName: "tram.fill").tag(3)
-              Image(systemName: "airplane").tag(4)
-              }
-              .pickerStyle(SegmentedPickerStyle())
-              .padding()              
+                    { i in
+                        BarView(value: self.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,label: self.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,wid: self.pickerSelectedItem)}}}
+            //Transport option picker
+            Picker(selection: $pickerSelectedTwoItem.animation(), label: Image("")) {
+            Text("All").tag(0)
+            Image(systemName: "car").tag(1)
+            Image(systemName: "person").tag(2)
+            Image(systemName: "tram.fill").tag(3)
+            Image(systemName: "airplane").tag(4)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
             
         }
     }

@@ -11,14 +11,11 @@ struct BarView: View {
     var body: some View {
         let AV_UK_DAILYCARBON: Double = 2200
         var colour: String
-        
         //The colour of the graph will change depending on whether the user has emitted more or less than the UK's daily average.
-        if (queryDailyCarbonAll(hourStart: "00:00:00", hourEnd: "24:00:00")>AV_UK_DAILYCARBON)
-        {
+        if (queryDailyCarbonAll(hourStart: "00:00:00", hourEnd: "24:00:00")>AV_UK_DAILYCARBON){
             colour = "redGraphBar"
         }
-        else
-        {
+        else{
             colour = "graphBars"
         }
         //The following two if statements adjust the width of the graph depending on the 'time' picker value chosen. For example, if 'day' is selected then the graph has to change dimensions to fit 12 variables on the x-axis (as opposed to 7 for 'week'). The 'wid' value is the addition of the two picker values.
@@ -31,7 +28,7 @@ struct BarView: View {
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
                     Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/21, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
-                        //Colour is determines by the daily carbon query above
+                        //Colour is determined by the daily carbon query above
                         .foregroundColor(Color(colour))
                 }
                 Text(label)
@@ -46,16 +43,15 @@ struct BarView: View {
                     .foregroundColor(Color("app_background"))
                     .opacity(0.0)
                 Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/9.5, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
-                    //Colour is determines by the daily carbon query above
+                    //Colour is determined by the daily carbon query above
                     .foregroundColor(Color(colour))
                 }
-            //Labels displaed below the graph represent the different time points.
+            //Labels displayed below the graph represent the different time points.
             Text(label)
                 .font(Font.system(size: 13.5, design: .default))
                 .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
             }
         }
-    
 }
 
 
