@@ -91,7 +91,7 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     case twenty
 
        
-       
+    //member function of enum to convert value to a string
     var shortName: String {
         if (self==DaySpecifics.fourteen)
         { return "2014"}

@@ -4,13 +4,15 @@ struct BarView: View {
     
     var value: Double
     var label: String
-    //This value represents the addition of the two pickers and used to change the width value in the bar graph
+    //This value represents the addition of the two pickers which is used to change the width value in the bar graph as if day view is selected than the width will have to be larger than if a week view is selected.
     var wid: Int
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     var body: some View {
         let AV_UK_DAILYCARBON: Double = 2200
         var colour: String
+        
+        //The colour of the graph will change depending on whether the user has emitted more or less than the UK's daily average.
         if (queryDailyCarbonAll(hourStart: "00:00:00", hourEnd: "24:00:00")>AV_UK_DAILYCARBON)
         {
             colour = "redGraphBar"
@@ -29,6 +31,7 @@ struct BarView: View {
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
                     Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/21, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
+                        //Colour is determines by the daily carbon query above
                         .foregroundColor(Color(colour))
                 }
                 Text(label)
@@ -43,8 +46,10 @@ struct BarView: View {
                     .foregroundColor(Color("app_background"))
                     .opacity(0.0)
                 Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/9.5, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
+                    //Colour is determines by the daily carbon query above
                     .foregroundColor(Color(colour))
                 }
+            //Labels displaed below the graph represent the different time points.
             Text(label)
                 .font(Font.system(size: 13.5, design: .default))
                 .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))

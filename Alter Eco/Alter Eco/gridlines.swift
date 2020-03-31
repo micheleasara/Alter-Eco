@@ -3,6 +3,7 @@ import SwiftUI
 struct gridlines: View {
      @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
+    //Value represents the sum of the pickers so we know what the view currently is.E.g. if the sum is 1 then that means that car and day views have been selected and the gridlines will have to adjust for the maximum value within the queries for that range.
     var value: Int
     var body: some View {
         
@@ -52,21 +53,27 @@ struct gridlines: View {
         default:
             maxVal = 70.0
         }
+        //Due to divide my zero errors in the normalisation equations, if there is not a carbon value, then the normalised version is set to divide by '1' instead of '0'. This is corrected for here.
         if (maxVal==1)
-        {maxVal=0}
+        {
+            maxVal=0
+            
+        }
+        //Values for the dimensions of the gridlines to help ensure they fit on most device screens.
         let dimensionMultiplier=CGFloat(self.screenMeasurements.broadcastedHeight)/35
         let dimensionAdjustment=CGFloat(self.screenMeasurements.broadcastedHeight)/9.3
         
         var carbonUnit: String
         var decimalPlaces: String
         
-        //Units change depending on whether the total amount of carbon in grams is over or under 1000
+        //Units change depending on whether the total amount of carbon in grams is over or under 1000 (helps ensure the y-axis labels fit on the screen and adds clarity
         if (maxVal>1000)
-        { //represent kilogram amount
+        { //This adjusts the value from grams to kilograms and changes the value to display to 1 d.p (otherwise it will be to 0dp)
             maxVal=maxVal/1000
             carbonUnit="Units: Carbon kG"
             decimalPlaces="%.1f"
         }
+        //If the carbon value is very small (below 10grams) then this ensures that the value is displayed to 1 d.p., otherwise, values over 10 grams are displaced to 0 d.p.
         else if (maxVal<10)
         {
             carbonUnit="Units: Carbon g."
@@ -84,13 +91,15 @@ struct gridlines: View {
                     .font(Font.system(size: 12, design: .default))
                     .offset(x:
                         -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.8, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7.5)
+                
+                //For loop cycles through each grid line (currently 8, but this can be adjusted). For each gridline, the dimensions are set and the label that it represents is brought in from the switch statement above which found the max value.
                 ForEach(0..<8) { line in
                     Rectangle()
                         .foregroundColor(Color("secondary_label"))
-                        .zIndex(-100.0)
                         .offset(y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                         .frame(height: CGFloat(self.screenMeasurements.broadcastedHeight)/5000)
                         .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.1)
+                    //Label is calculated from the maxVal adjusted for the number of the line currently in the for loop. E.g. if the line number is 1 then the value is 6/7* maxVal.
                     Text(String(format: decimalPlaces,((7.0-Double(line))/7.0)*maxVal))
                         .font(Font.system(size: 12, design: .default))
                         .offset(x:
