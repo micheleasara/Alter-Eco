@@ -101,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let dateString = retrieveLatestScore().date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "en-UK")
         let dateFromString = dateFormatter.date(from: dateString)
         if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore) {
             // Replace score with data from yesterday:
@@ -296,6 +297,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let dateString = retrieveLatestScore().date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "en-UK")
         let dateFromString = dateFormatter.date(from: dateString)
         // Check to see if the last time we calculated the score wasn't today:
         if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore){

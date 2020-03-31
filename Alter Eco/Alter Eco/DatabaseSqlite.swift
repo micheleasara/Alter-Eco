@@ -77,6 +77,7 @@ func combineTodayDateWithInterval(date: Date, hour: String) -> Date {
 
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd"
+    dateFormatter.locale = Locale(identifier: "en-UK")
     var todayDate = dateFormatter.string(from: date)
     todayDate = todayDate + " " + hour + " +0000"
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
@@ -185,9 +186,6 @@ func queryWeeklyCarbon(motionType: MeasuredActivity.MotionType, weekDayToDisplay
     
     let dateNow = Date()
     
-    let formatter  = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd"
-    
     let myCalendar = Calendar(identifier: .gregorian)
     let dayToday = myCalendar.component(.weekday, from: dateNow) // 1-7 beginning on Sunday
     let weekDayToDisplay = getWeekDayToDisplay(day: weekDayToDisplay)
@@ -283,6 +281,7 @@ func queryMonthlyCarbon(motionType: MeasuredActivity.MotionType, month: String) 
     let monthEnd = "2020-" + monthToDisplay + "-" + endDayOfMonth + " 23:59:59 +0000"
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+    dateFormatter.locale = Locale(identifier: "en-UK")
     let queryDateStart = dateFormatter.date(from: monthStart)
     let queryDateEnd = dateFormatter.date(from: monthEnd)
     let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start >= %@ AND end <= %@", MeasuredActivity.motionTypeToString(type: motionType), queryDateStart! as NSDate, queryDateEnd! as NSDate))
@@ -313,6 +312,7 @@ func queryYearlyCarbon(motionType: MeasuredActivity.MotionType, year: String) ->
     
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+    dateFormatter.locale = Locale(identifier: "en-UK")
     
     if let queryDateStart = dateFormatter.date(from: yearStart)
     {
@@ -512,9 +512,10 @@ func appendScoreToDatabase(score: UserScore) {
 }
 
 func stringFromDate(_ date: Date) -> String {
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy-MM-dd" //yyyy
-    return formatter.string(from: date)
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd" //yyyy
+    dateFormatter.locale = Locale(identifier: "en-UK")
+    return dateFormatter.string(from: date)
 }
 
 func replaceScore(queryDate: Date = Date()) {
@@ -761,10 +762,11 @@ func queryPastMonth(motionType: MeasuredActivity.MotionType, month: String, carb
     let startDateTemp = "2020-" + prevMonthToDisplay + "-"
     let startDate = startDateTemp + String(previousDay) + " 00:00:01 +0000"
 
-    print(endDate)
-    print(startDate)
+    print("Start date is ", endDate)
+    print("End date is ", startDate)
 
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+    dateFormatter.locale = Locale(identifier: "en-UK")
 
     let queryDateStart = dateFormatter.date(from: startDate)
     let queryDateEnd = dateFormatter.date(from: endDate)
