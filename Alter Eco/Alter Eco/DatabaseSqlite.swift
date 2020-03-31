@@ -165,19 +165,19 @@ func getWeekDayDate(weekDayToDisplay: Int, dayToday: Int) -> [Date] {
         let dayDifference = dayToday - weekDayToDisplay
         dateToView = Calendar.current.date(byAdding: .day, value: -dayDifference, to: dateToView)!
         dateToViewAM = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: dateToView)!
-        dateToViewPM = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: dateToView)! //SHOULD GO TO 24
+        dateToViewPM = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: dateToView)! //SHOULD GO TO 24
         return [dateToViewAM, dateToViewPM]
     }
     else if dayToday < weekDayToDisplay {
         let dayDifference = weekDayToDisplay - dayToday
         dateToView = Calendar.current.date(byAdding: .day, value: dayDifference, to: dateToView)!
         dateToViewAM = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of:dateToView)!
-        dateToViewPM = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: dateToView)!
+        dateToViewPM = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: dateToView)!
         return [dateToViewAM, dateToViewPM]
     }
     
     dateToViewAM = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of:dateToView)!
-    dateToViewPM = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of:dateToView)!
+    dateToViewPM = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of:dateToView)!
     
     return [dateToViewAM, dateToViewPM]
 }
