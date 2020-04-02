@@ -47,31 +47,41 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         UNUserNotificationCenter.current().add(request)
     }
     
-    func checkWifi(background: Bool = false) {
+    func checkWifi(background_task: Bool = false) {
         print("In checkWifi")
         
         monitor.pathUpdateHandler = {path in
             if path.status == .satisfied {
-                print("We're connected!")
+                print("We're on WiFi")
                 // Check if we're in background, and whether we've gone from no wifi to wifi:
                 if !self.wifistatus.isConnected {
+                    print("Previously mobile")
                     // Toggle the isConnected boolean to true:
                     DispatchQueue.main.async {
                         self.wifistatus.isConnected = true
+                        print("Toggled status to true")
                     }
                     // Register the relevant notification
-                    if background {self.registerWifiNotification()}
+                    if background_task {
+                        print("Sending wifi notification")
+                        self.registerWifiNotification()
+                    }
                 }
             } else {
-                print("We're disconnected.")
+                print("We're on mobile.")
                 // Check if we're in background, and whether we've gone from wifi to no wifi:
                 if self.wifistatus.isConnected {
+                    print("Previously WiFi")
                     // Toggle the isConnected boolean to false:
                     DispatchQueue.main.async {
                         self.wifistatus.isConnected = false
+                        print("Toggled status to false")
                     }
                     // Register the relevant notification
-                    if background {self.registerNoWifiNotification()}
+                    if background_task {
+                        print("Sending NO wifi notification")
+                        self.registerNoWifiNotification()
+                    }
                 }
             }
         }
@@ -94,7 +104,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             self.window = window
             
             // Begin monitoring wifi status:
-            checkWifi(background: false)
+            checkWifi(background_task: false)
             
             // set trackingData as environment object to allow access within contentView
             let estimator = (UIApplication.shared.delegate as! AppDelegate).activityEstimator
