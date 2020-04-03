@@ -95,26 +95,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         manager.startUpdatingLocation()
         
+        // REDUNDENT PLACEDHOLDER COMMENT:
         // Following code is to check whether we should run the replaceScore()
         // function to calculate the user score of the day before, i.e. if we open
         // the app before the background task was called to do this for us.
         // The scheduleBSTscore() functon reschedules the BGTscore task for tomorrow.
         BGTaskScheduler.shared.cancelAllTaskRequests()
-        
-        /*
-        let dateString = retrieveLatestScore().date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.locale = Locale(identifier: "en-UK")
-        let dateFromString = dateFormatter.date(from: dateString)
-        if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore) {
-            print("Pre-emptively calculating the score!!!")
-            // Replace score with data from yesterday:
-            replaceScore(queryDate: Date().dayBefore)
-            // Schedule another background tasks again:
-            scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
-        }
-         */
         
         return true
     }
