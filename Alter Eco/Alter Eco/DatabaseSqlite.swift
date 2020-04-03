@@ -525,7 +525,7 @@ func replaceScore(queryDate: Date = Date()) {
     let dateYesterday = Calendar.current.date(byAdding: .day,value: -1, to: dateNow)
     let dateYesterdayStr = stringFromDate(dateYesterday!)
     
-    let oldScore = UserScore(totalPoints: 0, date: dateYesterdayStr)
+    let oldScore = UserScore(totalPoints: 0, date: dateYesterdayStr, league: "sun.max")
     
     guard let appDelegate =
         UIApplication.shared.delegate as? AppDelegate else {
@@ -609,7 +609,7 @@ func retrieveScore(query: NSPredicate) -> UserScore {
     
     let dayToday = Date()
     let dayTodayStr = stringFromDate(dayToday)
-    let userScore = UserScore(totalPoints: 5, date: dayTodayStr)
+    let userScore = UserScore(totalPoints: 5, date: dayTodayStr, league: "sun.max")
     
     print(userScore.date)
     print(userScore.totalPoints)
@@ -641,7 +641,7 @@ func retrieveLatestScore() -> UserScore {
     
     let dayToday = Date()
     let dayTodayStr = stringFromDate(dayToday)
-    let userScore = UserScore(totalPoints: -6, date: dayTodayStr)
+    let userScore = UserScore(totalPoints: -6, date: dayTodayStr, league: "sun.max")
     
     guard let appDelegate =
       UIApplication.shared.delegate as? AppDelegate else {
@@ -798,4 +798,56 @@ func queryTotalWeek() -> Double {
                 queryWeeklyCarbonAll(weekDayToDisplay: "Saturday") +
                 queryWeeklyCarbonAll(weekDayToDisplay: "Sunday")
     return total
+}
+
+func getNewLeague(userStats: UserScore) -> String {
+
+    if userStats.league == "sun.max" {
+        return "flame.fill"
+    }
+    else if userStats.league == "flame.fill" {
+        return "tortoise.fill"
+    }
+    
+    return "tortoise.fill"
+}
+
+func getNewLeagueName(leagueName: String) -> String {
+    
+    if leagueName == "sun.max" {
+        return "flame"
+    }
+    else if leagueName == "flame.fill" {
+        return "tortoise"
+    }
+    
+    return "tortoise"
+    
+}
+
+func getLeagueProgress() -> Int {
+    
+    let userScore = retrieveScore(query: NSPredicate(format: "dateStr == %@", Calendar.current.date(byAdding: .day, value: -1, to: Date())! as NSDate))
+    
+    let dayToday = Date()
+    let dayTodayStr = stringFromDate(dayToday)
+    
+    if userScore.totalPoints >= 600 {
+        emptyDatabase()
+        let userScoreNewLeague = UserScore(totalPoints: 0, date: dayTodayStr, league: getNewLeague(userStats: userScore))
+        appendScoreToDatabase(score: userScoreNewLeague)
+        
+        return 0
+    }
+    
+    return Int((userScore.totalPoints / 600).rounded() * 6)
+}
+
+func getColor(iconNb: Int) -> Color {
+    
+    if iconNb <= getLeagueProgress() {
+        return .blue
+    }
+    
+    return .gray
 }

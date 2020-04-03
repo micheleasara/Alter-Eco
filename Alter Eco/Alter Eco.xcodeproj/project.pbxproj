@@ -11,6 +11,7 @@
 		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
+		9C1667602436009E003F4D9D /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C16675F2436009E003F4D9D /* ProgressBarView.swift */; };
 		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
 		9C17CA8524323D1D00378A67 /* WalkHeathrow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */; };
 		9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */; };
@@ -71,6 +72,7 @@
 		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		9C16675F2436009E003F4D9D /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkHeathrow.gpx; sourceTree = "<group>"; };
 		9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MilanLIN.gpx; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 			children = (
 				9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
+				9C16675F2436009E003F4D9D /* ProgressBarView.swift */,
 				5591901D242C0FA400A80ED7 /* UserScore.swift */,
 				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
 				9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */,
@@ -398,6 +401,7 @@
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
 				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
+				9C1667602436009E003F4D9D /* ProgressBarView.swift in Sources */,
 				9CD5943A242968DF00B1D0B4 /* DetailView.swift in Sources */,
 				9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */,
 				9CD59437242968DF00B1D0B4 /* GraphView.swift in Sources */,
