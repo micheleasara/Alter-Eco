@@ -120,6 +120,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        // This method schedules the wifi background task:
         (UIApplication.shared.delegate as! AppDelegate).scheduleBGTwifi()
     }
 
