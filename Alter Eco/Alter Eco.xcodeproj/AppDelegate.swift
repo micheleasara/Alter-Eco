@@ -54,9 +54,9 @@ extension Date {
     var noon: Date {
         return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
     }
-    // Time at which the background task will be scheduled
+    // Time at which the background task will be scheduled MAKE THIS 1 minute past 00:00!!!!!!!!
     var showtime: Date {
-        return Calendar.current.date(bySettingHour: 0, minute: 1, second: 0, of: self)!
+        return Calendar.current.date(bySettingHour: 14, minute: 0, second: 0, of: self)!
     }
     // Time at which to check whether it's time to calculate (NOT USED)
     var checktime: Date {
@@ -99,8 +99,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // function to calculate the user score of the day before, i.e. if we open
         // the app before the background task was called to do this for us.
         // The scheduleBSTscore() functon reschedules the BGTscore task for tomorrow.
-        //scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
-
+        BGTaskScheduler.shared.cancelAllTaskRequests()
+        
+        /*
         let dateString = retrieveLatestScore().date
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -113,6 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             // Schedule another background tasks again:
             scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
         }
+         */
         
         return true
     }
@@ -222,17 +224,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func registerForBackgroundTasks() {
         //     Register the wifi task
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.wifi",
-                                        using: DispatchQueue.global())
+                                        using: nil)
         { task in
             //This task is cast with processing request (BGAppRefreshTask)
             self.handleBGTwifi(task: task as! BGAppRefreshTask)
         }
+        
         //     Register the score task
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.score",
-                                        using: DispatchQueue.global())
+                                        using: nil)
         { task in
             //This task is cast with processing request (BGAppRefreshTask)
-            self.handleBGTscore(task: task as! BGAppRefreshTask)
+            self.handleBGTscore(task: task as! BGProcessingTask)
         }
         print("Registered the BGTs")
 
@@ -245,7 +248,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Set up new wifi request:
         let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
         // Schedule no earlier than 10 minutes from now
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 10*60)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 1*60)
         
         do {
            try BGTaskScheduler.shared.submit(request)
@@ -273,16 +276,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         lastOperation?.completionBlock = {
             task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
         }
+
         // Schedule another background task:
         scheduleBGTwifi()
     }
-    
+
     /*----- END OF BACKGROUND WIFI STUFF -------*/
     
     /*----- START OF BACKGROUND SCORE STUFF -------*/
     func scheduleBGTscore(schedule_date: Date) {
         // Cancel previous requests score request:
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.score")
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.wifi")
         // Set up new score request:
         let request = BGAppRefreshTaskRequest(identifier: "com.altereco.score")
         // Schedule no earlier than schedule_date input supplied
@@ -297,7 +301,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-    func handleBGTscore(task: BGAppRefreshTask) {
+    func handleBGTscore(task: BGProcessingTask) {
         print("Handling the score task")
         let dateString = retrieveLatestScore().date
         let dateFormatter = DateFormatter()
