@@ -128,7 +128,7 @@ func queryDailyCarbon(motionType: MeasuredActivity.MotionType, hourStart: String
 
 func queryDailyCarbonAll(hourStart: String, hourEnd: String) -> Double {
     
-    let carbonValue = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: hourStart, hourEnd: hourEnd) + queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking,hourStart: hourStart, hourEnd: hourEnd) + queryDailyCarbon(motionType: MeasuredActivity.MotionType.train,hourStart: hourStart, hourEnd: hourEnd) + queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane,hourStart: hourStart, hourEnd: hourEnd)
+    let carbonValue = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: hourStart, hourEnd: hourEnd) + queryDailyCarbon(motionType: MeasuredActivity.MotionType.train,hourStart: hourStart, hourEnd: hourEnd) + queryDailyCarbon(motionType: MeasuredActivity.MotionType.plane,hourStart: hourStart, hourEnd: hourEnd)
     
     return carbonValue
 }
@@ -202,7 +202,7 @@ func queryWeeklyCarbon(motionType: MeasuredActivity.MotionType, weekDayToDisplay
 
 func queryWeeklyCarbonAll(weekDayToDisplay: String) -> Double {
     
-    let carbonValue = queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.car, weekDayToDisplay:  weekDayToDisplay) + queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.walking, weekDayToDisplay:  weekDayToDisplay) + queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.train, weekDayToDisplay:  weekDayToDisplay) + queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay:  weekDayToDisplay)
+    let carbonValue = queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.car, weekDayToDisplay:  weekDayToDisplay) + queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.train, weekDayToDisplay:  weekDayToDisplay) + queryWeeklyCarbon(motionType: MeasuredActivity.MotionType.plane, weekDayToDisplay:  weekDayToDisplay)
     
     return carbonValue
 }
@@ -293,7 +293,7 @@ func queryMonthlyCarbon(motionType: MeasuredActivity.MotionType, month: String) 
 }
 func queryMonthlyCarbonAll(month: String) -> Double {
     
-    let carbonValue = queryMonthlyCarbon(motionType: MeasuredActivity.MotionType.car, month: month) + queryMonthlyCarbon(motionType: MeasuredActivity.MotionType.walking,month: month) + queryMonthlyCarbon(motionType: MeasuredActivity.MotionType.train,month: month) +  queryMonthlyCarbon(motionType: MeasuredActivity.MotionType.plane,month: month)
+    let carbonValue = queryMonthlyCarbon(motionType: MeasuredActivity.MotionType.car, month: month) + queryMonthlyCarbon(motionType: MeasuredActivity.MotionType.train,month: month) +  queryMonthlyCarbon(motionType: MeasuredActivity.MotionType.plane,month: month)
    
     return carbonValue
 }
@@ -330,7 +330,7 @@ func queryYearlyCarbon(motionType: MeasuredActivity.MotionType, year: String) ->
 func queryYearlyCarbonAll(year: String) -> Double {
 
     
-     let carbonValue = queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: year) + queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking,year: year) + queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train,year: year) + queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane,year: year)
+     let carbonValue = queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: year) +  queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train,year: year) + queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane,year: year)
     
     return carbonValue
 }
