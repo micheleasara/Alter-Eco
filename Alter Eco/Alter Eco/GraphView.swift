@@ -50,18 +50,18 @@ struct GraphView: View {
                   (
                       DataParts.daywalk,
               [
-                (DaySpecifics.twohour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "00:00:00", hourEnd: "02:00:00")),
-                  (DaySpecifics.fourhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "02:00:00", hourEnd: "04:00:00")),
-                  (DaySpecifics.sixhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "04:00:00", hourEnd: "06:00:00")),
-                  (DaySpecifics.eighthour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "06:00:00", hourEnd: "08:00:00")),
-                  (DaySpecifics.tenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "08:00:00", hourEnd: "10:00:00")),
-                  (DaySpecifics.twelvehour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "10:00:00", hourEnd: "12:00:00")),
-                  (DaySpecifics.fourteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "12:00:00", hourEnd: "14:00:00")),
-                  (DaySpecifics.sixteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "14:00:00", hourEnd: "16:00:00")),
-                  (DaySpecifics.eighteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "16:00:00", hourEnd: "18:00:00")),
-                  (DaySpecifics.twentyhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "18:00:00", hourEnd: "20:00:00")),
-                  (DaySpecifics.twentytwohour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "20:00:00", hourEnd: "22:00:00")),
-                  (DaySpecifics.twentyfourhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "22:00:00", hourEnd: "24:00:00")),
+                (DaySpecifics.twohour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "00:00:00", hourEnd: "02:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.fourhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "02:00:00", hourEnd: "04:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.sixhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "04:00:00", hourEnd: "06:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.eighthour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "06:00:00", hourEnd: "08:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.tenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "08:00:00", hourEnd: "10:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.twelvehour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "10:00:00", hourEnd: "12:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.fourteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "12:00:00", hourEnd: "14:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.sixteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "14:00:00", hourEnd: "16:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.eighteenhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "16:00:00", hourEnd: "18:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.twentyhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "18:00:00", hourEnd: "20:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.twentytwohour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "20:00:00", hourEnd: "22:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
+                  (DaySpecifics.twentyfourhour, queryDailyCarbon(motionType: MeasuredActivity.MotionType.walking, hourStart: "22:00:00", hourEnd: "24:00:00")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)),
               ]
                   ),
               (
@@ -275,7 +275,7 @@ struct GraphView: View {
 (
      DataParts.yearwalk,
          [
-            (DaySpecifics.fourteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: "2014")),
+            (DaySpecifics.fourteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: "2014")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
              (DaySpecifics.fifteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: "2015")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
              (DaySpecifics.sixteen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: "2016")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
              (DaySpecifics.seventeen, queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: "2017")/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
@@ -348,3 +348,4 @@ struct GraphView_Previews: PreviewProvider {
         GraphView()
     }
 }
+
