@@ -4,7 +4,6 @@ struct DetailView: View {
     
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    @State var progressValue: Float = 0.2
     
     var body: some View {
         ScrollView {
@@ -12,9 +11,10 @@ struct DetailView: View {
                 Color("app_background")
                 
                 VStack {
-                
+                    Spacer()
                     //welcome, and profile button
                     WelcomeView()
+                        .padding(.bottom, -CGFloat(screenMeasurements.broadcastedHeight / 30))
                     
                     //Bar chart view
                     GraphView()
@@ -23,7 +23,8 @@ struct DetailView: View {
                     //ScoreView()
                     
                     //Progress Bar
-                    ProgressBarView(value: $progressValue)
+                    ProgressBarView()
+                        .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 25))
                     
                     //Highlights
                     HighlightView()

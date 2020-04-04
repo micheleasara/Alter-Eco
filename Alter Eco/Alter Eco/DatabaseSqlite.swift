@@ -549,6 +549,7 @@ func replaceScore(queryDate: Date = Date()) {
         //find the attributes of old score
         for result in queryResult {
                 oldScore.totalPoints = result.value(forKey: "score") as! Double
+                oldScore.league = result.value(forKey: "league") as! String
         }
         
         //print("The old Score totalPoints is: ", oldScore.totalPoints)
@@ -572,6 +573,7 @@ func replaceScore(queryDate: Date = Date()) {
     //print("The new score is now updated: ", newScore.totalPoints)
     
     emptyDatabase()
+    let newLeague = getLeagueProgress()
     
     scoreDB.setValuesForKeys(["dateStr": dateTodayStr, "score": newScore.totalPoints])
     
@@ -609,7 +611,7 @@ func retrieveScore(query: NSPredicate) -> UserScore {
     
     let dayToday = Date()
     let dayTodayStr = stringFromDate(dayToday)
-    let userScore = UserScore(totalPoints: 5, date: dayTodayStr, league: "sun.max")
+    let userScore = UserScore(totalPoints: 10, date: dayTodayStr, league: "flame.fill")
     
     print(userScore.date)
     print(userScore.totalPoints)
@@ -678,7 +680,7 @@ func printUserScoreDatabase() {
     do {
         let queryResult = try managedContext.fetch(fetchRequest)
         for result in queryResult {
-            print("Result - score: ", result.value(forKey: "score") as! Double, " and date: ", result.value(forKey: "dateStr") as! String)
+            print("Result - score: ", result.value(forKey: "score") as! Double, " and date: ", result.value(forKey: "dateStr") as! String, " and league: ", result.value(forKey: "league") as! String)
         }
         
     } catch let error as NSError {
@@ -814,14 +816,14 @@ func getNewLeague(userStats: UserScore) -> String {
 
 func getNewLeagueName(leagueName: String) -> String {
     
-    if leagueName == "sun.max" {
+    if leagueName == "flame.fill" {
         return "flame"
     }
-    else if leagueName == "flame.fill" {
+    else if leagueName == "tortoise.fill" {
         return "tortoise"
     }
     
-    return "tortoise"
+    return "sun"
     
 }
 
@@ -840,7 +842,7 @@ func getLeagueProgress() -> Int {
         return 0
     }
     
-    return Int((userScore.totalPoints / 600).rounded() * 6)
+    return 3//Int((userScore.totalPoints / 600).rounded() * 6)
 }
 
 func getColor(iconNb: Int) -> Color {
