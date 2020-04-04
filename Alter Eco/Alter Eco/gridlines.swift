@@ -62,34 +62,55 @@ struct gridlines: View {
         let dimensionMultiplier=CGFloat(self.screenMeasurements.broadcastedHeight)/35
         let dimensionAdjustment=CGFloat(self.screenMeasurements.broadcastedHeight)/9.3
         
+        
         var carbonUnit: String
         var decimalPlaces: String
+        var savedOrEmitted: String
         
         //Units change depending on whether the total amount of carbon in grams is over or under 1000 (helps ensure the y-axis labels fit on the screen and adds clarity
-        if (maxVal>1000)
+        if (maxVal>1000&&maxVal<=10000)
         { //This adjusts the value from grams to kilograms and changes the value to display to 1 d.p (otherwise it will be to 0dp)
             maxVal=maxVal/1000
-            carbonUnit="Units: Carbon kG"
+            carbonUnit="  Carbon kgs"
             decimalPlaces="%.1f"
+        }
+        if (maxVal>10000)
+        { //This adjusts the value from grams to kilograms and changes the value to display to 1 d.p (otherwise it will be to 0dp)
+            maxVal=maxVal/1000
+            carbonUnit="  Carbon kgs"
+            decimalPlaces="%.0f"
         }
         //If the carbon value is very small (below 10grams) then this ensures that the value is displayed to 1 d.p., otherwise, values over 10 grams are displaced to 0 d.p.
         else if (maxVal<10)
         {
-            carbonUnit="Units: Carbon g."
+            carbonUnit="Carbon grams"
             decimalPlaces="%.1f"
         }
         
         else
         {
-            carbonUnit="Units: Carbon g."
+            carbonUnit="Carbon grams"
             decimalPlaces="%.0f"
+        }
+        if ((value==2)||(value==7)||(value==12)||(value==17)) {
+            savedOrEmitted="   Saved"
+        }
+        else {
+            savedOrEmitted="Emmitted"
         }
         return
             ZStack {
                 Text(String(carbonUnit))
+                    //changing font to dynamic font here means that the girdlines disappear (do not understand why yet)
                     .font(Font.system(size: 12, design: .default))
                     .offset(x:
-                        -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.8, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7.5)
+                    CGFloat(self.screenMeasurements.broadcastedWidth)/60+CGFloat(self.screenMeasurements.broadcastedWidth)/3, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7.3)
+                Text(String(savedOrEmitted))
+                .font(.caption)
+                .bold()
+                .offset(x:
+                    +CGFloat(self.screenMeasurements.broadcastedWidth)/60+CGFloat(self.screenMeasurements.broadcastedWidth)/2.75, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/8.3)
+                
                 
                 //For loop cycles through each grid line (currently 8, but this can be adjusted). For each gridline, the dimensions are set and the label that it represents is brought in from the switch statement above which found the max value.
                 ForEach(0..<8) { line in
@@ -100,7 +121,7 @@ struct gridlines: View {
                         .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.1)
                     //Label is calculated from the maxVal adjusted for the number of the line currently in the for loop. E.g. if the line number is 1 then the value is 6/7* maxVal.
                     Text(String(format: decimalPlaces,((7.0-Double(line))/7.0)*maxVal))
-                        .font(Font.system(size: 12, design: .default))
+                        .font(.caption)
                         .offset(x:
                             -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                         .foregroundColor(Color("tertiary_label"))
@@ -110,6 +131,7 @@ struct gridlines: View {
     }
     
 }
+
 
 
 
