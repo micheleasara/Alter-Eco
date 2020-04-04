@@ -11,6 +11,8 @@
 		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
+		573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */; };
+		573693832438F85F00992BB0 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
 		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
 		9C17CA8524323D1D00378A67 /* WalkHeathrow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */; };
 		9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */; };
@@ -71,6 +73,8 @@
 		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphLogicTestsTwo.swift; sourceTree = "<group>"; };
+		573693822438F85F00992BB0 /* GraphModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
 		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkHeathrow.gpx; sourceTree = "<group>"; };
 		9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MilanLIN.gpx; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
 				9CD5945A24296BD100B1D0B4 /* Info.plist */,
 				9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */,
+				573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */,
 				9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */,
 			);
 			path = "Alter EcoBackEndTest";
@@ -201,6 +206,7 @@
 				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
 				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
 				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
+				573693822438F85F00992BB0 /* GraphModel.swift */,
 				9CD59429242968DE00B1D0B4 /* gridlines.swift */,
 				9CD594192429686900B1D0B4 /* ScoreView.swift */,
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
@@ -378,6 +384,7 @@
 				9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */,
 				9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */,
 				9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */,
+				573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +410,7 @@
 				9CD59437242968DF00B1D0B4 /* GraphView.swift in Sources */,
 				9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */,
 				9CD5943C242968DF00B1D0B4 /* DatabaseSqlite.swift in Sources */,
+				573693832438F85F00992BB0 /* GraphModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* gridlines.swift in Sources */,
 				9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */,
 				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
