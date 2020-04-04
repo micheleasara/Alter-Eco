@@ -9,7 +9,7 @@ import CoreData
 let CARBON_UNIT_CAR: Double = 499
 let CARBON_UNIT_TRAIN: Double = 161
 let CARBON_UNIT_PLANE: Double = 512
-let CARBON_UNIT_WALKING: Double = 0
+let CARBON_UNIT_WALKING: Double = 499
 let KM_CONVERSION: Double = 0.001
 let WALKING_PTS: Double = 10
 let CAR_PTS: Double = 3
@@ -340,11 +340,11 @@ func normaliseData(motionType: MeasuredActivity.MotionType, datapart: DataParts)
     var max_data=0.0
     
     switch (datapart) {
-    case .daycar,.dayplane,.daytrain:
+    case .daycar,.dayplane,.daytrain, .daywalk:
         
     max_data = max(queryDailyCarbon(motionType: motionType,hourStart: "00:00:00", hourEnd: "02:00:00"),queryDailyCarbon(motionType: motionType,hourStart: "02:00:00", hourEnd: "04:00:00"), queryDailyCarbon(motionType: motionType,hourStart: "04:00:00", hourEnd: "06:00:00"),queryDailyCarbon(motionType: motionType,hourStart: "06:00:00", hourEnd: "08:00:00"), queryDailyCarbon(motionType: motionType,hourStart: "08:00:00", hourEnd: "10:00:00"),queryDailyCarbon(motionType: motionType,hourStart: "10:00:00", hourEnd: "12:00:00"),queryDailyCarbon(motionType: motionType,hourStart: "12:00:00", hourEnd: "14:00:00"),queryDailyCarbon(motionType: motionType,hourStart: "14:00:00", hourEnd: "16:00:00"), queryDailyCarbon(motionType: motionType,hourStart: "16:00:00", hourEnd: "18:00:00"), queryDailyCarbon(motionType: motionType,hourStart: "18:00:00", hourEnd: "20:00:00"), queryDailyCarbon(motionType: motionType,hourStart: "20:00:00", hourEnd: "22:00:00"),queryDailyCarbon(motionType: motionType,hourStart: "22:00:00", hourEnd: "24:00:00"))
         
-    case .weekcar,.weekplane,.weektrain:
+    case .weekcar,.weekplane,.weektrain, .weekwalk:
         
     max_data = max(queryWeeklyCarbon(motionType: motionType, weekDayToDisplay: "Sunday"),
     queryWeeklyCarbon(motionType: motionType,  weekDayToDisplay: "Monday"),
@@ -354,10 +354,10 @@ func normaliseData(motionType: MeasuredActivity.MotionType, datapart: DataParts)
     queryWeeklyCarbon(motionType: motionType,  weekDayToDisplay: "Friday"),
     queryWeeklyCarbon(motionType: motionType, weekDayToDisplay: "Saturday"))
         
-    case .monthcar,.monthplane,.monthtrain:
+    case .monthcar,.monthplane,.monthtrain, .monthwalk:
         
     max_data = max(queryMonthlyCarbon(motionType:motionType, month: "January"), queryMonthlyCarbon(motionType:motionType, month: "February"), queryMonthlyCarbon(motionType:motionType, month: "March"), queryMonthlyCarbon(motionType:motionType, month: "April"),queryMonthlyCarbon(motionType:motionType, month: "May"),queryMonthlyCarbon(motionType:motionType, month: "June"),queryMonthlyCarbon(motionType:motionType, month: "July"),queryMonthlyCarbon(motionType:motionType, month: "August"),queryMonthlyCarbon(motionType:motionType, month: "September"),queryMonthlyCarbon(motionType:motionType, month: "October"),queryMonthlyCarbon(motionType:motionType, month: "November"), queryMonthlyCarbon(motionType:motionType, month: "December"))
-    case .yearcar,.yearplane,.yeartrain:
+    case .yearcar,.yearplane,.yeartrain, .yearwalk:
         
         max_data = max(queryYearlyCarbon(motionType: motionType, year: "2014"),queryYearlyCarbon(motionType: motionType, year: "2015"),queryYearlyCarbon(motionType: motionType, year: "2016"),queryYearlyCarbon(motionType: motionType, year: "2017"),queryYearlyCarbon(motionType: motionType, year: "2018"),queryYearlyCarbon(motionType: motionType, year: "2019"),queryYearlyCarbon(motionType: motionType, year: "2020"))
     default:
