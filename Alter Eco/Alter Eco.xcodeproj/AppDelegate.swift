@@ -98,17 +98,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // the app before the background task was called to do this for us.
         // The scheduleBSTscore() functon reschedules the BGTscore task for tomorrow.
         
-        let dateString = retrieveLatestScore().date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.locale = Locale(identifier: "en-UK")
-        let dateFromString = dateFormatter.date(from: dateString)
-        if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore) {
-            // Replace score with data from yesterday:
-            replaceScore(queryDate: Date().dayBefore)
-            // Schedule another background tasks again:
-            scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
-        }
+        //let dateString = retrieveLatestScore().date
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        dateFormatter.locale = Locale(identifier: "en-UK")
+//        let dateFromString = dateFormatter.date(from: dateString)
+//        if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore) {
+//            // Replace score with data from yesterday:
+//            //replaceScore(queryDate: Date().dayBefore)
+//            // Schedule another background tasks again:
+//            scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
+//        }
         
         return true
     }
@@ -302,12 +302,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Check to see if the last time we calculated the score wasn't today:
         if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore){
             // Evaluate score for yesterday:
-            let appRefreshOperation = replaceScore(queryDate: Date().dayBefore)
+            //let appRefreshOperation = replaceScore(queryDate: Date().dayBefore)
             // Set up OperationQueue
             let queue = OperationQueue()
             queue.maxConcurrentOperationCount = 1
             // Add operation to queue
-            queue.addOperation {appRefreshOperation}
+            //queue.addOperation {appRefreshOperation}
             // Set up task expiration handler
             task.expirationHandler = {
                 queue.cancelAllOperations()

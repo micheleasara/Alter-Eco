@@ -14,13 +14,13 @@ struct ProgressBarView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
-    let userScore = retrieveScore(query: NSPredicate(format: "dateStr == %@", Calendar.current.date(byAdding: .day, value: -1, to: Date())! as NSDate))
-    
+    var userScore = retrieveLatestScore()
     
     var body: some View {
         
         VStack(spacing: CGFloat(self.screenMeasurements.broadcastedHeight / 25)) {
         
+            // Display container for league information
             ZStack() {
                 RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.95, height: CGFloat(self.screenMeasurements.broadcastedHeight)/5.5)
                     .foregroundColor(Color("fill_colour"))
@@ -33,8 +33,9 @@ struct ProgressBarView: View {
                             .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight) / 20)
                     }
                     
+                    // depending on which league user is in, display next one
                     if (userScore.league != "tortoise.fill") {
-                        Text("Only \(1000 - userScore.totalPoints, specifier: "%.0f") points left to reach league \(getNewLeagueName(leagueName: getNewLeague(userStats: userScore)))!")
+                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - userScore.totalPoints, specifier: "%.0f") points left to reach league \(getNewLeagueName(leagueName: getNewLeague(userStats: userScore)))!")
                         Text("Congratulations!")
                     }
                     else {
@@ -44,39 +45,39 @@ struct ProgressBarView: View {
                     
                 }
             }
-
+                // Progress bar (stacked horizontally are current league icon coloured or not depending on how close user is to next league)
                 HStack() {
                     Image(systemName: userScore.league)
                         .resizable()
-                        .foregroundColor(getColor(iconNb: 1))
+                        .foregroundColor(getColor(iconNb: ICON_ONE))
                         .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
                     RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: userScore.league)
                         .resizable()
-                        .foregroundColor(getColor(iconNb: 2))
+                        .foregroundColor(getColor(iconNb: ICON_TWO))
                         .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
                     RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: userScore.league)
                         .resizable()
-                        .foregroundColor(getColor(iconNb: 3))
+                        .foregroundColor(getColor(iconNb: ICON_THREE))
                         .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
                     RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: userScore.league)
                         .resizable()
-                        .foregroundColor(getColor(iconNb: 4))
+                        .foregroundColor(getColor(iconNb: ICON_FOUR))
                         .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
                     RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: userScore.league)
                         .resizable()
-                        .foregroundColor(getColor(iconNb: 5))
+                        .foregroundColor(getColor(iconNb: ICON_FIVE))
                         .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
             }
         }
