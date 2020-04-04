@@ -1,136 +1,55 @@
 import SwiftUI
 
 struct gridlines: View {
-     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    
+    @EnvironmentObject var screenMeasurements: ScreenMeasurements
     //Value represents the sum of the pickers so we know what the view currently is.E.g. if the sum is 1 then that means that car and day views have been selected and the gridlines will have to adjust for the maximum value within the queries for that range.
     var value: Int
     var body: some View {
         
-       var maxVal = normaliseDailyAll()
-        switch (value) {
-        case 0:
-            maxVal = normaliseDailyAll()
-        case 1:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.daycar)
-        case 2:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.daywalk)
-        case 3:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.daytrain)
-        case 4:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.dayplane)
-        case 5:
-            maxVal = normaliseWeeklyAll()
-        case 6:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.weekcar)
-        case 7:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.weekwalk)
-        case 8:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.weektrain)
-        case 9:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.weekplane)
-        case 10:
-            maxVal = normaliseMonthlyAll()
-        case 11:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.monthcar)
-        case 12:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.monthwalk)
-        case 13:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.monthtrain)
-        case 14:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.monthplane)
-        case 15:
-            maxVal = normaliseYearlyAll()
-        case 16:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)
-        case 17:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)
-        case 18:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)
-        case 19:
-            maxVal = normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)
-            
-        default:
-            maxVal = 70.0
-        }
-        //Due to divide my zero errors in the normalisation equations, if there is not a carbon value, then the normalised version is set to divide by '1' instead of '0'. This is corrected for here.
-        if (maxVal==1)
-        {
-            maxVal=0
-        }
+        var maximumVal: Double
+        maximumVal = findMaxValue(value: value)
+        
         //Values for the dimensions of the gridlines to help ensure they fit on most device screens.
         let dimensionMultiplier=CGFloat(self.screenMeasurements.broadcastedHeight)/35
         let dimensionAdjustment=CGFloat(self.screenMeasurements.broadcastedHeight)/9.3
         
-        
-        var carbonUnit: String
-        var decimalPlaces: String
-        var savedOrEmitted: String
-        
-        //Units change depending on whether the total amount of carbon in grams is over or under 1000 (helps ensure the y-axis labels fit on the screen and adds clarity
-        if (maxVal>1000&&maxVal<=10000)
-        { //This adjusts the value from grams to kilograms and changes the value to display to 1 d.p (otherwise it will be to 0dp)
-            maxVal=maxVal/1000
-            carbonUnit="  Carbon kgs"
-            decimalPlaces="%.1f"
-        }
-        if (maxVal>10000)
-        { //This adjusts the value from grams to kilograms and changes the value to display to 1 d.p (otherwise it will be to 0dp)
-            maxVal=maxVal/1000
-            carbonUnit="  Carbon kgs"
-            decimalPlaces="%.0f"
-        }
-        //If the carbon value is very small (below 10grams) then this ensures that the value is displayed to 1 d.p., otherwise, values over 10 grams are displaced to 0 d.p.
-        else if (maxVal<10)
-        {
-            carbonUnit="Carbon grams"
-            decimalPlaces="%.1f"
-        }
-        
-        else
-        {
-            carbonUnit="Carbon grams"
-            decimalPlaces="%.0f"
-        }
-        if ((value==2)||(value==7)||(value==12)||(value==17)) {
-            savedOrEmitted="   Saved"
-        }
-        else {
-            savedOrEmitted="Emmitted"
-        }
+        let maxVal: Double
+        let carbonUnit: String
+        let decimalPlaces: String
+        let savedOrEmitted: String
+    
+        (maxVal, carbonUnit, decimalPlaces, savedOrEmitted) = findCorrectUnits(currentMax: maximumVal, value: value)
+       
         return
             ZStack {
                 Text(String(carbonUnit))
-                    //changing font to dynamic font here means that the girdlines disappear (do not understand why yet)
+                //changing font to dynamic font here means that the girdlines disappear (do not understand why yet)
                     .font(Font.system(size: 12, design: .default))
-                    .offset(x:
-                    CGFloat(self.screenMeasurements.broadcastedWidth)/60+CGFloat(self.screenMeasurements.broadcastedWidth)/3, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/7.3)
+                    .offset(x:CGFloat(self.screenMeasurements.broadcastedWidth)/60+CGFloat(self.screenMeasurements.broadcastedWidth)/3, y:-CGFloat(self.screenMeasurements.broadcastedHeight)/7.2)
+                
                 Text(String(savedOrEmitted))
                 .font(.caption)
                 .bold()
-                .offset(x:
-                    +CGFloat(self.screenMeasurements.broadcastedWidth)/60+CGFloat(self.screenMeasurements.broadcastedWidth)/2.75, y: -CGFloat(self.screenMeasurements.broadcastedHeight)/8.3)
+                .offset(x:+CGFloat(self.screenMeasurements.broadcastedWidth)/60+CGFloat(self.screenMeasurements.broadcastedWidth)/2.75, y:-CGFloat(self.screenMeasurements.broadcastedHeight)/8.3)
+                //For loop cycles through each grid line (currently 8, but this can be adjusted).
+                //For each gridline, the dimensions are set and the label that it represents is brought in from the switch statement above which found the max value.
                 
-                
-                //For loop cycles through each grid line (currently 8, but this can be adjusted). For each gridline, the dimensions are set and the label that it represents is brought in from the switch statement above which found the max value.
-                ForEach(0..<8) { line in
-                    Rectangle()
-                        .foregroundColor(Color("secondary_label"))
-                        .offset(y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
-                        .frame(height: CGFloat(self.screenMeasurements.broadcastedHeight)/5000)
-                        .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.1)
-                    //Label is calculated from the maxVal adjusted for the number of the line currently in the for loop. E.g. if the line number is 1 then the value is 6/7* maxVal.
+                ForEach(0..<8) { line in Rectangle()
+                    .foregroundColor(Color("secondary_label"))
+                    .offset(y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
+                    .frame(height: CGFloat(self.screenMeasurements.broadcastedHeight)/5000)
+                    .frame(width: (CGFloat(self.screenMeasurements.broadcastedWidth))/1.2)
+                    //Label is calculated from the maxVal adjusted for the number of the line currently in the for loop.
+                    //E.g. if the line number is 1 then the value is 6/7* maxVal.
                     Text(String(format: decimalPlaces,((7.0-Double(line))/7.0)*maxVal))
                         .font(.caption)
-                        .offset(x:
-                            -CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
+                        .offset(x:-CGFloat(self.screenMeasurements.broadcastedWidth)/100-CGFloat(self.screenMeasurements.broadcastedWidth)/2.17, y: CGFloat(line) * dimensionMultiplier - dimensionAdjustment)
                         .foregroundColor(Color("tertiary_label"))
-                }
+                                }
+                    }
         }
-        
-    }
-    
 }
+
 
 
 

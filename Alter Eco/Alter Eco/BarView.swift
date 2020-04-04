@@ -9,15 +9,10 @@ struct BarView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     var body: some View {
-        let AV_UK_DAILYCARBON: Double = 2200
-        var colour: String
+        
+       
         //The colour of the graph will change depending on whether the user has emitted more or less than the UK's daily average.
-        if (queryDailyCarbonAll(hourStart: "00:00:00", hourEnd: "24:00:00")>AV_UK_DAILYCARBON){
-            colour = "redGraphBar"
-        }
-        else{
-            colour = "graphBars"
-        }
+        let colour = findGraphColour()
         //The following two if statements adjust the width of the graph depending on the 'time' picker value chosen. For example, if 'day' is selected then the graph has to change dimensions to fit 12 variables on the x-axis (as opposed to 7 for 'week'). The 'wid' value is the addition of the two picker values.
         if (((wid>=0)&&(wid<=4))||(wid>=10)&&(wid<=14)) {return
             VStack {
