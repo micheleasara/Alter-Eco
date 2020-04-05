@@ -13,7 +13,7 @@ struct ProgressBarView: View {
 
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    
+
     var userScore = retrieveLatestScore()
     
     var body: some View {
@@ -35,7 +35,7 @@ struct ProgressBarView: View {
                     
                     // depending on which league user is in, display next one
                     if (userScore.league != "tortoise.fill") {
-                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - userScore.totalPoints, specifier: "%.0f") points left to reach league \(getNewLeagueName(leagueName: getNewLeague(userStats: userScore)))!")
+                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - userScore.totalPoints, specifier: "%.0f") points left to reach league \(getNewLeagueName(leagueName: getNewLeague(userLeague: userScore.league)))!")
                         Text("Congratulations!")
                     }
                     else {

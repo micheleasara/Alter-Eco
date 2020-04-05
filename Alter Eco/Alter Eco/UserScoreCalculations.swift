@@ -27,33 +27,60 @@ func updateUserScore(activity: MeasuredActivity) {
     let dateToday = Date()
     let dateTodayStr = stringFromDate(dateToday)
     
-    var currentUserScore = UserScore(totalPoints: 4, date: dateTodayStr, league: "sun.max")
+//    var currentUserScore = UserScore(totalPoints: 4, date: dateTodayStr, league: "sun.max")
     
     // retrieve current userscore
     do {
         let queryResult = try managedContext.fetch(fetchRequest)
-        for result in queryResult {
-            currentUserScore.totalPoints = result.value(forKey: "score") as! Double
-            currentUserScore.date = result.value(forKey: "dateStr") as! String
-            if result.value(forKey: "league") as? String != nil {
-                currentUserScore.league = result.value(forKey: "league") as! String
-            }
+        if queryResult.count != 0 {
+            let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
+            queryResult[0].setValue(oldTotalPoints + addScoreNewActivity(activity: activity), forKey: "score")
+            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
         }
-       
     } catch let error as NSError {
-         print("Could not fetch. \(error), \(error.userInfo)")
+        print("Fetch failed: \(error), \(error.userInfo)")
     }
-        
-    // get new score based on points from activity
-    let newUserScore = UserScore(totalPoints: currentUserScore.totalPoints + addScoreNewActivity(activity: activity), date: dateTodayStr, league: currentUserScore.league)
     
-    // Delete previous entry
-    print("EmptyDatabase in updateScore")
-    emptyDatabase()
+    do {
+        try managedContext.save()
+    } catch let error as NSError {
+        print("Saving updated score failed: \(error), \(error.userInfo)")
+    }
+}
+
+func updateUserScore(newLeague: String) {
     
-    // save context
-    print("Append new user stats to database")
-    appendScoreToDatabase(score: newUserScore)
+    // open database
+    guard let appDelegate =
+       UIApplication.shared.delegate as? AppDelegate else {
+      return
+    }
+    
+    let managedContext =
+      appDelegate.persistentContainer.viewContext
+ 
+    // Fetch the userStatistiques (score, date, league)
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Score")
+
+    let dateToday = Date()
+    let dateTodayStr = stringFromDate(dateToday)
+ 
+    // retrieve current userscore
+    do {
+        let queryResult = try managedContext.fetch(fetchRequest)
+        if queryResult.count != 0 {
+            queryResult[0].setValue(getNewLeague(userLeague: queryResult[0].value(forKey: "league") as! String), forKey: "league")
+            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
+        }
+    } catch let error as NSError {
+        print("Fetch failed: \(error), \(error.userInfo)")
+    }
+    
+    do {
+        try managedContext.save()
+    } catch let error as NSError {
+        print("Saving updated score failed: \(error), \(error.userInfo)")
+    }
 }
 
 func addScoreNewActivity(activity: MeasuredActivity) -> Double {
@@ -146,7 +173,7 @@ func printUserScoreDatabase() {
     do {
         let queryResult = try managedContext.fetch(fetchRequest)
         for result in queryResult {
-            print("Result - score: ", result.value(forKey: "score") as! Double, " and date: ", result.value(forKey: "dateStr") as! String, " and league: ", result.value(forKey: "league"))
+            print("Result - score: ", result.value(forKey: "score") as! Double, " and date: ", result.value(forKey: "dateStr") as! String, " and league: ", result.value(forKey: "league")!)
         }
         
     } catch let error as NSError {
@@ -159,7 +186,8 @@ func retrieveLatestScore() -> UserScore {
     let dayToday = Date()
     let dayTodayStr = stringFromDate(dayToday)
     let userScore = UserScore(totalPoints: 10, date: dayTodayStr, league: "sun.max")
-
+    var emptyDatabase = true
+    
     guard let appDelegate =
       UIApplication.shared.delegate as? AppDelegate else {
         return userScore
@@ -170,31 +198,44 @@ func retrieveLatestScore() -> UserScore {
 
     do {
         let queryResult = try managedContext.fetch(fetchRequest)
-        for result in queryResult {
-            userScore.totalPoints = result.value(forKey: "score") as! Double
-            userScore.date = result.value(forKey: "dateStr") as! String
-            if result.value(forKey: "league") as? String != nil {
-                userScore.league = result.value(forKey: "league") as! String
-            }
+        print("There are: \(queryResult.count) records in the database SCORE!")
+        if queryResult.count != 0 {
+            print("There is more than 0 records")
+            emptyDatabase = false
+            userScore.totalPoints = queryResult[0].value(forKey: "score") as! Double
+            userScore.date = queryResult[0].value(forKey: "dateStr") as! String
+            userScore.league = queryResult[0].value(forKey: "league") as! String
+            
+            printUserScoreDatabase()
         }
+        
+//        for result in queryResult {
+//            userScore.totalPoints = result.value(forKey: "score") as! Double
+//            userScore.date = result.value(forKey: "dateStr") as! String
+//            if result.value(forKey: "league") as? String != nil {qu
+//                userScore.league = result.value(forKey: "league") as! String
+//            }
+//        }
 
     } catch let error as NSError {
       print("Could not fetch. \(error), \(error.userInfo)")
     }
     
-    printUserScoreDatabase()
+    if emptyDatabase {
+        appendScoreToDatabase(score: userScore)
+    }
     
     return userScore
 }
 
 /* League Helper Functions */
 
-func getNewLeague(userStats: UserScore) -> String {
+func getNewLeague(userLeague: String) -> String {
 
-    if userStats.league == "sun.max" {
+    if userLeague == "sun.max" {
         return "flame.fill"
     }
-    else if userStats.league == "flame.fill" {
+    else if userLeague == "flame.fill" {
         return "tortoise.fill"
     }
     
@@ -218,18 +259,14 @@ func getLeagueProgress() -> Int {
     
     let userScore = retrieveLatestScore()
     
-    let dayToday = Date()
-    let dayTodayStr = stringFromDate(dayToday)
-    
     if userScore.totalPoints >= 600 {
-        emptyDatabase()
-        let userScoreNewLeague = UserScore(totalPoints: 0, date: dayTodayStr, league: getNewLeague(userStats: userScore))
-        appendScoreToDatabase(score: userScoreNewLeague)
-        
+        updateUserScore(newLeague: getNewLeague(userLeague: userScore.league))
         return 0
     }
     
-    return Int((userScore.totalPoints / 600).rounded() * 6)
+    print("Nb of icons colour should be less than: \(Int(((userScore.totalPoints / 600) * 6).rounded()))")
+    
+    return Int(((userScore.totalPoints / 600) * 6).rounded())
 }
 
 func getColor(iconNb: Int) -> Color {
