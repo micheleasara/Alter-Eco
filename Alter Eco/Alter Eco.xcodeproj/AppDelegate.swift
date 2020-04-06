@@ -81,8 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         // Register for push notifications:
         registerForPushNotifications()
-        // Register for background tasks:
-        registerForBackgroundTasks()
         
         // following code is to find path to coredata sqlite file
         // let container = NSPersistentContainer(name: "Database")
@@ -205,123 +203,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    /*   ---------- START OF BACKGROUND TASK SHIT ----------   */
-    
-    func registerForBackgroundTasks() {
-        //     Register the wifi task
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.wifi",
-                                        using: nil)
-        { task in
-            //This task is cast with processing request (BGAppRefreshTask)
-            self.handleBGTwifi(task: task as! BGAppRefreshTask)
-        }
-        
-//        //     Register the score task
-//        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.score",
-//                                        using: nil)
-//        { task in
-//            //This task is cast with processing request (BGAppRefreshTask)
-//            self.handleBGTscore(task: task as! BGProcessingTask)
-//        }
-        print("Registered the BGTs")
-
-    }
-    
-    /*----- START OF BACKGROUND WIFI STUFF -------*/
-    func scheduleBGTwifi() {
-        // Cancel previous wifi requests:
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.wifi")
-        // Set up new wifi request:
-        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
-        // Schedule no earlier than 10 minutes from now
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 1*60)
-        
-        do {
-           try BGTaskScheduler.shared.submit(request)
-            print("Successfully scheduled wifi app refresh")
-        } catch {
-           print("Could not schedule wifi app refresh: \(error)")
-        }
-    }
-    
-    func handleBGTwifi(task: BGAppRefreshTask) {
-        print("Handling the wifi task")
-        // Set up OperationQueue
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        // Establish task
-        let appRefreshOperation = scene.checkWifi(background_task: true)
-        // Add operation to queue
-        queue.addOperation {appRefreshOperation}
-        // Set up task expiration handler
-        task.expirationHandler = {
-            queue.cancelAllOperations()
-        }
-        // Set the task as completed when the operation queue empty:
-        let lastOperation = queue.operations.last
-        lastOperation?.completionBlock = {
-            task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
-        }
-
-        // Schedule another background task:
-        scheduleBGTwifi()
-    }
-
-    /*----- END OF BACKGROUND WIFI STUFF -------*/
-    
-    /*----- START OF BACKGROUND SCORE STUFF -------*/
-//    func scheduleBGTscore(schedule_date: Date) {
-//        // Cancel previous requests score request:
-//        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.score")
-//        // Set up new score request:
-//        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.score")
-//        // Schedule no earlier than schedule_date input supplied
-//        request.earliestBeginDate = schedule_date
-//
-//        do {
-//           try BGTaskScheduler.shared.submit(request)
-//        } catch {
-//           print("Could not schedule score app refresh: \(error)")
-//        }
-//
-//        print("Ended schedule score app refresh")
-//    }
-//
-//    func handleBGTscore(task: BGAppRefreshTask) {
-//        print("Handling the score task")
-//        let dateString = retrieveLatestScore().date
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "yyyy-MM-dd"
-//        dateFormatter.locale = Locale(identifier: "en-UK")
-//        let dateFromString = dateFormatter.date(from: dateString)
-//        // Check to see if the last time we calculated the score wasn't today:
-//        if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore){
-//            // Evaluate score for yesterday:
-//            let appRefreshOperation = replaceScore(queryDate: Date().dayBefore)
-//            // Set up OperationQueue
-//            let queue = OperationQueue()
-//            queue.maxConcurrentOperationCount = 1
-//            // Add operation to queue
-//            queue.addOperation {appRefreshOperation}
-//            // Set up task expiration handler
-//            task.expirationHandler = {
-//                queue.cancelAllOperations()
-//            }
-//            // Set the task as completed when the operation queue empty:
-//            let lastOperation = queue.operations.last
-//            lastOperation?.completionBlock = {
-//                task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
-//            }
-//        }
-//        // Schedule another background task:
-//        scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
-//    }
-//
-    /*----- END OF BACKGROUND SCORE STUFF -------*/
-    
-    /*   ---------- END OF BACKGROUND TASK SHIT ----------   */
-    
-    /*----- START OF NOTIFICATION SHIT -------*/
+    /*----- START OF NOTIFICATION CONTENT -------*/
     // Function to register for notifications:
     func registerForPushNotifications() {
       UNUserNotificationCenter.current()
@@ -343,6 +225,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
       }
     }
-    /*----- END OF NOTIFICATION SHIT -------*/
+    /*----- END OF NOTIFICATION CONTENT -------*/
 
 }

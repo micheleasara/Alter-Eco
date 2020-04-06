@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         UNUserNotificationCenter.current().add(request)
     }
     
-    func checkWifi(background_task: Bool = false) {
+    func checkWifi() {
         print("In checkWifi")
         
         monitor.pathUpdateHandler = {path in
@@ -100,7 +100,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             self.window = window
             
             // Begin monitoring wifi status:
-            checkWifi(background_task: false)
+            checkWifi()
             
             // set trackingData as environment object to allow access within contentView
             let estimator = (UIApplication.shared.delegate as! AppDelegate).activityEstimator
@@ -116,8 +116,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
-        // This method schedules the wifi background task:
-        //(UIApplication.shared.delegate as! AppDelegate).scheduleBGTwifi()
     }
 
 }
