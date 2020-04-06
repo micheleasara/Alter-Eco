@@ -61,11 +61,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                         self.wifistatus.isConnected = true
                         print("Toggled status to true")
                     }
-                    // Register the relevant notification
-                    if background_task {
-                        print("Sending wifi notification")
-                        self.registerWifiNotification()
-                    }
+                    (UIApplication.shared.delegate as! AppDelegate).manager.stopUpdatingLocation()
+                    print("Sending wifi notification")
+                    self.registerWifiNotification()
                 }
             } else {
                 print("We're on mobile.")
@@ -77,11 +75,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                         self.wifistatus.isConnected = false
                         print("Toggled status to false")
                     }
+                    (UIApplication.shared.delegate as! AppDelegate).manager.startUpdatingLocation()
                     // Register the relevant notification
-                    if background_task {
-                        print("Sending NO wifi notification")
-                        self.registerNoWifiNotification()
-                    }
+                    print("Sending NO wifi notification")
+                    self.registerNoWifiNotification()
                 }
             }
         }
@@ -120,7 +117,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     func sceneDidEnterBackground(_ scene: UIScene) {
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
         // This method schedules the wifi background task:
-        (UIApplication.shared.delegate as! AppDelegate).scheduleBGTwifi()
+        //(UIApplication.shared.delegate as! AppDelegate).scheduleBGTwifi()
     }
 
 }
