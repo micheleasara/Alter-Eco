@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         // Make Content
         let content = UNMutableNotificationContent()
         content.title = "Detected Wifi"
-        content.body = "Paused tracking, tap to resume."
+        content.body = "Paused paused."
         // Set up Trigger
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (2), repeats: false)
         // Create UID
@@ -36,7 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         // Make Content
         let content = UNMutableNotificationContent()
         content.title = "Wifi Disconnected"
-        content.body = "Tracking resumed, tap to pause."
+        content.body = "Tracking resumed."
         // Set up Trigger
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (2), repeats: false)
         // Create UID
