@@ -254,7 +254,7 @@ struct ProfileImage: View {
 struct ScorePoints: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    let userScore = retrieveScore(query: NSPredicate(format: "dateStr == %@", Calendar.current.date(byAdding: .day, value: -1, to: Date())! as NSDate))
+    let userScore = retrieveLatestScore()
     
     var body: some View {
         ZStack{

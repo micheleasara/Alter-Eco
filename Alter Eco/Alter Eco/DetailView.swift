@@ -10,16 +10,21 @@ struct DetailView: View {
             ZStack {
                 Color("app_background")
                 
-                VStack{
-                
+                VStack {
+                    Spacer()
                     //welcome, and profile button
                     WelcomeView()
+                        .padding(.bottom, -CGFloat(screenMeasurements.broadcastedHeight / 30))
                     
                     //Bar chart view
                     GraphView()
                     
                     //Scores summary
-                    ScoreView()
+                    //ScoreView()
+                    
+                    //Progress Bar
+                    ProgressBarView()
+                        .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 25))
                     
                     //Highlights
                     HighlightView()

@@ -270,53 +270,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     /*----- END OF BACKGROUND WIFI STUFF -------*/
     
     /*----- START OF BACKGROUND SCORE STUFF -------*/
-    func scheduleBGTscore(schedule_date: Date) {
-        // Cancel previous requests score request:
-        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.wifi")
-        // Set up new score request:
-        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.score")
-        // Schedule no earlier than schedule_date input supplied
-        request.earliestBeginDate = schedule_date
-        
-        do {
-           try BGTaskScheduler.shared.submit(request)
-            print("Successfully scheduled score app refresh")
-        } catch {
-           print("Could not schedule score app refresh: \(error)")
-        }
-        
-    }
-    
-    func handleBGTscore(task: BGProcessingTask) {
-        print("Handling the score task")
-        let dateString = retrieveLatestScore().date
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.locale = Locale(identifier: "en-UK")
-        let dateFromString = dateFormatter.date(from: dateString)
-        // Check to see if the last time we calculated the score wasn't today:
-        if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore){
-            // Evaluate score for yesterday:
-            let appRefreshOperation = replaceScore(queryDate: Date().dayBefore)
-            // Set up OperationQueue
-            let queue = OperationQueue()
-            queue.maxConcurrentOperationCount = 1
-            // Add operation to queue
-            queue.addOperation {appRefreshOperation}
-            // Set up task expiration handler
-            task.expirationHandler = {
-                queue.cancelAllOperations()
-            }
-            // Set the task as completed when the operation queue empty:
-            let lastOperation = queue.operations.last
-            lastOperation?.completionBlock = {
-                task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
-            }
-        }
-        // Schedule another background task:
-        scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
-    }
-    
+//    func scheduleBGTscore(schedule_date: Date) {
+//        // Cancel previous requests score request:
+//        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.score")
+//        // Set up new score request:
+//        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.score")
+//        // Schedule no earlier than schedule_date input supplied
+//        request.earliestBeginDate = schedule_date
+//
+//        do {
+//           try BGTaskScheduler.shared.submit(request)
+//        } catch {
+//           print("Could not schedule score app refresh: \(error)")
+//        }
+//
+//        print("Ended schedule score app refresh")
+//    }
+//
+//    func handleBGTscore(task: BGAppRefreshTask) {
+//        print("Handling the score task")
+//        let dateString = retrieveLatestScore().date
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "yyyy-MM-dd"
+//        dateFormatter.locale = Locale(identifier: "en-UK")
+//        let dateFromString = dateFormatter.date(from: dateString)
+//        // Check to see if the last time we calculated the score wasn't today:
+//        if !Calendar.current.isDate(dateFromString!, inSameDayAs: Date().dayBefore){
+//            // Evaluate score for yesterday:
+//            let appRefreshOperation = replaceScore(queryDate: Date().dayBefore)
+//            // Set up OperationQueue
+//            let queue = OperationQueue()
+//            queue.maxConcurrentOperationCount = 1
+//            // Add operation to queue
+//            queue.addOperation {appRefreshOperation}
+//            // Set up task expiration handler
+//            task.expirationHandler = {
+//                queue.cancelAllOperations()
+//            }
+//            // Set the task as completed when the operation queue empty:
+//            let lastOperation = queue.operations.last
+//            lastOperation?.completionBlock = {
+//                task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
+//            }
+//        }
+//        // Schedule another background task:
+//        scheduleBGTscore(schedule_date: Date().dayAfter.showtime)
+//    }
+//
     /*----- END OF BACKGROUND SCORE STUFF -------*/
     
     /*   ---------- END OF BACKGROUND TASK SHIT ----------   */
