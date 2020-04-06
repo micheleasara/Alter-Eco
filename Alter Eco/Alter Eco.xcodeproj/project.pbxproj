@@ -21,6 +21,8 @@
 		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
 		9C17CA8A24323D1D00378A67 /* WalktoHeathrow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */; };
 		9C17CA8B24323D1D00378A67 /* KingsCrossTubeUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */; };
+		9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5D59C4243B102C00238275 /* ProgressBarView.swift */; };
+		9C5D59C7243B103300238275 /* UserScoreCalculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5D59C6243B103300238275 /* UserScoreCalculations.swift */; };
 		9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594172429686800B1D0B4 /* TrackingData.swift */; };
 		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
 		9CD594212429686900B1D0B4 /* ScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594192429686900B1D0B4 /* ScoreView.swift */; };
@@ -83,6 +85,8 @@
 		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalktoHeathrow.gpx; sourceTree = "<group>"; };
 		9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = KingsCrossTubeUCL.gpx; sourceTree = "<group>"; };
+		9C5D59C4243B102C00238275 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProgressBarView.swift; path = "../Alter Eco.xcodeproj/ProgressBarView.swift"; sourceTree = "<group>"; };
+		9C5D59C6243B103300238275 /* UserScoreCalculations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserScoreCalculations.swift; path = "../Alter Eco.xcodeproj/UserScoreCalculations.swift"; sourceTree = "<group>"; };
 		9CD594172429686800B1D0B4 /* TrackingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingData.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
 		9CD594192429686900B1D0B4 /* ScoreView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreView.swift; sourceTree = "<group>"; };
@@ -191,15 +195,15 @@
 			children = (
 				9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
-				9C16675F2436009E003F4D9D /* ProgressBarView.swift */,
 				5591901D242C0FA400A80ED7 /* UserScore.swift */,
+				9C5D59C6243B103300238275 /* UserScoreCalculations.swift */,
 				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
 				9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */,
 				9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */,
 				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
 				9CD594172429686800B1D0B4 /* TrackingData.swift */,
 				9CD59430242968DF00B1D0B4 /* DatabaseSqlite.swift */,
-				9C1667612438C858003F4D9D /* UserScoreCalculations.swift */,
+				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
 				9CD594402429691E00B1D0B4 /* ContentView.swift */,
 				9CD5942E242968DE00B1D0B4 /* DetailView.swift */,
@@ -407,7 +411,6 @@
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
 				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
-				9C1667602436009E003F4D9D /* ProgressBarView.swift in Sources */,
 				9CD5943A242968DF00B1D0B4 /* DetailView.swift in Sources */,
 				9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */,
 				9CD59437242968DF00B1D0B4 /* GraphView.swift in Sources */,
@@ -415,7 +418,7 @@
 				9CD5943C242968DF00B1D0B4 /* DatabaseSqlite.swift in Sources */,
 				573693832438F85F00992BB0 /* GraphModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* gridlines.swift in Sources */,
-				9C1667622438C858003F4D9D /* UserScoreCalculations.swift in Sources */,
+				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
 				9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */,
 				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
@@ -423,6 +426,7 @@
 				9CD59433242968DF00B1D0B4 /* DataClassGraph.swift in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
 				5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */,
+				9C5D59C7243B103300238275 /* UserScoreCalculations.swift in Sources */,
 				9CD594212429686900B1D0B4 /* ScoreView.swift in Sources */,
 				9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */,
 				9CD594242429686900B1D0B4 /* WelcomeView.swift in Sources */,

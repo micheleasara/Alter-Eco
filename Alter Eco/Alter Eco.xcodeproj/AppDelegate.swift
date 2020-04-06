@@ -216,13 +216,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             self.handleBGTwifi(task: task as! BGAppRefreshTask)
         }
         
-        //     Register the score task
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.score",
-                                        using: nil)
-        { task in
-            //This task is cast with processing request (BGAppRefreshTask)
-            self.handleBGTscore(task: task as! BGProcessingTask)
-        }
+//        //     Register the score task
+//        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.score",
+//                                        using: nil)
+//        { task in
+//            //This task is cast with processing request (BGAppRefreshTask)
+//            self.handleBGTscore(task: task as! BGProcessingTask)
+//        }
         print("Registered the BGTs")
 
     }

@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:ProgressBarView.swift">
+   </FileRef>
+   <FileRef
+      location = "group:UserScoreCalculations.swift">
+   </FileRef>
+   <FileRef
       location = "self:">
    </FileRef>
 </Workspace>
