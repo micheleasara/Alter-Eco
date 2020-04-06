@@ -48,42 +48,40 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     }
     
     func checkWifi() {
-        print("In checkWifi")
-        
         monitor.pathUpdateHandler = {path in
             if path.status == .satisfied {
-                print("We're on WiFi")
+                print("We're on WiFi.")
                 // Check if we're in background, and whether we've gone from no wifi to wifi:
                 if !self.wifistatus.isConnected {
-                    print("Previously mobile")
+                    print("Previously mobile.")
                     // Toggle the isConnected boolean to true:
                     DispatchQueue.main.async {
                         self.wifistatus.isConnected = true
-                        print("Toggled status to true")
                     }
+                    // Stop updating the location
                     (UIApplication.shared.delegate as! AppDelegate).manager.stopUpdatingLocation()
-                    print("Sending wifi notification")
+                    // Send wifi notification to user:
                     self.registerWifiNotification()
                 }
             } else {
                 print("We're on mobile.")
                 // Check if we're in background, and whether we've gone from wifi to no wifi:
                 if self.wifistatus.isConnected {
-                    print("Previously WiFi")
+                    print("Previously WiFi.")
                     // Toggle the isConnected boolean to false:
                     DispatchQueue.main.async {
                         self.wifistatus.isConnected = false
-                        print("Toggled status to false")
                     }
+                    // Resume updating the location
                     (UIApplication.shared.delegate as! AppDelegate).manager.startUpdatingLocation()
-                    // Register the relevant notification
-                    print("Sending NO wifi notification")
+                    // Send no wifi notification to user:
                     self.registerNoWifiNotification()
                 }
             }
         }
-        
+        // Set up queue for task
         let queue = DispatchQueue.global(qos: .background)
+        // Begin monitoring:
         monitor.start(queue: queue)
     }
     
