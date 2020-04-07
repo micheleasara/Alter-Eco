@@ -19,9 +19,6 @@ struct DetailView: View {
                     //Bar chart view
                     GraphView()
                     
-                    //Scores summary
-                    //ScoreView()
-                    
                     //Progress Bar
                     ProgressBarView()
                         .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 25))
