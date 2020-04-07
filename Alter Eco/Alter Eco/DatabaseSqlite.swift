@@ -3,13 +3,13 @@ import SwiftUI
 import CoreData
 
 //all the constants for carbon conversions come from:
-//https://www.carbonindependent.org/21.html
+//https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
 //all units below have been converted to grams/kilometer
 
-let CARBON_UNIT_CAR: Double = 499
-let CARBON_UNIT_TRAIN: Double = 161
-let CARBON_UNIT_PLANE: Double = 512
-let CARBON_UNIT_WALKING: Double = 499
+let CARBON_UNIT_CAR: Double = 175
+let CARBON_UNIT_TRAIN: Double = 30
+let CARBON_UNIT_PLANE: Double = 200
+let CARBON_UNIT_WALKING: Double = 175
 let KM_CONVERSION: Double = 0.001
 let WALKING_PTS: Double = 10
 let CAR_PTS: Double = 3
