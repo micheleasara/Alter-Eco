@@ -6,8 +6,16 @@ struct ExplanationView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
        
     var body: some View {
-        
+       
         VStack {
+            
+            Text("Your Graph Scores:")
+            
+            Text("The graph shows you the amount of carbon dioxide grams you emitted from taking your modes of transport. We convert every metre in a car to 175 grams, every metre on a train to 30 grams and every metre flown to 200 grams! Walking is displayed as the amount of carbon dioxide you saved instead of driving!")
+            
+            Text("Your Graph Colour:")
+            
+            Text("Keep an eye out on the graph changing colour! Green shows you that you have emmitted less than (or equal to) the average UK citizen that day (2200 grams of carbon dioxide) and a red graph shows that you have emitted more than the average!")
             
             Text("Your Eco Score:")
         
