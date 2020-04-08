@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E158242FB3EC00FD9B5F /* ProfileView.swift */; };
 		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
+		218C4196243DCC910036A2FE /* ProfilePic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */; };
+		218C4197243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */; };
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55C85C5B243CB879006AD075 /* ExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C85C5A243CB879006AD075 /* ExplanationView.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
@@ -74,6 +76,8 @@
 /* Begin PBXFileReference section */
 		2186E158242FB3EC00FD9B5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfilePic+CoreDataClass.swift"; sourceTree = "<group>"; };
+		218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfilePic+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55C85C5A243CB879006AD075 /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
@@ -175,6 +179,8 @@
 		CD200B3623E3885100629E73 = {
 			isa = PBXGroup;
 			children = (
+				218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */,
+				218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */,
 				CD200B4123E3885100629E73 /* Alter Eco */,
 				9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */,
 				9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */,
@@ -423,6 +429,8 @@
 				9CD59435242968DF00B1D0B4 /* gridlines.swift in Sources */,
 				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
 				55C85C5B243CB879006AD075 /* ExplanationView.swift in Sources */,
+				218C4197243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift in Sources */,
+				218C4196243DCC910036A2FE /* ProfilePic+CoreDataClass.swift in Sources */,
 				9CD5941F2429686900B1D0B4 /* TrackingData.swift in Sources */,
 				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
@@ -653,14 +661,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = ZTFJLYXD2W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoV1.1moleman;
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoV1.1hannahrkay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -673,14 +681,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = 88749UX665;
+				DEVELOPMENT_TEAM = ZTFJLYXD2W;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoV1.1moleman;
+				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoV1.1hannahrkay;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

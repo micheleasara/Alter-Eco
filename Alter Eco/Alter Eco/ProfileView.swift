@@ -12,242 +12,273 @@ import CoreData
 struct ProfileView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    let currentDate = Date()
+    var currentDate = Date()
+    let formatter = DateFormatter()
+
+    var originalDate = Date()
+    var currentYear = 2020
     var currentMonth = ""
     var currentWeek = ""
     var currentDay = 0
-    var usedCarPastMonth = true
-    var usedPlanePastMonth = true
+       
+    var notUsedCarPastMonth = false
+    var notUsedPlanePastMonth = false
     let weeklyLondonAverageKg = 15.8
     var lowerThanAverage = false
     var walkingMoreThan = false
-    
+       
+       
+    var longerThanWeek = false
+    var longerThanMonth = false
+    var longerThanYear = false
+       
+    var timeInterval = 0.0
+       
     init() {
-        self.currentMonth = getCurrentMonth()
-        self.currentDay = getCurrentDay()
+        self.currentMonth = getMonth()
+        self.currentDay = getDay()
+        self.currentYear = getYear()
+
         
-        if(queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: currentMonth) == 0)
+        self.originalDate = getFirstDate()
+        //Uncomment below to show some of the awards
+        //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
+
+        self.timeInterval = currentDate.timeIntervalSince(self.originalDate)
+           
+        if(timeInterval > 604800)
+        {longerThanWeek = true}
+           
+        if(timeInterval > 2592000)
+        {longerThanMonth = true}
+           
+        if(timeInterval > 31536000)
+        {longerThanYear = true}
+           
+        if(queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: currentMonth) == 0 && longerThanMonth)
         {
-            self.usedCarPastMonth = false
+            self.notUsedCarPastMonth = true
         }
-        
-        /*if(queryPastMonth(motionType:MeasuredActivity.MotionType.plane, month: currentMonth) == 0)
+           
+        if(queryPastMonth(motionType:MeasuredActivity.MotionType.plane, month: currentMonth) == 0 && longerThanMonth)
         {
-            self.usedPlanePastMonth = false
-        }*/ //can uncomment when we have plane as travel type
-        
-        if(queryTotalWeek() < weeklyLondonAverageKg)
+            self.notUsedPlanePastMonth = true
+        }
+           
+        if(queryTotalWeek() < weeklyLondonAverageKg && longerThanWeek)
         {
             lowerThanAverage = true
         }
-        
-        print("Walking the talk man")
-        if(queryPastMonth(motionType: MeasuredActivity.MotionType.walking, month: currentMonth, carbon: false) > 100)
+           
+        if(queryPastMonth(motionType: MeasuredActivity.MotionType.walking, month: currentMonth, carbon: false) > 1000 && longerThanMonth)
         {
             walkingMoreThan = true
         }
 
     }
-
+    
     var body: some View {
-       //NavigationView {
         ScrollView {
+            Spacer()
             VStack{
                 ProfileImage()
+                    .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.37)
                 ScorePoints()
                 Divider()
                     .padding(.top, 10)
                     .padding(.bottom, 10)
-                HStack{
-                    Image("trophy")
-                        .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
-                        .frame(width: 50, height: 50)
-                    Text("Achievements").font(.title)
-                    Image("trophy")
-                        .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
-                        .frame(width: 50, height: 50)
-                }
+                AchievementsTitle()
                 VStack{
-                    if(usedPlanePastMonth == false){
+                    if(notUsedPlanePastMonth == true){
                         ZStack{
-                            RectangleView()
+                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                .fill(Color("fill_colour"))
+                                .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedWidth)*0.35)
                             HStack{
-                                VStack(alignment: .leading) {
+                                VStack{
                                     Text("Bye Flyer").font(.headline)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
-                                    Text("No airplane travel for 1 year").font(.body)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
+
+                                    Text("No airplane travel for 1 entire year").font(.caption)
                                 }
-                                Image("medal (2)")
-                                    
-                                    .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/1000)
-                                    .shadow(color: Color("shadow"), radius: 8, x: 10, y: 0)
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.5, alignment: .center)
+                                    .padding(4)
+                
+                                    Image("badge_plane")
+                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.22, height: CGFloat(screenMeasurements.broadcastedWidth)*0.22, alignment: .center)
+                                        .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/600)
+                                        .padding(4)
                             }
                         }
+                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.85, height: CGFloat(screenMeasurements.broadcastedWidth)*0.4)
                     }
                     if(lowerThanAverage == true){
                         ZStack{
-                            RectangleView()
+                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                .fill(Color("fill_colour"))
+                                .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedWidth)*0.35)
                             HStack{
-                                VStack(alignment: .leading) {
+                                VStack{
                                     Text("Beating the Average").font(.headline)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
-                                    Text("Used less carbon than the UK average for one week").font(.body)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
-                                }
-                                Image("medal (1)")
-                                    .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/1000)
-                                    .frame(width: 50, height: 50)
-                                    .shadow(color: Color("shadow"), radius: 8, x: 0, y: 0)
 
+                                    Text("Used less carbon than the London average for one week").font(.caption)
+                                }
+                                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.5, alignment: .center)
+                                    .padding(4)
+                                
+                                Image("badge_london")
+                                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.22, height: CGFloat(screenMeasurements.broadcastedWidth)*0.22, alignment: .center)
+                                    .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/600)
+                                    .padding(4)
                             }
                         }
+                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.85, height: CGFloat(screenMeasurements.broadcastedWidth)*0.4)
                     }
                     if(walkingMoreThan == true)
                     {
                         ZStack{
-                            RectangleView()
+                            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                  .fill(Color("fill_colour"))
+                                  .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedWidth)*0.35)
                             HStack{
-                                VStack(alignment: .leading) {
-                                    Text("Get Low").font(.headline)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
-                                    Text("Lowered your own carbon footprint for 2 weeks in a row").font(.body)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
+                                VStack() {
+                                    Text("Walker").font(.headline)
+                                    //.padding(.horizontal, 10)
+
+                                    Text("Walked more than 1000 kms in a week").font(.caption)
                                 }
-                                Image("medal (3)")
-                                    .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/1500)
-                                    .shadow(color: Color("shadow"), radius: 8, x: 0, y: 0)
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.5, alignment: .center)
+                                    .padding(4)
+                                
+                                Image("badge_feet")
+                                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.22, height: CGFloat(screenMeasurements.broadcastedWidth)*0.22, alignment: .center)
+                                    .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/600)
+                                    .padding(4)
                             }
                         }
+                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.85, height: CGFloat(screenMeasurements.broadcastedWidth)*0.4)
                     }
-                    if(usedCarPastMonth == false){
+                    if(notUsedCarPastMonth == true){
                         ZStack{
-                             RectangleView()
-                             HStack{
-                                 VStack(alignment: .leading) {
-                                     Text("No Wheels").font(.headline)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
-                                    Text("No car or bus travel for 1 week").font(.body)
-                                        .padding(.horizontal, 10)
-                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, alignment: .leading)
-                                 }
-                                 Image("no_medal")
-                                    .colorMultiply(Color("secondary_label"))
-                                    .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/1000)
-                                    .frame(width: 50, height: 50)
-                                    .shadow(color: Color("shadow"), radius: 8, x: 0, y: 0)
+                             RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                 .fill(Color("fill_colour"))
+                                 .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedWidth)*0.35)
+                            
+                                HStack{
+                                    VStack(alignment: .center) {
+                                        Text("No Wheels").font(.headline)
+
+                                        Text("No car or bus travel for one week").font(.caption)
+                                    }
+                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.5, alignment: .center)
+                                        .padding(4)
+
+                                    Image("badge_wheels")
+                                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.22, height: CGFloat(screenMeasurements.broadcastedWidth)*0.22, alignment: .center)
+                                        .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/600)
+                                        .padding(4)
                              }
+    
                         }
+                             .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.85, height: CGFloat(screenMeasurements.broadcastedWidth)*0.4)
+                    }
+                    Spacer()
+                    if(!notUsedCarPastMonth && !notUsedPlanePastMonth && !walkingMoreThan && !lowerThanAverage){
+                        Text("No awards yet! Try cutting down on your carbon footprint by avoiding car and plane travel and walking more.")
+                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.85)
+                            .foregroundColor(Color("minor_text"))
                     }
                 }
             }
-            }
-        //.navigationBarTitle("Profile")
-        //}
+        }
     }
     
-    func getCurrentMonth() -> String {
-        let date = Date()
+    func getYear(dateArg: Date = Date()) -> Int {
+        let date = dateArg
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year], from: date)
+        let currentYear = components.year
+        return currentYear!
+    }
+    
+    func getMonth(dateArg: Date = Date()) -> String {
+        let date = dateArg
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "LLLL"
         let monthString = dateFormatter.string(from: date)
         return monthString
     }
     
-    func getCurrentDay() -> Int {
-        let date = Date()
+    func getDay(dateArg: Date = Date()) -> Int {
+        let date = dateArg
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: date)
         let dayOfMonth = components.day
         return dayOfMonth!
     }
     
-
-}
-
-struct AwardView: View {
-    @State private var rect: CGRect = CGRect()
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    var body: some View {
-    
-        Text("Hello")
-    }
-}
-
-struct RectangleView: View {
-    @State private var rect: CGRect = CGRect()
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    var body: some View {
-        RoundedRectangle(cornerRadius: 25, style: .continuous)
-            .fill(Color("fill_colour"))
-            //.stroke(Color("Gold"), lineWidth: 4)
-            .padding(.bottom, 15)
-            .padding(.horizontal, 10)
-            .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.2)
-        
-    }
 }
 
 struct ProfileImage: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    @State private var image: Image?
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
-
+    @State var placeholder : Data = .init(count: 0)
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(entity: ProfilePic.entity(), sortDescriptors: [
+        NSSortDescriptor(keyPath: \ProfilePic.imageP, ascending: true)
+        ]
+    ) var savings : FetchedResults<ProfilePic>
     
     var body: some View {
+        VStack(spacing: 0){
         ZStack{
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color("fill_colour"))
-                .padding(.bottom, 20)
-                .padding(.horizontal, CGFloat(10))
-                .padding(.top, 30)
-                //.frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.3)
-            VStack{
-                if(inputImage != nil){
-                image?
-                    .resizable()
-                    .clipShape(Circle())
-                    .shadow(radius: 10)
-                    .padding(.bottom, 15)
-                    .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.17)
-                    .scaledToFit()
-                }
+            //VStack{
+                if(savings.count != 0){
+                    ForEach(savings, id: \.self) { save in
+                       VStack() {
+                    Image(uiImage: UIImage(data: save.imageP ?? self.placeholder)!)
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6, height: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6)
+                        .shadow(radius: 10)
+                    }
+                    }
+                    Button(action: {self.showingImagePicker = true}){
+                        Circle()
+                    }
+                    .foregroundColor(Color.white)
+                    .opacity(0.01)
+                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.41, height: CGFloat(screenMeasurements.broadcastedWidth)*0.41)
+               }
+            
                 Button(action: {self.showingImagePicker = true}){
-                    if(inputImage == nil){
+                    if(savings.count == 0){
                     Image("add_profile_pic")
-                        .scaleEffect(0.4)
+                        .scaleEffect(CGFloat(screenMeasurements.broadcastedHeight)/1700)
                         .foregroundColor(Color("title_colour"))
                     }
                 }
                 .background(Color("shadow"))
-                .mask(Circle().scale(0.7))
+                .mask(Circle().scale(CGFloat(screenMeasurements.broadcastedHeight)/1000))
                     
                 .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
                     ImagePicker(image: self.$inputImage)
-                    }
+                }
                 
-                NameView()
-            }
-
-        }.frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.33)
-
-
+        }.frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, height: CGFloat(screenMeasurements.broadcastedHeight)*0.3)
+            
+            NameView()
+        }
     }
     
     func loadImage() {
-        guard let inputImage = inputImage else { return}
-        image = Image(uiImage: inputImage)
+        //guard let inputImage = inputImage else { return}
+        if(savings.count != 0){
+            self.moc.delete(savings[0])}
+        let newPic = ProfilePic(context: self.moc)
+        newPic.imageP = self.inputImage?.pngData()
     }
 }
 
@@ -276,26 +307,53 @@ struct ScorePoints: View {
     }
 }
 
+struct AchievementsTitle: View {
+@State private var rect: CGRect = CGRect()
+@EnvironmentObject var screenMeasurements: ScreenMeasurements
+    var body: some View {
+        HStack{
+            /*Image("trophy")
+                .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
+                .frame(width: 50, height: 50)*/
+            Text("Achievements")
+                .font(.title)
+                .fontWeight(.semibold)
+            /*Image("trophy")
+                .scaleEffect(CGFloat(screenMeasurements.broadcastedWidth)/2000)
+                .frame(width: 50, height: 50)*/
+        }
+    }
+}
+
 struct NameView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State var name: String = ""
     @State var nickname: String = UserDefaults.standard.string(forKey: "Nickname") ?? ""
+    @State private var changingNickname = false
+
     var body: some View {
         VStack {
-            if(nickname == "")
+            if(nickname == "" || changingNickname == true)
             {
                 TextField(" Enter Your Nickname", text: $name){
                     self.addNickname()
                     UIApplication.shared.keyWindow?.endEditing(true)
-                }
+                    self.changingNickname = false
+                }.font(.callout)
                     .foregroundColor(Color("title_colour"))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7)
             }
             else
             {
-                Text("Hello \(nickname)!")
+                VStack{
+                    Text("Hello \(nickname)!")
+                        .layoutPriority(1.0)
+                    Button(action: {self.changingNickname = true}){
+                        Text("Change nickname")
+                        }.font(.body)
+                }
             }
         }
         .font(.title)

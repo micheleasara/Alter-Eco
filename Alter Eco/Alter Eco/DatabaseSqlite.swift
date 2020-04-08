@@ -345,3 +345,35 @@ func queryYearlyCarbonAll(year: String) -> Double {
     
     return carbonValue
 }
+
+
+func getFirstDate() -> Date {
+
+    guard let appDelegate =
+      UIApplication.shared.delegate as? AppDelegate else {
+        return Date()
+    }
+    var oldDate = Date()
+    
+    let managedContext = appDelegate.persistentContainer.viewContext
+    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Event")
+    
+    do {
+        let queryResult = try managedContext.fetch(fetchRequest)
+        if queryResult.count != 0 {
+            oldDate = queryResult[0].value(forKey: "start") as! Date
+            //queryResult[0].setValue(oldTotalPoints + addScoreNewActivity(activity: activity), forKey: "score")
+            //queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
+            //let formatter = DateFormatter()
+            //formatter.dateFormat = "dd MMM yyyy HH:mm" //yyyy
+            //oldDate = formatter.string(from: formatDate as Date)
+        }
+
+    }
+    
+    catch let error as NSError {
+      print("Could not fetch. \(error), \(error.userInfo)")
+    }
+    
+    return oldDate
+}
