@@ -8,7 +8,7 @@ struct ExplanationView: View {
     var body: some View {
         ScrollView {
             VStack {
-               
+               Spacer()
                 Text("Your Eco Graph:")
                     .bold()
                 

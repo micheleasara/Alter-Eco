@@ -72,6 +72,12 @@ struct AwardView: View {
             description: "No car or bus travel for one week",
             badgeTitle: "badge_wheels",
             awarded: false),
+        Awards(
+            id: 4,
+            name: "Staying Inside for COVID-19",
+            description: "Travelled less than 300m in a week",
+            badgeTitle: "badge_crown",
+            awarded: false),
     ]
        
     init() {
@@ -81,9 +87,6 @@ struct AwardView: View {
         //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
-        if(queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
-        {awardsList[3].Awarded = true}
-           
         if(queryPastMonth(motionType:MeasuredActivity.MotionType.plane, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
         {awardsList[0].Awarded = true}
         
@@ -92,6 +95,12 @@ struct AwardView: View {
         
         if(queryPastMonth(motionType: MeasuredActivity.MotionType.walking, month: currentMonth, carbon: false) > 1000 && timeInterval > SECONDS_MONTH)
         {awardsList[2].Awarded = true}
+        
+        if(queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
+        {awardsList[3].Awarded = true}
+        
+        if(queryPastMonthAll(month: currentMonth, carbon: false) < 300 && timeInterval > SECONDS_MONTH)
+        {awardsList[4].Awarded = true}
     }
     
     var body: some View {

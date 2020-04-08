@@ -344,15 +344,12 @@ func queryPastMonth(motionType: MeasuredActivity.MotionType, month: String, carb
     let previousMonth = dateFormatter.string(from: previousMonthDate!)
     let prevMonthToDisplay = getMonthToDisplay(month: previousMonth)
     
-    print("Month is: ", monthToday, " AND month we want is: ", monthToDisplay)
 
     let endDateTemp = "2020-" + monthToDisplay + "-"
     let endDate = endDateTemp + String(currentDay) + " 00:00:01 +0000"
     let startDateTemp = "2020-" + prevMonthToDisplay + "-"
     let startDate = startDateTemp + String(previousDay) + " 00:00:01 +0000"
 
-    print("Start date is ", endDate)
-    print("End date is ", startDate)
 
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
     dateFormatter.locale = Locale(identifier: "en-UK")
@@ -387,4 +384,9 @@ func queryTotalWeek() -> Double {
                 queryWeeklyCarbonAll(weekDayToDisplay: "Saturday") +
                 queryWeeklyCarbonAll(weekDayToDisplay: "Sunday")
     return total
+}
+
+func queryPastMonthAll(month: String, carbon: Bool = true) -> Double {
+    let distance = queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: month, carbon: carbon) + queryPastMonth(motionType: MeasuredActivity.MotionType.train,month: month, carbon: carbon) +  queryPastMonth(motionType: MeasuredActivity.MotionType.plane, month: month, carbon: carbon) + queryPastMonth(motionType: MeasuredActivity.MotionType.walking, month: month, carbon: carbon)
+    return distance
 }
