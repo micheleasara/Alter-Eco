@@ -353,11 +353,6 @@ func getFirstDate() -> Date {
         let queryResult = try managedContext.fetch(fetchRequest)
         if queryResult.count != 0 {
             oldDate = queryResult[0].value(forKey: "start") as! Date
-            //queryResult[0].setValue(oldTotalPoints + addScoreNewActivity(activity: activity), forKey: "score")
-            //queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
-            //let formatter = DateFormatter()
-            //formatter.dateFormat = "dd MMM yyyy HH:mm" //yyyy
-            //oldDate = formatter.string(from: formatDate as Date)
         }
 
     }
