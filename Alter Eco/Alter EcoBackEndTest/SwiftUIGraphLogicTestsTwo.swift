@@ -62,7 +62,8 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
        let savedOrEmitted: String
         
         (maxVal, carbonUnit, decimalPlaces, savedOrEmitted) = findCorrectUnits(currentMax: 10001, value: 3)
-           
+        
+        print("SAVED OR EMMITED YIELDS: ", savedOrEmitted)
         XCTAssert(savedOrEmitted == "   Saved")
 
     }

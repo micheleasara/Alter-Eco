@@ -59,9 +59,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                         self.wifistatus.isConnected = true
                     }
                     // Stop updating the location
-                    (UIApplication.shared.delegate as! AppDelegate).manager.stopUpdatingLocation()
-                    // Send wifi notification to user:
-                    self.registerWifiNotification()
+                    DispatchQueue.main.async {
+                        (UIApplication.shared.delegate as! AppDelegate).manager.stopUpdatingLocation()
+                        // Send wifi notification to user:
+                        self.registerWifiNotification()
+                    }
                 }
             } else {
                 print("We're on mobile.")
@@ -72,10 +74,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                     DispatchQueue.main.async {
                         self.wifistatus.isConnected = false
                     }
+                    DispatchQueue.main.async {
                     // Resume updating the location
-                    (UIApplication.shared.delegate as! AppDelegate).manager.startUpdatingLocation()
-                    // Send no wifi notification to user:
-                    self.registerNoWifiNotification()
+                        (UIApplication.shared.delegate as! AppDelegate).manager.startUpdatingLocation()
+                        // Send no wifi notification to user:
+                        self.registerNoWifiNotification()
+                    }
                 }
             }
         }

@@ -2,6 +2,21 @@ import Foundation
 import SwiftUI
 import CoreData
 
+// Points awarded to userScore for each transport mode
+let WALKING_PTS: Double = 10
+let CAR_PTS: Double = 3
+let TUBE_PTS: Double = 7
+let PLANE_PTS: Double = 0
+
+// ProgressBar Icons number
+let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
+let ICON_ONE: Int = 1
+let ICON_TWO: Int = 2
+let ICON_THREE: Int = 3
+let ICON_FOUR: Int = 4
+let ICON_FIVE: Int = 5
+let NUMBER_OF_ICONS: Double = 6
+
 func updateUserScore(activity: MeasuredActivity) {
     
     // open database
@@ -18,9 +33,7 @@ func updateUserScore(activity: MeasuredActivity) {
 
     let dateToday = Date()
     let dateTodayStr = stringFromDate(dateToday)
-    
-//    var currentUserScore = UserScore(totalPoints: 4, date: dateTodayStr, league: "sun.max")
-    
+
     // retrieve current userscore
     do {
         let queryResult = try managedContext.fetch(fetchRequest)
@@ -40,7 +53,7 @@ func updateUserScore(activity: MeasuredActivity) {
     }
 }
 
-func updateUserScore(newLeague: String) {
+func updateUserLeague(newLeague: String) {
     
     // open database
     guard let appDelegate =
@@ -200,14 +213,6 @@ func retrieveLatestScore() -> UserScore {
             
             printUserScoreDatabase()
         }
-        
-//        for result in queryResult {
-//            userScore.totalPoints = result.value(forKey: "score") as! Double
-//            userScore.date = result.value(forKey: "dateStr") as! String
-//            if result.value(forKey: "league") as? String != nil {qu
-//                userScore.league = result.value(forKey: "league") as! String
-//            }
-//        }
 
     } catch let error as NSError {
       print("Could not fetch. \(error), \(error.userInfo)")
@@ -251,14 +256,14 @@ func getLeagueProgress() -> Int {
     
     let userScore = retrieveLatestScore()
     
-    if userScore.totalPoints >= 600 {
-        updateUserScore(newLeague: getNewLeague(userLeague: userScore.league))
+    if userScore.totalPoints >= POINTS_REQUIRED_FOR_NEXT_LEAGUE {
+        updateUserLeague(newLeague: getNewLeague(userLeague: userScore.league))
         return 0
     }
     
-    print("Nb of icons colour should be less than: \(Int(((userScore.totalPoints / 600) * 6).rounded()))")
+    print("Nb of icons colour should be less than: \(Int(((userScore.totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE) * NUMBER_OF_ICONS).rounded()))")
     
-    return Int(((userScore.totalPoints / 600) * 6).rounded())
+    return Int(((userScore.totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE) * NUMBER_OF_ICONS).rounded())
 }
 
 func getColor(iconNb: Int) -> Color {
@@ -383,164 +388,3 @@ func queryTotalWeek() -> Double {
                 queryWeeklyCarbonAll(weekDayToDisplay: "Sunday")
     return total
 }
-
-
-//func updateScore(score: UserScore, queryDate: Date = Date()) -> UserScore {
-//
-//       //query walking
-//    let walkingKm = queryDailyKm(motionType: MeasuredActivity.MotionType.walking,
-//                                 hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
-//
-//       //query car
-//    let carKm = queryDailyKm(motionType: MeasuredActivity.MotionType.car,
-//                             hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
-//
-//    //query tube
-//    let tubeKm = queryDailyKm(motionType: MeasuredActivity.MotionType.train,
-//                              hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
-//
-//    let planeKm = queryDailyKm(motionType: MeasuredActivity.MotionType.plane,
-//                               hourStart: "00:00:00", hourEnd: "23:59:59", queryDate: queryDate)
-//
-//    //total kms
-//    let totalKm = walkingKm + carKm + tubeKm + planeKm
-//
-//       //prevent division by 0
-//       if totalKm == 0 {
-//           score.totalPoints += 0
-//           let dayTodayStr = stringFromDate(Date())
-//           score.date = dayTodayStr
-//           return score
-//       }
-//
-//       else {
-//           let walkingPoints = (walkingKm/totalKm) * WALKING_PTS
-//           let carPoints = (walkingKm/totalKm) * CAR_PTS
-//           let tubePoints = (walkingKm/totalKm) * TUBE_PTS
-//           let planePoints = (planeKm/totalKm) * PLANE_PTS
-//           score.totalPoints += (walkingPoints + carPoints + tubePoints + planePoints)
-//           let dayTodayStr = stringFromDate(Date())
-//           score.date = dayTodayStr
-//           return score
-//       }
-//   }
-
-//func replaceScore(queryDate: Date = Date()) {
-//
-//    let dateNow = queryDate
-//    let dateTodayStr = stringFromDate(dateNow)
-//    let dateYesterday = Calendar.current.date(byAdding: .day,value: -1, to: dateNow)
-//    let dateYesterdayStr = stringFromDate(dateYesterday!)
-//
-//    let oldScore = UserScore(totalPoints: 0, date: dateYesterdayStr, league: "sun.max")
-//
-//    guard let appDelegate =
-//        UIApplication.shared.delegate as? AppDelegate else {
-//       return
-//     }
-//
-//    //fetch old score currently in database
-//    let managedContext =
-//       appDelegate.persistentContainer.viewContext
-//
-//    //print("Day yesterday is: ", dateYesterdayStr)
-//
-//    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Score")
-//    fetchRequest.predicate = NSPredicate(format: "dateStr == %@", dateYesterdayStr)
-//
-//    do {
-//        let queryResult = try managedContext.fetch(fetchRequest)
-////        let scoreDB : NSManagedObject
-////            scoreDB = queryResult[0]
-////
-//        //find the attributes of old score
-//        for result in queryResult {
-//                oldScore.totalPoints = result.value(forKey: "score") as! Double
-//                oldScore.league = result.value(forKey: "league") as! String
-//        }
-//
-//        //print("The old Score totalPoints is: ", oldScore.totalPoints)
-//    }
-//
-//    catch let error as NSError {
-//      print("Could not fetch. \(error), \(error.userInfo)")
-//    }
-//
-//    //update the score
-////    let newScore = UserScore(totalPoints: 200, date: dateTodayStr) //updateScore(score: oldScore)
-//    let newScore = updateScore(score: oldScore, queryDate: queryDate)
-//
-//    //replace old score with new score in database and update date
-//    let entity = NSEntityDescription.entity(forEntityName: "Score",
-//                                            in: managedContext)!
-//
-//    let scoreDB = NSManagedObject(entity: entity,
-//    insertInto: managedContext)
-//
-//    //print("The new score is now updated: ", newScore.totalPoints)
-//
-//    emptyDatabase()
-//    let newLeague = getLeagueProgress()
-//
-//    scoreDB.setValuesForKeys(["dateStr": dateTodayStr, "score": newScore.totalPoints])
-//
-//    do {
-//       try managedContext.save()
-//     } catch let error as NSError {
-//       print("Could not save. \(error), \(error.userInfo)")
-//     }
-//}
-
-
-//
-//
-//func retrieveScore(query: NSPredicate) -> UserScore {
-//
-//    let dayToday = Date()
-//    let dayTodayStr = stringFromDate(dayToday)
-//    let userScore = UserScore(totalPoints: 10, date: dayTodayStr, league: "flame.fill")
-//
-//    print(userScore.date)
-//    print(userScore.totalPoints)
-//
-//    guard let appDelegate =
-//      UIApplication.shared.delegate as? AppDelegate else {
-//        return userScore
-//    }
-//
-//    let managedContext = appDelegate.persistentContainer.viewContext
-//    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Score")
-//    fetchRequest.predicate = query
-//
-//    do {
-//        let queryResult = try managedContext.fetch(fetchRequest)
-//        for result in queryResult {
-//            userScore.date = result.value(forKey: "dateStr") as! String
-//            userScore.totalPoints = result.value(forKey: "score") as! Double
-//        }
-//
-//    } catch let error as NSError {
-//      print("Could not fetch. \(error), \(error.userInfo)")
-//    }
-//
-//    return userScore
-//}
-
-////score calculation functions
-//func queryDailyKm(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String, queryDate: Date = Date()) -> Double {
-//
-//    //let dateNow = Date()
-//    var measuredActivityKms:Double = 0
-//
-//    let queryMeasuredActivities = executeQuery(query: NSPredicate(format: "motionType == %@ AND start <= %@ AND start >= %@", MeasuredActivity.motionTypeToString(type: motionType),combineTodayDateWithInterval(date: queryDate, hour: hourEnd) as NSDate, combineTodayDateWithInterval(date: queryDate, hour: hourStart) as NSDate))
-//
-//    if (queryMeasuredActivities.count != 0) {
-//        for measuredActivity in queryMeasuredActivities {
-//            measuredActivityKms += measuredActivity.distance
-//        }
-//    }
-//
-//    measuredActivityKms *= KM_CONVERSION
-//
-//    return measuredActivityKms
-//}

@@ -11,17 +11,8 @@ let CARBON_UNIT_TRAIN: Double = 30
 let CARBON_UNIT_PLANE: Double = 200
 let CARBON_UNIT_WALKING: Double = 175
 let KM_CONVERSION: Double = 0.001
-let WALKING_PTS: Double = 10
-let CAR_PTS: Double = 3
-let TUBE_PTS: Double = 7
-let PLANE_PTS: Double = 0
+
 let MAX_DAYS_IN_FEB: Int = 28
-let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 600
-let ICON_ONE: Int = 1
-let ICON_TWO: Int = 2
-let ICON_THREE: Int = 3
-let ICON_FOUR: Int = 4
-let ICON_FIVE: Int = 5
 
 // Append new Event (tube, plane, walking, car) to Event database
 func appendToDatabase(activity: MeasuredActivity) {
