@@ -215,7 +215,7 @@ struct ProfileImage: View {
         if(savings.count != 0){
             self.moc.delete(savings[0])}
         let newPic = ProfilePic(context: self.moc)
-        newPic.imageP = self.inputImage?.pngData()
+        newPic.imageP = self.inputImage?.jpegData(compressionQuality: CGFloat(1.0))
     }
 }
 
