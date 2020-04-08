@@ -1,15 +1,8 @@
-//
-//  ProfileView.swift
-//  Alter Eco
-//
-//  Created by Hannah Kay on 01/03/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import SwiftUI
 import CoreData
 
 struct ProfileView: View {
+    
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     var currentDate = Date()
@@ -78,12 +71,17 @@ struct ProfileView: View {
     }
     
     var body: some View {
+        
+        NavigationView() {
         ScrollView {
             Spacer()
             VStack{
                 ProfileImage()
                     .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.37)
                 ScorePoints()
+                NavigationLink(destination: ExplanationView()) {
+                    Text("Info")
+                }
                 Divider()
                     .padding(.top, 10)
                     .padding(.bottom, 10)
@@ -190,6 +188,7 @@ struct ProfileView: View {
                 }
             }
         }
+    }
     }
     
     func getYear(dateArg: Date = Date()) -> Int {
@@ -298,6 +297,7 @@ struct ScorePoints: View {
                 )
                 .padding(.horizontal, 10)
                 .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.1)
+          
             HStack(alignment: .top){
                 Text("Score:").font(.title) .fontWeight(.bold)
                 Text("\(userScore.totalPoints, specifier: "%.0f")")
