@@ -19,9 +19,8 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
         let maxVal: Double
         let carbonUnit: String
         let decimalPlaces: String
-        let savedOrEmitted: String
         
-        (maxVal, carbonUnit, decimalPlaces, savedOrEmitted) = findCorrectUnits(currentMax: 900, value: 2)
+        (maxVal, carbonUnit, decimalPlaces, _) = findCorrectUnits(currentMax: 900, value: 2)
            
         XCTAssert(maxVal == 900)
         XCTAssert(carbonUnit == "Carbon grams")
@@ -32,9 +31,8 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
         let maxVal: Double
         let carbonUnit: String
         let decimalPlaces: String
-        let savedOrEmitted: String
         
-        (maxVal, carbonUnit, decimalPlaces, savedOrEmitted) = findCorrectUnits(currentMax: 10001, value: 3)
+        (maxVal, carbonUnit, decimalPlaces, _) = findCorrectUnits(currentMax: 10001, value: 3)
            
         XCTAssert(maxVal == 10.001)
         XCTAssert(carbonUnit == "  Carbon kgs")
@@ -42,13 +40,9 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
     }
     
     func testWalkingTransportModeDisplaysCorrectLabel() {
-        
-       let maxVal: Double
-       let carbonUnit: String
-       let decimalPlaces: String
        let savedOrEmitted: String
         
-        (maxVal, carbonUnit, decimalPlaces, savedOrEmitted) = findCorrectUnits(currentMax: 10001, value: 2)
+        (_,_,_, savedOrEmitted) = findCorrectUnits(currentMax: 10001, value: 2)
         
         print("SAVED OR EMMITED YIELDS: ", savedOrEmitted)
         XCTAssert(savedOrEmitted == "   Saved")
@@ -60,7 +54,6 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
         let date = Date()
         let activity = MeasuredActivity(motionType: .car, distance: 1100000.0, start: date, end: Date(timeInterval: 10, since: date))
         appendToDatabase(activity: activity)
-        let result = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: "00:00:00", hourEnd: "24:00:00")
         
         let colour = findGraphColour()
         
@@ -199,22 +192,20 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
     
      //Need to test monthly queries and yearly queries
     
-    func testDataisCorrectlyNormalised() {
+    func testDataIsCorrectlyNormalised() {
         let date = Date()
         let activity = MeasuredActivity(motionType: .car, distance: 11.0, start: date, end: Date(timeInterval: 10, since: date))
         appendToDatabase(activity: activity)
         let result = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: "00:00:00", hourEnd: "24:00:00")
         
         let monthNormalisation=normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.daycar)
-        //print (result)
-        //print (monthNormalisation)
         
-       // XCTAssert(monthNormalisation == result)
+        XCTAssert(monthNormalisation == result)
     }
 
     
     func testDataisCorrectlyNormalisedWithMultipleValues() {
-
+        // TODO
     }
    
 

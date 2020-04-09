@@ -230,18 +230,7 @@
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
 				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
 				9CD5941B2429686900B1D0B4 /* SplashScreen.swift */,
-				9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */,
-				9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */,
-				9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */,
-				9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */,
-				9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */,
-				9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */,
-				9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */,
-				9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */,
-				9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */,
-				9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */,
-				9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */,
-				9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */,
+				DE1B2611243F72B4007D9B54 /* GPX */,
 				CD200B5023E3885700629E73 /* Info.plist */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
 			);
@@ -254,6 +243,25 @@
 				CD200B4B23E3885700629E73 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DE1B2611243F72B4007D9B54 /* GPX */ = {
+			isa = PBXGroup;
+			children = (
+				9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */,
+				9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */,
+				9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */,
+				9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */,
+				9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */,
+				9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */,
+				9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */,
+				9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */,
+				9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */,
+				9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */,
+				9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */,
+				9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */,
+			);
+			path = GPX;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
