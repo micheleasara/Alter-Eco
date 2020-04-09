@@ -165,21 +165,21 @@ func getWeekDayDate(weekDayToDisplay: Int, dayToday: Int) -> [Date] {
     
     if dayToday > weekDayToDisplay {
         let dayDifference = dayToday - weekDayToDisplay
-        dateToView = Calendar.current.date(byAdding: .day, value: -dayDifference, to: dateToView)!
-        dateToViewAM = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: dateToView)!
-        dateToViewPM = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: dateToView)! //SHOULD GO TO 24
+        dateToView = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -dayDifference, to: dateToView)!
+        dateToViewAM = Calendar.autoupdatingCurrent.date(bySettingHour: 0, minute: 0, second: 0, of: dateToView)!
+        dateToViewPM = Calendar.autoupdatingCurrent.date(bySettingHour: 23, minute: 59, second: 59, of: dateToView)! //SHOULD GO TO 24
         return [dateToViewAM, dateToViewPM]
     }
     else if dayToday < weekDayToDisplay {
         let dayDifference = weekDayToDisplay - dayToday
-        dateToView = Calendar.current.date(byAdding: .day, value: dayDifference, to: dateToView)!
-        dateToViewAM = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of:dateToView)!
-        dateToViewPM = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: dateToView)!
+        dateToView = Calendar.autoupdatingCurrent.date(byAdding: .day, value: dayDifference, to: dateToView)!
+        dateToViewAM = Calendar.autoupdatingCurrent.date(bySettingHour: 0, minute: 0, second: 0, of:dateToView)!
+        dateToViewPM = Calendar.autoupdatingCurrent.date(bySettingHour: 23, minute: 59, second: 59, of: dateToView)!
         return [dateToViewAM, dateToViewPM]
     }
     
-    dateToViewAM = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of:dateToView)!
-    dateToViewPM = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of:dateToView)!
+    dateToViewAM = Calendar.autoupdatingCurrent.date(bySettingHour: 0, minute: 0, second: 0, of:dateToView)!
+    dateToViewPM = Calendar.autoupdatingCurrent.date(bySettingHour: 23, minute: 59, second: 59, of:dateToView)!
     
     return [dateToViewAM, dateToViewPM]
 }

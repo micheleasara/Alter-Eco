@@ -18,11 +18,12 @@ struct ProgressBarView: View {
     
     var body: some View {
         
-        VStack(spacing: CGFloat(self.screenMeasurements.broadcastedHeight / 25)) {
+        VStack(spacing: CGFloat(screenMeasurements.broadcastedHeight / 23)) {
         
             // Display container for league information
             ZStack() {
-                RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.95, height: CGFloat(self.screenMeasurements.broadcastedHeight)/5.5)
+                RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth) * 0.9, height: CGFloat(screenMeasurements.broadcastedHeight) / 5)
                     .foregroundColor(Color("fill_colour"))
                 VStack() {
                     HStack {
@@ -30,13 +31,13 @@ struct ProgressBarView: View {
                         Image(systemName: retrieveLatestScore().league)
                             .resizable()
                             .foregroundColor(.blue)
-                            .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight) / 20)
+                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight) / 20)
                     }
                     
                     // depending on which league user is in, display next one
                     if (userScore.league != "tortoise.fill") {
-                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - retrieveLatestScore().totalPoints, specifier: "%.0f") points left to reach league \(getNewLeagueName(leagueName: getNewLeague(userLeague: userScore.league)))!")
-                        Text("Congratulations!")
+                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - retrieveLatestScore().totalPoints, specifier: "%.0f") points needed")
+                        Text("to reach league \(getNewLeagueName(leagueName: getNewLeague(userLeague: userScore.league)))!")
                     }
                     else {
                         Text("You have reached the top league!")
@@ -50,35 +51,35 @@ struct ProgressBarView: View {
                     Image(systemName: retrieveLatestScore().league)
                         .resizable()
                         .foregroundColor(getColor(iconNb: ICON_ONE))
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
+                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
+                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: retrieveLatestScore().league)
                         .resizable()
                         .foregroundColor(getColor(iconNb: ICON_TWO))
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
+                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
+                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: retrieveLatestScore().league)
                         .resizable()
                         .foregroundColor(getColor(iconNb: ICON_THREE))
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
+                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
+                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: retrieveLatestScore().league)
                         .resizable()
                         .foregroundColor(getColor(iconNb: ICON_FOUR))
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(self.screenMeasurements.broadcastedHeight)/100)
+                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
+                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
                         .opacity(1.0)
                         .foregroundColor(Color("fill_colour"))
                     Image(systemName: retrieveLatestScore().league)
                         .resizable()
                         .foregroundColor(getColor(iconNb: ICON_FIVE))
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(self.screenMeasurements.broadcastedHeight)/20)
+                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
             }
         }
     }

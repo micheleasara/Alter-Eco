@@ -24,7 +24,10 @@ struct GraphView: View {
                 HStack {//The bar displayed depends on the two pickers chosen
                     ForEach(0..<data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
                     { i in
-                        BarView(value: data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,label: data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,wid: self.pickerSelectedItem)}}}
+                        BarView(value: data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,label: data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,wid: self.pickerSelectedItem)}}
+                
+            }
+            
             //Transport option picker
             Picker(selection: $pickerSelectedTwoItem.animation(), label: Image("")) {
             Text("All").tag(0)

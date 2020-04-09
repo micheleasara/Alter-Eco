@@ -20,5 +20,13 @@ class DatabaseTest: XCTestCase {
         
         XCTAssert(retrievedScore.totalPoints == 10, "Scores don't match")
     }
+    
+    func testGetWeekDayDate() {
+        
+        let weekday = getWeekDayDate(weekDayToDisplay: 2, dayToday: 4)
+        
+        print(weekday[0])
+        print(weekday[1])
+    }
 
 }
