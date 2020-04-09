@@ -14,19 +14,6 @@ import CoreLocation
 class SwiftUIGraphLogicTestsTwo: XCTestCase {
     
     
-    func testDataisCorrectlyNormalised() {
-        let date = Date()
-        let activity = MeasuredActivity(motionType: .car, distance: 11.0, start: date, end: Date(timeInterval: 10, since: date))
-        appendToDatabase(activity: activity)
-        let result = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: "00:00:00", hourEnd: "24:00:00")
-        
-        let monthNormalisation=normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.daycar)
-        //print (result)
-        //print (monthNormalisation)
-        
-        XCTAssert(monthNormalisation == result)
-    }
-    
     func testGridLinesDisplayCorrectUnitsWhenUnder1000CarbonGrams() {
         //run findCorrectUnits
         let maxVal: Double
@@ -61,7 +48,7 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
        let decimalPlaces: String
        let savedOrEmitted: String
         
-        (maxVal, carbonUnit, decimalPlaces, savedOrEmitted) = findCorrectUnits(currentMax: 10001, value: 3)
+        (maxVal, carbonUnit, decimalPlaces, savedOrEmitted) = findCorrectUnits(currentMax: 10001, value: 2)
         
         print("SAVED OR EMMITED YIELDS: ", savedOrEmitted)
         XCTAssert(savedOrEmitted == "   Saved")
@@ -80,11 +67,158 @@ class SwiftUIGraphLogicTestsTwo: XCTestCase {
         XCTAssert(colour == "redGraphBar")
         
     }
+
+    func testPlaneCarbonConversion() {
+        let dateString = "2020-03-06 01:00:00 +0000"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let date = dateFormatter.date(from:dateString)!
+        
+        let dateStringTwo = "2020-03-06 02:00:00 +0000"
+        let dateTwo = dateFormatter.date(from:dateStringTwo)!
+        
+        var measuredActivities = [MeasuredActivity]()
+        let motionType = MeasuredActivity.MotionType.plane
+        let distance = 10.0
+        let start = date
+        let end = dateTwo
+        
+        measuredActivities.append(MeasuredActivity(motionType: motionType, distance: distance, start: start, end: end))
+        let value = computeCarbonUsage(measuredActivities: measuredActivities, type: MeasuredActivity.MotionType.plane)
+        var actualValue: Double
+        
+        //10 is the metres travelled (converted to kms) and 200 is the carbon constant
+        actualValue = (10*200)/1000
+        XCTAssert(value == actualValue)
+    }
     
+    func testTrainCarbonConversion() {
+        let dateString = "2020-03-06 01:00:00 +0000"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let date = dateFormatter.date(from:dateString)!
+        
+        let dateStringTwo = "2020-03-06 02:00:00 +0000"
+        let dateTwo = dateFormatter.date(from:dateStringTwo)!
+        
+        var measuredActivities = [MeasuredActivity]()
+        let motionType = MeasuredActivity.MotionType.train
+        let distance = 10.0
+        let start = date
+        let end = dateTwo
+        
+        measuredActivities.append(MeasuredActivity(motionType: motionType, distance: distance, start: start, end: end))
+        let value = computeCarbonUsage(measuredActivities: measuredActivities, type: MeasuredActivity.MotionType.train)
+        var actualValue: Double
+        
+        //10 is the metres travelled (converted to kms) and 30 is the carbon constant
+        actualValue = (10*30)/1000
+        XCTAssert(value == actualValue)
+    }
+    
+    func testCarCarbonConversion() {
+        let dateString = "2020-03-06 01:00:00 +0000"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let date = dateFormatter.date(from:dateString)!
+        
+        let dateStringTwo = "2020-03-06 02:00:00 +0000"
+        let dateTwo = dateFormatter.date(from:dateStringTwo)!
+        
+        var measuredActivities = [MeasuredActivity]()
+        let motionType = MeasuredActivity.MotionType.car
+        let distance = 10.0
+        let start = date
+        let end = dateTwo
+        
+        measuredActivities.append(MeasuredActivity(motionType: motionType, distance: distance, start: start, end: end))
+        let value = computeCarbonUsage(measuredActivities: measuredActivities, type: MeasuredActivity.MotionType.car)
+        var actualValue: Double
+        
+        //10 is the metres travelled (converted to kms) and 175 is the carbon constant
+        actualValue = (10*175)/1000
+        XCTAssert(value == actualValue)
+    }
+    
+    func testWalkingCarbonConversion() {
+        let dateString = "2020-03-06 01:00:00 +0000"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let date = dateFormatter.date(from:dateString)!
+        
+        let dateStringTwo = "2020-03-06 02:00:00 +0000"
+        let dateTwo = dateFormatter.date(from:dateStringTwo)!
+        
+        var measuredActivities = [MeasuredActivity]()
+        let motionType = MeasuredActivity.MotionType.walking
+        let distance = 10.0
+        let start = date
+        let end = dateTwo
+        
+        measuredActivities.append(MeasuredActivity(motionType: motionType, distance: distance, start: start, end: end))
+        let value = computeCarbonUsage(measuredActivities: measuredActivities, type: MeasuredActivity.MotionType.walking)
+        var actualValue: Double
+        
+        //10 is the metres travelled (converted to kms) and 200 is the carbon constant
+        actualValue = (10*175)/1000
+        XCTAssert(value == actualValue)
+    }
+    
+    func testGetWeekDayToDisplay() {
+        let day = getWeekDayToDisplay(day: "Tuesday")
+        XCTAssert(day == 3)
+    }
+    
+    func testcombineTodayDateWithInterval() {
+        
+        let dateString = "2020-03-06 01:00:00 +0000"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let date = dateFormatter.date(from:dateString)!
+        
+        let hour = "02:00:00"
+        let combinedDate = combineTodayDateWithInterval(date: date, hour: hour)
+        
+        let dateStringCorrect = "2020-03-06 02:00:00 +0000"
+        let dateCorrect = dateFormatter.date(from:dateStringCorrect)!
+        XCTAssert(combinedDate == dateCorrect)
+        }
+    
+    func testGetWeekDayDate() {
+        
+        let weekday = getWeekDayDate(weekDayToDisplay: 2, dayToday: 4)
+        //want to display monday and it is currently wednesday
+        var dateToView = Date()
+        var dateToViewAM = Date()
+       
+        dateToView = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -2, to: dateToView)!
+        dateToViewAM = Calendar.autoupdatingCurrent.date(bySettingHour: 0, minute: 0, second: 0, of: dateToView)!
+        XCTAssert(weekday[0] == dateToViewAM)
+
 }
+    
+     //Need to test monthly queries and yearly queries
+    
+    func testDataisCorrectlyNormalised() {
+        let date = Date()
+        let activity = MeasuredActivity(motionType: .car, distance: 11.0, start: date, end: Date(timeInterval: 10, since: date))
+        appendToDatabase(activity: activity)
+        let result = queryDailyCarbon(motionType: MeasuredActivity.MotionType.car, hourStart: "00:00:00", hourEnd: "24:00:00")
+        
+        let monthNormalisation=normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.daycar)
+        //print (result)
+        //print (monthNormalisation)
+        
+       // XCTAssert(monthNormalisation == result)
+    }
 
+    
+    func testDataisCorrectlyNormalisedWithMultipleValues() {
 
+    }
+   
 
+}
 
 
 
