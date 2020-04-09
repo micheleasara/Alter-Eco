@@ -54,32 +54,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 // Check if we're in background, and whether we've gone from no wifi to wifi:
                 if !self.wifistatus.isConnected {
                     print("Previously mobile.")
-                    // Toggle the isConnected boolean to true:
                     DispatchQueue.main.async {
+                        // Toggle the isConnected boolean to true:
                         self.wifistatus.isConnected = true
-                    }
-                    // Stop updating the location
-                    DispatchQueue.main.async {
+                        // Stop updating the location
                         (UIApplication.shared.delegate as! AppDelegate).manager.stopUpdatingLocation()
-                        // Send wifi notification to user:
-                        self.registerWifiNotification()
                     }
+                    // Send wifi notification to user:
+                    self.registerWifiNotification()
+
                 }
             } else {
                 print("We're on mobile.")
                 // Check if we're in background, and whether we've gone from wifi to no wifi:
                 if self.wifistatus.isConnected {
                     print("Previously WiFi.")
-                    // Toggle the isConnected boolean to false:
                     DispatchQueue.main.async {
+                        // Toggle the isConnected boolean to false:
                         self.wifistatus.isConnected = false
-                    }
-                    DispatchQueue.main.async {
-                    // Resume updating the location
+                        // Resume updating the location
                         (UIApplication.shared.delegate as! AppDelegate).manager.startUpdatingLocation()
-                        // Send no wifi notification to user:
-                        self.registerNoWifiNotification()
                     }
+                    // Send no wifi notification to user:
+                    self.registerNoWifiNotification()
                 }
             }
         }
