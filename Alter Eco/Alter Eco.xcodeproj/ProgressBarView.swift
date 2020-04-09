@@ -48,39 +48,36 @@ struct ProgressBarView: View {
             }
                 // Progress bar (stacked horizontally are current league icon coloured or not depending on how close user is to next league)
                 HStack() {
-                    Image(systemName: retrieveLatestScore().league)
-                        .resizable()
-                        .foregroundColor(getColor(iconNb: ICON_ONE))
-                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
-                        .opacity(1.0)
-                        .foregroundColor(Color("fill_colour"))
-                    Image(systemName: retrieveLatestScore().league)
-                        .resizable()
-                        .foregroundColor(getColor(iconNb: ICON_TWO))
-                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
-                        .opacity(1.0)
-                        .foregroundColor(Color("fill_colour"))
-                    Image(systemName: retrieveLatestScore().league)
-                        .resizable()
-                        .foregroundColor(getColor(iconNb: ICON_THREE))
-                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
-                        .opacity(1.0)
-                        .foregroundColor(Color("fill_colour"))
-                    Image(systemName: retrieveLatestScore().league)
-                        .resizable()
-                        .foregroundColor(getColor(iconNb: ICON_FOUR))
-                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
-                    RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
-                        .opacity(1.0)
-                        .foregroundColor(Color("fill_colour"))
-                    Image(systemName: retrieveLatestScore().league)
-                        .resizable()
-                        .foregroundColor(getColor(iconNb: ICON_FIVE))
-                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
+                    ProgressBarIconView(iconNumber: ICON_ONE)
+                    ProgressBarIconView(iconNumber: ICON_TWO)
+                    ProgressBarIconView(iconNumber: ICON_THREE)
+                    ProgressBarIconView(iconNumber: ICON_FOUR)
+                    ProgressBarIconView(iconNumber: ICON_FIVE)
             }
+        }
+    }
+}
+
+struct ProgressBarIconView: View {
+    
+    @EnvironmentObject var screenMeasurements: ScreenMeasurements
+    var iconNumber: Int
+    
+    init(iconNumber: Int) {
+        self.iconNumber = iconNumber
+    }
+    
+    var body: some View {
+        HStack {
+        Image(systemName: retrieveLatestScore().league)
+            .resizable()
+            .foregroundColor(getColor(iconNb: iconNumber))
+            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
+        if (iconNumber < ICON_FIVE) {
+        RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
+                .opacity(1.0)
+                .foregroundColor(Color("fill_colour"))
+        }
         }
     }
 }
