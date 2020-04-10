@@ -28,7 +28,8 @@ struct ProfileView: View {
             .navigationBarTitle("Profile", displayMode: .inline)
             .navigationBarItems(trailing: NavigationLink(destination: ExplanationView())
             {
-                Text("Info")
+                Image(systemName: "questionmark.circle")
+                    .scaleEffect(1.5)
             })
         }
 
