@@ -25,6 +25,8 @@ struct DetailView: View {
                     
                     //Highlights
                     HighlightView()
+                    
+                    Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
                         
                 }
             }

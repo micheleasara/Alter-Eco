@@ -36,6 +36,8 @@ struct ExplanationView: View {
                Text("In the Alter Eco community, your league defines you! The greener the transport modes you use,the more points you accumulate. Compete against yourself, improve your carbon footprint and you will soon be part of the élite Alter Ecoers that are in the League Tortoise!!")
                     .fontWeight(.regular)
                     .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9)
+                
+                  Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
             }
         }
     }

@@ -22,6 +22,7 @@ struct ProfileView: View {
                         .font(.title)
                         .fontWeight(.semibold)
                     AwardView()
+                    Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
                 }
             }
             .navigationBarTitle("Profile", displayMode: .inline)
