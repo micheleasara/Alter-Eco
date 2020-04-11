@@ -70,8 +70,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let scene = SceneDelegate()
     // requests gps updates
     internal let manager = CLLocationManager()
+    // CoreDate Manager
+    internal var DBMS : CoreDataManager
     // estimates activities based on given information (such as location updates)
-    internal let activityEstimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, maxMeasurements: MAX_MEASUREMENTS, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
+    internal var activityEstimator : ActivityEstimator
+    
+    override init() {
+        DBMS = CoreDataManager()
+        activityEstimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, maxMeasurements: MAX_MEASUREMENTS, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT, DBMS: DBMS)
+    }
     
     // location of last request for stations nearby, to be used with station request radius
     internal var locationUponRequest: CLLocation? = nil
@@ -131,7 +138,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                        self.activityEstimator.airports = response.mapItems
                        self.activityEstimator.processLocation(location)
                    }
-                   //print("Airports near me: ", self.activityEstimator.airports)
                }
                
                locationUponRequest = location
@@ -209,8 +215,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
       UNUserNotificationCenter.current()
         .requestAuthorization(options: [.alert, .sound, .badge]) {
           [weak self] granted, error in
-            
-          print("Permission granted: \(granted)")
+    
           guard granted else { return }
           self?.getNotificationSettings()
       }
@@ -218,7 +223,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func getNotificationSettings() {
       UNUserNotificationCenter.current().getNotificationSettings { settings in
-        print("Notification settings: \(settings)")
         guard settings.authorizationStatus == .authorized else { return }
         DispatchQueue.main.async {
           UIApplication.shared.registerForRemoteNotifications()

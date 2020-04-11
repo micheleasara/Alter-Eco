@@ -50,10 +50,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     func checkWifi() {
         monitor.pathUpdateHandler = {path in
             if path.status == .satisfied {
-                print("We're on WiFi.")
                 // Check if we're in background, and whether we've gone from no wifi to wifi:
                 if !self.wifistatus.isConnected {
-                    print("Previously mobile.")
                     DispatchQueue.main.async {
                         // Toggle the isConnected boolean to true:
                         self.wifistatus.isConnected = true
@@ -65,10 +63,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
 
                 }
             } else {
-                print("We're on mobile.")
                 // Check if we're in background, and whether we've gone from wifi to no wifi:
                 if self.wifistatus.isConnected {
-                    print("Previously WiFi.")
                     DispatchQueue.main.async {
                         // Toggle the isConnected boolean to false:
                         self.wifistatus.isConnected = false
@@ -99,17 +95,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             self.window = window
             
             // Begin monitoring wifi status:
-            checkWifi()
-            
-            // set trackingData as environment object to allow access within contentView
-            let estimator = (UIApplication.shared.delegate as! AppDelegate).activityEstimator
-            window.rootViewController = UIHostingController(rootView: contentView.environmentObject(estimator.trackingData))
-            
-            window.makeKeyAndVisible()
-            
+            //checkWifi()
+        
+            window.rootViewController = UIHostingController(rootView: contentView.environmentObject((UIApplication.shared.delegate as! AppDelegate).DBMS))
+        
             self.screenMeasurements.broadcastedHeight =  Float(UIScreen.main.bounds.height)
             self.screenMeasurements.broadcastedWidth =  Float(UIScreen.main.bounds.width)
             window.rootViewController = UIHostingController(rootView: contentView.environmentObject(screenMeasurements))
+            
+             window.makeKeyAndVisible()
+        
         }
     }
 

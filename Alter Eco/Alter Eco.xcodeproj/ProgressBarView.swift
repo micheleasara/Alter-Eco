@@ -13,8 +13,6 @@ struct ProgressBarView: View {
 
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-
-    var userScore = retrieveLatestScore()
     
     var body: some View {
         
@@ -28,16 +26,16 @@ struct ProgressBarView: View {
                 VStack() {
                     HStack {
                         Text("You have reached league")
-                        Image(systemName: retrieveLatestScore().league)
+                        Image(systemName: (try! DBMS.retrieveLatestScore()).league)
                             .resizable()
                             .foregroundColor(.blue)
                             .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight) / 20)
                     }
                     
                     // depending on which league user is in, display next one
-                    if (userScore.league != "tortoise.fill") {
-                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - retrieveLatestScore().totalPoints, specifier: "%.0f") points needed")
-                        Text("to reach league \(getNewLeagueName(leagueName: getNewLeague(userLeague: userScore.league)))!")
+                    if ((try! DBMS.retrieveLatestScore()).league != "tortoise.fill") {
+                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - (try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") points needed")
+                        Text("to reach league \(getNewLeagueName(leagueName: getNewLeague(userLeague: (try! DBMS.retrieveLatestScore()).league)))!")
                     }
                     else {
                         Text("You have reached the top league!")
@@ -61,6 +59,7 @@ struct ProgressBarView: View {
 struct ProgressBarIconView: View {
     
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
+    
     var iconNumber: Int
     
     init(iconNumber: Int) {
@@ -69,7 +68,7 @@ struct ProgressBarIconView: View {
     
     var body: some View {
         HStack {
-        Image(systemName: retrieveLatestScore().league)
+        Image(systemName: (try! DBMS.retrieveLatestScore()).league)
             .resizable()
             .foregroundColor(getColor(iconNb: iconNumber))
             .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)

@@ -2,10 +2,7 @@ import Foundation
 import CoreLocation
 import MapKit
 
-public class ActivityEstimator {
-    // environment object used for debugging
-    internal var trackingData = TrackingData()
-    
+public class ActivityEstimator : ObservableObject {
     // container for user activities containing a motion type and timestamps
     public var measurements = [MeasuredActivity]()
     // nearby stations
@@ -33,12 +30,15 @@ public class ActivityEstimator {
     // define how close one has to be to be considered within a station
     private let inStationRadius:Double
     
-    public init(numChangeActivity:Int, maxMeasurements:Int, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double) {
+    private let DBMS : CoreDataManager
+    
+    public init(numChangeActivity:Int, maxMeasurements:Int, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double, DBMS:CoreDataManager) {
         self.maxMeasurements = maxMeasurements
         self.stationTimeout = stationTimeout
         self.airportTimeout = airportTimeout
         self.numChangeActivity = numChangeActivity
         self.inStationRadius = inStationRadius
+        self.DBMS = DBMS
     }
     
     public func processLocation(_ location: CLLocation) {
@@ -60,8 +60,8 @@ public class ActivityEstimator {
                 let activity = MeasuredActivity.getAverageActivity(measurements: Array(measurements[..<(measurements.count-1)]))
                 // discard last measured activity as it spans two different days
                 self.measurements.removeAll()
-                appendToDatabase(activity: activity)
-                updateUserScore(activity: activity)
+                try! DBMS.append(activity: activity)
+                try! DBMS.updateScore(activity: activity)
             }
                             
             // check if we are currently in a train station
@@ -93,15 +93,9 @@ public class ActivityEstimator {
             else if (isActivityListFull()) {
                 let activity = MeasuredActivity.getAverageActivity(measurements: measurements)
                 self.measurements.removeAll()
-                appendToDatabase(activity: activity)
-                updateUserScore(activity: activity)
+                try! DBMS.append(activity: activity)
+                try! DBMS.updateScore(activity: activity)
             }
-
-            // DEBUGGING
-            trackingData.distance = validMeasurement.distance
-            trackingData.time = validMeasurement.end.timeIntervalSince(validMeasurement.start)
-            trackingData.speed = trackingData.distance / trackingData.time
-            trackingData.transportMode = MeasuredActivity.motionTypeToString(type: validMeasurement.motionType)
         }
         previousLoc = location
     }
@@ -121,9 +115,15 @@ public class ActivityEstimator {
     private func processCurrentRegionOfInterest(_ currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, computeFunction: (CLLocation, inout CLLocation?, Double, MeasuredActivity.MotionType) -> Void, speed: Double, motionType: MeasuredActivity.MotionType){
         
         // check if there was a journey (plane or tube)
-        if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() > 0{
+        if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() > 0 {
             computeFunction(currentRegionOfInterest, &previousRegionOfInterest, speed, motionType)
             motionType == .train ? resetStationTimer() : resetAirportTimer()
+        }
+            
+        // while in same airport/tube station, update timestamp
+        else if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() <= 0 {
+            
+            previousRegionOfInterest = CLLocation(coordinate: previousRegionOfInterest!.coordinate, altitude: previousRegionOfInterest!.altitude, horizontalAccuracy: previousRegionOfInterest!.horizontalAccuracy, verticalAccuracy: previousRegionOfInterest!.verticalAccuracy, course: previousRegionOfInterest!.course, speed: previousRegionOfInterest!.speed, timestamp: Date())
         }
             
         // In regionOfInterest right now and weren't before
@@ -134,15 +134,14 @@ public class ActivityEstimator {
     }
     
     private func computeActivity(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType){
-        let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp) - TWO_HOURS_AIRPORT_WAITING_TIME))
+        let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
         
-        // IMPORTANT TO NOTE - In fake trips time is very short between two airports (i.e. 5seconds - 2h * speed = big number of km WRONG)
         print("Tube distance: ", activityDistance)
         let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
         self.measurements.removeAll()
         previousRegionOfInterest = currentRegionOfInterest
-        appendToDatabase(activity: activity)
-        updateUserScore(activity: activity)
+        try! DBMS.append(activity: activity)
+        try! DBMS.updateScore(activity: activity)
     }
     
     private func resetStationTimer(){
@@ -167,8 +166,8 @@ public class ActivityEstimator {
         }
         let activity = MeasuredActivity.getAverageActivity(measurements: measurementsDay1)
         self.measurements = measurementsDay2
-        appendToDatabase(activity: activity)
-        updateUserScore(activity: activity)
+        try! DBMS.append(activity: activity)
+        try! DBMS.updateScore(activity: activity)
     }
     
     @objc private func airportTimedOut(timer: Timer) {
@@ -185,7 +184,6 @@ public class ActivityEstimator {
         }
          
         if (count >= numChangeActivity * activityScaling) {
-            print("Got called")
             previousRegionOfInterest = nil
             computeChangeInActivity()
         }
@@ -195,12 +193,11 @@ public class ActivityEstimator {
     /*------------------------------------*/
     /*--           General Case         --*/
     
-    private func computeChangeInActivity(){
-        print("\ncalled\n")
+    private func computeChangeInActivity() {
         let newActivityIndex = measurements.count - numChangeActivity
         let activity = MeasuredActivity.getAverageActivity(measurements: Array(measurements[..<newActivityIndex]))
-        appendToDatabase(activity: activity)
-        updateUserScore(activity: activity)
+        try! DBMS.append(activity: activity)
+        try! DBMS.updateScore(activity: activity)
 
         measurements = Array(measurements[newActivityIndex...])
     }

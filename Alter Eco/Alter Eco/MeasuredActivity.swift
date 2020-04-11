@@ -12,7 +12,7 @@ public class MeasuredActivity: Equatable {
 
     private static let activityWeights: [MotionType: Int] = [MotionType.car: 2, MotionType.walking: 1]
     
-    public enum MotionType{
+    public enum MotionType : CaseIterable {
         case car
         case walking
         case train
@@ -65,7 +65,7 @@ public class MeasuredActivity: Equatable {
         return measuredActivity
     }
 
-    public static func getAverageActivityDistance(measurements:[MeasuredActivity]) -> Double {
+    public static func getCumulativeDistance(measurements:[MeasuredActivity]) -> Double {
         var distance = 0.0
         for measurement in measurements {
             distance += measurement.distance
@@ -96,7 +96,7 @@ public class MeasuredActivity: Equatable {
     }
 
     public static func getAverageActivity(measurements:[MeasuredActivity]) -> MeasuredActivity {
-        let activity = MeasuredActivity(motionType: getAverageActivityMotionType(measurements: measurements), distance: getAverageActivityDistance(measurements: measurements), start: measurements.first!.start, end: measurements.last!.end)
+        let activity = MeasuredActivity(motionType: getAverageActivityMotionType(measurements: measurements), distance: getCumulativeDistance(measurements: measurements), start: measurements.first!.start, end: measurements.last!.end)
         return activity
     }
 

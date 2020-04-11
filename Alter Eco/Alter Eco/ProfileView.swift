@@ -1,4 +1,4 @@
-
+import Foundation
 import SwiftUI
 import CoreData
 
@@ -14,13 +14,12 @@ struct ProfileView: View {
                 VStack{
                     ProfileImage()
                         .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.37)
-                    Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.05)
                     ScorePoints()
                     Divider()
                         .padding(.top, 10)
-                        .padding(.bottom, 5)
+                        .padding(.bottom, 10)
                     Text("Achievements")
-                        .font(.headline)
+                        .font(.title)
                         .fontWeight(.semibold)
                     AwardView()
                     Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
@@ -85,41 +84,26 @@ struct AwardView: View {
        
     init() {
         self.currentMonth = getMonth()
-        self.originalDate = getFirstDate()
+        self.originalDate = try! DBMS.getFirstDate()
         ///Uncomment below to show some of the awards
         //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
-            if(queryPastMonth(motionType:MeasuredActivity.MotionType.plane, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
-            {
-                UserDefaults.standard.set(true, forKey: String(0))
-                awardsList[0].Awarded = UserDefaults.standard.bool(forKey: String(0))
-            }
-            
-            if(queryTotalWeek() < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
-            {
-                UserDefaults.standard.set(true, forKey: String(1))
-                awardsList[1].Awarded = UserDefaults.standard.bool(forKey: String(1))
-            }
-            
-            if(queryPastMonth(motionType: MeasuredActivity.MotionType.walking, month: currentMonth, carbon: false) > 1000 && timeInterval > SECONDS_MONTH)
-            {
-                UserDefaults.standard.set(true, forKey: String(2))
-                awardsList[2].Awarded = UserDefaults.standard.bool(forKey: String(2))
-            }
-            
-            if(queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
-            {
-                UserDefaults.standard.set(true, forKey: String(3))
-                awardsList[3].Awarded = UserDefaults.standard.bool(forKey: String(3))
-            }
-            
-            if(queryPastMonthAll(month: currentMonth, carbon: false) < 300 && timeInterval > SECONDS_MONTH)
-            {
-                UserDefaults.standard.set(true, forKey: String(4))
-                awardsList[4].Awarded = UserDefaults.standard.bool(forKey: String(4))
-            }
-        }
+        if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -30*60*60*24) == 0 && timeInterval > SECONDS_MONTH)
+        {awardsList[0].Awarded = true}
+        
+        if(try! DBMS.carbonWithinIntervalAll(from: Date(), interval: -7*60*60*24) < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
+        {awardsList[1].Awarded = true}
+        
+        if(try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -30*60*60*24) > 1000 && timeInterval > SECONDS_MONTH)
+        {awardsList[2].Awarded = true}
+        
+        if(try! DBMS.carbonWithinInterval(motionType: MeasuredActivity.MotionType.car, from: Date(), interval: -30*60*60*24) == 0 && timeInterval > SECONDS_MONTH)
+        {awardsList[3].Awarded = true}
+        
+        if(try! DBMS.distanceWithinIntervalAll(from: Date(), interval: -30*60*60*24) < 300 && timeInterval > SECONDS_MONTH)
+        {awardsList[4].Awarded = true}
+    }
     
     var body: some View {
         ForEach(awardsList) { award in
@@ -229,18 +213,17 @@ struct ProfileImage: View {
     }
     
     func loadImage() {
-        guard let inputImage = inputImage else { return}
+        //guard let inputImage = inputImage else { return}
         if(savings.count != 0){
             self.moc.delete(savings[0])}
         let newPic = ProfilePic(context: self.moc)
-        newPic.imageP = inputImage.jpegData(compressionQuality: CGFloat(1.0))
+        newPic.imageP = self.inputImage?.jpegData(compressionQuality: CGFloat(1.0))
     }
 }
 
 struct ScorePoints: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    let userScore = retrieveLatestScore()
     
     var body: some View {
         ZStack{
@@ -254,9 +237,9 @@ struct ScorePoints: View {
                 .padding(.horizontal, 10)
                 .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.1)
             HStack(alignment: .top){
-                Text("Score:").fontWeight(.bold)
-                Text("\(userScore.totalPoints, specifier: "%.0f")")
-
+                Text("Score:").font(.title) .fontWeight(.bold)
+                Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
+                    .font(.title)
             }
         }
     }
