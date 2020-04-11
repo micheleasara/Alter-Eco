@@ -14,12 +14,13 @@ struct ProfileView: View {
                 VStack{
                     ProfileImage()
                         .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.37)
+                    Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.05)
                     ScorePoints()
                     Divider()
                         .padding(.top, 10)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 5)
                     Text("Achievements")
-                        .font(.title)
+                        .font(.headline)
                         .fontWeight(.semibold)
                     AwardView()
                     Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
@@ -253,9 +254,9 @@ struct ScorePoints: View {
                 .padding(.horizontal, 10)
                 .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.1)
             HStack(alignment: .top){
-                Text("Score:").font(.title) .fontWeight(.bold)
+                Text("Score:").fontWeight(.bold)
                 Text("\(userScore.totalPoints, specifier: "%.0f")")
-                    .font(.title)
+
             }
         }
     }
