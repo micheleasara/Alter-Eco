@@ -42,28 +42,6 @@ public let GPS_UPDATE_AIRPORT_THRESHOLD:Double = 4000
 // define two hours waiting time at airport not to be considered as flying time (i.e. better distance estimation)
 public let TWO_HOURS_AIRPORT_WAITING_TIME: Double = 60*60*2
 
-extension Date {
-    static var yesterday: Date { return Date().dayBefore }
-    static var tomorrow:  Date { return Date().dayAfter }
-    var dayBefore: Date {
-        return Calendar.current.date(byAdding: .day, value: -1, to: noon)!
-    }
-    var dayAfter: Date {
-        return Calendar.current.date(byAdding: .day, value: 1, to: noon)!
-    }
-    var noon: Date {
-        return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
-    }
-    // Time at which the background task will be scheduled MAKE THIS 1 minute past 00:00!!!!!!!!
-    var showtime: Date {
-        return Calendar.current.date(bySettingHour: 14, minute: 0, second: 0, of: self)!
-    }
-    // Time at which to check whether it's time to calculate (NOT USED)
-    var checktime: Date {
-        return Calendar.current.date(bySettingHour: 11, minute: 30, second: 0, of: self)!
-    }
-}
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
     // Instantiate the scene
@@ -106,7 +84,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // the app before the background task was called to do this for us.
         // The scheduleBSTscore() functon reschedules the BGTscore task for tomorrow.
         BGTaskScheduler.shared.cancelAllTaskRequests()
-        
         return true
     }
     
@@ -209,8 +186,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    /*----- START OF NOTIFICATION CONTENT -------*/
-    // Function to register for notifications:
+    // MARK: - Functions to register for notifications
     func registerForPushNotifications() {
       UNUserNotificationCenter.current()
         .requestAuthorization(options: [.alert, .sound, .badge]) {
@@ -229,6 +205,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
       }
     }
-    /*----- END OF NOTIFICATION CONTENT -------*/
 
 }

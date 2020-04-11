@@ -13,17 +13,20 @@ let CARBON_UNIT_WALKING: Double = 175
 let KM_CONVERSION: Double = 0.001
 
 public protocol DBReader {
-    // Queries the Event database depending on predicate (date, motionType, distance, ...)
+    // Queries the Event entity depending on predicate (date, motionType, distance, ...)
     func queryActivities(query: NSPredicate?) throws -> [MeasuredActivity]
     // Executes a generic query with the given predicate
     func executeQuery(query: NSPredicate?, entity: String) throws -> [NSManagedObject]
 }
 
-public protocol DBManager : DBReader {
+public protocol DBWriter {
     // Appends new activity (tube, plane, walking, car) to Event table
     func append(activity: MeasuredActivity) throws
+    // Appends new score to Score table
     func append(score: UserScore) throws
-    
+}
+
+public protocol DBManager : DBReader, DBWriter {
     func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double
     func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double
 
@@ -47,7 +50,7 @@ public protocol DBManager : DBReader {
     func queryYearlyCarbonAll(year: String) throws -> Double
 }
 
-public class CoreDataManager : ObservableObject, DBManager {
+public class CoreDataManager : DBManager {
     public func executeQuery(query: NSPredicate?, entity: String) throws -> [NSManagedObject] {
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)

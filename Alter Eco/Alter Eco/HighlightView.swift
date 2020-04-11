@@ -13,7 +13,7 @@ func generateSentence() -> String {
     formatter.timeStyle = .medium
     formatter.dateStyle = .none
     
-    let value = queryDailyCarbonAll(hourStart: "00:00:00", hourEnd: formatter.string(from: currentDateTime))
+    let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: formatter.string(from: currentDateTime))
     let number = Int.random(in: 0 ..< 5)
     
     if (value >= 2300) {

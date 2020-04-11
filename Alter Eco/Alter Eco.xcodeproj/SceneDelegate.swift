@@ -97,8 +97,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             // Begin monitoring wifi status:
             //checkWifi()
         
-            window.rootViewController = UIHostingController(rootView: contentView.environmentObject((UIApplication.shared.delegate as! AppDelegate).DBMS))
-        
             self.screenMeasurements.broadcastedHeight =  Float(UIScreen.main.bounds.height)
             self.screenMeasurements.broadcastedWidth =  Float(UIScreen.main.bounds.width)
             window.rootViewController = UIHostingController(rootView: contentView.environmentObject(screenMeasurements))
