@@ -89,21 +89,36 @@ struct AwardView: View {
         //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
-        if(queryPastMonth(motionType:MeasuredActivity.MotionType.plane, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
-        {awardsList[0].Awarded = true}
-        
-        if(queryTotalWeek() < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
-        {awardsList[1].Awarded = true}
-        
-        if(queryPastMonth(motionType: MeasuredActivity.MotionType.walking, month: currentMonth, carbon: false) > 1000 && timeInterval > SECONDS_MONTH)
-        {awardsList[2].Awarded = true}
-        
-        if(queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
-        {awardsList[3].Awarded = true}
-        
-        if(queryPastMonthAll(month: currentMonth, carbon: false) < 300 && timeInterval > SECONDS_MONTH)
-        {awardsList[4].Awarded = true}
-    }
+            if(queryPastMonth(motionType:MeasuredActivity.MotionType.plane, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
+            {
+                UserDefaults.standard.set(true, forKey: String(0))
+                awardsList[0].Awarded = UserDefaults.standard.bool(forKey: String(0))
+            }
+            
+            if(queryTotalWeek() < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
+            {
+                UserDefaults.standard.set(true, forKey: String(1))
+                awardsList[1].Awarded = UserDefaults.standard.bool(forKey: String(1))
+            }
+            
+            if(queryPastMonth(motionType: MeasuredActivity.MotionType.walking, month: currentMonth, carbon: false) > 1000 && timeInterval > SECONDS_MONTH)
+            {
+                UserDefaults.standard.set(true, forKey: String(2))
+                awardsList[2].Awarded = UserDefaults.standard.bool(forKey: String(2))
+            }
+            
+            if(queryPastMonth(motionType: MeasuredActivity.MotionType.car, month: currentMonth) == 0 && timeInterval > SECONDS_MONTH)
+            {
+                UserDefaults.standard.set(true, forKey: String(3))
+                awardsList[3].Awarded = UserDefaults.standard.bool(forKey: String(3))
+            }
+            
+            if(queryPastMonthAll(month: currentMonth, carbon: false) < 300 && timeInterval > SECONDS_MONTH)
+            {
+                UserDefaults.standard.set(true, forKey: String(4))
+                awardsList[4].Awarded = UserDefaults.standard.bool(forKey: String(4))
+            }
+        }
     
     var body: some View {
         ForEach(awardsList) { award in
@@ -213,11 +228,11 @@ struct ProfileImage: View {
     }
     
     func loadImage() {
-        //guard let inputImage = inputImage else { return}
+        guard let inputImage = inputImage else { return}
         if(savings.count != 0){
             self.moc.delete(savings[0])}
         let newPic = ProfilePic(context: self.moc)
-        newPic.imageP = self.inputImage?.jpegData(compressionQuality: CGFloat(1.0))
+        newPic.imageP = inputImage.jpegData(compressionQuality: CGFloat(1.0))
     }
 }
 
