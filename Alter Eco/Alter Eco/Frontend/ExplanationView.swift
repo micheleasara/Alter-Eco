@@ -14,7 +14,7 @@ struct ExplanationView: View {
                     .padding()
                 
                 Text("The Alter Eco graph shows you the amount of carbon dioxide you emitted from taking different modes of transport. Walking is the greenest form of transport! The walking option on the graph displays the carbon dioxide you saved instead of driving! Keep an eye out on the graph changing colour! Green shows you that you have emmitted less than (or equal to) the average UK citizen that day (2200 grams of carbon dioxide) and a red graph shows that you have emitted more than the average!")
-                        .fontWeight(.regular)
+                    .fontWeight(.regular)
                     .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9)
                 
                 Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.05)
