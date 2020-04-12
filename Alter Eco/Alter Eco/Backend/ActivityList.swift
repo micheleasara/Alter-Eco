@@ -7,7 +7,7 @@ public protocol ActivityList : AnyObject, MutableCollection {
     func dumpToDatabase(from:Int, to:Int)
 }
 
-public class WeigthedActivityList: ActivityList {
+public class WeightedActivityList: ActivityList {
     public typealias Index = Array<MeasuredActivity>.Index
     public typealias Element = Array<MeasuredActivity>.Element
     public typealias Iterator = Array<MeasuredActivity>.Iterator
@@ -46,7 +46,7 @@ public class WeigthedActivityList: ActivityList {
         
         let rootType = measurements[0].motionType
         var previousLastType: MeasuredActivity.MotionType? = nil
-        for index in (measurements.count-numChangeActivity-1)..<(measurements.count) {
+        for index in stride(from: (measurements.count-numChangeActivity-1), to: measurements.count, by: 1) {
             let type = measurements[index].motionType
             if type == rootType || (previousLastType != nil && previousLastType != type) {
                 return false
@@ -84,7 +84,7 @@ public class WeigthedActivityList: ActivityList {
 
     public func getCumulativeDistance(from:Int, to:Int) -> Double {
         var distance = 0.0
-        for i in from...to {
+        for i in stride(from: from, to: to, by: 1) {
             distance += measurements[i].distance
         }
         return distance
@@ -94,7 +94,7 @@ public class WeigthedActivityList: ActivityList {
         var carCounter = 0
         var walkingCounter = 0
 
-        for i in from...to {
+        for i in stride(from: from, to: to, by: 1) {
             if measurements[i].motionType == .car {
                 carCounter += 1
             }

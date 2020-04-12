@@ -27,14 +27,14 @@ public class ActivityEstimator : ObservableObject {
     private let inStationRadius:Double
     private let activityWeights: [MeasuredActivity.MotionType: Int] = [.car: 2, .walking: 1]
     // container for user activities containing a motion type and timestamps
-    private var measurements: WeigthedActivityList
+    private var measurements: WeightedActivityList
         
     public init(numChangeActivity:Int, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double, DBMS:CoreDataManager) {
         self.stationTimeout = stationTimeout
         self.airportTimeout = airportTimeout
         self.numChangeActivity = numChangeActivity
         self.inStationRadius = inStationRadius
-        self.measurements = WeigthedActivityList(activityWeights: activityWeights, numChangeActivity: numChangeActivity, DBMS: DBMS)
+        self.measurements = WeightedActivityList(activityWeights: activityWeights, numChangeActivity: numChangeActivity, DBMS: DBMS)
         previousStation = CLLocation(latitude: 1, longitude: 2)
         resetTimer(timer: &stationValidityTimer, interval: 2, roi: &previousStation)
     }
