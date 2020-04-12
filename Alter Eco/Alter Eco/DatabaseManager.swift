@@ -4,12 +4,12 @@ import CoreData
 
 //all the constants for carbon conversions come from:
 //https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
-//all units below have been converted to grams/kilometer
+//all units below have been converted to kgrams/kilometer
 
-let CARBON_UNIT_CAR: Double = 175
-let CARBON_UNIT_TRAIN: Double = 30
-let CARBON_UNIT_PLANE: Double = 200
-let CARBON_UNIT_WALKING: Double = 175
+let CARBON_UNIT_CAR: Double = 0.175
+let CARBON_UNIT_TRAIN: Double = 0.030
+let CARBON_UNIT_PLANE: Double = 0.200
+let CARBON_UNIT_WALKING: Double = 0.175
 let KM_CONVERSION: Double = 0.001
 
 public protocol DBReader {
