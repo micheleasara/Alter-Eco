@@ -230,6 +230,7 @@ struct ScorePoints: View {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .fill(Color("graphBars"))
                 .opacity(0.7)
+                .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.9)
                 .overlay(
                     RoundedRectangle(cornerRadius: 25, style: .continuous)
                     .stroke(Color("graphBars"), lineWidth: 4)

@@ -26,9 +26,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>need loc 2</string>
+	<string>Location to estimate modes of transport</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>need loc</string>
+	<string>Location to estimate modes of transport</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
