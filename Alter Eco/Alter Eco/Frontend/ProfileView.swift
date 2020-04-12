@@ -91,7 +91,7 @@ struct AwardView: View {
         self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
-        if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*60*60*24) == 0 && timeInterval > SECONDS_MONTH)
+        if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*60*60*24) == 0 && timeInterval > (SECONDS_MONTH*6))
         {
             UserDefaults.standard.set(true, forKey: String(0))
             awardsList[0].Awarded = UserDefaults.standard.bool(forKey: String(0))
