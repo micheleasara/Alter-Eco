@@ -3,8 +3,6 @@ import CoreLocation
 import MapKit
 
 public class ActivityEstimator : ObservableObject {
-    // container for user activities containing a motion type and timestamps
-    public var measurements = [MeasuredActivity]()
     // nearby stations
     public var stations: [MKMapItem] = []
     // nearby airports
@@ -23,22 +21,20 @@ public class ActivityEstimator : ObservableObject {
     private let stationTimeout:Double
     // seconds after which all plane flags are reset
     private let airportTimeout:Double
-    // define max number of measurements stored in memory at a time
-    private let maxMeasurements: Int
     // define how many measurements in a row must be different from the root before an activity is averaged
     private let numChangeActivity: Int
     // define how close one has to be to be considered within a station
     private let inStationRadius:Double
-    
-    private let DBMS : CoreDataManager
-    
-    public init(numChangeActivity:Int, maxMeasurements:Int, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double, DBMS:CoreDataManager) {
-        self.maxMeasurements = maxMeasurements
+    private let activityWeights: [MeasuredActivity.MotionType: Int] = [.car: 2, .walking: 1]
+    // container for user activities containing a motion type and timestamps
+    private var measurements: WeigthedActivityList
+        
+    public init(numChangeActivity:Int, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double, DBMS:CoreDataManager) {
         self.stationTimeout = stationTimeout
         self.airportTimeout = airportTimeout
         self.numChangeActivity = numChangeActivity
         self.inStationRadius = inStationRadius
-        self.DBMS = DBMS
+        self.measurements = WeigthedActivityList(activityWeights: activityWeights, numChangeActivity: numChangeActivity, DBMS: DBMS)
     }
     
     public func processLocation(_ location: CLLocation) {
@@ -47,61 +43,40 @@ public class ActivityEstimator : ObservableObject {
         if let previousLocation = previousLoc {
             let measurement = MeasuredActivity.getValidMeasuredActivity(location: location, previousLocation: previousLocation, previousAirport: previousAirport)
             guard let validMeasurement = measurement else {return}
-            measurements.append(validMeasurement)
             
             let currentStation = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.stations, GPS_THRESHOLD: GPS_UPDATE_CONFIDENCE_THRESHOLD, trackingDataAttribute: 0)
             let currentAirport = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.airports, GPS_THRESHOLD: GPS_UPDATE_AIRPORT_THRESHOLD, trackingDataAttribute: 1)
-                        
-//            print("CurrentAirport: ", currentAirport, " and previousAirport: ", previousAirport)
-            
+                                    
             // check if we are not in the same day to break the list, with the exception of the train flag and plane flag
             if previousAirport == nil && previousStation == nil && !inSameDay(date1: previousLocation.timestamp, date2: location.timestamp)  {
-                // compute average activity with everything but not last activity, as it is in a different day
-                let activity = MeasuredActivity.getAverageActivity(measurements: Array(measurements[..<(measurements.count-1)]))
-                // discard last measured activity as it spans two different days
-                self.measurements.removeAll()
-                try! DBMS.append(activity: activity)
-                try! DBMS.updateScore(activity: activity)
-            }
-                            
-            // check if we are currently in a train station
-            else if currentStation != nil {
-                processCurrentRegionOfInterest(currentStation!, previousRegionOfInterest: &previousStation, computeFunction: computeActivity, speed: AVERAGE_TUBE_SPEED, motionType: .train)
-            }
-            
-            // check if we are currently in an airport
-            else if currentAirport != nil {
-                processCurrentRegionOfInterest(currentAirport!, previousRegionOfInterest: &previousStation, computeFunction: computeActivity, speed: AVERAGE_PLANE_SPEED, motionType: .plane)
-            }
+                measurements.dumpToDatabase(from: 0, to: measurements.count)
+            } else {
+                measurements.add(validMeasurement)
                 
-            // not in station and were before, if more than 2 walking, forget flag
-            else if currentStation == nil && previousStation != nil && measurements.count > numChangeActivity {
-                ensureCorrectActivity(numChangeActivity: numChangeActivity, activityScaling: WALK_SCALING, motionType: .walking, previousRegionOfInterest: &previousStation)
-            }
-            
-            // not in airport and were before, if more than 10 car measurements, forget flag
-            else if currentAirport == nil && previousAirport != nil && measurements.count > numChangeActivity * CAR_SCALING {
-                ensureCorrectActivity(numChangeActivity: numChangeActivity, activityScaling: CAR_SCALING, motionType: .car, previousRegionOfInterest: &previousAirport)
+                // check if we are currently in a train station
+                if currentStation != nil {
+                    processCurrentRegionOfInterest(currentStation!, previousRegionOfInterest: &previousStation, speed: AVERAGE_TUBE_SPEED, motionType: .train)
+                }
                 
-            }
+                // check if we are currently in an airport
+                else if currentAirport != nil {
+                    processCurrentRegionOfInterest(currentAirport!, previousRegionOfInterest: &previousStation, speed: AVERAGE_PLANE_SPEED, motionType: .plane)
+                }
+                    
+                // not in station and were before, if more than set number of walking measurements, forget flag
+                else if currentStation == nil && previousStation != nil && measurements.count > numChangeActivity {
+                    checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, previousRegionOfInterest: &previousStation)
+                }
                 
-            // Not in station or airport and weren't before
-            else if (hasActivityChangedSignificantly()) {
-                computeChangeInActivity()
-            }
-            
-            else if (isActivityListFull()) {
-                let activity = MeasuredActivity.getAverageActivity(measurements: measurements)
-                self.measurements.removeAll()
-                try! DBMS.append(activity: activity)
-                try! DBMS.updateScore(activity: activity)
+                // not in airport and were before, if more than set number of car measurements, forget flag
+                else if currentAirport == nil && previousAirport != nil && measurements.count > numChangeActivity * CAR_NUM_FOR_PLANE_FLAG_OFF {
+                    checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, previousRegionOfInterest: &previousAirport)
+                }
             }
         }
         previousLoc = location
     }
-                
-    /*-- Tube/Plane functionalities */
-    
+                    
     private func getCurrentRegionOfInterest(currentLocation: CLLocation, regionsOfInterest: [MKMapItem], GPS_THRESHOLD: Double, trackingDataAttribute: Int) -> CLLocation? {
         for regionOfInterest in regionsOfInterest {
             let regionLocation = CLLocation(latitude: regionOfInterest.placemark.coordinate.latitude, longitude: regionOfInterest.placemark.coordinate.longitude)
@@ -112,12 +87,12 @@ public class ActivityEstimator : ObservableObject {
         return nil
     }
     
-    private func processCurrentRegionOfInterest(_ currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, computeFunction: (CLLocation, inout CLLocation?, Double, MeasuredActivity.MotionType) -> Void, speed: Double, motionType: MeasuredActivity.MotionType){
+    private func processCurrentRegionOfInterest(_ currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType){
         
-        // check if there was a journey (plane or tube)
+        // check if there was a journey (plane or train)
         if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() > 0 {
-            computeFunction(currentRegionOfInterest, &previousRegionOfInterest, speed, motionType)
-            motionType == .train ? resetStationTimer() : resetAirportTimer()
+            computeActivityFromROIs(currentRegionOfInterest: currentRegionOfInterest, previousRegionOfInterest: &previousRegionOfInterest, speed: speed, motionType: motionType)
+            motionType == .train ? resetTimer(timer: &stationValidityTimer, timeOut: stationTimedOut) : resetTimer(timer: &airportValidityTimer, timeOut: airportTimedOut)
         }
             
         // while in same airport/tube station, update timestamp
@@ -129,24 +104,22 @@ public class ActivityEstimator : ObservableObject {
         // In regionOfInterest right now and weren't before
         else if previousRegionOfInterest == nil {
             previousRegionOfInterest = currentRegionOfInterest
-            motionType == .train ? resetStationTimer() : resetAirportTimer()
+            motionType == .train ? resetTimer(timer: &stationValidityTimer, timeOut: stationTimedOut) : resetTimer(timer: &airportValidityTimer, timeOut: airportTimedOut)
         }
     }
     
-    private func computeActivity(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType){
+    private func computeActivityFromROIs(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType){
         let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
         
-        print("Tube distance: ", activityDistance)
+        print("Used train to travel distance: ", activityDistance, " m")
         let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
-        self.measurements.removeAll()
         previousRegionOfInterest = currentRegionOfInterest
-        try! DBMS.append(activity: activity)
-        try! DBMS.updateScore(activity: activity)
+        measurements.add(activity)
     }
     
-    private func resetStationTimer(){
-        stationValidityTimer.invalidate()
-        stationValidityTimer = Timer.scheduledTimer(timeInterval: stationTimeout, target: self, selector: #selector(stationTimedOut(timer:)), userInfo: nil, repeats: false)
+    private func resetTimer(timer: inout Timer, timeOut: (Timer) -> Void){
+        timer.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: stationTimeout, target: self, selector: #selector(stationTimedOut(timer:)), userInfo: nil, repeats: false)
     }
     
     private func resetAirportTimer(){
@@ -154,66 +127,35 @@ public class ActivityEstimator : ObservableObject {
         airportValidityTimer = Timer.scheduledTimer(timeInterval: airportTimeout, target: self, selector: #selector(airportTimedOut(timer:)), userInfo: nil, repeats: false)
     }
     
-    @objc private func stationTimedOut(timer: Timer) {
-        self.previousStation = nil
-        var measurementsDay1: [MeasuredActivity] = measurements
-        var measurementsDay2: [MeasuredActivity] = []
-        for idx in 0..<(measurements.count-1) {
-            if !inSameDay(date1: measurements[idx].start, date2: measurements[idx+1].start) {
-                measurementsDay1 = Array(measurements[...idx])
-                measurementsDay2 = Array(measurements[(idx+1)...])
+    private func dumpOldDay() {
+        for i in 1...measurements.count - 1 {
+            if !inSameDay(date1: measurements[i].start, date2: measurements[0].start) {
+                measurements.dumpToDatabase(from: 0, to: i-1)
             }
         }
-        let activity = MeasuredActivity.getAverageActivity(measurements: measurementsDay1)
-        self.measurements = measurementsDay2
-        try! DBMS.append(activity: activity)
-        try! DBMS.updateScore(activity: activity)
+    }
+    
+    @objc private func stationTimedOut(timer: Timer) {
+        self.previousStation = nil
+        dumpOldDay()
     }
     
     @objc private func airportTimedOut(timer: Timer) {
         self.previousAirport = nil
+        dumpOldDay()
     }
     
-    
-    private func ensureCorrectActivity(numChangeActivity: Int, activityScaling: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
-        let newActivityIndex = measurements.count - numChangeActivity * activityScaling
-        let lastMeasurements = Array(measurements[newActivityIndex...])
+    private func checkROIFlagStillValid(numChangeActivity: Int, activityNumToOff: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
+        let newActivityIndex = measurements.count - activityNumToOff
+
+        for i in 0..<newActivityIndex {
+            if measurements[i].motionType != motionType {
+                return
+            }
+        }
         
-        let count = lastMeasurements.reduce(0){(count: Int, activity: MeasuredActivity) -> Int in
-            count + (activity.motionType == motionType ? 1:0)
-        }
-         
-        if (count >= numChangeActivity * activityScaling) {
-            previousRegionOfInterest = nil
-            computeChangeInActivity()
-        }
-    }
-    
-    /*-- END Tube/Plane functionalities --*/
-    /*------------------------------------*/
-    /*--           General Case         --*/
-    
-    private func computeChangeInActivity() {
-        let newActivityIndex = measurements.count - numChangeActivity
-        let activity = MeasuredActivity.getAverageActivity(measurements: Array(measurements[..<newActivityIndex]))
-        try! DBMS.append(activity: activity)
-        try! DBMS.updateScore(activity: activity)
-
-        measurements = Array(measurements[newActivityIndex...])
-    }
-    
-    private func hasActivityChangedSignificantly() -> Bool {
-        if measurements.count < numChangeActivity {return false}
-
-        let rootType = measurements[0].motionType
-        let lastType = measurements.last!.motionType
-        let secondLastType = measurements[measurements.count-2].motionType
-
-        return lastType == secondLastType && lastType != rootType
-    }
-    
-    private func isActivityListFull() -> Bool {
-        return measurements.count >= maxMeasurements
+        previousRegionOfInterest = nil
+        measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
     }
     
     private func inSameDay(date1:Date, date2:Date) -> Bool {

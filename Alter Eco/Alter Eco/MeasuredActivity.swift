@@ -1,10 +1,9 @@
 import Foundation
 import CoreLocation
 
-public class MeasuredActivity: Equatable {
-    // define threshold to identify an automotive type of motion
-    // 3.5m/s is 12.6km/h
-    public static let AUTOMOTIVE_SPEED_THRESHOLD:Double = 3.5
+public class MeasuredActivity : Equatable {
+    // define threshold to identify an automotive type of motion in m/s
+    public static let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4
     // set precision for date equality in seconds
     public static let TIME_PRECISION: Double = 1
     // set precision for distance equality in meters

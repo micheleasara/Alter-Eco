@@ -8,9 +8,11 @@
 
 import Foundation
 
-protocol ActivityList : AnyObject, MutableCollection {
+public protocol ActivityList : AnyObject, MutableCollection {
     func add(_ activity:MeasuredActivity)
     func remove(at:Index)
+    func removeAll()
+    func dumpToDatabase(from:Int, to:Int)
 }
 
 public class WeigthedActivityList: ActivityList {
@@ -23,10 +25,12 @@ public class WeigthedActivityList: ActivityList {
     public var endIndex: Index { return measurements.endIndex }
     private let activityWeights: [MeasuredActivity.MotionType: Int]
     private let numChangeActivity: Int
+    private let DBMS: DBManager
     
-    init(activityWeights: [MeasuredActivity.MotionType: Int], numChangeActivity: Int ) {
+    init(activityWeights: [MeasuredActivity.MotionType: Int], numChangeActivity: Int, DBMS: DBManager) {
         self.activityWeights = activityWeights
         self.numChangeActivity = numChangeActivity
+        self.DBMS = DBMS
     }
     
     // Returns an iterator over the elements of the collection
@@ -46,11 +50,13 @@ public class WeigthedActivityList: ActivityList {
     }
     
     public func hasChangedSignificantly() -> Bool {
-        if measurements.count < numChangeActivity { return false }
+        if measurements.count <= numChangeActivity { return false }
         
         let rootType = measurements[0].motionType
         var previousLastType: MeasuredActivity.MotionType? = nil
         for index in (measurements.count-numChangeActivity-1)..<(measurements.count) {
+            print(index)
+            print(measurements.count)
             let type = measurements[index].motionType
             if type == rootType || (previousLastType != nil && previousLastType != type) {
                 return false
@@ -114,6 +120,17 @@ public class WeigthedActivityList: ActivityList {
         }
         else {
             return .walking
+        }
+    }
+    
+    public func removeAll() {
+        measurements.removeAll()
+    }
+    
+    public func dumpToDatabase(from:Int, to:Int) {
+        writeToDatabase(getAverage(from: from, to: to))
+        for i in from...to {
+            remove(at: i)
         }
     }
     

@@ -10,8 +10,7 @@ func generateSentence() -> String {
     
     let currentDateTime = Date()
     let formatter = DateFormatter()
-    formatter.timeStyle = .medium
-    formatter.dateStyle = .none
+    formatter.dateFormat = "HH:mm:ss"
     
     let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: formatter.string(from: currentDateTime))
     let number = Int.random(in: 0 ..< 5)

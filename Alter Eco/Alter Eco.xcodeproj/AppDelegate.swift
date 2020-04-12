@@ -14,14 +14,12 @@ public let STATION_REQUEST_RADIUS:Double = 150
 public let AIRPORTS_REQUEST_RADIUS:Double = 2500
 // define average radius of airport m
 public let MAX_DISTANCE_WITHIN_AIRPORT:Double = 1000
-// define max number of measurements stored in memory at a time before trying to estimate an activity
-public let MAX_MEASUREMENTS = 1000
 // define how many measurements in a row must be different from the root measurement before an activity is estimated
 public let CHANGE_ACTIVITY_THRESHOLD:Int = 2
 // used for plane motion type, scales how many measurements of type car needed before resetting airport flag
-public let CAR_SCALING:Int = 10
+public let CAR_NUM_FOR_PLANE_FLAG_OFF:Int = 10
 // used for tube motion type, scales how many measurements of type walking needed before resetting tube flag
-public let WALK_SCALING:Int = 1
+public let WALK_NUM_FOR_TRAIN_FLAG_OFF:Int = 1
 // idle time (in seconds) after which the activity estimator should forget the user was in a station
 public let STATION_TIMEOUT:Double = 90*60
 // idle time (in seconds) after which the activity estimator should forget the user was in an airport
@@ -55,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     override init() {
         DBMS = CoreDataManager()
-        activityEstimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, maxMeasurements: MAX_MEASUREMENTS, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT, DBMS: DBMS)
+        activityEstimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT, DBMS: DBMS)
     }
     
     // location of last request for stations nearby, to be used with station request radius
