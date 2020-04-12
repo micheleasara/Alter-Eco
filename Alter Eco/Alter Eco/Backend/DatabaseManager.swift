@@ -26,7 +26,7 @@ public protocol DBWriter {
     func append(score: UserScore) throws
 }
 
-public protocol DBManager : DBReader, DBWriter {
+public protocol DBManager : AnyObject, DBReader, DBWriter {
     func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double
     func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double
 

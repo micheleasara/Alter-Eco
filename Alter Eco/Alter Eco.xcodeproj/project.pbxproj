@@ -18,13 +18,10 @@
 		573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */; };
 		573693832438F85F00992BB0 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
 		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
-		9C17CA8524323D1D00378A67 /* WalkHeathrow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */; };
 		9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */; };
 		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
 		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
 		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
-		9C17CA8A24323D1D00378A67 /* WalktoHeathrow.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */; };
-		9C17CA8B24323D1D00378A67 /* KingsCrossTubeUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */; };
 		9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5D59C4243B102C00238275 /* ProgressBarView.swift */; };
 		9C87AE27244215FB00490481 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* DatabaseManager.swift */; };
 		9C87AE292442408F00490481 /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
@@ -81,18 +78,15 @@
 		218C419E243E89690036A2FE /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55C85C5A243CB879006AD075 /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
-		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Frontend/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphLogicTestsTwo.swift; sourceTree = "<group>"; };
 		573693822438F85F00992BB0 /* GraphModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
 		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
-		9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkHeathrow.gpx; sourceTree = "<group>"; };
 		9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MilanLIN.gpx; sourceTree = "<group>"; };
 		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
 		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
 		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
-		9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalktoHeathrow.gpx; sourceTree = "<group>"; };
-		9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = KingsCrossTubeUCL.gpx; sourceTree = "<group>"; };
-		9C5D59C4243B102C00238275 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProgressBarView.swift; path = "../Alter Eco.xcodeproj/ProgressBarView.swift"; sourceTree = "<group>"; };
+		9C5D59C4243B102C00238275 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		9C87AE26244215FB00490481 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		9C87AE282442408F00490481 /* ActivityList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityList.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
@@ -110,9 +104,9 @@
 		9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimator.swift; sourceTree = "<group>"; };
 		9CD5942E242968DE00B1D0B4 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		9CD5942F242968DF00B1D0B4 /* BarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
-		9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = "../Alter Eco.xcodeproj/SceneDelegate.swift"; sourceTree = "<group>"; };
-		9CD594402429691E00B1D0B4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = "../Alter Eco.xcodeproj/ContentView.swift"; sourceTree = "<group>"; };
-		9CD594422429692000B1D0B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "../Alter Eco.xcodeproj/AppDelegate.swift"; sourceTree = "<group>"; };
+		9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9CD594402429691E00B1D0B4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9CD594422429692000B1D0B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasuredActivity.swift; sourceTree = "<group>"; };
 		9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasuredActivityTest.swift; sourceTree = "<group>"; };
 		9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimatorTest.swift; sourceTree = "<group>"; };
@@ -179,8 +173,6 @@
 		CD200B3623E3885100629E73 = {
 			isa = PBXGroup;
 			children = (
-				218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */,
-				218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */,
 				CD200B4123E3885100629E73 /* Alter Eco */,
 				9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */,
 				9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */,
@@ -201,32 +193,10 @@
 		CD200B4123E3885100629E73 /* Alter Eco */ = {
 			isa = PBXGroup;
 			children = (
-				9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */,
-				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
-				9C87AE282442408F00490481 /* ActivityList.swift */,
-				5591901D242C0FA400A80ED7 /* UserScore.swift */,
 				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
-				9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */,
-				9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */,
-				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
-				9C87AE26244215FB00490481 /* DatabaseManager.swift */,
-				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
-				55DA632A242AC557002CCD07 /* Assets.xcassets */,
-				9CD594402429691E00B1D0B4 /* ContentView.swift */,
-				9CD5942E242968DE00B1D0B4 /* DetailView.swift */,
-				55C85C5A243CB879006AD075 /* ExplanationView.swift */,
-				9CD5941C2429686900B1D0B4 /* WelcomeView.swift */,
-				218C419E243E89690036A2FE /* Awards.swift */,
-				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
-				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
-				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
-				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
-				573693822438F85F00992BB0 /* GraphModel.swift */,
-				9CD59429242968DE00B1D0B4 /* gridlines.swift */,
-				9CD594192429686900B1D0B4 /* ScoreView.swift */,
-				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
-				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
-				9CD5941B2429686900B1D0B4 /* SplashScreen.swift */,
+				9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */,
+				DE1B266C24433C9D007D9B54 /* Backend */,
+				DE1B266D24433DBC007D9B54 /* Frontend */,
 				DE1B2611243F72B4007D9B54 /* GPX */,
 				CD200B5023E3885700629E73 /* Info.plist */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
@@ -246,8 +216,6 @@
 			isa = PBXGroup;
 			children = (
 				9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */,
-				9C17CA8224323D1C00378A67 /* WalktoHeathrow.gpx */,
-				9C17CA7D24323D1C00378A67 /* WalkHeathrow.gpx */,
 				9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */,
 				9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */,
 				9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */,
@@ -256,9 +224,48 @@
 				9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */,
 				9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */,
 				9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */,
-				9C17CA8324323D1D00378A67 /* KingsCrossTubeUCL.gpx */,
 			);
 			path = GPX;
+			sourceTree = "<group>";
+		};
+		DE1B266C24433C9D007D9B54 /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				9C87AE26244215FB00490481 /* DatabaseManager.swift */,
+				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
+				5591901D242C0FA400A80ED7 /* UserScore.swift */,
+				9C87AE282442408F00490481 /* ActivityList.swift */,
+				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
+			);
+			path = Backend;
+			sourceTree = "<group>";
+		};
+		DE1B266D24433DBC007D9B54 /* Frontend */ = {
+			isa = PBXGroup;
+			children = (
+				9CD5942E242968DE00B1D0B4 /* DetailView.swift */,
+				55C85C5A243CB879006AD075 /* ExplanationView.swift */,
+				9CD5941C2429686900B1D0B4 /* WelcomeView.swift */,
+				218C419E243E89690036A2FE /* Awards.swift */,
+				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
+				218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */,
+				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
+				218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */,
+				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
+				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
+				573693822438F85F00992BB0 /* GraphModel.swift */,
+				9CD59429242968DE00B1D0B4 /* gridlines.swift */,
+				9CD594192429686900B1D0B4 /* ScoreView.swift */,
+				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
+				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
+				9CD5941B2429686900B1D0B4 /* SplashScreen.swift */,
+				9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */,
+				9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */,
+				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
+				55DA632A242AC557002CCD07 /* Assets.xcassets */,
+				9CD594402429691E00B1D0B4 /* ContentView.swift */,
+			);
+			path = Frontend;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -379,7 +386,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C17CA8B24323D1D00378A67 /* KingsCrossTubeUCL.gpx in Resources */,
 				9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */,
 				9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */,
 				9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */,
@@ -388,9 +394,7 @@
 				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
 				9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */,
 				9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */,
-				9C17CA8A24323D1D00378A67 /* WalktoHeathrow.gpx in Resources */,
 				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
-				9C17CA8524323D1D00378A67 /* WalkHeathrow.gpx in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
 				9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */,
 			);

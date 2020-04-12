@@ -1,11 +1,3 @@
-//
-//  ProgressBarView.swift
-//  Alter Eco
-//
-//  Created by Virtual Machine on 02/04/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import Foundation
 import SwiftUI
 

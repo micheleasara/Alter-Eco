@@ -44,40 +44,39 @@ public class ActivityEstimator : ObservableObject {
             let measurement = MeasuredActivity.getValidMeasuredActivity(location: location, previousLocation: previousLocation, previousAirport: previousAirport)
             guard let validMeasurement = measurement else {return}
             
-            let currentStation = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.stations, GPS_THRESHOLD: GPS_UPDATE_CONFIDENCE_THRESHOLD, trackingDataAttribute: 0)
-            let currentAirport = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.airports, GPS_THRESHOLD: GPS_UPDATE_AIRPORT_THRESHOLD, trackingDataAttribute: 1)
+            let currentStation = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.stations, GPS_THRESHOLD: GPS_UPDATE_CONFIDENCE_THRESHOLD)
+            let currentAirport = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.airports, GPS_THRESHOLD: GPS_UPDATE_AIRPORT_THRESHOLD)
                                     
-            // check if we are not in the same day to break the list, with the exception of the train flag and plane flag
-            if previousAirport == nil && previousStation == nil && !inSameDay(date1: previousLocation.timestamp, date2: location.timestamp)  {
-                measurements.dumpToDatabase(from: 0, to: measurements.count)
-            } else {
-                measurements.add(validMeasurement)
-                
-                // check if we are currently in a train station
-                if currentStation != nil {
-                    processCurrentRegionOfInterest(currentStation!, previousRegionOfInterest: &previousStation, speed: AVERAGE_TUBE_SPEED, motionType: .train)
-                }
-                
-                // check if we are currently in an airport
-                else if currentAirport != nil {
-                    processCurrentRegionOfInterest(currentAirport!, previousRegionOfInterest: &previousStation, speed: AVERAGE_PLANE_SPEED, motionType: .plane)
-                }
-                    
-                // not in station and were before, if more than set number of walking measurements, forget flag
-                else if currentStation == nil && previousStation != nil && measurements.count > numChangeActivity {
-                    checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, previousRegionOfInterest: &previousStation)
-                }
-                
-                // not in airport and were before, if more than set number of car measurements, forget flag
-                else if currentAirport == nil && previousAirport != nil && measurements.count > numChangeActivity * CAR_NUM_FOR_PLANE_FLAG_OFF {
-                    checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, previousRegionOfInterest: &previousAirport)
-                }
+            // check if we are not in the same day to break the list, with the exception of ROIs flags
+            if previousAirport == nil && previousStation == nil && !inSameDay(date1: previousLocation.timestamp, date2: location.timestamp) {
+            measurements.dumpToDatabase(from: 0, to: measurements.count)
             }
+            
+            // check if we are currently in a train station
+            else if currentStation != nil {
+                processCurrentRegionOfInterest(currentStation!, previousRegionOfInterest: &previousStation, speed: AVERAGE_TUBE_SPEED, motionType: .train)
+            }
+                
+            // check if we are currently in an airport
+            else if currentAirport != nil {
+                processCurrentRegionOfInterest(currentAirport!, previousRegionOfInterest: &previousStation, speed: AVERAGE_PLANE_SPEED, motionType: .plane)
+            }
+                
+            // not in station and were before, if more than set number of walking measurements, forget flag
+            else if currentStation == nil && previousStation != nil && measurements.count > WALK_NUM_FOR_TRAIN_FLAG_OFF {
+                checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, previousRegionOfInterest: &previousStation)
+            }
+
+            // not in airport and were before, if more than set number of car measurements, forget flag
+            else if currentAirport == nil && previousAirport != nil && measurements.count > CAR_NUM_FOR_PLANE_FLAG_OFF {
+                checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, previousRegionOfInterest: &previousAirport)
+            }
+            measurements.add(validMeasurement)
         }
         previousLoc = location
     }
                     
-    private func getCurrentRegionOfInterest(currentLocation: CLLocation, regionsOfInterest: [MKMapItem], GPS_THRESHOLD: Double, trackingDataAttribute: Int) -> CLLocation? {
+    private func getCurrentRegionOfInterest(currentLocation: CLLocation, regionsOfInterest: [MKMapItem], GPS_THRESHOLD: Double) -> CLLocation? {
         for regionOfInterest in regionsOfInterest {
             let regionLocation = CLLocation(latitude: regionOfInterest.placemark.coordinate.latitude, longitude: regionOfInterest.placemark.coordinate.longitude)
             if (regionLocation.distance(from: currentLocation) <= GPS_THRESHOLD) {
@@ -108,10 +107,23 @@ public class ActivityEstimator : ObservableObject {
         }
     }
     
+    private func checkROIFlagStillValid(numChangeActivity: Int, activityNumToOff: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
+        let newActivityIndex = measurements.count - activityNumToOff
+
+        for i in 0..<newActivityIndex {
+            if measurements[i].motionType != motionType {
+                return
+            }
+        }
+        
+        previousRegionOfInterest = nil
+        measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
+    }
+    
     private func computeActivityFromROIs(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType){
         let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
         
-        print("Used train to travel distance: ", activityDistance, " m")
+        print("Used train/plane to travel distance: ", activityDistance, " m")
         let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
         previousRegionOfInterest = currentRegionOfInterest
         measurements.add(activity)
@@ -120,11 +132,6 @@ public class ActivityEstimator : ObservableObject {
     private func resetTimer(timer: inout Timer, timeOut: (Timer) -> Void){
         timer.invalidate()
         timer = Timer.scheduledTimer(timeInterval: stationTimeout, target: self, selector: #selector(stationTimedOut(timer:)), userInfo: nil, repeats: false)
-    }
-    
-    private func resetAirportTimer(){
-        airportValidityTimer.invalidate()
-        airportValidityTimer = Timer.scheduledTimer(timeInterval: airportTimeout, target: self, selector: #selector(airportTimedOut(timer:)), userInfo: nil, repeats: false)
     }
     
     private func dumpOldDay() {
@@ -143,19 +150,6 @@ public class ActivityEstimator : ObservableObject {
     @objc private func airportTimedOut(timer: Timer) {
         self.previousAirport = nil
         dumpOldDay()
-    }
-    
-    private func checkROIFlagStillValid(numChangeActivity: Int, activityNumToOff: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
-        let newActivityIndex = measurements.count - activityNumToOff
-
-        for i in 0..<newActivityIndex {
-            if measurements[i].motionType != motionType {
-                return
-            }
-        }
-        
-        previousRegionOfInterest = nil
-        measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
     }
     
     private func inSameDay(date1:Date, date2:Date) -> Bool {

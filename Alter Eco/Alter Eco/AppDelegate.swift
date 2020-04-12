@@ -37,8 +37,6 @@ public let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
 // define area near airport still considered as an airport location - Paris airport 5kmx3km
 // tradeoff between wanting to detect all the airport and the time of take off (2h assumed here).
 public let GPS_UPDATE_AIRPORT_THRESHOLD:Double = 4000
-// define two hours waiting time at airport not to be considered as flying time (i.e. better distance estimation)
-public let TWO_HOURS_AIRPORT_WAITING_TIME: Double = 60*60*2
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {

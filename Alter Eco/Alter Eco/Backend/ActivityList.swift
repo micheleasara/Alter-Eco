@@ -1,11 +1,3 @@
-//
-//  ActivityList.swift
-//  Alter Eco
-//
-//  Created by Virtual Machine on 11/04/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import Foundation
 
 public protocol ActivityList : AnyObject, MutableCollection {
@@ -78,10 +70,8 @@ public class WeigthedActivityList: ActivityList {
         } else {
             measurements.append(activity)
             if hasChangedSignificantly() {
-                let newActivityIndex = count - numChangeActivity
-                let average = getAverage(from: 0, to: newActivityIndex - 1)
-                writeToDatabase(average)
-                measurements = Array(measurements[newActivityIndex...])
+                let newActivityIndex = measurements.count - numChangeActivity
+                dumpToDatabase(from: 0, to: newActivityIndex - 1)
             }
         }
         
@@ -129,9 +119,7 @@ public class WeigthedActivityList: ActivityList {
     
     public func dumpToDatabase(from:Int, to:Int) {
         writeToDatabase(getAverage(from: from, to: to))
-        for i in from...to {
-            remove(at: i)
-        }
+        measurements.removeSubrange(from...to)
     }
     
     private func writeToDatabase(_ activity: MeasuredActivity){
