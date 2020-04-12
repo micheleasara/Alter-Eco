@@ -148,6 +148,7 @@ public class ActivityEstimator : ObservableObject {
         for i in stride(from: 1, to: measurements.count, by: 1){
             if !inSameDay(date1: measurements[i].start, date2: measurements[0].start) {
                 measurements.dumpToDatabase(from: 0, to: i-1)
+                return
             }
         }
     }
