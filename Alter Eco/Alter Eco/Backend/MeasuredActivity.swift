@@ -8,8 +8,6 @@ public class MeasuredActivity : Equatable {
     public static let TIME_PRECISION: Double = 1
     // set precision for distance equality in meters
     public static let SPACE_PRECISION: Double = 0.001
-
-    private static let activityWeights: [MotionType: Int] = [MotionType.car: 2, MotionType.walking: 1]
     
     public enum MotionType : CaseIterable {
         case car
@@ -62,41 +60,6 @@ public class MeasuredActivity : Equatable {
         
         // if we get here, measured activity is valid
         return measuredActivity
-    }
-
-    public static func getCumulativeDistance(measurements:[MeasuredActivity]) -> Double {
-        var distance = 0.0
-        for measurement in measurements {
-            distance += measurement.distance
-        }
-
-        return distance
-    }
-
-    public static func getAverageActivityMotionType(measurements:[MeasuredActivity]) -> MotionType {
-        var carCounter = 0
-        var walkingCounter = 0
-
-        for measurement in measurements {
-            if measurement.motionType == MotionType.car {
-                carCounter += 1
-            }
-            else {
-                walkingCounter += 1
-            }
-        }
-
-        if carCounter * activityWeights[.car]! > walkingCounter {
-            return MotionType.car
-        }
-        else {
-            return MotionType.walking
-        }
-    }
-
-    public static func getAverageActivity(measurements:[MeasuredActivity]) -> MeasuredActivity {
-        let activity = MeasuredActivity(motionType: getAverageActivityMotionType(measurements: measurements), distance: getCumulativeDistance(measurements: measurements), start: measurements.first!.start, end: measurements.last!.end)
-        return activity
     }
 
     public static func motionTypeToString(type:MotionType) -> String {

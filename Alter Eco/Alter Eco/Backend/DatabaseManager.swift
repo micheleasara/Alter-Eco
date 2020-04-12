@@ -6,11 +6,11 @@ import CoreData
 //https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
 //all units below have been converted to kgrams/kilometer
 
-let CARBON_UNIT_CAR: Double = 0.175
-let CARBON_UNIT_TRAIN: Double = 0.030
-let CARBON_UNIT_PLANE: Double = 0.200
-let CARBON_UNIT_WALKING: Double = 0.175
-let KM_CONVERSION: Double = 0.001
+public let CARBON_UNIT_CAR: Double = 0.175
+public let CARBON_UNIT_TRAIN: Double = 0.030
+public let CARBON_UNIT_PLANE: Double = 0.200
+public let CARBON_UNIT_WALKING: Double = 0.175
+public let KM_CONVERSION: Double = 0.001
 
 public protocol DBReader {
     // Queries the Event entity depending on predicate (date, motionType, distance, ...)
@@ -110,7 +110,7 @@ public class CoreDataManager : DBManager {
         let endDate = Date(timeInterval: interval, since: from)
         // note double start: we count an activity as being in a time interval if it started during that time interval and not after
         let queryMeasuredActivities = try queryActivities(query: NSPredicate(format: "motionType == %@ AND start >= %@ AND start <= %@", motionString, from as NSDate, endDate as NSDate))
-        return MeasuredActivity.getCumulativeDistance(measurements: queryMeasuredActivities)
+        return getCumulativeDistance(measurements: queryMeasuredActivities)
     }
     
     public func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
@@ -273,6 +273,15 @@ public class CoreDataManager : DBManager {
             }
         }
         return carbonTotal
+    }
+    
+    private func getCumulativeDistance(measurements:[MeasuredActivity]) -> Double {
+        var distance = 0.0
+        for measurement in measurements {
+            distance += measurement.distance
+        }
+
+        return distance
     }
     
     private func getEndDayOfMonth(date: Date) -> Date {
