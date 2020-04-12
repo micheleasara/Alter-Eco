@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct Awards: Identifiable {
+struct Awards: Identifiable, Codable {
     
     let id: Int
     let Name: String
@@ -9,7 +9,7 @@ struct Awards: Identifiable {
     let BadgeTitle: String
     var Awarded: Bool
     
-    public init(id: Int, name: String, description: String, badgeTitle: String, awarded: Bool) {
+    public init(id: Int, name: String, description: String, badgeTitle: String, awarded: Bool = false) {
         self.id = id
         self.Name = name
         self.Description = description

@@ -44,9 +44,7 @@ struct AwardView: View {
     let SECONDS_MONTH = 2592000.0
     let LONDON_AVG_CARBON_WEEK = 15.8
 
-    var originalDate = Date()
-    var currentMonth = ""
-
+    var originalDate = Date() //setting current date as placeholder
     var timeInterval = 0.0
     
     var awardsList = [
@@ -74,7 +72,7 @@ struct AwardView: View {
         Awards(
             id: 3,
             name: "No Wheels",
-            description: "No car or bus travel for one week",
+            description: "No car or bus travel for one month",
             badgeTitle: "badge_wheels",
             awarded: UserDefaults.standard.bool(forKey: String(3))
         ),
@@ -88,10 +86,9 @@ struct AwardView: View {
     ]
        
     init() {
-        self.currentMonth = getMonth()
         self.originalDate = try! DBMS.getFirstDate()
         ///Uncomment below to show some of the awards
-        //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
+        self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
         if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*60*60*24) == 0 && timeInterval > SECONDS_MONTH)
@@ -106,7 +103,7 @@ struct AwardView: View {
             awardsList[1].Awarded = UserDefaults.standard.bool(forKey: String(1))
         }
         
-        if(try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -30*60*60*24) > 10000 && timeInterval > SECONDS_MONTH)
+        if(try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -7*60*60*24) > 10000 && timeInterval > SECONDS_WEEK)
         {
             UserDefaults.standard.set(true, forKey: String(2))
             awardsList[2].Awarded = UserDefaults.standard.bool(forKey: String(2))
@@ -151,14 +148,6 @@ struct AwardView: View {
         }
     }
     
-   /* func getYear(dateArg: Date = Date()) -> Int {
-        let date = dateArg
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year], from: date)
-        let currentYear = components.year
-        return currentYear!
-    }*/
-    
     func getMonth(dateArg: Date = Date()) -> String {
         let date = dateArg
         let dateFormatter = DateFormatter()
@@ -166,14 +155,6 @@ struct AwardView: View {
         let monthString = dateFormatter.string(from: date)
         return monthString
     }
-    
-   /* func getDay(dateArg: Date = Date()) -> Int {
-        let date = dateArg
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: date)
-        let dayOfMonth = components.day
-        return dayOfMonth!
-    }*/
 }
 
 
@@ -192,33 +173,32 @@ struct ProfileImage: View {
     var body: some View {
         VStack(spacing: 0){
         ZStack{
-            //VStack{
-                if(savings.count != 0){
-                    ForEach(savings, id: \.self) { save in
-                       VStack() {
-                    Image(uiImage: UIImage(data: save.imageP ?? self.placeholder)!)
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6, height: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6)
-                        .shadow(radius: 10)
+            if(savings.count != 0){
+                ForEach(savings, id: \.self) { save in
+                    VStack() {
+                        Image(uiImage: UIImage(data: save.imageP ?? self.placeholder)!)
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                            .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6, height: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6)
+                            .shadow(radius: 10)
                     }
-                    }
-                    Button(action: {self.showingImagePicker = true}){
-                        Circle()
-                    }
+                }
+                Button(action: {self.showingImagePicker = true}){
+                    Circle()
+                }
                     .foregroundColor(Color.white)
                     .opacity(0.01)
                     .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.41, height: CGFloat(screenMeasurements.broadcastedWidth)*0.41)
-               }
+            }
             
-                Button(action: {self.showingImagePicker = true}){
-                    if(savings.count == 0){
+            Button(action: {self.showingImagePicker = true}){
+                if(savings.count == 0){
                     Image("add_profile_pic")
                         .scaleEffect(CGFloat(screenMeasurements.broadcastedHeight)/1700)
                         .foregroundColor(Color("title_colour"))
-                    }
                 }
+            }
                 .background(Color("shadow"))
                 .mask(Circle().scale(CGFloat(screenMeasurements.broadcastedHeight)/1000))
                     
@@ -228,16 +208,16 @@ struct ProfileImage: View {
                 
         }.frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, height: CGFloat(screenMeasurements.broadcastedHeight)*0.3)
             
-            NameView()
+        NameView()
         }
     }
     
     func loadImage() {
-        //guard let inputImage = inputImage else { return}
+        guard let inputImage = inputImage else { return}
         if(savings.count != 0){
             self.moc.delete(savings[0])}
         let newPic = ProfilePic(context: self.moc)
-        newPic.imageP = self.inputImage?.jpegData(compressionQuality: CGFloat(1.0))
+        newPic.imageP = inputImage.jpegData(compressionQuality: CGFloat(1.0))
     }
 }
 
@@ -278,7 +258,6 @@ struct NameView: View {
             {
                 TextField(" Enter Your Nickname", text: $name){
                     self.addNickname()
-                    UIApplication.shared.keyWindow?.endEditing(true)
                     self.changingNickname = false
                 }.font(.callout)
                     .foregroundColor(Color("title_colour"))
