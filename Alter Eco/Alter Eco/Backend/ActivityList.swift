@@ -47,8 +47,6 @@ public class WeigthedActivityList: ActivityList {
         let rootType = measurements[0].motionType
         var previousLastType: MeasuredActivity.MotionType? = nil
         for index in (measurements.count-numChangeActivity-1)..<(measurements.count) {
-            print(index)
-            print(measurements.count)
             let type = measurements[index].motionType
             if type == rootType || (previousLastType != nil && previousLastType != type) {
                 return false

@@ -35,6 +35,8 @@ public class ActivityEstimator : ObservableObject {
         self.numChangeActivity = numChangeActivity
         self.inStationRadius = inStationRadius
         self.measurements = WeigthedActivityList(activityWeights: activityWeights, numChangeActivity: numChangeActivity, DBMS: DBMS)
+        previousStation = CLLocation(latitude: 1, longitude: 2)
+        resetTimer(timer: &stationValidityTimer, interval: 2, roi: &previousStation)
     }
     
     public func processLocation(_ location: CLLocation) {
@@ -49,7 +51,7 @@ public class ActivityEstimator : ObservableObject {
                                     
             // check if we are not in the same day to break the list, with the exception of ROIs flags
             if previousAirport == nil && previousStation == nil && !inSameDay(date1: previousLocation.timestamp, date2: location.timestamp) {
-            measurements.dumpToDatabase(from: 0, to: measurements.count)
+                measurements.dumpToDatabase(from: 0, to: measurements.count-1)
             }
             
             // check if we are currently in a train station
@@ -59,7 +61,7 @@ public class ActivityEstimator : ObservableObject {
                 
             // check if we are currently in an airport
             else if currentAirport != nil {
-                processCurrentRegionOfInterest(currentAirport!, previousRegionOfInterest: &previousStation, speed: AVERAGE_PLANE_SPEED, motionType: .plane)
+                processCurrentRegionOfInterest(currentAirport!, previousRegionOfInterest: &previousAirport, speed: AVERAGE_PLANE_SPEED, motionType: .plane)
             }
                 
             // not in station and were before, if more than set number of walking measurements, forget flag
@@ -91,33 +93,19 @@ public class ActivityEstimator : ObservableObject {
         // check if there was a journey (plane or train)
         if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() > 0 {
             computeActivityFromROIs(currentRegionOfInterest: currentRegionOfInterest, previousRegionOfInterest: &previousRegionOfInterest, speed: speed, motionType: motionType)
-            motionType == .train ? resetTimer(timer: &stationValidityTimer, timeOut: stationTimedOut) : resetTimer(timer: &airportValidityTimer, timeOut: airportTimedOut)
+            motionType == .train ? resetTimer(timer: &stationValidityTimer, interval: stationTimeout, roi: &previousStation) : resetTimer(timer: &airportValidityTimer, interval: airportTimeout, roi: &previousAirport)
         }
             
         // while in same airport/tube station, update timestamp
         else if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() <= 0 {
-            
             previousRegionOfInterest = CLLocation(coordinate: previousRegionOfInterest!.coordinate, altitude: previousRegionOfInterest!.altitude, horizontalAccuracy: previousRegionOfInterest!.horizontalAccuracy, verticalAccuracy: previousRegionOfInterest!.verticalAccuracy, course: previousRegionOfInterest!.course, speed: previousRegionOfInterest!.speed, timestamp: Date())
         }
             
         // In regionOfInterest right now and weren't before
         else if previousRegionOfInterest == nil {
             previousRegionOfInterest = currentRegionOfInterest
-            motionType == .train ? resetTimer(timer: &stationValidityTimer, timeOut: stationTimedOut) : resetTimer(timer: &airportValidityTimer, timeOut: airportTimedOut)
+            motionType == .train ? resetTimer(timer: &stationValidityTimer, interval: stationTimeout, roi: &previousStation) : resetTimer(timer: &airportValidityTimer, interval: airportTimeout, roi: &previousAirport)
         }
-    }
-    
-    private func checkROIFlagStillValid(numChangeActivity: Int, activityNumToOff: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
-        let newActivityIndex = measurements.count - activityNumToOff
-
-        for i in 0..<newActivityIndex {
-            if measurements[i].motionType != motionType {
-                return
-            }
-        }
-        
-        previousRegionOfInterest = nil
-        measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
     }
     
     private func computeActivityFromROIs(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType){
@@ -129,27 +117,37 @@ public class ActivityEstimator : ObservableObject {
         measurements.add(activity)
     }
     
-    private func resetTimer(timer: inout Timer, timeOut: (Timer) -> Void){
-        timer.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: stationTimeout, target: self, selector: #selector(stationTimedOut(timer:)), userInfo: nil, repeats: false)
+    private func checkROIFlagStillValid(numChangeActivity: Int, activityNumToOff: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
+        let newActivityIndex = measurements.count - activityNumToOff
+
+        for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {
+            if measurements[i].motionType != motionType {
+                return
+            }
+        }
+        
+        previousRegionOfInterest = nil
+        measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
     }
     
+    private func resetTimer(timer: inout Timer, interval:Double, roi: UnsafeMutablePointer<CLLocation?>) {
+        timer.invalidate()
+        let ptr = UnsafeMutablePointer(&(roi.pointee))
+        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(timedOut(timer:)), userInfo: ptr, repeats: false)
+    }
+    
+    @objc private func timedOut(timer: Timer) {
+        let ptrToROI = timer.userInfo as! UnsafeMutablePointer<CLLocation?>
+        ptrToROI.pointee = nil
+        dumpOldDay()
+    }
+        
     private func dumpOldDay() {
-        for i in 1...measurements.count - 1 {
+        for i in stride(from: 1, to: measurements.count, by: 1){
             if !inSameDay(date1: measurements[i].start, date2: measurements[0].start) {
                 measurements.dumpToDatabase(from: 0, to: i-1)
             }
         }
-    }
-    
-    @objc private func stationTimedOut(timer: Timer) {
-        self.previousStation = nil
-        dumpOldDay()
-    }
-    
-    @objc private func airportTimedOut(timer: Timer) {
-        self.previousAirport = nil
-        dumpOldDay()
     }
     
     private func inSameDay(date1:Date, date2:Date) -> Bool {
