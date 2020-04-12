@@ -87,7 +87,7 @@ public class ActivityEstimator : ObservableObject {
         // check if there was a journey (plane or train)
         if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() > 0 {
             computeActivityFromROIs(currentRegionOfInterest: currentRegionOfInterest, previousRegionOfInterest: &previousRegionOfInterest, speed: speed, motionType: motionType)
-            motionType == .train ? resetTimer(timer: &stationValidityTimer, interval: stationTimeout, roi: &previousStation) : resetTimer(timer: &airportValidityTimer, interval: airportTimeout, roi: &previousAirport)
+            motionType == .train ? resetStationTimer() : resetAirportTimer()
         }
             
         // while in same airport/tube station, update timestamp
@@ -98,7 +98,7 @@ public class ActivityEstimator : ObservableObject {
         // In regionOfInterest right now and weren't before
         else if previousRegionOfInterest == nil {
             previousRegionOfInterest = currentRegionOfInterest
-            motionType == .train ? resetTimer(timer: &stationValidityTimer, interval: stationTimeout, roi: &previousStation) : resetTimer(timer: &airportValidityTimer, interval: airportTimeout, roi: &previousAirport)
+            motionType == .train ? resetStationTimer() : resetAirportTimer()
         }
     }
     
@@ -124,15 +124,23 @@ public class ActivityEstimator : ObservableObject {
         measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
     }
     
-    private func resetTimer(timer: inout Timer, interval:Double, roi: UnsafeMutablePointer<CLLocation?>) {
-        timer.invalidate()
-        let ptr = UnsafeMutablePointer(&(roi.pointee))
-        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(timedOut(timer:)), userInfo: ptr, repeats: false)
+    private func resetStationTimer() {
+        stationValidityTimer.invalidate()
+        stationValidityTimer = Timer.scheduledTimer(timeInterval: stationTimeout, target: self, selector: #selector(stationTimedOut(timer:)), userInfo: nil, repeats: false)
     }
     
-    @objc private func timedOut(timer: Timer) {
-        let ptrToROI = timer.userInfo as! UnsafeMutablePointer<CLLocation?>
-        ptrToROI.pointee = nil
+    @objc private func stationTimedOut(timer: Timer) {
+        self.previousStation = nil
+        dumpOldDay()
+    }
+    
+    private func resetAirportTimer() {
+        airportValidityTimer.invalidate()
+        airportValidityTimer = Timer.scheduledTimer(timeInterval: airportTimeout, target: self, selector: #selector(airportTimedOut(timer:)), userInfo: nil, repeats: false)
+    }
+    
+    @objc private func airportTimedOut(timer: Timer) {
+        self.previousAirport = nil
         dumpOldDay()
     }
         

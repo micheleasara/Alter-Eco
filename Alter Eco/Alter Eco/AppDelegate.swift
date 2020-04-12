@@ -46,16 +46,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // requests gps updates
     internal let manager = CLLocationManager()
     // CoreDate Manager
-    internal var DBMS : CoreDataManager
+    lazy internal var DBMS : CoreDataManager = CoreDataManager(persistentContainer: self.persistentContainer)
     // estimates activities based on given information (such as location updates)
-    internal var activityEstimator : ActivityEstimator
-    
-    override init() {
-        DBMS = CoreDataManager()
-        let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS)
-        activityEstimator = ActivityEstimator(activityList: activityList, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
-    }
-    
+    lazy internal var activityEstimator : ActivityEstimator = ActivityEstimator(activityList:
+        WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS), inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
+
     // location of last request for stations nearby, to be used with station request radius
     internal var locationUponRequest: CLLocation? = nil
     
@@ -169,6 +164,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return container
     }()
 
+    
+    
     // MARK: - Core Data Saving support
     func saveContext () {
         let context = persistentContainer.viewContext
@@ -183,6 +180,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
+    
+    lazy var managedObjectModel: NSManagedObjectModel = {
+        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: type(of: self))] )!
+        return managedObjectModel
+    }()
+
+    lazy var mockPersistantContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Database2.0", managedObjectModel: self.managedObjectModel)
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        description.shouldAddStoreAsynchronously = false
+        
+        container.persistentStoreDescriptions = [description]
+        container.loadPersistentStores { (description, error) in
+            // Check if the data store is in memory
+            precondition( description.type == NSInMemoryStoreType )
+                                        
+            // Check if creating container wrong
+            if let error = error {
+                fatalError("An error occurred: \(error)")
+            }
+        }
+        return container
+    }()
     
     // MARK: - Functions to register for notifications
     func registerForPushNotifications() {

@@ -51,6 +51,17 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
 }
 
 public class CoreDataManager : DBManager {
+    private let persistentContainer : NSPersistentContainer
+    
+    // Returns CoreData's managed context
+    private func getManagedContext() throws -> NSManagedObjectContext {
+        return persistentContainer.viewContext
+    }
+    
+    public init(persistentContainer : NSPersistentContainer) {
+        self.persistentContainer = persistentContainer
+    }
+    
     public func executeQuery(query: NSPredicate?, entity: String) throws -> [NSManagedObject] {
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
@@ -345,12 +356,6 @@ public class CoreDataManager : DBManager {
             return today
         }
         return nil
-    }
-    
-    // Returns CoreData's managed context
-    private func getManagedContext() throws -> NSManagedObjectContext {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        return appDelegate.persistentContainer.viewContext
     }
     
     // Converts activity distance to carbon units
