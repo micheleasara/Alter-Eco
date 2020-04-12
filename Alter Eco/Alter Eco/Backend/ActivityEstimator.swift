@@ -21,22 +21,16 @@ public class ActivityEstimator : ObservableObject {
     private let stationTimeout:Double
     // seconds after which all plane flags are reset
     private let airportTimeout:Double
-    // define how many measurements in a row must be different from the root before an activity is averaged
-    private let numChangeActivity: Int
     // define how close one has to be to be considered within a station
     private let inStationRadius:Double
-    private let activityWeights: [MeasuredActivity.MotionType: Int] = [.car: 2, .walking: 1]
     // container for user activities containing a motion type and timestamps
     private var measurements: WeightedActivityList
         
-    public init(numChangeActivity:Int, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double, DBMS:CoreDataManager) {
+    public init(activityList: WeightedActivityList, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double) {
         self.stationTimeout = stationTimeout
         self.airportTimeout = airportTimeout
-        self.numChangeActivity = numChangeActivity
         self.inStationRadius = inStationRadius
-        self.measurements = WeightedActivityList(activityWeights: activityWeights, numChangeActivity: numChangeActivity, DBMS: DBMS)
-        previousStation = CLLocation(latitude: 1, longitude: 2)
-        resetTimer(timer: &stationValidityTimer, interval: 2, roi: &previousStation)
+        self.measurements = activityList
     }
     
     public func processLocation(_ location: CLLocation) {
@@ -66,12 +60,12 @@ public class ActivityEstimator : ObservableObject {
                 
             // not in station and were before, if more than set number of walking measurements, forget flag
             else if currentStation == nil && previousStation != nil && measurements.count > WALK_NUM_FOR_TRAIN_FLAG_OFF {
-                checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, previousRegionOfInterest: &previousStation)
+                checkROIFlagStillValid(activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, previousRegionOfInterest: &previousStation)
             }
 
             // not in airport and were before, if more than set number of car measurements, forget flag
             else if currentAirport == nil && previousAirport != nil && measurements.count > CAR_NUM_FOR_PLANE_FLAG_OFF {
-                checkROIFlagStillValid(numChangeActivity: numChangeActivity, activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, previousRegionOfInterest: &previousAirport)
+                checkROIFlagStillValid(activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, previousRegionOfInterest: &previousAirport)
             }
             measurements.add(validMeasurement)
         }
@@ -117,7 +111,7 @@ public class ActivityEstimator : ObservableObject {
         measurements.add(activity)
     }
     
-    private func checkROIFlagStillValid(numChangeActivity: Int, activityNumToOff: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
+    private func checkROIFlagStillValid(activityNumToOff: Int, motionType: MeasuredActivity.MotionType, previousRegionOfInterest: inout CLLocation?){
         let newActivityIndex = measurements.count - activityNumToOff
 
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {

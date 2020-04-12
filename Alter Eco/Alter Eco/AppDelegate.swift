@@ -37,6 +37,7 @@ public let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
 // define area near airport still considered as an airport location - Paris airport 5kmx3km
 // tradeoff between wanting to detect all the airport and the time of take off (2h assumed here).
 public let GPS_UPDATE_AIRPORT_THRESHOLD:Double = 4000
+public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Int] = [.car: 2, .walking: 1]
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -51,7 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     override init() {
         DBMS = CoreDataManager()
-        activityEstimator = ActivityEstimator(numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT, DBMS: DBMS)
+        let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS)
+        activityEstimator = ActivityEstimator(activityList: activityList, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
     }
     
     // location of last request for stations nearby, to be used with station request radius
