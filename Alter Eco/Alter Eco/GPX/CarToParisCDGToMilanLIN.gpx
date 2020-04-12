@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx>
     
-    <!--
+    <!-- car ride to the airport --> <!--
     <wpt lon="2.52712" lat="49.00247"><time>2020-03-25T08:28:50Z</time></wpt>
     <wpt lon="2.52704" lat="49.00269"><time>2020-03-25T08:28:53Z</time></wpt>
     <wpt lon="2.527" lat="49.00278"><time>2020-03-25T08:28:54Z</time></wpt>
@@ -138,7 +138,7 @@
     <wpt lon="9.27202" lat="45.44917"><time>2020-03-25T08:35:54Z</time></wpt>
     
     
-    <!--
+    <!-- car ride out of the airport --> <!--
     <wpt lon="9.27183" lat="45.4492"><time>2020-03-26T06:01:14Z</time></wpt>
     <wpt lon="9.27001" lat="45.44921"><time>2020-03-26T06:01:31Z</time></wpt>
     <wpt lon="9.26945" lat="45.44923"><time>2020-03-26T06:01:37Z</time></wpt>
