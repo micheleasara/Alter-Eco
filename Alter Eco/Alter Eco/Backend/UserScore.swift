@@ -2,19 +2,19 @@ import Foundation
 import SwiftUI
 
 // Points awarded to userScore for each transport mode
-let WALKING_PTS: Double = 10
-let CAR_PTS: Double = 3
-let TUBE_PTS: Double = 7
-let PLANE_PTS: Double = 0
+public let WALKING_PTS: Double = 10
+public let CAR_PTS: Double = 3
+public let TUBE_PTS: Double = 7
+public let PLANE_PTS: Double = 0
 
 // ProgressBar Icons number
-let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
-let ICON_ONE: Int = 1
-let ICON_TWO: Int = 2
-let ICON_THREE: Int = 3
-let ICON_FOUR: Int = 4
-let ICON_FIVE: Int = 5
-let NUMBER_OF_ICONS: Double = 6
+public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
+public let ICON_ONE: Int = 1
+public let ICON_TWO: Int = 2
+public let ICON_THREE: Int = 3
+public let ICON_FOUR: Int = 4
+public let ICON_FIVE: Int = 5
+public let NUMBER_OF_ICONS: Double = 6
 
 let DBMS : CoreDataManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
