@@ -16,7 +16,7 @@ class DatabaseTest: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        DBMS = CoreDataManager(persistentContainer: (UIApplication.shared.delegate as! AppDelegate).mockPersistantContainer)
+        DBMS = CoreDataManager(persistentContainer: (UIApplication.shared.delegate as! AppDelegate).mockPersistentContainer)
     }
     
     func testDatabaseIOIsConsistent(){

@@ -186,7 +186,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return managedObjectModel
     }()
 
-    lazy var mockPersistantContainer: NSPersistentContainer = {
+    lazy var mockPersistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "Database2.0", managedObjectModel: self.managedObjectModel)
         let description = NSPersistentStoreDescription()
         description.type = NSInMemoryStoreType
