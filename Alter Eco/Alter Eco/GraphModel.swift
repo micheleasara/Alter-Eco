@@ -68,32 +68,26 @@ func findMaxValue(value: Int) -> Double {
 }
 
 func findCorrectUnits(currentMax: Double, value: Int) -> (Double, String, String, String) {
-    var carbonUnit: String
-    var decimalPlaces: String
+    var carbonUnit: String = "Carbon kgs"
+    var decimalPlaces: String = "%.1f"
     var savedOrEmitted: String
-    var maxVal: Double
+    var maxVal: Double = currentMax
     
-    //Units change depending on whether the total amount of carbon in grams is over or under 1000 (helps ensure the y-axis labels fit on the screen and adds clarity
-    if (currentMax>1000&&currentMax<=10000){//This adjusts the value from grams to kilograms and changes the value to display to 1 d.p (otherwise it will be to 0dp)
-        maxVal=currentMax/1000
-        carbonUnit="  Carbon kgs"
-        decimalPlaces="%.1f"
-    }
-    if (currentMax>10000) {//This adjusts the value from grams to kilograms and changes the value to display to 1 d.p (otherwise it will be to 0dp)
-        maxVal=currentMax/1000
-        carbonUnit="  Carbon kgs"
-        decimalPlaces="%.0f"
-    }//If the carbon value is very small (below 10grams) then this ensures that the value is displayed to 1 d.p., otherwise, values over 10 grams are displaced to 0 d.p
-    else if (currentMax<10) {
-        carbonUnit="Carbon grams"
-        decimalPlaces="%.1f"
+    //Units change depending on whether the total amount of carbon in Kgs is over or under 1000 (helps ensure the y-axis labels fit on the screen and adds clarity
+    
+    // Keeps kg if between 1-100
+    if (currentMax>1 && currentMax<=100){
         maxVal=currentMax
+        carbonUnit="  Carbon kgs"
+        decimalPlaces = "%.0f"
     }
-    else {
-        carbonUnit="Carbon grams"
-        decimalPlaces="%.0f"
-        maxVal=currentMax
-       }
+    // Get tonnes if more 100 kg
+    if (currentMax>100) {
+        maxVal=currentMax/1000
+        carbonUnit="  Carbon Tonnes"
+        decimalPlaces = "%.0f"
+    }
+   
     if ((value==2)||(value==7)||(value==12)||(value==17)) {
         savedOrEmitted="   Saved"
        }
@@ -124,32 +118,62 @@ func normaliseData(motionType: MeasuredActivity.MotionType, datapart: DataParts)
         switch (datapart) {
             case .daycar,.dayplane,.daytrain, .daywalk:
                 
-            max_data = max(try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "00:00:00", hourEnd: "02:00:00"),try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "02:00:00", hourEnd: "04:00:00"), try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "04:00:00", hourEnd: "06:00:00"),try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "06:00:00", hourEnd: "08:00:00"), try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "08:00:00", hourEnd: "10:00:00"),try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "10:00:00", hourEnd: "12:00:00"),try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "12:00:00", hourEnd: "14:00:00"),try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "14:00:00", hourEnd: "16:00:00"), try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "16:00:00", hourEnd: "18:00:00"), try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "18:00:00", hourEnd: "20:00:00"), try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "20:00:00", hourEnd: "22:00:00"),try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "22:00:00", hourEnd: "23:59:59"))
+                max_data = max(try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "00:00:00", hourEnd: "02:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "02:00:00", hourEnd: "04:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "04:00:00", hourEnd: "06:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "06:00:00", hourEnd: "08:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "08:00:00", hourEnd: "10:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "10:00:00", hourEnd: "12:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "12:00:00", hourEnd: "14:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "14:00:00", hourEnd: "16:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "16:00:00", hourEnd: "18:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "18:00:00", hourEnd: "20:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "20:00:00", hourEnd: "22:00:00"),
+                               try DBMS.queryHourlyCarbon(motionType: motionType,hourStart: "22:00:00", hourEnd: "23:59:59"))
                 
             case .weekcar,.weekplane,.weektrain, .weekwalk:
                 
-            max_data = max(try DBMS.queryDailyCarbon(motionType: motionType, weekDayToDisplay: "Sunday"),
-            try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Monday"),
-            try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Tuesday"),
-            try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Wednesday"),
-            try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Thursday"),
-            try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Friday"),
-            try DBMS.queryDailyCarbon(motionType: motionType, weekDayToDisplay: "Saturday"))
+                max_data = max(try DBMS.queryDailyCarbon(motionType: motionType, weekDayToDisplay: "Sunday"),
+                               try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Monday"),
+                               try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Tuesday"),
+                               try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Wednesday"),
+                               try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Thursday"),
+                               try DBMS.queryDailyCarbon(motionType: motionType,  weekDayToDisplay: "Friday"),
+                               try DBMS.queryDailyCarbon(motionType: motionType, weekDayToDisplay: "Saturday"))
                 
             case .monthcar,.monthplane,.monthtrain, .monthwalk:
                 
-            max_data = max(try DBMS.queryMonthlyCarbon(motionType:motionType, month: "January"), try DBMS.queryMonthlyCarbon(motionType:motionType, month: "February"), try DBMS.queryMonthlyCarbon(motionType:motionType, month: "March"), try DBMS.queryMonthlyCarbon(motionType:motionType, month: "April"),try DBMS.queryMonthlyCarbon(motionType:motionType, month: "May"),try DBMS.queryMonthlyCarbon(motionType:motionType, month: "June"),try DBMS.queryMonthlyCarbon(motionType:motionType, month: "July"),try DBMS.queryMonthlyCarbon(motionType:motionType, month: "August"),try DBMS.queryMonthlyCarbon(motionType:motionType, month: "September"),try DBMS.queryMonthlyCarbon(motionType:motionType, month: "October"),try DBMS.queryMonthlyCarbon(motionType:motionType, month: "November"), try DBMS.queryMonthlyCarbon(motionType:motionType, month: "December"))
+                max_data = max(try DBMS.queryMonthlyCarbon(motionType:motionType, month: "January"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "February"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "March"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "April"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "May"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "June"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "July"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "August"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "September"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "October"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "November"),
+                               try DBMS.queryMonthlyCarbon(motionType:motionType, month: "December"))
+            
             case .yearcar,.yearplane,.yeartrain, .yearwalk:
-                max_data = max(try DBMS.queryYearlyCarbon(motionType: motionType, year: "2014"),try DBMS.queryYearlyCarbon(motionType: motionType, year: "2015"),try DBMS.queryYearlyCarbon(motionType: motionType, year: "2016"),try DBMS.queryYearlyCarbon(motionType: motionType, year: "2017"),try DBMS.queryYearlyCarbon(motionType: motionType, year: "2018"),try DBMS.queryYearlyCarbon(motionType: motionType, year: "2019"),try DBMS.queryYearlyCarbon(motionType: motionType, year: "2020"))
+                
+                max_data = max(try DBMS.queryYearlyCarbon(motionType: motionType, year: "2014"),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: "2015"),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: "2016"),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: "2017"),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: "2018"),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: "2019"),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: "2020"))
             default:
-                max_data=1.0
+                max_data = 1.0
             }
     } catch {
         print("Unexpected error: \(error).")
     }
     //prevent divide by zero error
-    if (max_data==0) {
-        max_data=1.0
+    if (max_data == 0.0) {
+        max_data = 1.0
     }
     return max_data
 }
