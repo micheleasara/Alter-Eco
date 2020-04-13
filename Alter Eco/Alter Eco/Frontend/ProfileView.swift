@@ -88,7 +88,7 @@ struct AwardView: View {
     init() {
         self.originalDate = try! DBMS.getFirstDate()
         ///Uncomment below to show some of the awards
-        self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
+        //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
         if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*60*60*24) == 0 && timeInterval > (SECONDS_MONTH*6))

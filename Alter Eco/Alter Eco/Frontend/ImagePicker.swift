@@ -1,11 +1,3 @@
-//
-//  ImagePicker.swift
-//  Alter Eco
-//
-//  Created by Hannah Kay on 26/03/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable{

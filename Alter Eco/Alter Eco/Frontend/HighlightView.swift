@@ -16,7 +16,7 @@ func generateSentence() -> String {
     let number = Int.random(in: 0 ..< 5)
     
     if (value >= 2300) {
-      
+       
         if (number == 0) {return "Be careful! You're consuming more than the UK average! You can do better."}
         if (number == 1) {return "To make up for your transport emissions why don't you try buying local produce?"}
         if (number == 2) {return "To make up for your transport emissions why don't you try plastic alternatives?"}
@@ -42,7 +42,7 @@ func generateSentence() -> String {
         if (number == 4) {return "Climate change is sometimes misunderstood as being about changes in the weather. In reality, it is about changes in our very way of life. -- Paul Polman"}
     }
     
-    if (number == 0) {return "You're consuming less than half of the UK average today! You're an absolute star!"}
+    if (number == 0) {return "You're doing so well with your transport emissions. You're an absolute star!"}
     if (number == 1) {return "You're doing so well with your transport emissions. You can do even better by going plastic-free!"}
     if (number == 2) {return "You're doing so well with your transport emissions. You can do even better by going vegetarian for a day!"}
     if (number == 3) {return "Next time you need a toothbrush, why don't you try out a bamboo one?"}
@@ -56,15 +56,21 @@ struct HighlightView: View {
 
     var body: some View {
   
-        ZStack {
-        RoundedRectangle(cornerRadius: 25, style: .continuous)
-            .fill(Color("fill_colour"))
-            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedHeight)/4)
+        VStack {
+            Text("Highlights & Tips")
+                .font(.headline)
+                .padding(.trailing, CGFloat(screenMeasurements.broadcastedWidth)/2.5)
             
-        Text(generateSentence())
-            .font(.headline)
-            .fontWeight(.regular)
-            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/5)
+            ZStack {
+            RoundedRectangle(cornerRadius: 25, style: .continuous)
+                .fill(Color("fill_colour"))
+                .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedHeight)/4)
+                
+            Text(generateSentence())
+                .font(.headline)
+                .fontWeight(.regular)
+                .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/5)
+            }
         }
     }
 }
@@ -74,3 +80,4 @@ struct HighlightView_Previews: PreviewProvider {
         HighlightView()
     }
 }
+

@@ -1,5 +1,3 @@
-
-
 //Data structure for the keys in dictionary (declared in GraphView) used to pull the values into the bar charts. The picker values are used to index these variables.
 enum DataParts: Int, CaseIterable, Hashable, Identifiable {
     case day=0
