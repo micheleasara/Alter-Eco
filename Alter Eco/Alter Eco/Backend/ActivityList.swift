@@ -1,6 +1,8 @@
 import Foundation
 
-public protocol ActivityList : AnyObject, MutableCollection {
+public protocol ActivityList : AnyObject, MutableCollection
+where Index == Int, Element == Array<MeasuredActivity>.Element {
+    
     func add(_ activity:MeasuredActivity)
     func remove(at:Index)
     func removeAll()

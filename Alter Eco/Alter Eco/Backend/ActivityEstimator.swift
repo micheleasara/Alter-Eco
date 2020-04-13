@@ -2,7 +2,7 @@ import Foundation
 import CoreLocation
 import MapKit
 
-public class ActivityEstimator : ObservableObject {
+public class ActivityEstimator<T:ActivityList> {
     // nearby stations
     public var stations: [MKMapItem] = []
     // nearby airports
@@ -24,9 +24,9 @@ public class ActivityEstimator : ObservableObject {
     // define how close one has to be to be considered within a station
     private let inStationRadius:Double
     // container for user activities containing a motion type and timestamps
-    private var measurements: WeightedActivityList
+    private var measurements: T
         
-    public init(activityList: WeightedActivityList, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double) {
+    public init(activityList: T, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double) {
         self.stationTimeout = stationTimeout
         self.airportTimeout = airportTimeout
         self.inStationRadius = inStationRadius
@@ -76,6 +76,7 @@ public class ActivityEstimator : ObservableObject {
         for regionOfInterest in regionsOfInterest {
             let regionLocation = CLLocation(latitude: regionOfInterest.placemark.coordinate.latitude, longitude: regionOfInterest.placemark.coordinate.longitude)
             if (regionLocation.distance(from: currentLocation) <= GPS_THRESHOLD) {
+                print("In ROI: \(regionOfInterest.name ?? "NIL NAME")")
                 return regionOfInterest.placemark.location
             }
         }
@@ -83,7 +84,7 @@ public class ActivityEstimator : ObservableObject {
     }
     
     private func processCurrentRegionOfInterest(_ currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType){
-        
+        print("processing with previous ROI: ", previousRegionOfInterest?.coordinate ?? "NILL", " and current ROI: ", currentRegionOfInterest.coordinate)
         // check if there was a journey (plane or train)
         if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() > 0 {
             computeActivityFromROIs(currentRegionOfInterest: currentRegionOfInterest, previousRegionOfInterest: &previousRegionOfInterest, speed: speed, motionType: motionType)
@@ -92,7 +93,7 @@ public class ActivityEstimator : ObservableObject {
             
         // while in same airport/tube station, update timestamp
         else if previousRegionOfInterest != nil && currentRegionOfInterest.distance(from: previousRegionOfInterest!).rounded() <= 0 {
-            previousRegionOfInterest = CLLocation(coordinate: previousRegionOfInterest!.coordinate, altitude: previousRegionOfInterest!.altitude, horizontalAccuracy: previousRegionOfInterest!.horizontalAccuracy, verticalAccuracy: previousRegionOfInterest!.verticalAccuracy, course: previousRegionOfInterest!.course, speed: previousRegionOfInterest!.speed, timestamp: Date())
+            previousRegionOfInterest = CLLocation(coordinate: previousRegionOfInterest!.coordinate, altitude: previousRegionOfInterest!.altitude, horizontalAccuracy: previousRegionOfInterest!.horizontalAccuracy, verticalAccuracy: previousRegionOfInterest!.verticalAccuracy, course: previousRegionOfInterest!.course, speed: previousRegionOfInterest!.speed, timestamp: currentRegionOfInterest.timestamp)
         }
             
         // In regionOfInterest right now and weren't before
@@ -119,7 +120,7 @@ public class ActivityEstimator : ObservableObject {
                 return
             }
         }
-        
+        print("ROI flag invalid, deactivating")
         previousRegionOfInterest = nil
         measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
     }
@@ -130,6 +131,7 @@ public class ActivityEstimator : ObservableObject {
     }
     
     @objc private func stationTimedOut(timer: Timer) {
+        print("station timed out")
         self.previousStation = nil
         dumpOldDay()
     }

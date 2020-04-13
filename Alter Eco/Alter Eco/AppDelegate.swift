@@ -10,22 +10,22 @@ public let AVERAGE_TUBE_SPEED:Double = 33
 public let AVERAGE_PLANE_SPEED:Double = 222
 // define radius of search for stations
 public let STATION_REQUEST_RADIUS:Double = 150
-// define radius of search for station
+// define radius of search for airports
 public let AIRPORTS_REQUEST_RADIUS:Double = 2500
 // define average radius of airport m
 public let MAX_DISTANCE_WITHIN_AIRPORT:Double = 1000
 // define how many measurements in a row must be different from the root measurement before an activity is estimated
 public let CHANGE_ACTIVITY_THRESHOLD:Int = 2
-// used for plane motion type, scales how many measurements of type car needed before resetting airport flag
+// used for plane motion type, determines how many measurements of type car needed before resetting airport flag
 public let CAR_NUM_FOR_PLANE_FLAG_OFF:Int = 10
-// used for tube motion type, scales how many measurements of type walking needed before resetting tube flag
-public let WALK_NUM_FOR_TRAIN_FLAG_OFF:Int = 1
+// used for tube motion type, determines how many measurements of type walking needed before resetting train flag
+public let WALK_NUM_FOR_TRAIN_FLAG_OFF:Int = 3
 // idle time (in seconds) after which the activity estimator should forget the user was in a station
 public let STATION_TIMEOUT:Double = 90*60
 // idle time (in seconds) after which the activity estimator should forget the user was in an airport
 public let AIRPORT_TIMEOUT:Double = 60*60*24
 // natural language query for train and tube stations nearby
-public let QUERY_TRAIN_STATIONS:String = "underground tube station train subway"
+public let QUERY_TRAIN_STATIONS:String = "underground train subway tube station"
 // natural language query for airports nearby
 public let QUERY_AIRPORTS: String = "airport"
 // defines how many meters to request a gps update
@@ -45,12 +45,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     let scene = SceneDelegate()
     // requests gps updates
     internal let manager = CLLocationManager()
-    // CoreDate Manager
-    lazy internal var DBMS : CoreDataManager = CoreDataManager(persistentContainer: self.persistentContainer)
+    // interfaces with the database
+    internal var DBMS : DBManager!
     // estimates activities based on given information (such as location updates)
-    lazy internal var activityEstimator : ActivityEstimator = ActivityEstimator(activityList:
-        WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS), inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
-
+    internal var activityEstimator : ActivityEstimator<WeightedActivityList>!
+    
+    override init() {
+        super.init()
+        DBMS = CoreDataManager(persistentContainer: persistentContainer)
+        let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS)
+        
+        activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
+    }
     // location of last request for stations nearby, to be used with station request radius
     internal var locationUponRequest: CLLocation? = nil
     
@@ -89,25 +95,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                requestStations.naturalLanguageQuery = QUERY_TRAIN_STATIONS
                requestStations.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: STATION_REQUEST_RADIUS, longitudinalMeters: STATION_REQUEST_RADIUS)
                requestStations.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
-               
+            
+               // inception: closure at the end of first query executes a second query
                MKLocalSearch(request: requestStations).start { (response, error) in
                    if let response = response {
                        self.activityEstimator.stations = response.mapItems
                        self.activityEstimator.processLocation(location)
                    }
-                   //print("Stations near me: ", self.activityEstimator.stations)
-               }
-               
-               let requestAirports = MKLocalSearch.Request()
-               requestAirports.naturalLanguageQuery = QUERY_AIRPORTS
-               requestAirports.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: AIRPORTS_REQUEST_RADIUS, longitudinalMeters: AIRPORTS_REQUEST_RADIUS)
-               requestAirports.pointOfInterestFilter = MKPointOfInterestFilter(including: [.airport])
-               
-               MKLocalSearch(request: requestAirports).start { (response, error) in
-                   if let response = response {
-                       self.activityEstimator.airports = response.mapItems
-                       self.activityEstimator.processLocation(location)
-                   }
+                    
+                    // second query for airports
+                    let requestAirports = MKLocalSearch.Request()
+                    requestAirports.naturalLanguageQuery = QUERY_AIRPORTS
+                    requestAirports.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: AIRPORTS_REQUEST_RADIUS, longitudinalMeters: AIRPORTS_REQUEST_RADIUS)
+                    requestAirports.pointOfInterestFilter = MKPointOfInterestFilter(including: [.airport])
+
+                    MKLocalSearch(request: requestAirports).start { (response, error) in
+                        if let response = response {
+                            self.activityEstimator.airports = response.mapItems
+                            self.activityEstimator.processLocation(location)
+                        }
+                    }
                }
                
                locationUponRequest = location
@@ -118,6 +125,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
            }
         }
 
+    private func requestStationConcluded(response: MKLocalSearch.Response?, error: Error?) -> Void {
+        
+    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error while retrieving location: ", error.localizedDescription)
