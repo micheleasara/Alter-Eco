@@ -196,7 +196,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return managedObjectModel
     }()
 
-    lazy var mockPersistentContainer: NSPersistentContainer = {
+    func mockPersistentContainer() -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "Database2.0", managedObjectModel: self.managedObjectModel)
         let description = NSPersistentStoreDescription()
         description.type = NSInMemoryStoreType
@@ -213,7 +213,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
         return container
-    }()
+    }
     
     // MARK: - Functions to register for notifications
     func registerForPushNotifications() {

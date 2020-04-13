@@ -12,11 +12,12 @@ import CoreData
 @testable import Alter_Eco
 
 class DatabaseTest: XCTestCase {
+    
     var DBMS: CoreDataManager!
 
     override func setUp() {
         super.setUp()
-        DBMS = CoreDataManager(persistentContainer: (UIApplication.shared.delegate as! AppDelegate).mockPersistentContainer)
+        DBMS = CoreDataManager(persistentContainer: (UIApplication.shared.delegate as! AppDelegate).mockPersistentContainer())
     }
     
     func testDatabaseIOIsConsistent(){

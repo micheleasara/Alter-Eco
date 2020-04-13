@@ -16,7 +16,7 @@
     </entity>
     <elements>
         <element name="Event" positionX="18" positionY="81" width="128" height="103"/>
-        <element name="Score" positionX="-27" positionY="18" width="128" height="88"/>
         <element name="ProfilePic" positionX="0" positionY="81" width="128" height="58"/>
+        <element name="Score" positionX="-27" positionY="18" width="128" height="88"/>
     </elements>
 </model>
