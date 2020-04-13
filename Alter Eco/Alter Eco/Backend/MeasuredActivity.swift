@@ -44,7 +44,7 @@ public class MeasuredActivity : Equatable {
         guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return nil}
         
         // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
-        let distance = location.distance(from: previousLocation).rounded()
+        let distance = location.distance(from: previousLocation)
         if previousAirport == nil {
             guard distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD else {return nil}
         }

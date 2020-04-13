@@ -9,7 +9,7 @@ import CoreData
 public let CARBON_UNIT_CAR: Double = 0.175
 public let CARBON_UNIT_TRAIN: Double = 0.030
 public let CARBON_UNIT_PLANE: Double = 0.200
-public let CARBON_UNIT_WALKING: Double = 0.175
+public let CARBON_UNIT_WALKING: Double = 0.175 // carbon saved with respect to a car
 public let KM_CONVERSION: Double = 0.001
 
 public protocol DBReader {
@@ -105,9 +105,22 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {
         let motionString = MeasuredActivity.motionTypeToString(type: motionType)
         let endDate = Date(timeInterval: interval, since: from)
-        // note double start: we count an activity as being in a time interval if it started during that time interval and not after
-        let queryMeasuredActivities = try queryActivities(predicate: "motionType == %@ AND start >= %@ AND start <= %@", args: [motionString, from as NSDate, endDate as NSDate])
-        return getCumulativeDistance(measurements: queryMeasuredActivities)
+        // total distance among all activities occurred in the specified interval
+        var distance = 0.0
+        
+        // get activities which share a portion of execution in time with the interval requested
+        // e.g. for today's 2-3pm, the following should match: 2-3pm, 1-4pm, 1-2:30pm and 2:01-4pm (all relative to today)
+        let queryMeasuredActivities = try queryActivities(predicate: "motionType == %@ AND ((start <= %@ AND end > %@) OR (start >= %@ AND start < %@))", args: [motionString, from as NSDate, from as NSDate, from as NSDate, endDate as NSDate])
+        for measurement in queryMeasuredActivities {
+            // get portion of time shared among this activity and the interval requested
+            let sharedTime = min(measurement.end, endDate).timeIntervalSince(max(measurement.start, from))
+            let activityDuration = measurement.end.timeIntervalSince(measurement.start)
+            // get what proportion of this activity overlaps with the requested interval
+            // then add its contribution to the total distance
+            distance += (sharedTime/activityDuration) * measurement.distance
+        }
+
+        return distance
     }
     
     public func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
@@ -267,6 +280,25 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return carbonTotal
     }
     
+    // Converts activity distance to carbon units
+    public func computeCarbonUsage(distance:Double, type: MeasuredActivity.MotionType) -> Double {
+        var carbonUnit = 0.0
+        switch (type) {
+        case .car:
+            carbonUnit = CARBON_UNIT_CAR
+        case .walking:
+            carbonUnit = CARBON_UNIT_WALKING
+        case .train:
+            carbonUnit = CARBON_UNIT_TRAIN
+        case .plane:
+            carbonUnit = CARBON_UNIT_PLANE
+        default:
+            return 0.0
+        }
+        
+        return distance * carbonUnit * KM_CONVERSION
+    }
+    
     private func getCumulativeDistance(measurements:[MeasuredActivity]) -> Double {
         var distance = 0.0
         for measurement in measurements {
@@ -365,24 +397,4 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         return nil
     }
-    
-    // Converts activity distance to carbon units
-    public func computeCarbonUsage(distance:Double, type: MeasuredActivity.MotionType) -> Double {
-        var carbonUnit = 0.0
-        switch (type) {
-        case .car:
-            carbonUnit = CARBON_UNIT_CAR
-        case .walking:
-            carbonUnit = CARBON_UNIT_WALKING
-        case .train:
-            carbonUnit = CARBON_UNIT_TRAIN
-        case .plane:
-            carbonUnit = CARBON_UNIT_PLANE
-        default:
-            return 0.0
-        }
-        
-        return distance * carbonUnit * KM_CONVERSION
-    }
-        
 }

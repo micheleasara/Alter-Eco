@@ -4,8 +4,8 @@ import MapKit
 import CoreData
 import BackgroundTasks
 
-// define the average speed of the tube in London as 33 kmph converted to 9.16667 m/s
-public let AVERAGE_TUBE_SPEED:Double = 33
+// define the average speed of the tube in London as 33 kmph converted to 9.17 m/s
+public let AVERAGE_TUBE_SPEED:Double = 9.17
 // define average plane speed as (740 - 930) kmph converted to 222 m/s
 public let AVERAGE_PLANE_SPEED:Double = 222
 // define radius of search for stations
