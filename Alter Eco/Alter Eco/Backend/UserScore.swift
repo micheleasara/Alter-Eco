@@ -18,44 +18,53 @@ public let NUMBER_OF_ICONS: Double = 6
 
 let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
-public class UserScore {
-    public var totalPoints: Double
-    public var date: String
-    public var league: String
+public class UserScore : Equatable{
+    public var totalPoints: Double!
+    public var date: String!
+    public var league: String!
+    
+    public static func getInitialScore() -> UserScore {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return UserScore(totalPoints: 0, date: formatter.string(from: Date()), league: "sun.max")
+    }
     
     public init(totalPoints: Double, date: String, league: String) {
         self.totalPoints = totalPoints
         self.date = date
         self.league = league
-       }
-}
-
-func addScoreNewActivity(activity: MeasuredActivity) -> Double {
-    let measuredActivityKms = activity.distance * KM_CONVERSION
-    
-    if measuredActivityKms != 0 {
-        switch activity.motionType {
-            case .car:
-                return measuredActivityKms * CAR_PTS
-            case .walking:
-            return measuredActivityKms * WALKING_PTS
-            case .plane:
-            return measuredActivityKms * PLANE_PTS
-            case .train:
-            return measuredActivityKms * TUBE_PTS
-            default:
-                return 0
-        }
     }
     
-    return 0
-}
-
-func stringFromDate(_ date: Date) -> String {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd" //yyyy
-    dateFormatter.locale = Locale(identifier: "en-UK")
-    return dateFormatter.string(from: date)
+    public init(activity: MeasuredActivity, league: String, date: String) {
+        self.date = date
+        self.totalPoints = UserScore.activityToScore(activity: activity)
+        self.league = league
+    }
+    
+    public static func ==(lhs: UserScore, rhs: UserScore) -> Bool {
+        return lhs.date == rhs.date && lhs.totalPoints == rhs.totalPoints && lhs.league == rhs.league
+    }
+    
+    // Converts a measured activity to a user score
+    private static func activityToScore(activity: MeasuredActivity) -> Double {
+        let measuredActivityKms = activity.distance * KM_CONVERSION
+        
+        if measuredActivityKms != 0 {
+            switch activity.motionType {
+                case .car:
+                    return measuredActivityKms * CAR_PTS
+                case .walking:
+                    return measuredActivityKms * WALKING_PTS
+                case .plane:
+                    return measuredActivityKms * PLANE_PTS
+                case .train:
+                    return measuredActivityKms * TUBE_PTS
+                default:
+                    return 0
+            }
+        }
+        return 0
+    }
 }
 
 /* League Helper Functions */
@@ -103,57 +112,4 @@ func getColor(iconNb: Int) -> Color {
     }
     
     return .gray
-}
-
-/* For new stuff for profile page */
-
-func getCurrentDay() -> Int {
-    let date = Date()
-    let calendar = Calendar.current
-    let components = calendar.dateComponents([.day], from: date)
-    let dayOfMonth = components.day
-    return dayOfMonth!
-}
-
-func getLastDayOfPreviousMonth(month: String) -> Int {
-
-    switch month {
-        case "01":
-            return 31
-        case "02":
-            return 31
-        case "03":
-            return 28
-        case "04":
-            return 31
-        case "05":
-            return 30
-        case "06":
-            return 31
-        case "07":
-            return 30
-        case "08":
-            return 31
-        case "09":
-            return 31
-        case "10":
-            return 30
-        case "11":
-            return 31
-        case "12":
-            return 30
-        default:
-            return 0
-    }
-}
-
-func getprevMonthDay(currentDay: Int, currentMonth: String) -> Int {
-    
-    var previousDay: Int = currentDay
-    
-    if currentDay == 31 || (currentDay == 30 && currentMonth == "03") {
-        previousDay = getLastDayOfPreviousMonth(month: currentMonth)
-    }
-    
-    return previousDay
 }

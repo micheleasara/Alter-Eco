@@ -22,8 +22,6 @@ public protocol DBReader {
 public protocol DBWriter {
     // Appends new activity (tube, plane, walking, car) to Event table
     func append(activity: MeasuredActivity) throws
-    // Appends new score to Score table
-    func append(score: UserScore) throws
 }
 
 public protocol DBManager : AnyObject, DBReader, DBWriter {
@@ -96,15 +94,6 @@ public class CoreDataManager : DBManager {
         try managedContext.save()
     }
     
-    public func append(score: UserScore) throws {
-        let managedContext = try getManagedContext()
-        let entity = NSEntityDescription.entity(forEntityName: "Score", in: managedContext)!
-        let eventDB = NSManagedObject(entity: entity, insertInto: managedContext)
-
-        eventDB.setValuesForKeys(["dateStr": score.date, "score": score.totalPoints, "league": score.league])
-        try managedContext.save()
-    }
-    
     public func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {
         let motionString = MeasuredActivity.motionTypeToString(type: motionType)
         let endDate = Date(timeInterval: interval, since: from)
@@ -143,15 +132,16 @@ public class CoreDataManager : DBManager {
     
     public func updateScore(activity: MeasuredActivity) throws {
         let managedContext = try getManagedContext()
-        let dateToday = Date()
-        let dateTodayStr = stringFromDate(dateToday)
 
         // retrieve current score
         let queryResult = try executeQuery(query:nil, entity:"Score")
         if queryResult.count != 0 {
-           let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
-           queryResult[0].setValue(oldTotalPoints + activityToScore(activity: activity), forKey: "score")
-           queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
+            let activityScore = UserScore(activity: activity, league: "", date: stringFromDate(Date()))
+            let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
+            print("oldTotalPoints ", oldTotalPoints)
+            queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
+            print("new score ", queryResult[0].value(forKey: "score") as! Double)
+            queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
         }
 
         try managedContext.save()
@@ -173,21 +163,18 @@ public class CoreDataManager : DBManager {
     }
     
     public func retrieveLatestScore() throws -> UserScore {
-        let dayToday = Date()
-        let dayTodayStr = stringFromDate(dayToday)
-        let userScore = UserScore(totalPoints: 10, date: dayTodayStr, league: "sun.max")
-        var emptyDatabase = true
+        let userScore = UserScore.getInitialScore()
 
         let queryResult = try executeQuery(query: nil, entity: "Score")
         if queryResult.count != 0 {
-            emptyDatabase = false
-            userScore.totalPoints = queryResult[0].value(forKey: "score") as! Double
-            userScore.date = queryResult[0].value(forKey: "dateStr") as! String
-            userScore.league = queryResult[0].value(forKey: "league") as! String
-        }
-        
-        if emptyDatabase {
-            try append(score: userScore)
+            userScore.totalPoints = queryResult[0].value(forKey: "score") as? Double
+            userScore.date = queryResult[0].value(forKey: "dateStr") as? String
+            userScore.league = queryResult[0].value(forKey: "league") as? String
+        } else {
+            let managedContext = try getManagedContext()
+            let entity = NSEntityDescription.entity(forEntityName: "Score", in: managedContext)!
+            let eventDB = NSManagedObject(entity: entity, insertInto: managedContext)
+            eventDB.setValuesForKeys(["dateStr": userScore.date!, "score": userScore.totalPoints!, "league": userScore.league!])
         }
         
         return userScore
@@ -294,6 +281,13 @@ public class CoreDataManager : DBManager {
         return calendar.date(byAdding: addendum, to: startOfMonth)!
     }
 
+    private func stringFromDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd" //yyyy
+        dateFormatter.locale = Locale(identifier: "en-UK")
+        return dateFormatter.string(from: date)
+    }
+    
     private func monthNameToMonthNumber(month: String) -> String {
         switch month {
             case "January":
@@ -385,26 +379,5 @@ public class CoreDataManager : DBManager {
         
         return distance * CARBON_UNIT * KM_CONVERSION
     }
-    
-    // Converts a measured activity to a user score
-    private func activityToScore(activity: MeasuredActivity) -> Double {
-        let measuredActivityKms = activity.distance * KM_CONVERSION
         
-        if measuredActivityKms != 0 {
-            switch activity.motionType {
-                case .car:
-                    return measuredActivityKms * CAR_PTS
-                case .walking:
-                    return measuredActivityKms * WALKING_PTS
-                case .plane:
-                    return measuredActivityKms * PLANE_PTS
-                case .train:
-                    return measuredActivityKms * TUBE_PTS
-                default:
-                    return 0
-            }
-        }
-        
-        return 0
-    }
 }
