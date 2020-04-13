@@ -16,8 +16,6 @@ public let ICON_FOUR: Int = 4
 public let ICON_FIVE: Int = 5
 public let NUMBER_OF_ICONS: Double = 6
 
-let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
-
 public class UserScore : Equatable{
     public var totalPoints: Double!
     public var date: String!

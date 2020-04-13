@@ -131,7 +131,6 @@ public class ActivityEstimator<T:ActivityList> {
     }
     
     @objc private func stationTimedOut(timer: Timer) {
-        print("station timed out")
         self.previousStation = nil
         dumpOldDay()
     }

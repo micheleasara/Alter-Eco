@@ -48,7 +48,11 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     func queryYearlyCarbonAll(year: String) throws -> Double
 }
 
-public class CoreDataManager : DBManager {
+public protocol CarbonCalculator {
+     func computeCarbonUsage(distance:Double, type: MeasuredActivity.MotionType) -> Double
+}
+
+public class CoreDataManager : DBManager, CarbonCalculator {
     
     private let persistentContainer : NSPersistentContainer
     
@@ -67,15 +71,15 @@ public class CoreDataManager : DBManager {
         if predicate != nil && args != nil {
             fetchRequest.predicate = NSPredicate(format: predicate!, argumentArray: args!)
         }
-        
         let queryResult = try managedContext.fetch(fetchRequest)
+        
         return queryResult
     }
     
     public func queryActivities(predicate: String?, args:[Any]?) throws -> [MeasuredActivity] {
         var measuredActivities = [MeasuredActivity]()
         let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args!)) as! [NSManagedObject]
-        print("results num ", queryResult.count)
+
         for result in queryResult {
             let motionType = MeasuredActivity.stringToMotionType(type: result.value(forKey: "motionType") as! String)
             let distance = result.value(forKey: "distance") as! Double
@@ -109,9 +113,7 @@ public class CoreDataManager : DBManager {
     public func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
         var total = 0.0
         for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .unknown {
-                total += try distanceWithinInterval(motionType: motion, from: from, interval: interval)
-            }
+            total += try distanceWithinInterval(motionType: motion, from: from, interval: interval)
         }
         return total
     }
@@ -126,9 +128,7 @@ public class CoreDataManager : DBManager {
     public func carbonWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
         var carbonTotal : Double = 0
         for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .unknown {
-                carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
-            }
+            carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
         }
         
         return carbonTotal
@@ -367,22 +367,22 @@ public class CoreDataManager : DBManager {
     }
     
     // Converts activity distance to carbon units
-    private func computeCarbonUsage(distance:Double, type: MeasuredActivity.MotionType) -> Double {
-        var CARBON_UNIT = 0.0
+    public func computeCarbonUsage(distance:Double, type: MeasuredActivity.MotionType) -> Double {
+        var carbonUnit = 0.0
         switch (type) {
         case .car:
-            CARBON_UNIT=CARBON_UNIT_CAR
+            carbonUnit = CARBON_UNIT_CAR
         case .walking:
-            CARBON_UNIT=CARBON_UNIT_WALKING
+            carbonUnit = CARBON_UNIT_WALKING
         case .train:
-            CARBON_UNIT=CARBON_UNIT_TRAIN
+            carbonUnit = CARBON_UNIT_TRAIN
         case .plane:
-            CARBON_UNIT=CARBON_UNIT_PLANE
+            carbonUnit = CARBON_UNIT_PLANE
         default:
-            return 0
+            return 0.0
         }
         
-        return distance * CARBON_UNIT * KM_CONVERSION
+        return distance * carbonUnit * KM_CONVERSION
     }
         
 }

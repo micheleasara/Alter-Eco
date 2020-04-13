@@ -70,17 +70,36 @@ class DatabaseTest: XCTestCase {
         print(try! DBMS.getFirstDate())
         XCTAssert(try! DBMS.getFirstDate() == old.start)
     }
+    
+    func testQueryForDistanceRetrieval() {
+        let someTimeAgo = Date.init(timeIntervalSince1970: 100)
+        let longTimeAgo = Date.init(timeIntervalSince1970: 1)
+        
+        for motion in MeasuredActivity.MotionType.allCases {
+            let old = MeasuredActivity(motionType: motion, distance: 1, start: longTimeAgo, end: someTimeAgo)
+            try! DBMS.append(activity: old)
+        }
+        let distance = try! DBMS.distanceWithinIntervalAll(from: longTimeAgo, interval: someTimeAgo.timeIntervalSince(longTimeAgo))
+        XCTAssert(distance == Double(MeasuredActivity.MotionType.allCases.count))
+    }
+    
+    func testQueryForCarbonRetrieval() {
+        let someTimeAgo = Date.init(timeIntervalSince1970: 100)
+        let longTimeAgo = Date.init(timeIntervalSince1970: 1)
+        var carbonExpected = 0.0
+        
+        for motion in MeasuredActivity.MotionType.allCases {
+            let old = MeasuredActivity(motionType: motion, distance: 1, start: longTimeAgo, end: someTimeAgo)
+            carbonExpected += DBMS.computeCarbonUsage(distance: 1, type: motion)
+            try! DBMS.append(activity: old)
+        }
+        let retrievedCarbon = try! DBMS.carbonWithinIntervalAll(from: longTimeAgo, interval: someTimeAgo.timeIntervalSince(longTimeAgo))
+        XCTAssert(retrievedCarbon == carbonExpected)
+    }
 }
 
 //
-//public protocol DBManager : AnyObject, DBReader, DBWriter {
-//    func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double
-//    func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double
-//
-//    // Make use of general execute query function to query daily carbon for any motionType
-//    func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from:Date, interval:TimeInterval) throws -> Double
-//    // Make use of general execute query function to query daily carbon for all motionType
-//    func carbonWithinIntervalAll(from:Date, interval:TimeInterval) throws -> Double
+//public protocol DBManager : AnyObject, DBReader, DBWriter {//
 //
 //
 //    func queryHourlyCarbon(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) throws -> Double
