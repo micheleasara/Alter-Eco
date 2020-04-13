@@ -20,14 +20,18 @@ struct DetailView: View {
                     GraphView()
                     
                     //Progress Bar
-                    ProgressBarView()
-                        .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 25))
-                    
-                    //Highlights
-                    HighlightView()
-                    
-                    Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
-                        
+                   ProgressBarView()
+                       .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 25))
+                   
+                   //Comparisons
+                   ComparisonView()
+                       .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 35))
+                   
+                   //Highlights
+                   HighlightView()
+                   
+                   Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
+                       
                 }
             }
         }
