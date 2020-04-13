@@ -124,10 +124,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                activityEstimator.processLocation(location)
            }
         }
-
-    private func requestStationConcluded(response: MKLocalSearch.Response?, error: Error?) -> Void {
-        
-    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error while retrieving location: ", error.localizedDescription)
