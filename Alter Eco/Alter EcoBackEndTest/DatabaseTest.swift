@@ -25,7 +25,7 @@ class DatabaseTest: XCTestCase {
         let longTimeAgo = Date.init(timeIntervalSince1970: 1)
         let activity = MeasuredActivity(motionType: .plane, distance: 10000, start: longTimeAgo, end: someTimeAgo)
         try! DBMS.append(activity: activity)
-        let retrieved = try! DBMS.queryActivities(query: NSPredicate(format: "start == %@ AND end == %@", longTimeAgo as NSDate, someTimeAgo as NSDate))
+        let retrieved = try! DBMS.queryActivities(predicate: "start == %@ AND end == %@", args: [longTimeAgo as NSDate, someTimeAgo as NSDate])
         XCTAssert(retrieved.count == 1)
         XCTAssert(activity == retrieved[0])
     }
@@ -33,7 +33,7 @@ class DatabaseTest: XCTestCase {
     func testDatabaseCannotFindNonExistantData(){
         let someTimeAgo = Date.init(timeIntervalSince1970: 100)
         let longTimeAgo = Date.init(timeIntervalSince1970: 1)
-        let retrieved = try! DBMS.queryActivities(query: NSPredicate(format: "start == %@ AND end == %@", longTimeAgo as NSDate, someTimeAgo as NSDate))
+        let retrieved = try! DBMS.queryActivities(predicate: "start == %@ AND end == %@", args: [longTimeAgo as NSDate, someTimeAgo as NSDate])
         XCTAssert(retrieved.count == 0)
     }
     
@@ -43,8 +43,8 @@ class DatabaseTest: XCTestCase {
         XCTAssert(retrieved == initial)
     }
     
-    func testUpdatedScoreIsRetrieved(){
-        let activity1 = MeasuredActivity(motionType: .car, distance: 100000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100))
+    func testUpdatedUserScoreIsRetrieved(){
+        let activity1 = MeasuredActivity(motionType: .car, distance: 10000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100))
         let activity2 = MeasuredActivity(motionType: .train, distance: 1000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 1000))
         let score1 = UserScore(activity: activity1, league: "", date: "")
         let score2 = UserScore(activity: activity2, league: "", date: "")
@@ -52,19 +52,26 @@ class DatabaseTest: XCTestCase {
         _ = try! DBMS.retrieveLatestScore() // initialize score row
         try! DBMS.updateScore(activity: activity1)
         try! DBMS.updateScore(activity: activity2)
+        try! DBMS.updateLeague(newLeague: "abc")
         let retrieved = try! DBMS.retrieveLatestScore()
-        print("retrieved ", retrieved.totalPoints!)
-        print("score1 ", score1.totalPoints!)
-        print("score2 ", score2.totalPoints!)
         XCTAssert(retrieved.totalPoints == score1.totalPoints + score2.totalPoints)
+        XCTAssert(retrieved.league == "abc")
+    }
+    
+    func testDatabaseCanGetFirstActivity() {
+        let recently = Date.init(timeIntervalSince1970: 1000)
+        let someTimeAgo = Date.init(timeIntervalSince1970: 100)
+        let longTimeAgo = Date.init(timeIntervalSince1970: 1)
+        
+        let old = MeasuredActivity(motionType: .plane, distance: 10000, start: longTimeAgo, end: someTimeAgo)
+        try! DBMS.append(activity: old)
+        let new = MeasuredActivity(motionType: .car, distance: 100, start: someTimeAgo, end: recently)
+        try! DBMS.append(activity: new)
+        print(try! DBMS.getFirstDate())
+        XCTAssert(try! DBMS.getFirstDate() == old.start)
     }
 }
 
-//
-//public protocol DBWriter {
-//    // Appends new score to Score table
-//    func append(score: UserScore) throws
-//}
 //
 //public protocol DBManager : AnyObject, DBReader, DBWriter {
 //    func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double
@@ -75,10 +82,6 @@ class DatabaseTest: XCTestCase {
 //    // Make use of general execute query function to query daily carbon for all motionType
 //    func carbonWithinIntervalAll(from:Date, interval:TimeInterval) throws -> Double
 //
-//    func updateScore(activity: MeasuredActivity) throws
-//    func updateLeague(newLeague: String) throws
-//    func retrieveLatestScore() throws -> UserScore
-//    func getFirstDate() throws -> Date
 //
 //    func queryHourlyCarbon(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) throws -> Double
 //    func queryHourlyCarbonAll(hourStart: String, hourEnd: String) throws -> Double

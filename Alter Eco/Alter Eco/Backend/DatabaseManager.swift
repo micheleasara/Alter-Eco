@@ -14,9 +14,9 @@ public let KM_CONVERSION: Double = 0.001
 
 public protocol DBReader {
     // Queries the Event entity depending on predicate (date, motionType, distance, ...)
-    func queryActivities(query: NSPredicate?) throws -> [MeasuredActivity]
+    func queryActivities(predicate: String?, args: [Any]?) throws -> [MeasuredActivity]
     // Executes a generic query with the given predicate
-    func executeQuery(query: NSPredicate?, entity: String) throws -> [NSManagedObject]
+    func executeQuery(entity: String, predicate: String?, args:[Any]?) throws -> [Any]
 }
 
 public protocol DBWriter {
@@ -49,6 +49,7 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
 }
 
 public class CoreDataManager : DBManager {
+    
     private let persistentContainer : NSPersistentContainer
     
     // Returns CoreData's managed context
@@ -60,18 +61,21 @@ public class CoreDataManager : DBManager {
         self.persistentContainer = persistentContainer
     }
     
-    public func executeQuery(query: NSPredicate?, entity: String) throws -> [NSManagedObject] {
+    public func executeQuery(entity: String, predicate: String?, args:[Any]?) throws -> [Any]{
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
-        fetchRequest.predicate = query
+        if predicate != nil && args != nil {
+            fetchRequest.predicate = NSPredicate(format: predicate!, argumentArray: args!)
+        }
+        
         let queryResult = try managedContext.fetch(fetchRequest)
         return queryResult
     }
     
-    public func queryActivities(query: NSPredicate?) throws -> [MeasuredActivity] {
+    public func queryActivities(predicate: String?, args:[Any]?) throws -> [MeasuredActivity] {
         var measuredActivities = [MeasuredActivity]()
-        let queryResult = try executeQuery(query: query, entity: "Event")
-        
+        let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args!)) as! [NSManagedObject]
+        print("results num ", queryResult.count)
         for result in queryResult {
             let motionType = MeasuredActivity.stringToMotionType(type: result.value(forKey: "motionType") as! String)
             let distance = result.value(forKey: "distance") as! Double
@@ -98,7 +102,7 @@ public class CoreDataManager : DBManager {
         let motionString = MeasuredActivity.motionTypeToString(type: motionType)
         let endDate = Date(timeInterval: interval, since: from)
         // note double start: we count an activity as being in a time interval if it started during that time interval and not after
-        let queryMeasuredActivities = try queryActivities(query: NSPredicate(format: "motionType == %@ AND start >= %@ AND start <= %@", motionString, from as NSDate, endDate as NSDate))
+        let queryMeasuredActivities = try queryActivities(predicate: "motionType == %@ AND start >= %@ AND start <= %@", args: [motionString, from as NSDate, endDate as NSDate])
         return getCumulativeDistance(measurements: queryMeasuredActivities)
     }
     
@@ -134,13 +138,11 @@ public class CoreDataManager : DBManager {
         let managedContext = try getManagedContext()
 
         // retrieve current score
-        let queryResult = try executeQuery(query:nil, entity:"Score")
+        let queryResult = try executeQuery(entity: "Score", predicate:nil, args: nil) as! [NSManagedObject]
         if queryResult.count != 0 {
             let activityScore = UserScore(activity: activity, league: "", date: stringFromDate(Date()))
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
-            print("oldTotalPoints ", oldTotalPoints)
             queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
-            print("new score ", queryResult[0].value(forKey: "score") as! Double)
             queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
         }
 
@@ -153,9 +155,9 @@ public class CoreDataManager : DBManager {
        let dateTodayStr = stringFromDate(dateToday)
     
        // retrieve current userscore
-        let queryResult = try executeQuery(query: nil, entity: "Score")
+        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
         if queryResult.count != 0 {
-           queryResult[0].setValue(getNewLeague(userLeague: queryResult[0].value(forKey: "league") as! String), forKey: "league")
+           queryResult[0].setValue(newLeague, forKey: "league")
            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
         }
     
@@ -165,7 +167,7 @@ public class CoreDataManager : DBManager {
     public func retrieveLatestScore() throws -> UserScore {
         let userScore = UserScore.getInitialScore()
 
-        let queryResult = try executeQuery(query: nil, entity: "Score")
+        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
         if queryResult.count != 0 {
             userScore.totalPoints = queryResult[0].value(forKey: "score") as? Double
             userScore.date = queryResult[0].value(forKey: "dateStr") as? String
@@ -182,7 +184,10 @@ public class CoreDataManager : DBManager {
     
     public func getFirstDate() throws -> Date {
         var oldDate = Date()
-        let queryResult = try executeQuery(query: nil, entity: "Event")
+        let managedContext = try getManagedContext()
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Event")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "start", ascending: true)]
+        let queryResult = try managedContext.fetch(fetchRequest)
         if queryResult.count != 0 {
             oldDate = queryResult[0].value(forKey: "start") as! Date
         }
