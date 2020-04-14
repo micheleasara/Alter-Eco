@@ -216,10 +216,3 @@ class DatabaseTest: XCTestCase {
     }
     
 }
-
-//
-//public protocol DBManager : AnyObject, DBReader, DBWriter {//
-//
-//
-//    func queryYearlyCarbonAll(year: String) throws -> Double
-//}

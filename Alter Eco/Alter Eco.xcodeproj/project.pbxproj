@@ -52,6 +52,7 @@
 		9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
+		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,7 @@
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */,
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
 				9CD5945A24296BD100B1D0B4 /* Info.plist */,
+				DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */,
 				9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */,
 				573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */,
 				9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */,
@@ -196,11 +199,11 @@
 			isa = PBXGroup;
 			children = (
 				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
+				CD200B5023E3885700629E73 /* Info.plist */,
 				9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */,
 				DE1B266C24433C9D007D9B54 /* Backend */,
 				DE1B266D24433DBC007D9B54 /* Frontend */,
 				DE1B2611243F72B4007D9B54 /* GPX */,
-				CD200B5023E3885700629E73 /* Info.plist */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
 			);
 			path = "Alter Eco";
@@ -411,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
+				DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */,
 				9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */,
 				9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */,
 				9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */,
