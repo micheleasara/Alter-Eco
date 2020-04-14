@@ -38,30 +38,6 @@ public class MeasuredActivity : Equatable {
             differenceStart < TIME_PRECISION && differenceEnd < TIME_PRECISION)
     }
 
-    public static func getValidMeasuredActivity(location: CLLocation, previousLocation: CLLocation, previousAirport: CLLocation?) -> MeasuredActivity? {
-        var measuredActivity:MeasuredActivity? = nil
-        // ensure location is accurate enough
-        guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return nil}
-        
-        // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
-        let distance = location.distance(from: previousLocation)
-        if previousAirport == nil {
-            guard distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD else {return nil}
-        }
-        
-        // ensure we get no fake instantaneous movements
-        let time = location.timestamp.timeIntervalSince(previousLocation.timestamp).rounded()
-        guard time > 0 else {return nil}
-        
-        // calculate parameters
-        let speed = distance / time
-        let motionType = MeasuredActivity.speedToMotionType(speed: speed)
-        measuredActivity = MeasuredActivity(motionType: motionType, distance: distance, start: previousLocation.timestamp, end: location.timestamp)
-        
-        // if we get here, measured activity is valid
-        return measuredActivity
-    }
-
     public static func motionTypeToString(type:MotionType) -> String {
         switch (type) {
             case .car:

@@ -37,7 +37,7 @@ public class ActivityEstimator<T:ActivityList> {
         print("received a location")
         // ensure this is not the first location we are receiving
         if let previousLocation = previousLoc {
-            let measurement = MeasuredActivity.getValidMeasuredActivity(location: location, previousLocation: previousLocation, previousAirport: previousAirport)
+            let measurement = getValidMeasuredActivity(location: location, previousLocation: previousLocation, previousAirport: previousAirport)
             guard let validMeasurement = measurement else {return}
             
             let currentStation = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.stations, GPS_THRESHOLD: GPS_UPDATE_CONFIDENCE_THRESHOLD)
@@ -71,7 +71,31 @@ public class ActivityEstimator<T:ActivityList> {
         }
         previousLoc = location
     }
-                    
+    
+    private func getValidMeasuredActivity(location: CLLocation, previousLocation: CLLocation, previousAirport: CLLocation?) -> MeasuredActivity? {
+        var measuredActivity:MeasuredActivity? = nil
+        // ensure location is accurate enough
+        guard location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD else {return nil}
+        
+        // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
+        let distance = location.distance(from: previousLocation)
+        if previousAirport == nil {
+            guard distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD else {return nil}
+        }
+        
+        // ensure we get no fake instantaneous movements
+        let time = location.timestamp.timeIntervalSince(previousLocation.timestamp).rounded()
+        guard time > 0 else {return nil}
+        
+        // calculate parameters
+        let speed = distance / time
+        let motionType = MeasuredActivity.speedToMotionType(speed: speed)
+        measuredActivity = MeasuredActivity(motionType: motionType, distance: distance, start: previousLocation.timestamp, end: location.timestamp)
+        
+        // if we get here, measured activity is valid
+        return measuredActivity
+    }
+    
     private func getCurrentRegionOfInterest(currentLocation: CLLocation, regionsOfInterest: [MKMapItem], GPS_THRESHOLD: Double) -> CLLocation? {
         for regionOfInterest in regionsOfInterest {
             let regionLocation = CLLocation(latitude: regionOfInterest.placemark.coordinate.latitude, longitude: regionOfInterest.placemark.coordinate.longitude)

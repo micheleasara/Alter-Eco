@@ -105,7 +105,7 @@ public class WeightedActivityList: ActivityList {
             }
         }
 
-        if carCounter * activityWeights[.car]! > walkingCounter {
+        if carCounter * activityWeights[.car]! > walkingCounter * activityWeights[.walking]! {
             return .car
         }
         else {
