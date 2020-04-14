@@ -9,10 +9,9 @@ import SwiftUI
 func generateSentence() -> String {
     
     let currentDateTime = Date()
-    let formatter = DateFormatter()
-    formatter.dateFormat = "HH:mm:ss"
+    dateFormatter.dateFormat = "HH:mm:ss"
     
-    let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: formatter.string(from: currentDateTime))
+    let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: dateFormatter.string(from: currentDateTime))
     let number = Int.random(in: 0 ..< 5)
     
     if (value >= 2300) {

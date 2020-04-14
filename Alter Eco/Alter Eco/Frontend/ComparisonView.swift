@@ -4,11 +4,11 @@ import SwiftUI
 func generateProportion() -> String {
     
     let currentDateTime = Date()
-    let formatter = DateFormatter()
-    formatter.dateFormat = "HH:mm:ss"
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "HH:mm:ss"
     let AV_UK_DAILYCARBON: Double = 2200
     
-    let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: formatter.string(from: currentDateTime))
+    let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: dateFormatter.string(from: currentDateTime))
     
     let proportion = Int(round(value * 100 / AV_UK_DAILYCARBON))
     

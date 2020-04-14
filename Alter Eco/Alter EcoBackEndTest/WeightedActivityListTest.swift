@@ -28,9 +28,19 @@ class WeightedActivityListTest: XCTestCase {
         }
         XCTAssert(activities.count == measurements.count)
         
-        for i in stride(from: 0, to: activities.count, by: 1) {
-            XCTAssert(activities[i] == measurements[i])
+        // using for each to test iterator functionality of list
+        var i : Int = 0
+        for item in measurements {
+            XCTAssert(activities[i] == item)
+            i += 1
         }
+    }
+    
+    func testListIsMutableWithSetter() {
+        measurements.add(MeasuredActivity(motionType: .car, distance: 1, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100)))
+        XCTAssert(measurements[0].distance == 1)
+        measurements[0].distance = 2
+        XCTAssert(measurements[0].distance == 2)
     }
     
     func testAddingPlanePutsIntoDatabaseAndDiscardsTheRest() {
@@ -123,7 +133,7 @@ class WeightedActivityListTest: XCTestCase {
 
     func testAverageMotionTypeWithSufficientlyMoreWalkingResultsInWalking() {
         var date = Date(timeIntervalSince1970: 0)
-        for _ in 1...10 {
+        for _ in 1...100 {
             measurements.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
             date = Date(timeInterval: 10, since: date)
         }
@@ -156,5 +166,20 @@ class WeightedActivityListTest: XCTestCase {
         let retrieved = try! DBMS.queryActivities(predicate: "motionType == %@", args: [MeasuredActivity.motionTypeToString(type: activities[0].motionType)])
         XCTAssert(retrieved.count == 1)
         XCTAssert(retrieved[0] == average)
+    }
+    
+    func testListDumpsToDatabaseIfActivityChangesSignificantly() {
+        var date = Date(timeIntervalSince1970: 0)
+        for _ in 1...CHANGE_ACTIVITY_THRESHOLD {
+            measurements.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        XCTAssert(measurements.count == CHANGE_ACTIVITY_THRESHOLD)
+        for _ in 1...CHANGE_ACTIVITY_THRESHOLD + 1 {
+            measurements.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+        }
+        let retrieved = try! DBMS.queryActivities(predicate: "start == %@", args: [Date(timeIntervalSince1970: 0) as NSDate])
+        XCTAssert(retrieved.count == 1)
+        XCTAssert(retrieved[0].motionType == .car)
     }
 }

@@ -232,13 +232,10 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     }
 
     public func queryMonthlyCarbon(motionType:MeasuredActivity.MotionType, month: String) throws -> Double {
-        let currentYear = Calendar(identifier: .gregorian).component(.year, from: Date())
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
         dateFormatter.locale = Locale(identifier: "en-UK")
         
-        let monthToDisplay = Date.monthNameToMonthNumber(month: month)
-        let firstOfMonth = dateFormatter.date(from: String(currentYear) + "-" + monthToDisplay + "-01 00:00:00 +0000")!
+        let firstOfMonth = Date.monthNameToFirstOfMonth(month: month)!
         let lastOfMonth = Date.setDateToSpecificHour(date: Date.getEndDayOfMonth(date: firstOfMonth), hour: "23:59:59")!
         
         let interval = lastOfMonth.timeIntervalSince(firstOfMonth)
@@ -259,7 +256,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         let yearStart = year + "-01-01 00:00:00 +0000"
         let yearEnd = year + "-12-31 23:59:59 +0000"
 
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
         dateFormatter.locale = Locale(identifier: "en-UK")
         

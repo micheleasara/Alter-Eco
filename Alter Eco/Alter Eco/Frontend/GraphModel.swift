@@ -113,8 +113,6 @@ func findGraphColour() -> String {
 }
 
 func normaliseData(motionType: MeasuredActivity.MotionType, datapart: DataParts) -> Double {
-   
-    let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy"
     let thisYearString = dateFormatter.string(from: thisYear)
     let nextYearString = dateFormatter.string(from: nextYear!)
@@ -247,8 +245,6 @@ func normaliseMonthlyAll() -> Double {
 }
 
 func normaliseYearlyAll() -> Double {
-    
-    let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy"
     let thisYearString = dateFormatter.string(from: thisYear)
     let nextYearString = dateFormatter.string(from: nextYear!)
@@ -283,8 +279,6 @@ func updateDataGraph() {
 }
 
 func fetchDataGraph() -> [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Double)])] {
-    
-    let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy"
     let thisYearString = dateFormatter.string(from: thisYear)
     let nextYearString = dateFormatter.string(from: nextYear!)

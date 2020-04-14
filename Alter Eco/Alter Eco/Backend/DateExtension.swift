@@ -1,8 +1,11 @@
 import Foundation
 
+// cached date formatter as suggested in
+//https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html#//apple_ref/doc/uid/TP40002369-SW10
+let dateFormatter = DateFormatter()
+
 extension Date {
     public static func getDayNameFromDate(_ date: Date) -> String{
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE"
         dateFormatter.locale = Locale(identifier: "en-UK")
         return dateFormatter.string(from: date)
@@ -19,57 +22,44 @@ extension Date {
     }
 
     public static func dateToInternationalString(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.string(from: date)
     }
     
-    public static func monthNameToMonthNumber(month: String) -> String {
-        switch month {
-            case "January":
-            return "01"
-            case "February":
-            return "02"
-            case "March":
-            return "03"
-            case "April":
-            return "04"
-            case "May":
-            return "05"
-            case "June":
-            return "06"
-            case "July":
-            return "07"
-            case "August":
-            return "08"
-            case "September":
-            return "09"
-            case "October":
-            return "10"
-            case "November":
-            return "11"
-            case "December":
-            return "12"
-            default:
-            return "00"
+    public static func monthNameToFirstOfMonth(month: String) -> Date? {
+        dateFormatter.dateFormat = "LLLL"
+        dateFormatter.locale = Locale(identifier: "en-UK")
+        
+        var date = dateFormatter.date(from: month)
+        if date != nil {
+            let currentYear = Calendar(identifier: .gregorian).component(.year, from: Date())
+            date = setDateToSpecificYear(date: date!, year: currentYear)
+            if date != nil {
+                date = setDateToSpecificDay(date: date!, day: 1)
+                if date != nil {
+                    date = setDateToSpecificHour(date: date!, hour: "00:00:00")
+                    return date
+                }
+            }
         }
+        return nil
     }
     
     public static func dayNameToOrderInWeek(_ day: String) -> Int {
-        switch day {
-            case "Sunday":
+        switch day.lowercased() {
+            case "sunday":
                 return 1
-            case "Monday":
+            case "monday":
                 return 2
-            case "Tuesday":
+            case "tuesday":
                 return 3
-            case "Wednesday":
+            case "wednesday":
                 return 4
-            case "Thursday":
+            case "thursday":
                 return 5
-            case "Friday":
+            case "friday":
                 return 6
-            case "Saturday":
+            case "saturday":
                 return 7
             default:
                 return 0
@@ -85,14 +75,45 @@ extension Date {
     }
     
     public static func setDateToSpecificHour(date: Date, hour: String) -> Date? {
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateFormatter.locale = Locale(identifier: "en-UK")
-        var todayDate = dateFormatter.string(from: date)
-        todayDate = todayDate + " " + hour + " +0000"
+        let formattedStr = dateFormatter.string(from: date) + " " + hour + " +0000"
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-        if let today = dateFormatter.date(from: todayDate) {
+        if let today = dateFormatter.date(from: formattedStr) {
             return today
+        }
+        return nil
+    }
+    
+    public static func setDateToSpecificDay(date: Date, day: Int) -> Date? {
+        dateFormatter.locale = Locale(identifier: "en-UK")
+        
+        dateFormatter.dateFormat = "yyyy-MM"
+        let yearMonth = dateFormatter.string(from: date)
+        
+        dateFormatter.dateFormat = "HH:mm:ss ZZZ"
+        let hour = dateFormatter.string(from: date)
+        
+        let dayStr = (day > 9) ? String(day) : "0" + String(day)
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let formattedStr = yearMonth + "-" + dayStr + " " + hour
+        if let formattedDate = dateFormatter.date(from: formattedStr) {
+            return formattedDate
+        }
+        return nil
+    }
+    
+    public static func setDateToSpecificYear(date: Date, year: Int) -> Date? {
+        dateFormatter.locale = Locale(identifier: "en-UK")
+        
+        dateFormatter.dateFormat = "MM-dd HH:mm:ss ZZZ"
+        let monthDayHour = dateFormatter.string(from: date)
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let formattedStr = String(year) + "-" + monthDayHour
+        if let formattedDate = dateFormatter.date(from: formattedStr) {
+            return formattedDate
         }
         return nil
     }

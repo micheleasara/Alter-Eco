@@ -104,13 +104,15 @@ public class WeightedActivityList: ActivityList {
                 walkingCounter += 1
             }
         }
-
+        
+        var motion : MeasuredActivity.MotionType
         if carCounter * activityWeights[.car]! > walkingCounter * activityWeights[.walking]! {
-            return .car
+            motion = .car
         }
         else {
-            return .walking
+            motion = .walking
         }
+        return motion
     }
     
     public func removeAll() {
@@ -123,11 +125,7 @@ public class WeightedActivityList: ActivityList {
     }
     
     private func writeToDatabase(_ activity: MeasuredActivity){
-        do {
-            try DBMS.append(activity: activity)
-            try DBMS.updateScore(activity: activity)
-        } catch {
-            print("Could not write activity to database: \(error)")
-        }
+        try! DBMS.append(activity: activity)
+        try! DBMS.updateScore(activity: activity)
     }
 }

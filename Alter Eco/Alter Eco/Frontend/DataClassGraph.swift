@@ -94,7 +94,6 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     //member function to convert value to a string
     var shortName: String {
         
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy"
         let thisYearString = dateFormatter.string(from: thisYear)
         let nextYearString = dateFormatter.string(from: nextYear!)

@@ -22,9 +22,8 @@ public class UserScore : Equatable{
     public var league: String!
     
     public static func getInitialScore() -> UserScore {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return UserScore(totalPoints: 0, date: formatter.string(from: Date()), league: "sun.max")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return UserScore(totalPoints: 0, date: dateFormatter.string(from: Date()), league: "sun.max")
     }
     
     public init(totalPoints: Double, date: String, league: String) {

@@ -150,7 +150,6 @@ struct AwardView: View {
     
     func getMonth(dateArg: Date = Date()) -> String {
         let date = dateArg
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "LLLL"
         let monthString = dateFormatter.string(from: date)
         return monthString
