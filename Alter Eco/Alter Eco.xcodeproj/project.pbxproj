@@ -51,6 +51,7 @@
 		9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */; };
 		9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
+		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,7 @@
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +236,7 @@
 				9C87AE26244215FB00490481 /* DatabaseManager.swift */,
 				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
 				5591901D242C0FA400A80ED7 /* UserScore.swift */,
+				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
 				9C87AE282442408F00490481 /* ActivityList.swift */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
 			);
@@ -428,6 +431,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */,
+				DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */,
 				9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */,
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,

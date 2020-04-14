@@ -44,7 +44,7 @@ public class ActivityEstimator<T:ActivityList> {
             let currentAirport = getCurrentRegionOfInterest(currentLocation: location, regionsOfInterest: self.airports, GPS_THRESHOLD: GPS_UPDATE_AIRPORT_THRESHOLD)
                                     
             // check if we are not in the same day to break the list, with the exception of ROIs flags
-            if previousAirport == nil && previousStation == nil && !inSameDay(date1: previousLocation.timestamp, date2: location.timestamp) {
+            if previousAirport == nil && previousStation == nil && !Date.inSameDay(date1: previousLocation.timestamp, date2: location.timestamp) {
                 measurements.dumpToDatabase(from: 0, to: measurements.count-1)
             }
             
@@ -147,15 +147,10 @@ public class ActivityEstimator<T:ActivityList> {
         
     private func dumpOldDay() {
         for i in stride(from: 1, to: measurements.count, by: 1){
-            if !inSameDay(date1: measurements[i].start, date2: measurements[0].start) {
+            if !Date.inSameDay(date1: measurements[i].start, date2: measurements[0].start) {
                 measurements.dumpToDatabase(from: 0, to: i-1)
                 return
             }
         }
-    }
-    
-    private func inSameDay(date1:Date, date2:Date) -> Bool {
-        let calendar = Calendar(identifier: .gregorian)
-        return calendar.dateComponents([.day, .month, .year], from: date1) == calendar.dateComponents([.day, .month, .year], from: date2)
     }
 }

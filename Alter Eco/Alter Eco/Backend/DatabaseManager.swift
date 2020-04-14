@@ -153,7 +153,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         // retrieve current score
         let queryResult = try executeQuery(entity: "Score", predicate:nil, args: nil) as! [NSManagedObject]
         if queryResult.count != 0 {
-            let activityScore = UserScore(activity: activity, league: "", date: stringFromDate(Date()))
+            let activityScore = UserScore(activity: activity, league: "", date: Date.dateToInternationalString(Date()))
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
             queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
             queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
@@ -165,7 +165,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func updateLeague(newLeague: String) throws {
        let managedContext = try getManagedContext()
        let dateToday = Date()
-       let dateTodayStr = stringFromDate(dateToday)
+       let dateTodayStr = Date.dateToInternationalString(dateToday)
     
        // retrieve current userscore
         let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
@@ -208,26 +208,26 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     }
     
     public func queryHourlyCarbon(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) throws -> Double {
-        let startDate = setDateToSpecificHour(date: Date(), hour: hourStart)!
-        let endDate = setDateToSpecificHour(date: Date(), hour: hourEnd)!
+        let startDate = Date.setDateToSpecificHour(date: Date(), hour: hourStart)!
+        let endDate = Date.setDateToSpecificHour(date: Date(), hour: hourEnd)!
         let timeInterval = endDate.timeIntervalSince(startDate)
         return try carbonWithinInterval(motionType: motionType, from: startDate, interval: timeInterval)
     }
 
     public func queryHourlyCarbonAll(hourStart: String, hourEnd: String) throws -> Double {
-        let startDate = setDateToSpecificHour(date: Date(), hour: hourStart)!
-        let endDate = setDateToSpecificHour(date: Date(), hour: hourEnd)!
+        let startDate = Date.setDateToSpecificHour(date: Date(), hour: hourStart)!
+        let endDate = Date.setDateToSpecificHour(date: Date(), hour: hourEnd)!
         let timeInterval = endDate.timeIntervalSince(startDate)
         return try carbonWithinIntervalAll(from: startDate, interval: timeInterval)
     }
 
     public func queryDailyCarbon(motionType: MeasuredActivity.MotionType, weekDayToDisplay: String) throws -> Double {
-        let date = getDateFromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
+        let date = Date.getDateFromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
         return try carbonWithinInterval(motionType: motionType, from: date, interval: 24*60*60)
     }
 
     public func queryDailyCarbonAll(weekDayToDisplay: String) throws -> Double {
-        let date = getDateFromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
+        let date = Date.getDateFromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
         return try carbonWithinIntervalAll(from: date, interval: 24*60*60)
     }
 
@@ -237,9 +237,9 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
         dateFormatter.locale = Locale(identifier: "en-UK")
         
-        let monthToDisplay = monthNameToMonthNumber(month: month)
+        let monthToDisplay = Date.monthNameToMonthNumber(month: month)
         let firstOfMonth = dateFormatter.date(from: String(currentYear) + "-" + monthToDisplay + "-01 00:00:00 +0000")!
-        let lastOfMonth = setDateToSpecificHour(date: getEndDayOfMonth(date: firstOfMonth), hour: "23:59:59")!
+        let lastOfMonth = Date.setDateToSpecificHour(date: Date.getEndDayOfMonth(date: firstOfMonth), hour: "23:59:59")!
         
         let interval = lastOfMonth.timeIntervalSince(firstOfMonth)
         return try carbonWithinInterval(motionType: motionType, from: firstOfMonth, interval: interval)
@@ -306,95 +306,5 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
 
         return distance
-    }
-    
-    private func getEndDayOfMonth(date: Date) -> Date {
-        let calendar = NSCalendar(calendarIdentifier: .gregorian)!
-        let components = calendar.components([.year, .month], from: date)
-        let startOfMonth = calendar.date(from: components)!
-        var addendum = DateComponents()
-        addendum.month = 1
-        addendum.day = -1
-        return calendar.date(byAdding: addendum, to: startOfMonth)!
-    }
-
-    private func stringFromDate(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd" //yyyy
-        dateFormatter.locale = Locale(identifier: "en-UK")
-        return dateFormatter.string(from: date)
-    }
-    
-    private func monthNameToMonthNumber(month: String) -> String {
-        switch month {
-            case "January":
-            return "01"
-            case "February":
-            return "02"
-            case "March":
-            return "03"
-            case "April":
-            return "04"
-            case "May":
-            return "05"
-            case "June":
-            return "06"
-            case "July":
-            return "07"
-            case "August":
-            return "08"
-            case "September":
-            return "09"
-            case "October":
-            return "10"
-            case "November":
-            return "11"
-            case "December":
-            return "12"
-            default:
-            return "00"
-        }
-    }
-    
-    private func dayNameToDayNumber(_ day: String) -> Int {
-        switch day {
-            case "Sunday":
-                return 1
-            case "Monday":
-                return 2
-            case "Tuesday":
-                return 3
-            case "Wednesday":
-                return 4
-            case "Thursday":
-                return 5
-            case "Friday":
-                return 6
-            case "Saturday":
-                return 7
-            default:
-                return 0
-        }
-    }
-
-    private func getDateFromWeekdayName(weekDayToDisplay: String) -> Date? {
-        var dateToView = Date()
-        let dayToday = Calendar(identifier: .gregorian).component(.weekday, from: Date())
-        let dayDifference = dayToday - dayNameToDayNumber(weekDayToDisplay)
-        dateToView = Calendar(identifier: .gregorian).date(byAdding: .day, value: dayDifference, to: dateToView)!
-        return setDateToSpecificHour(date: dateToView, hour: "00:00:00")
-    }
-    
-    private func setDateToSpecificHour(date: Date, hour: String) -> Date? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.locale = Locale(identifier: "en-UK")
-        var todayDate = dateFormatter.string(from: date)
-        todayDate = todayDate + " " + hour + " +0000"
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-        if let today = dateFormatter.date(from: todayDate) {
-            return today
-        }
-        return nil
     }
 }
