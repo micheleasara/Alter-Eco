@@ -45,31 +45,15 @@ extension Date {
         return nil
     }
     
-    public static func dayNameToOrderInWeek(_ day: String) -> Int {
-        switch day.lowercased() {
-            case "sunday":
-                return 1
-            case "monday":
-                return 2
-            case "tuesday":
-                return 3
-            case "wednesday":
-                return 4
-            case "thursday":
-                return 5
-            case "friday":
-                return 6
-            case "saturday":
-                return 7
-            default:
-                return 0
-        }
+    public static func dayNameToOrderInWeek(_ day: String) -> Int? {
+        let orderOfTheWeek = ["sunday" : 1, "monday" : 2, "tuesday" : 3, "wednesday" : 4, "thursday" : 5, "friday" : 6, "saturday" : 7]
+        return orderOfTheWeek[day.lowercased()]
     }
 
     public static func getDateFromWeekdayName(weekDayToDisplay: String) -> Date? {
         var dateToView = Date()
         let dayToday = Calendar(identifier: .gregorian).component(.weekday, from: Date())
-        let dayDifference = dayToday - dayNameToOrderInWeek(weekDayToDisplay)
+        let dayDifference = dayToday - dayNameToOrderInWeek(weekDayToDisplay)!
         dateToView = Calendar(identifier: .gregorian).date(byAdding: .day, value: dayDifference, to: dateToView)!
         return setDateToSpecificHour(date: dateToView, hour: "00:00:00")
     }
