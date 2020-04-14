@@ -1,3 +1,5 @@
+import Foundation
+
 //Data structure for the keys in dictionary (declared in GraphView) used to pull the values into the bar charts. The picker values are used to index these variables.
 enum DataParts: Int, CaseIterable, Hashable, Identifiable {
     case day=0
@@ -80,31 +82,42 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     case december
     
 
-    case fourteen
-    case fifteen
-    case sixteen
-    case seventeen
-    case eighteen
-    case nineteen
-    case twenty
+    case minusThreeYearsEnum
+    case minusTwoYearsEnum
+    case lastYearEnum
+    case thisYearEnum
+    case nextYearEnum
+    case plusTwoYearsEnum
+    case plusThreeYearsEnum
 
        
     //member function to convert value to a string
     var shortName: String {
-        if (self==DaySpecifics.fourteen)
-        { return "2014"}
-        if (self==DaySpecifics.fifteen)
-        { return "2015"}
-        if (self==DaySpecifics.sixteen)
-        { return "2016"}
-        if (self==DaySpecifics.seventeen)
-        { return "2017"}
-        if (self==DaySpecifics.eighteen)
-        { return "2018"}
-        if (self==DaySpecifics.nineteen)
-        { return "2019"}
-        if (self==DaySpecifics.twenty)
-        { return "2020"}
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy"
+        let thisYearString = dateFormatter.string(from: thisYear)
+        let nextYearString = dateFormatter.string(from: nextYear!)
+        let plusTwoYearsString = dateFormatter.string(from: plusTwoYears!)
+        let plusThreeYearsString = dateFormatter.string(from: plusThreeYears!)
+        let lastYearString = dateFormatter.string(from: lastYear!)
+        let minusTwoYearsString = dateFormatter.string(from: minusTwoYears!)
+        let minusThreeYearsString = dateFormatter.string(from: minusThreeYears!)
+        
+        if (self==DaySpecifics.minusThreeYearsEnum)
+        { return minusThreeYearsString}
+        if (self==DaySpecifics.minusTwoYearsEnum)
+        { return minusTwoYearsString}
+        if (self==DaySpecifics.lastYearEnum)
+        { return lastYearString}
+        if (self==DaySpecifics.thisYearEnum)
+        { return thisYearString}
+        if (self==DaySpecifics.nextYearEnum)
+        { return nextYearString}
+        if (self==DaySpecifics.plusTwoYearsEnum)
+        { return plusTwoYearsString}
+        if (self==DaySpecifics.plusThreeYearsEnum)
+        { return plusThreeYearsString}
         if (self==DaySpecifics.zerohour)
         { return "00"}
         if (self==DaySpecifics.twohour)
