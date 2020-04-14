@@ -29,7 +29,17 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       language = "en"
       region = "GB"
-      codeCoverageEnabled = "YES">
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES">
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "CD200B3E23E3885100629E73"
+            BuildableName = "Alter Eco.app"
+            BlueprintName = "Alter Eco"
+            ReferencedContainer = "container:Alter Eco.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO">
