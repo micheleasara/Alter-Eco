@@ -97,7 +97,7 @@ class DatabaseTest: XCTestCase {
         XCTAssert(retrievedCarbon == carbonExpected)
     }
     
-    func testHourlyCarbonRetrieval() {
+    func testHourlyCarbonRetrievalForAllMotionTypes() {
         let today = Date()
         let oneToFour = MeasuredActivity(motionType: .plane, distance: 9000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "04:00:00")!)
         let oneToTwoHalf = MeasuredActivity(motionType: .car, distance: 18000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "02:30:00")!)
@@ -119,7 +119,29 @@ class DatabaseTest: XCTestCase {
         XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
     }
     
-    func testDailyCarbonRetrieval() {
+    func testHourlyCarbonRetrievalForASpecificMotionType() {
+        let today = Date()
+        let oneToFour = MeasuredActivity(motionType: .car, distance: 9000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "04:00:00")!)
+        let oneToTwoHalf = MeasuredActivity(motionType: .car, distance: 18000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "02:30:00")!)
+        let twoHalfToFour = MeasuredActivity(motionType: .car, distance: 27000, start: Date.setDateToSpecificHour(date: today, hour: "02:30:00")!, end: Date.setDateToSpecificHour(date: today, hour: "04:00:00")!)
+        let twoToThree = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setDateToSpecificHour(date: today, hour: "02:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "03:00:00")!)
+        
+        // activities only sharing a portion of time with the query
+        let activities = [oneToFour, oneToTwoHalf, twoHalfToFour, twoToThree]
+        let coeff = [1.0/3, 1.0/3, 1.0/3, 1]
+        var expectedCarbon = 0.0
+        for i in stride(from: 1, to: coeff.count, by: 1) {
+            try! DBMS.append(activity: activities[i])
+            expectedCarbon += DBMS.computeCarbonUsage(distance: coeff[i]*activities[i].distance, type: activities[i].motionType)
+        }
+        
+        // be wary of rounding errors!
+        let carbonRetrieved = try! DBMS.queryHourlyCarbon(motionType: .car, hourStart: "02:00:00", hourEnd: "03:00:00")
+        let tolerance = 0.1
+        XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
+    }
+    
+    func testDailyCarbonRetrievalForAllMotionTypes() {
         let now = Date()
         let yesterdayToTomorrow = MeasuredActivity(motionType: .plane, distance: 9000, start: Date(timeInterval: -24*60*60, since: now), end: Date(timeInterval: 24*60*60, since: now))
         let nowToTomorrow = MeasuredActivity(motionType: .car, distance: 18000, start: now, end: Date(timeInterval: 24*60*60, since: now))
@@ -143,6 +165,55 @@ class DatabaseTest: XCTestCase {
         XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
     }
     
+    func testDailyCarbonRetrievalForASpecificMotionType() {
+        let now = Date()
+        let yesterdayToTomorrow = MeasuredActivity(motionType: .car, distance: 9000, start: Date(timeInterval: -24*60*60, since: now), end: Date(timeInterval: 24*60*60, since: now))
+        let nowToTomorrow = MeasuredActivity(motionType: .car, distance: 18000, start: now, end: Date(timeInterval: 24*60*60, since: now))
+        let yesterdayToNow = MeasuredActivity(motionType: .car, distance: 27000, start: Date(timeInterval: -24*60*60, since: now), end: now)
+        let exactlyToday = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setDateToSpecificHour(date: now, hour: "00:00:00")!, end: Date.setDateToSpecificHour(date: now, hour: "23:59:59")!)
+        
+        // activities only sharing a portion of time with the query
+        let activities = [yesterdayToNow, nowToTomorrow, yesterdayToTomorrow, exactlyToday]
+        let totalExaminedTime : Double = 24*60*60
+        let timeSinceMidnight = now.timeIntervalSince(Date.setDateToSpecificHour(date: now, hour: "00:00:00")!)
+        let coeff = [timeSinceMidnight/totalExaminedTime, (totalExaminedTime - timeSinceMidnight) / totalExaminedTime, 0.5, 1.0]
+        
+        var expectedCarbon = 0.0
+        for i in stride(from: 0, to: coeff.count, by: 1) {
+            try! DBMS.append(activity: activities[i])
+            expectedCarbon += DBMS.computeCarbonUsage(distance: coeff[i]*activities[i].distance, type: activities[i].motionType)
+        }
+        
+        let carbonRetrieved = try! DBMS.queryDailyCarbon(motionType: .car, weekDayToDisplay: Date.getDayNameFromDate(now))
+        let tolerance = 0.1
+        XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
+    }
+    
+    func testMonthlyCarbonRetrieval() {
+        let now = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let currentYear = Calendar(identifier: .gregorian).component(.year, from: now)
+        let janFirst = formatter.date(from: "\(currentYear)-01-01")!
+        let janThird = formatter.date(from: "\(currentYear)-01-03")!
+        let activity = MeasuredActivity(motionType: .car, distance: 1000, start: janFirst, end: janThird)
+        try! DBMS.append(activity: activity)
+        let expectedCarbon = DBMS.computeCarbonUsage(distance: activity.distance, type: activity.motionType)
+        let carbonRetrieved = try! DBMS.queryMonthlyCarbonAll(month: "January")
+        let tolerance = 0.1
+        XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
+    }
+    
+    func testYearlyCarbonRetrieval() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let activity = MeasuredActivity(motionType: .car, distance: 1000, start: formatter.date(from: "1995-07-09")!, end: formatter.date(from: "1995-07-11")!)
+        try! DBMS.append(activity: activity)
+        let expectedCarbon = DBMS.computeCarbonUsage(distance: activity.distance, type: activity.motionType)
+        let carbonRetrieved = try! DBMS.queryYearlyCarbonAll(year: "1995")
+        let tolerance = 0.1
+        XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
+    }
     
 }
 
@@ -150,7 +221,5 @@ class DatabaseTest: XCTestCase {
 //public protocol DBManager : AnyObject, DBReader, DBWriter {//
 //
 //
-//    func queryDailyCarbonAll(weekDayToDisplay: String) throws -> Double
-//    func queryMonthlyCarbonAll(month: String) throws -> Double
 //    func queryYearlyCarbonAll(year: String) throws -> Double
 //}

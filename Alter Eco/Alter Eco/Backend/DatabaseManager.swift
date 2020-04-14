@@ -298,13 +298,4 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         return distance * carbonUnit * KM_CONVERSION
     }
-    
-    private func getCumulativeDistance(measurements:[MeasuredActivity]) -> Double {
-        var distance = 0.0
-        for measurement in measurements {
-            distance += measurement.distance
-        }
-
-        return distance
-    }
 }
