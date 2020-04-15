@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         DBMS = CoreDataManager(persistentContainer: persistentContainer)
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS)
         
-        activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT)
+        activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, inStationRadius: GPS_UPDATE_CONFIDENCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD)
     }
     // location of last request for stations nearby, to be used with station request radius
     internal var locationUponRequest: CLLocation? = nil
@@ -79,7 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.distanceFilter = GPS_UPDATE_DISTANCE_THRESHOLD
         manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         manager.startUpdatingLocation()
-        
         // REDUNDENT PLACEDHOLDER COMMENT:
         // Following code is to check whether we should run the replaceScore()
         // function to calculate the user score of the day before, i.e. if we open

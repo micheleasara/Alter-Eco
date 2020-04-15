@@ -6,6 +6,7 @@ where Index == Int, Element == Array<MeasuredActivity>.Element {
     func add(_ activity:MeasuredActivity)
     func remove(at:Index)
     func removeAll()
+    func hasChangedSignificantly() -> Bool
     func dumpToDatabase(from:Int, to:Int)
 }
 
@@ -66,15 +67,10 @@ public class WeightedActivityList: ActivityList {
     public func add(_ activity: MeasuredActivity) {
         if activity.motionType == .plane || activity.motionType == .train {
             writeToDatabase(activity)
-            measurements.removeAll()
+            removeAll()
         } else {
             measurements.append(activity)
-            if hasChangedSignificantly() {
-                let newActivityIndex = measurements.count - numChangeActivity
-                dumpToDatabase(from: 0, to: newActivityIndex - 1)
-            }
         }
-        
     }
     
     public func getAverage(from:Int, to:Int) -> MeasuredActivity {

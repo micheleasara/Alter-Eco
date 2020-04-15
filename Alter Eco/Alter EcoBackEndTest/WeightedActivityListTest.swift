@@ -57,7 +57,7 @@ class WeightedActivityListTest: XCTestCase {
         for activity in activities {
             measurements.add(activity)
         }
-        XCTAssert(measurements.count == 0)
+        XCTAssert(measurements.count == 0, "Expected empty list but got \(measurements.count)")
         
         // ensure only plane activity was put in the database
         let retrieved = try! DBMS.queryActivities(predicate: "start == %@ AND end == %@", args: [start as NSDate, end as NSDate])
@@ -169,20 +169,5 @@ class WeightedActivityListTest: XCTestCase {
         let retrieved = try! DBMS.queryActivities(predicate: "motionType == %@", args: [MeasuredActivity.motionTypeToString(type: activities[0].motionType)])
         XCTAssert(retrieved.count == 1)
         XCTAssert(retrieved[0] == average)
-    }
-    
-    func testListDumpsToDatabaseIfActivityChangesSignificantly() {
-        var date = Date(timeIntervalSince1970: 0)
-        for _ in 1...CHANGE_ACTIVITY_THRESHOLD {
-            measurements.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
-            date = Date(timeInterval: 10, since: date)
-        }
-        XCTAssert(measurements.count == CHANGE_ACTIVITY_THRESHOLD)
-        for _ in 1...CHANGE_ACTIVITY_THRESHOLD + 1 {
-            measurements.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
-        }
-        let retrieved = try! DBMS.queryActivities(predicate: "start == %@", args: [Date(timeIntervalSince1970: 0) as NSDate])
-        XCTAssert(retrieved.count == 1)
-        XCTAssert(retrieved[0].motionType == .car)
     }
 }
