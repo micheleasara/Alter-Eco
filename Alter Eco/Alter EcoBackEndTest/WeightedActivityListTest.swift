@@ -38,10 +38,12 @@ class WeightedActivityListTest: XCTestCase {
     }
     
     func testListIsMutableWithSetter() {
-        measurements.add(MeasuredActivity(motionType: .car, distance: 1, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100)))
-        XCTAssert(measurements[0].distance == 1)
-        measurements[0].distance = 2
-        XCTAssert(measurements[0].distance == 2)
+        let activity = MeasuredActivity(motionType: .car, distance: 1, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100))
+        measurements.add(activity)
+        XCTAssert(measurements[0] == activity)
+        let activity2 = MeasuredActivity(motionType: .walking, distance: 30, start: Date(timeIntervalSince1970: 110), end: Date(timeIntervalSince1970: 200))
+        measurements[0] = activity2
+        XCTAssert(measurements[0] == activity2)
     }
     
     func testAddingPlanePutsIntoDatabaseAndDiscardsTheRest() {
