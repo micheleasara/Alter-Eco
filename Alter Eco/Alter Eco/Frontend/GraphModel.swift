@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 let AV_UK_DAILYCARBON: Double = 2200
 
-//dynamic years on the graph
+//create dynamic years for graph queries
 let thisYear = Date()
 let lastYear = Calendar.current.date(byAdding: .year, value: -1, to: thisYear)
 let minusTwoYears = Calendar.current.date(byAdding: .year, value: -2, to: thisYear)
@@ -10,6 +10,8 @@ let minusThreeYears = Calendar.current.date(byAdding: .year, value: -3, to: this
 let minusFourYears = Calendar.current.date(byAdding: .year, value: -4, to: thisYear)
 let minusFiveYears = Calendar.current.date(byAdding: .year, value: -5, to: thisYear)
 let minusSixYears = Calendar.current.date(byAdding: .year, value: -6, to: thisYear)
+let years = [minusSixYears, minusFiveYears, minusFourYears, minusThreeYears, minusTwoYears, lastYear, thisYear]
+let yearsStrings = Date.toYearString(years: years as! [Date])
 
 func findMaxValue(value: Int) -> Double {
     
@@ -115,16 +117,6 @@ func findGraphColour() -> String {
 
 func normaliseData(motionType: MeasuredActivity.MotionType, datapart: DataParts) -> Double {
     
-    dateFormatter.dateFormat = "yyyy"
-    
-    let thisYearString = dateFormatter.string(from: thisYear)
-    let lastYearString = dateFormatter.string(from: lastYear!)
-    let minusTwoYearsString = dateFormatter.string(from: minusTwoYears!)
-    let minusThreeYearsString = dateFormatter.string(from: minusThreeYears!)
-    let minusFourYearsString = dateFormatter.string(from: minusFourYears!)
-    let minusFiveYearsString = dateFormatter.string(from: minusFiveYears!)
-    let minusSixYearsString = dateFormatter.string(from: minusSixYears!)
-    
     var max_data=0.0
     do {
         switch (datapart) {
@@ -170,13 +162,13 @@ func normaliseData(motionType: MeasuredActivity.MotionType, datapart: DataParts)
             
             case .yearcar,.yearplane,.yeartrain, .yearwalk:
                 
-                max_data = max(try DBMS.queryYearlyCarbon(motionType: motionType, year: minusSixYearsString),
-                               try DBMS.queryYearlyCarbon(motionType: motionType, year: minusFiveYearsString),
-                               try DBMS.queryYearlyCarbon(motionType: motionType, year: minusFourYearsString),
-                               try DBMS.queryYearlyCarbon(motionType: motionType, year: minusThreeYearsString),
-                               try DBMS.queryYearlyCarbon(motionType: motionType, year: minusTwoYearsString),
-                               try DBMS.queryYearlyCarbon(motionType: motionType, year: lastYearString),
-                               try DBMS.queryYearlyCarbon(motionType: motionType, year: thisYearString))
+                max_data = max(try DBMS.queryYearlyCarbon(motionType: motionType, year: yearsStrings[0]),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: yearsStrings[1]),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: yearsStrings[2]),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: yearsStrings[3]),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: yearsStrings[4]),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: yearsStrings[5]),
+                               try DBMS.queryYearlyCarbon(motionType: motionType, year: yearsStrings[6]))
             default:
                 max_data = 1.0
             }
@@ -248,20 +240,10 @@ func normaliseMonthlyAll() -> Double {
 }
 
 func normaliseYearlyAll() -> Double {
-    
-    dateFormatter.dateFormat = "yyyy"
-    
-    let thisYearString = dateFormatter.string(from: thisYear)
-    let lastYearString = dateFormatter.string(from: lastYear!)
-    let minusTwoYearsString = dateFormatter.string(from: minusTwoYears!)
-    let minusThreeYearsString = dateFormatter.string(from: minusThreeYears!)
-    let minusFourYearsString = dateFormatter.string(from: minusFourYears!)
-    let minusFiveYearsString = dateFormatter.string(from: minusFiveYears!)
-    let minusSixYearsString = dateFormatter.string(from: minusSixYears!)
-    
+     
     var max_data = 0.0
     do {
-        max_data = max(try DBMS.queryYearlyCarbonAll(year: minusSixYearsString),try DBMS.queryYearlyCarbonAll(year: minusFiveYearsString),try DBMS.queryYearlyCarbonAll(year: minusFourYearsString), try DBMS.queryYearlyCarbonAll(year: minusThreeYearsString),try DBMS.queryYearlyCarbonAll(year: minusTwoYearsString),try DBMS.queryYearlyCarbonAll(year: lastYearString),try DBMS.queryYearlyCarbonAll(year: thisYearString))
+        max_data = max(try DBMS.queryYearlyCarbonAll(year: yearsStrings[0]),try DBMS.queryYearlyCarbonAll(year: yearsStrings[1]),try DBMS.queryYearlyCarbonAll(year: yearsStrings[2]), try DBMS.queryYearlyCarbonAll(year: yearsStrings[3]),try DBMS.queryYearlyCarbonAll(year: yearsStrings[4]),try DBMS.queryYearlyCarbonAll(year: yearsStrings[5]),try DBMS.queryYearlyCarbonAll(year: yearsStrings[6]))
     } catch {
         print("Unexpected error: \(error).")
     }
@@ -285,17 +267,6 @@ func updateDataGraph() {
 }
 
 func fetchDataGraph() -> [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Double)])] {
-    
-    dateFormatter.dateFormat = "yyyy"
-    
-    let thisYearString = dateFormatter.string(from: thisYear)
-    let lastYearString = dateFormatter.string(from: lastYear!)
-    let minusTwoYearsString = dateFormatter.string(from: minusTwoYears!)
-    let minusThreeYearsString = dateFormatter.string(from: minusThreeYears!)
-    let minusFourYearsString = dateFormatter.string(from: minusFourYears!)
-    let minusFiveYearsString = dateFormatter.string(from: minusFiveYears!)
-    let minusSixYearsString = dateFormatter.string(from: minusSixYears!)
-    
     
     return [
                 (//Access dictionary via this key
@@ -537,62 +508,62 @@ func fetchDataGraph() -> [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics,
               (
                 DataParts.yearall,
               [
-                  (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbonAll(year: minusSixYearsString)/normaliseYearlyAll()),
-                  (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbonAll(year: minusFiveYearsString)/normaliseYearlyAll()),
-                  (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbonAll(year: minusFourYearsString)/normaliseYearlyAll()),
-                  (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbonAll(year: minusThreeYearsString)/normaliseYearlyAll()),
-                  (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbonAll(year: minusTwoYearsString)/normaliseYearlyAll()),
-                  (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbonAll(year: lastYearString)/normaliseYearlyAll()),
-                  (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbonAll(year: thisYearString)/normaliseYearlyAll()),
+                  (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbonAll(year: yearsStrings[0])/normaliseYearlyAll()),
+                  (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbonAll(year: yearsStrings[1])/normaliseYearlyAll()),
+                  (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbonAll(year: yearsStrings[2])/normaliseYearlyAll()),
+                  (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbonAll(year: yearsStrings[3])/normaliseYearlyAll()),
+                  (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbonAll(year: yearsStrings[4])/normaliseYearlyAll()),
+                  (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbonAll(year: yearsStrings[5])/normaliseYearlyAll()),
+                  (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbonAll(year: yearsStrings[6])/normaliseYearlyAll()),
                   
               ]
       ),
       (
           DataParts.yearcar,
               [
-                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: minusSixYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
-                  (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: minusFiveYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
-                  (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: minusFourYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
-                  (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: minusThreeYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
-                  (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: minusTwoYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
-                  (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: lastYearString)/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
-                  (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: thisYearString)/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
+                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: yearsStrings[0])/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
+                  (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: yearsStrings[1])/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
+                  (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: yearsStrings[2])/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
+                  (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: yearsStrings[3])/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
+                  (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: yearsStrings[4])/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
+                  (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: yearsStrings[5])/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
+                  (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.car, year: yearsStrings[6])/normaliseData(motionType: MeasuredActivity.MotionType.car, datapart: DataParts.yearcar)),
               ]
       ),
     (
          DataParts.yearwalk,
              [
-                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: minusSixYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
-                 (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: minusFiveYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
-                 (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: minusFourYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
-                 (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: minusThreeYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
-                 (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: minusTwoYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
-                 (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: lastYearString)/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
-                 (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: thisYearString)/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk))
+                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: yearsStrings[0])/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
+                 (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: yearsStrings[1])/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
+                 (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: yearsStrings[2])/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
+                 (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: yearsStrings[3])/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
+                 (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: yearsStrings[4])/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
+                 (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: yearsStrings[5])/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk)),
+                 (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.walking, year: yearsStrings[6])/normaliseData(motionType: MeasuredActivity.MotionType.walking, datapart: DataParts.yearwalk))
              ]
      ),
                   (
        DataParts.yeartrain,
            [
-                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: minusSixYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
-                (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: minusFiveYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
-                (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: minusFourYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
-                (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: minusThreeYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
-                (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: minusTwoYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
-                (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: lastYearString)/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
-                (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: thisYearString)/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain))
+                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: yearsStrings[0])/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
+                (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: yearsStrings[1])/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
+                (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: yearsStrings[2])/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
+                (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: yearsStrings[3])/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
+                (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: yearsStrings[4])/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
+                (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: yearsStrings[5])/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain)),
+                (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.train, year: yearsStrings[6])/normaliseData(motionType: MeasuredActivity.MotionType.train, datapart: DataParts.yeartrain))
            ]
     ),
       (
           DataParts.yearplane,
               [
-                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: minusSixYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
-                (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: minusFiveYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
-                (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: minusFourYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
-                (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: minusThreeYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
-                (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: minusTwoYearsString)/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
-                (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: lastYearString)/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
-                (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: thisYearString)/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane))
+                (DaySpecifics.minusSixYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: yearsStrings[0])/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+                (DaySpecifics.minusFiveYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: yearsStrings[1])/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+                (DaySpecifics.minusFourYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: yearsStrings[2])/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+                (DaySpecifics.minusThreeYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: yearsStrings[3])/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+                (DaySpecifics.minusTwoYearsEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: yearsStrings[4])/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+                (DaySpecifics.lastYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: yearsStrings[5])/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane)),
+                (DaySpecifics.thisYearEnum, try! DBMS.queryYearlyCarbon(motionType: MeasuredActivity.MotionType.plane, year: yearsStrings[6])/normaliseData(motionType: MeasuredActivity.MotionType.plane, datapart: DataParts.yearplane))
               ]
       ),
                ]

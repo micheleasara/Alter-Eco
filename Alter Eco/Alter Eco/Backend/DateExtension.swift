@@ -106,4 +106,17 @@ extension Date {
         let calendar = Calendar(identifier: .gregorian)
         return calendar.dateComponents([.day, .month, .year], from: date1) == calendar.dateComponents([.day, .month, .year], from: date2)
     }
+    
+    public static func toYearString(years: [Date]) -> [String] {
+        
+        dateFormatter.dateFormat = "yyyy"
+        
+        var yearsStrings = [String] ()
+        
+        for date in years {           
+            yearsStrings.append(dateFormatter.string(from: date))
+        }
+        
+        return yearsStrings
+    }
 }

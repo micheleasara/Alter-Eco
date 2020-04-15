@@ -81,7 +81,6 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     case november
     case december
     
-
     case minusSixYearsEnum
     case minusFiveYearsEnum
     case minusFourYearsEnum
@@ -94,30 +93,20 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     //member function to convert value to a string
     var shortName: String {
         
-        dateFormatter.dateFormat = "yyyy"
-        
-        let thisYearString = dateFormatter.string(from: thisYear)
-        let lastYearString = dateFormatter.string(from: lastYear!)
-        let minusTwoYearsString = dateFormatter.string(from: minusTwoYears!)
-        let minusThreeYearsString = dateFormatter.string(from: minusThreeYears!)
-        let minusFourYearsString = dateFormatter.string(from: minusFourYears!)
-        let minusFiveYearsString = dateFormatter.string(from: minusFiveYears!)
-        let minusSixYearsString = dateFormatter.string(from: minusSixYears!)
-        
         if (self==DaySpecifics.minusSixYearsEnum)
-        { return minusSixYearsString}
+        { return yearsStrings[0]}
         if (self==DaySpecifics.minusFiveYearsEnum)
-        { return minusFiveYearsString}
+        { return yearsStrings[1]}
         if (self==DaySpecifics.minusFourYearsEnum)
-        { return minusFourYearsString}
+        { return yearsStrings[2]}
         if (self==DaySpecifics.minusThreeYearsEnum)
-        { return minusThreeYearsString}
+        { return yearsStrings[3]}
         if (self==DaySpecifics.minusTwoYearsEnum)
-        { return minusTwoYearsString}
+        { return yearsStrings[4]}
         if (self==DaySpecifics.lastYearEnum)
-        { return lastYearString}
+        { return yearsStrings[5]}
         if (self==DaySpecifics.thisYearEnum)
-        { return thisYearString}
+        { return yearsStrings[6]}
         if (self==DaySpecifics.zerohour)
         { return "00"}
         if (self==DaySpecifics.twohour)
