@@ -7,7 +7,8 @@
 //
 
 import XCTest
-@testable import Alter_Eco
+//@testable import Alter_Eco
+@testable import AlterEcoBackend
 
 class WeightedActivityListTest: XCTestCase {
 

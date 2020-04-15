@@ -9,7 +9,8 @@
 import XCTest
 import CoreLocation
 import CoreData
-@testable import Alter_Eco
+//@testable import Alter_Eco
+@testable import AlterEcoBackend
 
 class DatabaseTest: XCTestCase {
     

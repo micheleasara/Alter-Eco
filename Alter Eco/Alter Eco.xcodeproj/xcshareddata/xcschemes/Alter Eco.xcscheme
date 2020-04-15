@@ -34,9 +34,9 @@
       <CodeCoverageTargets>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CD200B3E23E3885100629E73"
-            BuildableName = "Alter Eco.app"
-            BlueprintName = "Alter Eco"
+            BlueprintIdentifier = "DEDE548C24467B4E003FE0DE"
+            BuildableName = "AlterEcoBackend.app"
+            BlueprintName = "AlterEcoBackend"
             ReferencedContainer = "container:Alter Eco.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>

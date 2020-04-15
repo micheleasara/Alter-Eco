@@ -39,13 +39,13 @@ public let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
 public let GPS_UPDATE_AIRPORT_THRESHOLD:Double = 4000
 public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Int] = [.car: 2, .walking: 1]
 
-// share database handler among all modules
+// share database handler amaong all modules
 let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
     // Instantiate the scene
-    let scene = SceneDelegate()
+    //let scene = SceneDelegate()
     // requests gps updates
     internal let manager = CLLocationManager()
     // interfaces with the database

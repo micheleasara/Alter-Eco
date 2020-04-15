@@ -1,6 +1,7 @@
 import XCTest
 import CoreLocation
-@testable import Alter_Eco
+//@testable import Alter_Eco
+@testable import AlterEcoBackend
 
 class MeasuredActivityTest: XCTestCase {
     func testTwoEqualActivitiesResultEqual() {

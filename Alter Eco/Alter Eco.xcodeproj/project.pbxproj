@@ -53,6 +53,25 @@
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
+		DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
+		DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
+		DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
+		DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */; };
+		DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* DatabaseManager.swift */; };
+		DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
+		DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
+		DEDE54A824467B4E003FE0DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594422429692000B1D0B4 /* AppDelegate.swift */; };
+		DEDE54AC24467B4E003FE0DE /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
+		DEDE54AD24467B4E003FE0DE /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
+		DEDE54AE24467B4E003FE0DE /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
+		DEDE54AF24467B4E003FE0DE /* WalkToSupermarket.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */; };
+		DEDE54B024467B4E003FE0DE /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
+		DEDE54B124467B4E003FE0DE /* SKToVictoria_car_30kmh.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */; };
+		DEDE54B224467B4E003FE0DE /* MilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */; };
+		DEDE54B324467B4E003FE0DE /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
+		DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
+		DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
+		DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +88,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = CD200B3E23E3885100629E73;
 			remoteInfo = "Alter Eco";
+		};
+		DEDE54BC24467D31003FE0DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD200B3723E3885100629E73 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DEDE548C24467B4E003FE0DE;
+			remoteInfo = AlterEcoBackend;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -125,6 +151,8 @@
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
+		DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlterEcoBackend.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEDE54BB24467B4E003FE0DE /* Alter Eco copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Alter Eco copy-Info.plist"; path = "/Users/delideleon/Desktop/developBranch/Alter Eco/Alter Eco copy-Info.plist"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +171,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CD200B3C23E3885100629E73 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DEDE54AA24467B4E003FE0DE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -182,6 +217,7 @@
 				9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */,
 				9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */,
 				CD200B4023E3885100629E73 /* Products */,
+				DEDE54BB24467B4E003FE0DE /* Alter Eco copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -191,6 +227,7 @@
 				CD200B3F23E3885100629E73 /* Alter Eco.app */,
 				9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */,
 				9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */,
+				DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -289,6 +326,7 @@
 			);
 			dependencies = (
 				9CD5947624296D9300B1D0B4 /* PBXTargetDependency */,
+				DEDE54BD24467D31003FE0DE /* PBXTargetDependency */,
 			);
 			name = "Alter EcoBackEndTest";
 			productName = "Alter EcoBackEndTest";
@@ -330,6 +368,23 @@
 			productReference = CD200B3F23E3885100629E73 /* Alter Eco.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DEDE548C24467B4E003FE0DE /* AlterEcoBackend */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DEDE54B724467B4E003FE0DE /* Build configuration list for PBXNativeTarget "AlterEcoBackend" */;
+			buildPhases = (
+				DEDE548D24467B4E003FE0DE /* Sources */,
+				DEDE54AA24467B4E003FE0DE /* Frameworks */,
+				DEDE54AB24467B4E003FE0DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AlterEcoBackend;
+			productName = "Alter Eco";
+			productReference = DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -342,7 +397,7 @@
 				TargetAttributes = {
 					9CD5946F24296D9200B1D0B4 = {
 						CreatedOnToolsVersion = 11.3.1;
-						TestTargetID = CD200B3E23E3885100629E73;
+						TestTargetID = DEDE548C24467B4E003FE0DE;
 					};
 					9CD5948024296E2700B1D0B4 = {
 						CreatedOnToolsVersion = 11.3.1;
@@ -369,6 +424,7 @@
 				CD200B3E23E3885100629E73 /* Alter Eco */,
 				9CD5946F24296D9200B1D0B4 /* Alter EcoBackEndTest */,
 				9CD5948024296E2700B1D0B4 /* Alter EcoFullUITest */,
+				DEDE548C24467B4E003FE0DE /* AlterEcoBackend */,
 			);
 		};
 /* End PBXProject section */
@@ -403,6 +459,24 @@
 				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
 				9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DEDE54AB24467B4E003FE0DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEDE54AC24467B4E003FE0DE /* CarToParisCDGToMilanLIN.gpx in Resources */,
+				DEDE54AD24467B4E003FE0DE /* EarlsCourtStation.gpx in Resources */,
+				DEDE54AE24467B4E003FE0DE /* SouthKensingtonStation.gpx in Resources */,
+				DEDE54AF24467B4E003FE0DE /* WalkToSupermarket.gpx in Resources */,
+				DEDE54B024467B4E003FE0DE /* CarTripToHeathrowAirport.gpx in Resources */,
+				DEDE54B124467B4E003FE0DE /* SKToVictoria_car_30kmh.gpx in Resources */,
+				DEDE54B224467B4E003FE0DE /* MilanLIN.gpx in Resources */,
+				DEDE54B324467B4E003FE0DE /* WalkToHeathrowAirport.gpx in Resources */,
+				DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */,
+				DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */,
+				DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +539,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DEDE548D24467B4E003FE0DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
+				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
+				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
+				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
+				DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */,
+				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
+				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
+				DEDE54A824467B4E003FE0DE /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -477,6 +566,11 @@
 			isa = PBXTargetDependency;
 			target = CD200B3E23E3885100629E73 /* Alter Eco */;
 			targetProxy = 9CD5948624296E2700B1D0B4 /* PBXContainerItemProxy */;
+		};
+		DEDE54BD24467D31003FE0DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DEDE548C24467B4E003FE0DE /* AlterEcoBackend */;
+			targetProxy = DEDE54BC24467D31003FE0DE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -497,7 +591,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AlterEcoBackend.app/AlterEcoBackend";
 			};
 			name = Debug;
 		};
@@ -517,7 +611,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AlterEcoBackend.app/AlterEcoBackend";
 			};
 			name = Release;
 		};
@@ -715,6 +809,46 @@
 			};
 			name = Release;
 		};
+		DEDE54B824467B4E003FE0DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
+				DEVELOPMENT_TEAM = C52APMS34X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = altereco;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DEDE54B924467B4E003FE0DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
+				DEVELOPMENT_TEAM = ZTFJLYXD2W;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = heuyther;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -750,6 +884,15 @@
 			buildConfigurations = (
 				CD200B6A23E3885800629E73 /* Debug */,
 				CD200B6B23E3885800629E73 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DEDE54B724467B4E003FE0DE /* Build configuration list for PBXNativeTarget "AlterEcoBackend" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DEDE54B824467B4E003FE0DE /* Debug */,
+				DEDE54B924467B4E003FE0DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

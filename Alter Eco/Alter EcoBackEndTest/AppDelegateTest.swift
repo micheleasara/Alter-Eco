@@ -1,7 +1,9 @@
 import XCTest
 import CoreLocation
 import MapKit
-@testable import Alter_Eco
+//@testable import Alter_Eco
+@testable import AlterEcoBackend
+
 class AppDelegateTest: XCTestCase {
 
     let app = AppDelegate()
