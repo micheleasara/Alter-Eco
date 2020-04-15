@@ -28,9 +28,7 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double
     func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double
 
-    // Make use of general execute query function to query daily carbon for any motionType
     func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from:Date, interval:TimeInterval) throws -> Double
-    // Make use of general execute query function to query daily carbon for all motionType
     func carbonWithinIntervalAll(from:Date, interval:TimeInterval) throws -> Double
     
     func updateScore(activity: MeasuredActivity) throws

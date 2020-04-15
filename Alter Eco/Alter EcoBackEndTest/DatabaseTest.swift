@@ -21,7 +21,7 @@ class DatabaseTest: XCTestCase {
         DBMS = CoreDataManager(persistentContainer: (UIApplication.shared.delegate as! AppDelegate).mockPersistentContainer())
     }
     
-    func testDatabaseIOIsConsistent(){
+    func testDatabaseIOIsConsistent() {
         let someTimeAgo = Date.init(timeIntervalSince1970: 100)
         let longTimeAgo = Date.init(timeIntervalSince1970: 1)
         let activity = MeasuredActivity(motionType: .plane, distance: 10000, start: longTimeAgo, end: someTimeAgo)
@@ -31,20 +31,20 @@ class DatabaseTest: XCTestCase {
         XCTAssert(activity == retrieved[0])
     }
     
-    func testDatabaseCannotFindNonExistantData(){
+    func testDatabaseCannotFindNonExistantData() {
         let someTimeAgo = Date.init(timeIntervalSince1970: 100)
         let longTimeAgo = Date.init(timeIntervalSince1970: 1)
         let retrieved = try! DBMS.queryActivities(predicate: "start == %@ AND end == %@", args: [longTimeAgo as NSDate, someTimeAgo as NSDate])
         XCTAssert(retrieved.count == 0)
     }
     
-    func testScoreIsInitializedWhenRetrievingTheFirstTime(){
+    func testScoreIsInitializedWhenRetrievingTheFirstTime() {
         let initial = try! DBMS.retrieveLatestScore() // initializes the first time
         let retrieved = try! DBMS.retrieveLatestScore() // retrieves initialized score
         XCTAssert(retrieved == initial)
     }
     
-    func testUpdatedUserScoreIsRetrieved(){
+    func testUpdatedUserScoreIsRetrieved() {
         let activity1 = MeasuredActivity(motionType: .car, distance: 10000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100))
         let activity2 = MeasuredActivity(motionType: .train, distance: 1000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 1000))
         let score1 = UserScore(activity: activity1, league: "", date: "")
