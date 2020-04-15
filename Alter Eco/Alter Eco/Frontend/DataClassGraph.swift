@@ -81,42 +81,32 @@ enum DaySpecifics: CaseIterable, Hashable, Identifiable {
     case november
     case december
     
-
+    case minusSixYearsEnum
+    case minusFiveYearsEnum
+    case minusFourYearsEnum
     case minusThreeYearsEnum
     case minusTwoYearsEnum
     case lastYearEnum
     case thisYearEnum
-    case nextYearEnum
-    case plusTwoYearsEnum
-    case plusThreeYearsEnum
 
        
     //member function to convert value to a string
     var shortName: String {
         
-        dateFormatter.dateFormat = "yyyy"
-        let thisYearString = dateFormatter.string(from: thisYear)
-        let nextYearString = dateFormatter.string(from: nextYear!)
-        let plusTwoYearsString = dateFormatter.string(from: plusTwoYears!)
-        let plusThreeYearsString = dateFormatter.string(from: plusThreeYears!)
-        let lastYearString = dateFormatter.string(from: lastYear!)
-        let minusTwoYearsString = dateFormatter.string(from: minusTwoYears!)
-        let minusThreeYearsString = dateFormatter.string(from: minusThreeYears!)
-        
+        if (self==DaySpecifics.minusSixYearsEnum)
+        { return yearsStrings[0]}
+        if (self==DaySpecifics.minusFiveYearsEnum)
+        { return yearsStrings[1]}
+        if (self==DaySpecifics.minusFourYearsEnum)
+        { return yearsStrings[2]}
         if (self==DaySpecifics.minusThreeYearsEnum)
-        { return minusThreeYearsString}
+        { return yearsStrings[3]}
         if (self==DaySpecifics.minusTwoYearsEnum)
-        { return minusTwoYearsString}
+        { return yearsStrings[4]}
         if (self==DaySpecifics.lastYearEnum)
-        { return lastYearString}
+        { return yearsStrings[5]}
         if (self==DaySpecifics.thisYearEnum)
-        { return thisYearString}
-        if (self==DaySpecifics.nextYearEnum)
-        { return nextYearString}
-        if (self==DaySpecifics.plusTwoYearsEnum)
-        { return plusTwoYearsString}
-        if (self==DaySpecifics.plusThreeYearsEnum)
-        { return plusThreeYearsString}
+        { return yearsStrings[6]}
         if (self==DaySpecifics.zerohour)
         { return "00"}
         if (self==DaySpecifics.twohour)

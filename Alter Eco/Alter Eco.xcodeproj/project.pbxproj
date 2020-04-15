@@ -295,6 +295,7 @@
 				218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */,
 				218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */,
 				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
+				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
 				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
 				9CD59429242968DE00B1D0B4 /* gridlines.swift */,
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
@@ -305,7 +306,6 @@
 				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
 				9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */,
 				573693822438F85F00992BB0 /* GraphModel.swift */,
-				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
 			);
 			path = Frontend;
