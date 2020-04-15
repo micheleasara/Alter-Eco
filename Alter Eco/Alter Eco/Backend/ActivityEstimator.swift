@@ -107,7 +107,7 @@ public class ActivityEstimator<T:ActivityList> {
         for regionOfInterest in regionsOfInterest {
             let regionLocation = CLLocation(latitude: regionOfInterest.placemark.coordinate.latitude, longitude: regionOfInterest.placemark.coordinate.longitude)
             if (regionLocation.distance(from: currentLocation) <= gpsThreshold) {
-                print("In ROI: \(regionOfInterest.name ?? "NIL NAME")")
+                print("In ROI: \(String(describing: regionOfInterest.name))")
                 return regionOfInterest.placemark.location
             }
         }
@@ -115,7 +115,7 @@ public class ActivityEstimator<T:ActivityList> {
     }
     
     private func processCurrentROI(_ currentROI: CLLocation, prevROI: inout CLLocation?, motionType: MeasuredActivity.MotionType, currentLoc: CLLocation) {
-        print("processing with previous ROI: ", prevROI?.coordinate ?? "NILL", " and current ROI: ", currentROI.coordinate)
+        print("processing with previous ROI: ", prevROI?.coordinate ?? "NIL", " and current ROI: ", currentROI.coordinate)
         // check if there was a journey (plane or train)
         if prevROI != nil && currentROI.distance(from: prevROI!).rounded() > 0 {
             let speed = (motionType == .train) ? AVERAGE_TUBE_SPEED : AVERAGE_PLANE_SPEED
