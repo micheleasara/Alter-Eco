@@ -78,8 +78,8 @@ class ActivityEstimatorTest: XCTestCase {
         estimator.processLocation(previousLocation)
         estimator.processLocation(currentLocation)
 
-        XCTAssert(list.addCalls == 1, "Expected one call for add, but got \(list.addCalls)")
-        XCTAssert(list.measurements[0].motionType == .train, "Expected train, but got \(list.measurements[0].motionType)")
+        XCTAssert(list.addCalls == 2, "Expected one call for add, but got \(list.addCalls)")
+        XCTAssert(list.measurements[1].motionType == .train, "Expected train, but got \(list.measurements[1].motionType)")
     }
     
     func testGoingFromAnAirportToAnotherAddsPlane() {
@@ -94,8 +94,8 @@ class ActivityEstimatorTest: XCTestCase {
         estimator.processLocation(previousLocation)
         estimator.processLocation(currentLocation)
 
-        XCTAssert(list.addCalls == 1, "Expected one call for add, but got \(list.addCalls)")
-        XCTAssert(list.measurements[0].motionType == .plane, "Expected plane, but got \(list.measurements[0].motionType)")
+        XCTAssert(list.addCalls == 2, "Expected one call for add, but got \(list.addCalls)")
+        XCTAssert(list.measurements[1].motionType == .plane, "Expected plane, but got \(list.measurements[1].motionType)")
     }
     
     func testEstimatorDumpsToDatabaseIfActivityChangesSignificantly() {
@@ -293,6 +293,30 @@ class ActivityEstimatorTest: XCTestCase {
         XCTAssert(list.writeToDatabaseArgs[0] == 0 && list.writeToDatabaseArgs[1] == CHANGE_ACTIVITY_THRESHOLD, "Args of call were \(list.writeToDatabaseArgs)")
     }
 
+    func testActivityWillExpireIfNoROIFlags() {
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let coord1 = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let coord2 = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
+        
+        var date = Date(timeIntervalSince1970: 0)
+        for _ in 1...5 {
+            list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        // trigger location updates
+        let previousLocation = CLLocation(coordinate: coord1, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        let currentLocation = CLLocation(coordinate: coord2, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: previousLocation.timestamp))
+        estimator.processLocation(previousLocation)
+        estimator.processLocation(currentLocation)
+        
+        // call end procedure of timer
+        XCTAssert(timers.startCalls == 1, "Incorrect number of calls, got \(timers.startCalls)")
+        XCTAssert(timers.startKeys[0] == "expired", "Got \(timers.startKeys)")
+        XCTAssert(timers.startIntervals[0] == ACTIVITY_TIMEOUT, "Got \(timers.startIntervals)")
+        timers.startBlocks[0]()
+        XCTAssert(list.dumpToDatabaseCalls == 1, "Expected one call, but got \(list.dumpToDatabaseCalls)")
+        XCTAssert(list.dumpToDatabaseArgs[0] == 0 && list.dumpToDatabaseArgs[1] == 5, "Args of call were \(list.dumpToDatabaseArgs)")
+    }
     
     class MultiTimerMock : CountdownHandler {
         public var startCalls : Int = 0
@@ -323,7 +347,7 @@ class ActivityEstimatorTest: XCTestCase {
         public var removeCalls : Int = 0
         public var removeAllCalls : Int = 0
         public var dumpToDatabaseCalls : Int = 0
-        public var dumpToDatabaseArguments : [Int] = []
+        public var dumpToDatabaseArgs : [Int] = []
         public var writeToDatabaseCalls : Int = 0
         public var writeToDatabaseArgs : [Int] = []
         
@@ -343,8 +367,8 @@ class ActivityEstimatorTest: XCTestCase {
         
         func dumpToDatabase(from:Int, to:Int) {
             dumpToDatabaseCalls += 1
-            dumpToDatabaseArguments.append(from)
-            dumpToDatabaseArguments.append(to)
+            dumpToDatabaseArgs.append(from)
+            dumpToDatabaseArgs.append(to)
             measurements.removeSubrange(from...to)
         }
         

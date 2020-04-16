@@ -33,7 +33,9 @@ public class ActivityEstimator<T:ActivityList> {
             // determine regions of interest
             let currentStation = getCurrentROI(currentLocation: location, regionsOfInterest: self.stations, gpsThreshold: GPS_UPDATE_CONFIDENCE_THRESHOLD)
             let currentAirport = getCurrentROI(currentLocation: location, regionsOfInterest: self.airports, gpsThreshold: GPS_UPDATE_AIRPORT_THRESHOLD)
-
+            // add current speed-based measurement to list
+            addSpeedBasedActivity(location: location)
+            
             // check if we are currently in a train station
             if currentStation != nil {
                 processCurrentROI(currentStation!, prevROI: &previousStation, motionType: .train, currentLoc: location)
@@ -42,17 +44,19 @@ public class ActivityEstimator<T:ActivityList> {
             else if currentAirport != nil {
                 processCurrentROI(currentAirport!, prevROI: &previousAirport, motionType: .plane, currentLoc: location)
             }
-            // not in station and were before, if more than set number of walking measurements, forget flag
-            else if currentStation == nil && previousStation != nil && measurements.count >= WALK_NUM_FOR_TRAIN_FLAG_OFF {
+            // not in station and were before: check validity of station flag
+            else if currentStation == nil && previousStation != nil {
                 checkROIFlagStillValid(activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, prevROI: &previousStation, currentLoc: location)
             }
-            // not in airport and were before, if more than set number of car measurements, forget flag
-            else if currentAirport == nil && previousAirport != nil && measurements.count >= CAR_NUM_FOR_PLANE_FLAG_OFF {
+            // not in airport and were before: check validity of airport flag
+            else if currentAirport == nil && previousAirport != nil {
                 checkROIFlagStillValid(activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, prevROI: &previousAirport, currentLoc: location)
             }
-            // check if there has been a significant change in speed-based activities, and store them if so
-            else {
-               processSpeedBasedActivities(location: location)
+            // not the first location received
+            else if previousLoc != nil {
+                // check if there has been a significant change in speed-based activities
+                processSignificantChanges()
+                timers.start(key: "expired", interval: ACTIVITY_TIMEOUT, block: activityHasExpired)
             }
         
             previousLoc = location
@@ -64,23 +68,29 @@ public class ActivityEstimator<T:ActivityList> {
         return location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD
     }
     
+    // Ensures update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
     private func isLocationFarEnough(_ location: CLLocation) -> Bool {
-        // ensure update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
         guard previousLoc != nil else { return true }
         let distance = location.distance(from: previousLoc!)
         return distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD
     }
     
+    // Checks if a location update is approximately instantaneous
     private func isLocationUpdateInstantaneous(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return false }
         return location.timestamp.timeIntervalSince(previousLoc!.timestamp).rounded() <= 0
     }
     
-    private func processSpeedBasedActivities(location: CLLocation) {
-        // ensure this is not the first location we are receiving
-        guard previousLoc != nil else { return }
-        addSpeedBasedActivity(location: location, previousLoc: previousLoc!)
-        processSignificantChanges()
+    private func addSpeedBasedActivity(location: CLLocation) {
+        // cannot compute if this is the first location we receive
+        if let previousLoc = previousLoc {
+            let distance = location.distance(from: previousLoc)
+            let time = location.timestamp.timeIntervalSince(previousLoc.timestamp)
+            let speed = distance / time
+            let motionType = MeasuredActivity.speedToMotionType(speed: speed)
+            
+            measurements.add(MeasuredActivity(motionType: motionType, distance: distance, start: previousLoc.timestamp, end: location.timestamp))
+        }
     }
     
     private func processSignificantChanges() {
@@ -103,13 +113,10 @@ public class ActivityEstimator<T:ActivityList> {
         }
     }
     
-    private func addSpeedBasedActivity(location: CLLocation, previousLoc: CLLocation) {
-        let distance = location.distance(from: previousLoc)
-        let time = location.timestamp.timeIntervalSince(previousLoc.timestamp)
-        let speed = distance / time
-        let motionType = MeasuredActivity.speedToMotionType(speed: speed)
-        
-        measurements.add(MeasuredActivity(motionType: motionType, distance: distance, start: previousLoc.timestamp, end: location.timestamp))
+    private func activityHasExpired() {
+        if previousStation == nil && previousAirport == nil {
+            measurements.dumpToDatabase(from: 0, to: measurements.count - 1)
+        }
     }
     
     private func getCurrentROI(currentLocation: CLLocation, regionsOfInterest: [MKMapItem], gpsThreshold: Double) -> CLLocation? {
@@ -140,10 +147,6 @@ public class ActivityEstimator<T:ActivityList> {
                 prevROI = currentROI
                 resetROITimer(motionType)
             }
-            // compute speed based activity and add it to the list
-            if previousLoc != nil {
-                addSpeedBasedActivity(location: currentLoc, previousLoc: previousLoc!)
-            }
         }
     }
     
@@ -163,7 +166,7 @@ public class ActivityEstimator<T:ActivityList> {
     
     private func checkROIFlagStillValid(activityNumToOff: Int, motionType: MeasuredActivity.MotionType, prevROI: inout CLLocation?, currentLoc: CLLocation) {
         guard previousLoc != nil else { return }
-        addSpeedBasedActivity(location: currentLoc, previousLoc: previousLoc!)
+        guard measurements.count >= activityNumToOff else { return }
         
         let newActivityIndex = measurements.count - activityNumToOff
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {

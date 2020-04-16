@@ -35,6 +35,8 @@ public let WALK_NUM_FOR_TRAIN_FLAG_OFF:Int = 3
 public let CHANGE_ACTIVITY_THRESHOLD:Int = 2
 // defines weights in computing average of speed-based activities
 public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Int] = [.car: 2, .walking: 1]
+// defines how many seconds must pass for an activity to expire in the absence of ROI flags
+public let ACTIVITY_TIMEOUT : Double = 30*60
 
 // MARK: - GPS constants
 // defines how many meters to request a gps update
