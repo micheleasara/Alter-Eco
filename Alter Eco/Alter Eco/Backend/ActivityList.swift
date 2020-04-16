@@ -7,6 +7,7 @@ where Index == Int, Element == Array<MeasuredActivity>.Element {
     func remove(at:Index)
     func removeAll()
     func dumpToDatabase(from:Int, to:Int)
+    func writeToDatabase(from:Int, to:Int)
 }
 
 public class WeightedActivityList: ActivityList {
@@ -99,8 +100,12 @@ public class WeightedActivityList: ActivityList {
     }
     
     public func dumpToDatabase(from:Int, to:Int) {
-        writeToDatabase(getAverage(from: from, to: to))
+        writeToDatabase(from:from, to:to)
         measurements.removeSubrange(from...to)
+    }
+    
+    public func writeToDatabase(from: Int, to: Int) {
+        writeToDatabase(getAverage(from: from, to: to))
     }
     
     private func writeToDatabase(_ activity: MeasuredActivity){

@@ -43,11 +43,11 @@ public class ActivityEstimator<T:ActivityList> {
                 processCurrentROI(currentAirport!, prevROI: &previousAirport, motionType: .plane, currentLoc: location)
             }
             // not in station and were before, if more than set number of walking measurements, forget flag
-            else if currentStation == nil && previousStation != nil && measurements.count > WALK_NUM_FOR_TRAIN_FLAG_OFF {
+            else if currentStation == nil && previousStation != nil && measurements.count >= WALK_NUM_FOR_TRAIN_FLAG_OFF {
                 checkROIFlagStillValid(activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, prevROI: &previousStation, currentLoc: location)
             }
             // not in airport and were before, if more than set number of car measurements, forget flag
-            else if currentAirport == nil && previousAirport != nil && measurements.count > CAR_NUM_FOR_PLANE_FLAG_OFF {
+            else if currentAirport == nil && previousAirport != nil && measurements.count >= CAR_NUM_FOR_PLANE_FLAG_OFF {
                 checkROIFlagStillValid(activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, prevROI: &previousAirport, currentLoc: location)
             }
             // check if there has been a significant change in speed-based activities, and store them if so
@@ -84,32 +84,23 @@ public class ActivityEstimator<T:ActivityList> {
     }
     
     private func processSignificantChanges() {
-        // base case: exit when there are not enough activities for it to be a change
-        if measurements.count <= numChangeActivity {
-            return
-        }
-        
-        if haveMeasurementsChangedSignificantly() {
-            let newActivityIndex = measurements.count - numChangeActivity
-            measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
-        }
-        processSignificantChanges()
-    }
-    
-    private func haveMeasurementsChangedSignificantly() -> Bool {
-        if measurements.count <= numChangeActivity { return false }
-
-        let rootType = measurements[0].motionType
-        var previousLastType: MeasuredActivity.MotionType? = nil
-        for index in stride(from: (measurements.count-numChangeActivity-1), to: measurements.count, by: 1) {
-            let type = measurements[index].motionType
-            if type == rootType || (previousLastType != nil && previousLastType != type) {
-                return false
+        // look for indexes of changes in motion type
+        var changes : [Int] = []
+        for i in stride(from: 0, to: measurements.count - 1, by: 1) {
+            if measurements[i].motionType != measurements[i+1].motionType {
+                changes.append(i)
             }
-            previousLastType = type
         }
-
-        return true
+        changes.append(measurements.count - 1)
+        
+        // for each change, check if it is a significant change or noise
+        var activityStart = 0
+        for j in stride(from: 1, to: changes.count, by: 1) {
+            if changes[j] - changes[j-1] >= numChangeActivity {
+                measurements.writeToDatabase(from: activityStart, to: changes[j] - 1)
+                activityStart = changes[j]
+            }
+        }
     }
     
     private func addSpeedBasedActivity(location: CLLocation, previousLoc: CLLocation) {
@@ -177,7 +168,9 @@ public class ActivityEstimator<T:ActivityList> {
         let newActivityIndex = measurements.count - activityNumToOff
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {
             // flag is still valid
+            print(motionType)
             if measurements[i].motionType != motionType {
+                print(measurements[i].motionType)
                 return
             }
         }
