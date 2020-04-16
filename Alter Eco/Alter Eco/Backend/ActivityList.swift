@@ -29,9 +29,9 @@ public class WeightedActivityList: ActivityList {
     private let DBMS: DBWriter
     
     /**
-     Initializes a list of activities which can store activities in memory and then write their weighted average to a database.
-     - Parameters activityWeights: dictionary linking a motion type to a weight.
-     - Parameters DBWriter: object to write to a database.
+     Initializes A list of activities which can store activities in memory and then write their weighted average to a database.
+     - Parameter activityWeights: dictionary associating a motion type to a weight.
+     - Parameter DBMS: object to write to the database.
      */
     init(activityWeights: [MeasuredActivity.MotionType: Int], DBMS: DBWriter) {
         self.activityWeights = activityWeights

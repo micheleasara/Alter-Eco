@@ -100,10 +100,10 @@ class DatabaseTest: XCTestCase {
     
     func testHourlyCarbonRetrievalForAllMotionTypes() {
         let today = Date()
-        let oneToFour = MeasuredActivity(motionType: .plane, distance: 9000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "04:00:00")!)
-        let oneToTwoHalf = MeasuredActivity(motionType: .car, distance: 18000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "02:30:00")!)
-        let twoHalfToFour = MeasuredActivity(motionType: .car, distance: 27000, start: Date.setDateToSpecificHour(date: today, hour: "02:30:00")!, end: Date.setDateToSpecificHour(date: today, hour: "04:00:00")!)
-        let twoToThree = MeasuredActivity(motionType: .walking, distance: 3000, start: Date.setDateToSpecificHour(date: today, hour: "02:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "03:00:00")!)
+        let oneToFour = MeasuredActivity(motionType: .plane, distance: 9000, start: Date.setToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setToSpecificHour(date: today, hour: "04:00:00")!)
+        let oneToTwoHalf = MeasuredActivity(motionType: .car, distance: 18000, start: Date.setToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setToSpecificHour(date: today, hour: "02:30:00")!)
+        let twoHalfToFour = MeasuredActivity(motionType: .car, distance: 27000, start: Date.setToSpecificHour(date: today, hour: "02:30:00")!, end: Date.setToSpecificHour(date: today, hour: "04:00:00")!)
+        let twoToThree = MeasuredActivity(motionType: .walking, distance: 3000, start: Date.setToSpecificHour(date: today, hour: "02:00:00")!, end: Date.setToSpecificHour(date: today, hour: "03:00:00")!)
         
         // activities only sharing a portion of time with the query
         let activities = [oneToFour, oneToTwoHalf, twoHalfToFour, twoToThree]
@@ -122,10 +122,10 @@ class DatabaseTest: XCTestCase {
     
     func testHourlyCarbonRetrievalForASpecificMotionType() {
         let today = Date()
-        let oneToFour = MeasuredActivity(motionType: .car, distance: 9000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "04:00:00")!)
-        let oneToTwoHalf = MeasuredActivity(motionType: .car, distance: 18000, start: Date.setDateToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "02:30:00")!)
-        let twoHalfToFour = MeasuredActivity(motionType: .car, distance: 27000, start: Date.setDateToSpecificHour(date: today, hour: "02:30:00")!, end: Date.setDateToSpecificHour(date: today, hour: "04:00:00")!)
-        let twoToThree = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setDateToSpecificHour(date: today, hour: "02:00:00")!, end: Date.setDateToSpecificHour(date: today, hour: "03:00:00")!)
+        let oneToFour = MeasuredActivity(motionType: .car, distance: 9000, start: Date.setToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setToSpecificHour(date: today, hour: "04:00:00")!)
+        let oneToTwoHalf = MeasuredActivity(motionType: .car, distance: 18000, start: Date.setToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setToSpecificHour(date: today, hour: "02:30:00")!)
+        let twoHalfToFour = MeasuredActivity(motionType: .car, distance: 27000, start: Date.setToSpecificHour(date: today, hour: "02:30:00")!, end: Date.setToSpecificHour(date: today, hour: "04:00:00")!)
+        let twoToThree = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setToSpecificHour(date: today, hour: "02:00:00")!, end: Date.setToSpecificHour(date: today, hour: "03:00:00")!)
         
         // activities only sharing a portion of time with the query
         let activities = [oneToFour, oneToTwoHalf, twoHalfToFour, twoToThree]
@@ -147,12 +147,12 @@ class DatabaseTest: XCTestCase {
         let yesterdayToTomorrow = MeasuredActivity(motionType: .plane, distance: 9000, start: Date(timeInterval: -24*60*60, since: now), end: Date(timeInterval: 24*60*60, since: now))
         let nowToTomorrow = MeasuredActivity(motionType: .car, distance: 18000, start: now, end: Date(timeInterval: 24*60*60, since: now))
         let yesterdayToNow = MeasuredActivity(motionType: .car, distance: 27000, start: Date(timeInterval: -24*60*60, since: now), end: now)
-        let exactlyToday = MeasuredActivity(motionType: .walking, distance: 3000, start: Date.setDateToSpecificHour(date: now, hour: "00:00:00")!, end: Date.setDateToSpecificHour(date: now, hour: "23:59:59")!)
+        let exactlyToday = MeasuredActivity(motionType: .walking, distance: 3000, start: Date.setToSpecificHour(date: now, hour: "00:00:00")!, end: Date.setToSpecificHour(date: now, hour: "23:59:59")!)
         
         // activities only sharing a portion of time with the query
         let activities = [yesterdayToNow, nowToTomorrow, yesterdayToTomorrow, exactlyToday]
         let totalExaminedTime : Double = 24*60*60
-        let timeSinceMidnight = now.timeIntervalSince(Date.setDateToSpecificHour(date: now, hour: "00:00:00")!)
+        let timeSinceMidnight = now.timeIntervalSince(Date.setToSpecificHour(date: now, hour: "00:00:00")!)
         let coeff = [timeSinceMidnight/totalExaminedTime, (totalExaminedTime - timeSinceMidnight) / totalExaminedTime, 0.5, 1.0]
         
         var expectedCarbon = 0.0
@@ -161,7 +161,7 @@ class DatabaseTest: XCTestCase {
             expectedCarbon += DBMS.computeCarbonUsage(distance: coeff[i]*activities[i].distance, type: activities[i].motionType)
         }
         
-        let carbonRetrieved = try! DBMS.queryDailyCarbonAll(weekDayToDisplay: Date.getDayNameFromDate(now))
+        let carbonRetrieved = try! DBMS.queryDailyCarbonAll(weekDayToDisplay: Date.getDayName(now))
         let tolerance = 0.1
         XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
     }
@@ -171,12 +171,12 @@ class DatabaseTest: XCTestCase {
         let yesterdayToTomorrow = MeasuredActivity(motionType: .car, distance: 9000, start: Date(timeInterval: -24*60*60, since: now), end: Date(timeInterval: 24*60*60, since: now))
         let nowToTomorrow = MeasuredActivity(motionType: .car, distance: 18000, start: now, end: Date(timeInterval: 24*60*60, since: now))
         let yesterdayToNow = MeasuredActivity(motionType: .car, distance: 27000, start: Date(timeInterval: -24*60*60, since: now), end: now)
-        let exactlyToday = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setDateToSpecificHour(date: now, hour: "00:00:00")!, end: Date.setDateToSpecificHour(date: now, hour: "23:59:59")!)
+        let exactlyToday = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setToSpecificHour(date: now, hour: "00:00:00")!, end: Date.setToSpecificHour(date: now, hour: "23:59:59")!)
         
         // activities only sharing a portion of time with the query
         let activities = [yesterdayToNow, nowToTomorrow, yesterdayToTomorrow, exactlyToday]
         let totalExaminedTime : Double = 24*60*60
-        let timeSinceMidnight = now.timeIntervalSince(Date.setDateToSpecificHour(date: now, hour: "00:00:00")!)
+        let timeSinceMidnight = now.timeIntervalSince(Date.setToSpecificHour(date: now, hour: "00:00:00")!)
         let coeff = [timeSinceMidnight/totalExaminedTime, (totalExaminedTime - timeSinceMidnight) / totalExaminedTime, 0.5, 1.0]
         
         var expectedCarbon = 0.0
@@ -185,7 +185,7 @@ class DatabaseTest: XCTestCase {
             expectedCarbon += DBMS.computeCarbonUsage(distance: coeff[i]*activities[i].distance, type: activities[i].motionType)
         }
         
-        let carbonRetrieved = try! DBMS.queryDailyCarbon(motionType: .car, weekDayToDisplay: Date.getDayNameFromDate(now))
+        let carbonRetrieved = try! DBMS.queryDailyCarbon(motionType: .car, weekDayToDisplay: Date.getDayName(now))
         let tolerance = 0.1
         XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
     }

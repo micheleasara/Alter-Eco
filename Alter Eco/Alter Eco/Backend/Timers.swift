@@ -4,15 +4,15 @@ import Foundation
 public protocol CountdownHandler {
     /**
      Starts a countdown.
-     - Parameters key: identifier for the countdown.
-     - Parameters interval: how long the countdown will be.
-     - Parameters block: procedure called at the end of the countdown.
+     - Parameter key: identifier for the countdown.
+     - Parameter interval: how long the countdown will be.
+     - Parameter block: procedure called at the end of the countdown.
      */
     func start(key: String, interval: TimeInterval, block: @escaping () -> Void)
     
     /**
     Stops a countdown.
-    - Parameters key: identifier for the countdown.
+    - Parameter key: identifier for the countdown.
      */
     func stop(_ key: String)
 }
@@ -23,9 +23,9 @@ public class MultiTimer : CountdownHandler {
     
     /**
     Starts a countdown.
-    - Parameters key: identifier for the countdown.
-    - Parameters interval: how long the countdown will be.
-    - Parameters block: procedure called at the end of the countdown.
+    - Parameter key: identifier for the countdown.
+    - Parameter interval: how long the countdown will be.
+    - Parameter block: procedure called at the end of the countdown.
     - Remark: if start is called with a key already associated to a countdown, the latter is stopped and restarted.
     */
     public func start(key: String, interval: TimeInterval, block: @escaping () -> Void) {
@@ -35,7 +35,7 @@ public class MultiTimer : CountdownHandler {
     
     /**
     Stops a countdown.
-    - Parameters key: identifier for the countdown.
+    - Parameter key: identifier for the countdown.
     - Remark: if no countdown is associated with the given key, nothing happens.
      */
     public func stop(_ key: String) {

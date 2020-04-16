@@ -255,7 +255,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         // retrieve current score
         let queryResult = try executeQuery(entity: "Score", predicate:nil, args: nil) as! [NSManagedObject]
         if queryResult.count != 0 {
-            let activityScore = UserScore(activity: activity, league: "", date: Date.dateToInternationalString(Date()))
+            let activityScore = UserScore(activity: activity, league: "", date: Date.toInternationalString(Date()))
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
             queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
             queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
@@ -268,7 +268,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func updateLeague(newLeague: String) throws {
        let managedContext = try getManagedContext()
        let dateToday = Date()
-       let dateTodayStr = Date.dateToInternationalString(dateToday)
+       let dateTodayStr = Date.toInternationalString(dateToday)
     
        // retrieve current userscore
         let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
@@ -321,8 +321,8 @@ public class CoreDataManager : DBManager, CarbonCalculator {
      - Remark: hours should be given in the format HH:mm:ss.
     */
     public func queryHourlyCarbon(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) throws -> Double {
-        let startDate = Date.setDateToSpecificHour(date: Date(), hour: hourStart)!
-        let endDate = Date.setDateToSpecificHour(date: Date(), hour: hourEnd)!
+        let startDate = Date.setToSpecificHour(date: Date(), hour: hourStart)!
+        let endDate = Date.setToSpecificHour(date: Date(), hour: hourEnd)!
         let timeInterval = endDate.timeIntervalSince(startDate)
         return try carbonWithinInterval(motionType: motionType, from: startDate, interval: timeInterval)
     }
@@ -332,8 +332,8 @@ public class CoreDataManager : DBManager, CarbonCalculator {
      - Remark: hours should be given in the format HH:mm:ss.
      */
     public func queryHourlyCarbonAll(hourStart: String, hourEnd: String) throws -> Double {
-        let startDate = Date.setDateToSpecificHour(date: Date(), hour: hourStart)!
-        let endDate = Date.setDateToSpecificHour(date: Date(), hour: hourEnd)!
+        let startDate = Date.setToSpecificHour(date: Date(), hour: hourStart)!
+        let endDate = Date.setToSpecificHour(date: Date(), hour: hourEnd)!
         let timeInterval = endDate.timeIntervalSince(startDate)
         return try carbonWithinIntervalAll(from: startDate, interval: timeInterval)
     }
@@ -343,7 +343,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
      - Remark: day should be given in full and in standard UK english.
      */
     public func queryDailyCarbon(motionType: MeasuredActivity.MotionType, weekDayToDisplay: String) throws -> Double {
-        let date = Date.getDateFromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
+        let date = Date.fromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
         return try carbonWithinInterval(motionType: motionType, from: date, interval: 24*60*60)
     }
 
@@ -352,7 +352,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     - Remark: day name should be given in full and in standard UK english.
     */
     public func queryDailyCarbonAll(weekDayToDisplay: String) throws -> Double {
-        let date = Date.getDateFromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
+        let date = Date.fromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
         return try carbonWithinIntervalAll(from: date, interval: 24*60*60)
     }
 
@@ -365,7 +365,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         dateFormatter.locale = Locale(identifier: "en-UK")
         
         let firstOfMonth = Date.monthNameToFirstOfMonth(month: month)!
-        let lastOfMonth = Date.setDateToSpecificHour(date: Date.getEndDayOfMonth(date: firstOfMonth), hour: "23:59:59")!
+        let lastOfMonth = Date.setToSpecificHour(date: Date.getEndDayOfMonth(date: firstOfMonth), hour: "23:59:59")!
         
         let interval = lastOfMonth.timeIntervalSince(firstOfMonth)
         return try carbonWithinInterval(motionType: motionType, from: firstOfMonth, interval: interval)
