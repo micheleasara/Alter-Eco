@@ -83,7 +83,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     }
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
+        print("Hello world")
         // Create the SwiftUI view that provides the window contents.
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let contentView = ContentView().environment(\.managedObjectContext, context)       

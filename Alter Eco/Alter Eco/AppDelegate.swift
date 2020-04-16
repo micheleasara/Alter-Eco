@@ -10,7 +10,9 @@ let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
     // Instantiate the scene
-    //let scene = SceneDelegate()
+    #if NO_BACKEND_TESTING
+    let scene = SceneDelegate()
+    #endif
     // requests gps updates
     internal let manager = CLLocationManager()
     // interfaces with the database
