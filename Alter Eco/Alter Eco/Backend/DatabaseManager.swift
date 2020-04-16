@@ -125,7 +125,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     */
     public init(persistentContainer : NSPersistentContainer) {
         self.persistentContainer = persistentContainer
-        let deli = CoreDataManager(persistentContainer: persistentContainer)
     }
     
     /**

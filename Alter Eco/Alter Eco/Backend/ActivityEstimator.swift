@@ -77,28 +77,31 @@ public class ActivityEstimator<T:ActivityList> {
         }
     }
     
+    /// Determines if a location is accurate enough
     private func isLocationAccurate(_ location: CLLocation) -> Bool {
         // accuracy here means phyisical error in meters (the smaller the better)
         return location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD
     }
     
-    // Ensures update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
+    /// Ensures update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
     private func isLocationFarEnough(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return true }
         let distance = location.distance(from: previousLoc!)
         return distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD
     }
     
-    // Checks if a location update is approximately instantaneous
+    /// Checks if a location update is approximately instantaneous
     private func isLocationUpdateInstantaneous(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return false }
         return location.timestamp.timeIntervalSince(previousLoc!.timestamp).rounded() <= 0
     }
     
+    /// Returns if the given ROI has been visited recently.
     private func visitedRegionOfInterest(_ regionOfInterest: CLLocation?) -> Bool {
         return regionOfInterest != nil
     }
     
+    /// Stores a speed-based activity to the measurements list.
     private func addSpeedBasedActivity(location: CLLocation) {
         // cannot compute if this is the first location we receive
         if let previousLoc = previousLoc {
@@ -111,6 +114,7 @@ public class ActivityEstimator<T:ActivityList> {
         }
     }
     
+    /// Looks for significant changes in motion types within the measurements and writes the estimated activity if so.
     private func processSignificantChanges() {
         guard measurements.count > 0 else { return }
         // look for indexes of changes in motion type
@@ -132,12 +136,15 @@ public class ActivityEstimator<T:ActivityList> {
         }
     }
     
+    /// Activity list is not longer valid and it will be dumped to the database.
     private func activityHasExpired() {
-        if previousStation == nil && previousAirport == nil {
+        // do not dump if ROI flags are on
+        if !visitedRegionOfInterest(previousAirport) && !visitedRegionOfInterest(previousStation) {
             measurements.dumpToDatabase(from: 0, to: measurements.count - 1)
         }
     }
     
+    /// Checks if the user is in a ROI within the list provided. Returns the ROI if they are, nil otherwise.
     private func getCurrentROI(currentLocation: CLLocation, regionsOfInterest: [MKMapItem], gpsThreshold: Double) -> CLLocation? {
         for regionOfInterest in regionsOfInterest {
             let regionLocation = CLLocation(latitude: regionOfInterest.placemark.coordinate.latitude, longitude: regionOfInterest.placemark.coordinate.longitude)
@@ -149,20 +156,15 @@ public class ActivityEstimator<T:ActivityList> {
         return nil
     }
     
-    
+    /// Given the user is in a ROI, checks for a ROI-based activity to have occurred and if so it saves it. Otherwise, the ROI flag and timer are reset.
     private func processCurrentROI(_ currentROI: CLLocation, prevROI: inout CLLocation?, motionType: MeasuredActivity.MotionType, currentLoc: CLLocation) {
         print("processing with previous ROI: ", prevROI?.coordinate ?? "NIL", " and current ROI: ", currentROI.coordinate)
         
-        if visitedRegionOfInterest(prevROI) {
-            if currentROI.distance(from: prevROI!).rounded() > 0 {
+        if visitedRegionOfInterest(prevROI) && currentROI.distance(from: prevROI!).rounded() > 0 {
                 // different ROIs: a trip has occurred!
                 let speed = (motionType == .train) ? AVERAGE_TUBE_SPEED : AVERAGE_PLANE_SPEED
                 addROIBasedActivity(currentRegionOfInterest: currentROI, previousRegionOfInterest: &prevROI, speed: speed, motionType: motionType)
                 resetROITimer(motionType)
-            } else {
-                // update timestamp, as the current ROI is the same as before
-                prevROI = currentROI
-            }
         } else {
             // first time visiting this ROI
             prevROI = currentROI
@@ -170,10 +172,12 @@ public class ActivityEstimator<T:ActivityList> {
         }
     }
     
+    /// Restarts the countdown for the appropriate ROI to expire.
     private func resetROITimer(_ motionType: MeasuredActivity.MotionType) {
         motionType == .train ? timers.start(key: "station", interval: STATION_TIMEOUT, block: stationTimedOut) : timers.start(key: "airport", interval: AIRPORT_TIMEOUT, block: airportTimedOut)
     }
     
+    /// Computes and stores ROI-based activity.
     private func addROIBasedActivity(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType) {
         guard previousRegionOfInterest != nil else { return }
         let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
@@ -184,6 +188,8 @@ public class ActivityEstimator<T:ActivityList> {
         measurements.add(activity)
     }
     
+    /// Determines if the ROI flag is invalid due to sufficient subsequent activities of the right kind.
+    /// If invalid, flag is deactivated and list is examined for significant changes.
     private func checkROIFlagStillValid(activityNumToOff: Int, motionType: MeasuredActivity.MotionType, prevROI: inout CLLocation?, currentLoc: CLLocation) {
         guard previousLoc != nil else { return }
         guard measurements.count >= activityNumToOff else { return }
@@ -191,9 +197,7 @@ public class ActivityEstimator<T:ActivityList> {
         let newActivityIndex = measurements.count - activityNumToOff
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {
             // flag is still valid
-            print(motionType)
             if measurements[i].motionType != motionType {
-                print(measurements[i].motionType)
                 return
             }
         }
@@ -202,12 +206,14 @@ public class ActivityEstimator<T:ActivityList> {
         processSignificantChanges()
     }
     
+    /// Called when the ROI countdown for the station expires.
     private func stationTimedOut() {
         self.previousStation = nil
         processSignificantChanges()
         measurements.dumpToDatabase(from: 0, to: measurements.count-1)
     }
     
+    /// Called when the ROI countdown for the airport expires.
     private func airportTimedOut() {
         self.previousAirport = nil
         processSignificantChanges()
