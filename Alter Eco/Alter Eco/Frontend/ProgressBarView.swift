@@ -5,6 +5,7 @@ struct ProgressBarView: View {
 
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
+    @State private var showingInfo = false
     
     var body: some View {
         
@@ -33,6 +34,14 @@ struct ProgressBarView: View {
                         Text("You have reached the top league!")
                         Text("You are a true Alter Ecoer :)")
                     }
+                    
+                    Button(action: {self.showingInfo = true}) {
+                        Image(systemName: "info.circle")
+                    }
+                        .alert(isPresented: $showingInfo) {
+                               Alert(title: Text("Your Eco League"), message: Text("The greener the transport modes you use, the more points you accumulate. Gather enough points, and you will move up a league! Improve yourself, reduce your carbon footprint and save planet earth."), dismissButton: .default(Text("OK")))
+                        }
+                    .offset(x: CGFloat(screenMeasurements.broadcastedWidth)*0.38)
                     
                 }
             }

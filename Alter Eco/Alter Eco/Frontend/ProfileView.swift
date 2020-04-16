@@ -28,8 +28,7 @@ struct ProfileView: View {
             .navigationBarTitle("Profile", displayMode: .inline)
             .navigationBarItems(trailing: NavigationLink(destination: ExplanationView())
             {
-                Image(systemName: "questionmark.circle")
-                    .scaleEffect(1.5)
+                Text("Info")
             })
         }
 
@@ -223,23 +222,35 @@ struct ProfileImage: View {
 struct ScorePoints: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
+    @State private var showingInfo = false
     
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: 25, style: .continuous)
-                .fill(Color("graphBars"))
-                .opacity(0.7)
+               // .fill(Color("graphBars"))
+                .fill(Color("fill_colour"))
+                //.opacity(0.7)
                 .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.9)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .stroke(Color("graphBars"), lineWidth: 4)
-                )
+               // .overlay(
+               //     RoundedRectangle(cornerRadius: 25, style: .continuous)
+                //    .stroke(Color("graphBars"), lineWidth: 4)
+               // )
                 .padding(.horizontal, 10)
                 .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.1)
             HStack(alignment: .top){
                 Text("Score:").font(.title) .fontWeight(.bold)
                 Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
                     .font(.title)
+
+            
+            Button(action: {self.showingInfo = true}) {
+                Image(systemName: "info.circle")
+            }
+                .alert(isPresented: $showingInfo) {
+                    Alert(title: Text("Your Eco Score"), message: Text("We estimate your modes of transport throughout the day. Walking gets you 10 points, taking the tube you gain 7 point, and you only gain 3 points by taking the car (no points for plane travel)!"), dismissButton: .default(Text("OK")))
+                }
+                .offset(x: CGFloat(screenMeasurements.broadcastedWidth)*0.2)
+
             }
         }
     }
