@@ -7,32 +7,24 @@ public class ActivityEstimator<T:ActivityList> {
     public var stations: [MKMapItem] = []
     // nearby airports
     public var airports: [MKMapItem] = []
+    
     // contains location information of visit to tube station, nil if not recently in a tube station
     private var previousStation: CLLocation? = nil
     // contains location information of visit to airport, nil if not recently in an airport
     private var previousAirport: CLLocation? = nil
     // contains location from previous valid update
     private var previousLoc: CLLocation? = nil
-    // executes countdown for the validity of the train station flag
-    private var stationValidityTimer = Timer()
-    // executes countdown for the validity of the plane flag
-    private var airportValidityTimer = Timer()
-    // seconds after which all train station flags are reset
-    private let stationTimeout:Double
-    // seconds after which all plane flags are reset
-    private let airportTimeout:Double
-    // define how close one has to be to be considered within a station
-    private let inStationRadius:Double
+    // manages countdowns to expire flags for ROI-based activities
+    private var timers : CountdownHandler!
+
     // container for user activities containing a motion type and timestamps
     private var measurements: T
     private let numChangeActivity: Int
         
-    public init(activityList: T, inStationRadius:Double, stationTimeout:Double, airportTimeout:Double, numChangeActivity: Int) {
-        self.stationTimeout = stationTimeout
-        self.airportTimeout = airportTimeout
-        self.inStationRadius = inStationRadius
+    public init(activityList: T, numChangeActivity: Int, timers: CountdownHandler) {
         self.measurements = activityList
         self.numChangeActivity = numChangeActivity
+        self.timers = timers
     }
     
     public func processLocation(_ location: CLLocation) {
@@ -67,16 +59,6 @@ public class ActivityEstimator<T:ActivityList> {
         }
     }
     
-    private func processSpeedBasedActivities(location: CLLocation) {
-        // ensure this is not the first location we are receiving
-        guard previousLoc != nil else { return }
-        addSpeedBasedActivity(location: location, previousLoc: previousLoc!)
-        if measurements.hasChangedSignificantly() {
-            let newActivityIndex = measurements.count - numChangeActivity
-            measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
-        }
-    }
-    
     private func isLocationAccurate(_ location: CLLocation) -> Bool {
         // accuracy here means phyisical error in meters (the smaller the better)
         return location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD
@@ -92,6 +74,42 @@ public class ActivityEstimator<T:ActivityList> {
     private func isLocationUpdateInstantaneous(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return false }
         return location.timestamp.timeIntervalSince(previousLoc!.timestamp).rounded() <= 0
+    }
+    
+    private func processSpeedBasedActivities(location: CLLocation) {
+        // ensure this is not the first location we are receiving
+        guard previousLoc != nil else { return }
+        addSpeedBasedActivity(location: location, previousLoc: previousLoc!)
+        processSignificantChanges()
+    }
+    
+    private func processSignificantChanges() {
+        // base case: exit when there are not enough activities for it to be a change
+        if measurements.count <= numChangeActivity {
+            return
+        }
+        
+        if haveMeasurementsChangedSignificantly() {
+            let newActivityIndex = measurements.count - numChangeActivity
+            measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
+        }
+        processSignificantChanges()
+    }
+    
+    private func haveMeasurementsChangedSignificantly() -> Bool {
+        if measurements.count <= numChangeActivity { return false }
+
+        let rootType = measurements[0].motionType
+        var previousLastType: MeasuredActivity.MotionType? = nil
+        for index in stride(from: (measurements.count-numChangeActivity-1), to: measurements.count, by: 1) {
+            let type = measurements[index].motionType
+            if type == rootType || (previousLastType != nil && previousLastType != type) {
+                return false
+            }
+            previousLastType = type
+        }
+
+        return true
     }
     
     private func addSpeedBasedActivity(location: CLLocation, previousLoc: CLLocation) {
@@ -120,7 +138,7 @@ public class ActivityEstimator<T:ActivityList> {
         if prevROI != nil && currentROI.distance(from: prevROI!).rounded() > 0 {
             let speed = (motionType == .train) ? AVERAGE_TUBE_SPEED : AVERAGE_PLANE_SPEED
             addROIBasedActivity(currentRegionOfInterest: currentROI, previousRegionOfInterest: &prevROI, speed: speed, motionType: motionType)
-            (motionType == .train) ? resetStationTimer() : resetAirportTimer()
+            resetROITimer(motionType)
         } else {
             // while in same airport/tube station, update timestamp
             if prevROI != nil && currentROI.distance(from: prevROI!).rounded() <= 0 {
@@ -129,13 +147,17 @@ public class ActivityEstimator<T:ActivityList> {
             // In regionOfInterest right now and weren't before
             else if prevROI == nil {
                 prevROI = currentROI
-                motionType == .train ? resetStationTimer() : resetAirportTimer()
+                resetROITimer(motionType)
             }
             // compute speed based activity and add it to the list
             if previousLoc != nil {
                 addSpeedBasedActivity(location: currentLoc, previousLoc: previousLoc!)
             }
         }
+    }
+    
+    private func resetROITimer(_ motionType: MeasuredActivity.MotionType) {
+        motionType == .train ? timers.start(key: "station", interval: STATION_TIMEOUT, block: stationTimedOut) : timers.start(key: "airport", interval: AIRPORT_TIMEOUT, block: airportTimedOut)
     }
     
     private func addROIBasedActivity(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType) {
@@ -159,35 +181,18 @@ public class ActivityEstimator<T:ActivityList> {
             }
         }
         prevROI = nil
-        measurements.dumpToDatabase(from: 0, to: newActivityIndex - 1)
+        processSignificantChanges()
     }
     
-    private func resetStationTimer() {
-        stationValidityTimer.invalidate()
-        stationValidityTimer = Timer.scheduledTimer(timeInterval: stationTimeout, target: self, selector: #selector(stationTimedOut(timer:)), userInfo: nil, repeats: false)
-    }
-    
-    @objc private func stationTimedOut(timer: Timer) {
+    private func stationTimedOut() {
         self.previousStation = nil
-        dumpOldDay()
+        processSignificantChanges()
+        measurements.dumpToDatabase(from: 0, to: measurements.count-1)
     }
     
-    private func resetAirportTimer() {
-        airportValidityTimer.invalidate()
-        airportValidityTimer = Timer.scheduledTimer(timeInterval: airportTimeout, target: self, selector: #selector(airportTimedOut(timer:)), userInfo: nil, repeats: false)
-    }
-    
-    @objc private func airportTimedOut(timer: Timer) {
+    private func airportTimedOut() {
         self.previousAirport = nil
-        dumpOldDay()
-    }
-        
-    private func dumpOldDay() {
-        for i in stride(from: 1, to: measurements.count, by: 1){
-            if !Date.inSameDay(date1: measurements[i].start, date2: measurements[0].start) {
-                measurements.dumpToDatabase(from: 0, to: i-1)
-                return
-            }
-        }
+        processSignificantChanges()
+        measurements.dumpToDatabase(from: 0, to: measurements.count-1)
     }
 }

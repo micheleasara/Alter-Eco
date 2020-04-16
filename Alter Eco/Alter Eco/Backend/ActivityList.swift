@@ -6,7 +6,6 @@ where Index == Int, Element == Array<MeasuredActivity>.Element {
     func add(_ activity:MeasuredActivity)
     func remove(at:Index)
     func removeAll()
-    func hasChangedSignificantly() -> Bool
     func dumpToDatabase(from:Int, to:Int)
 }
 
@@ -42,22 +41,6 @@ public class WeightedActivityList: ActivityList {
     // Returns the next index when iterating
     public func index(after i: Index) -> Index {
         return measurements.index(after: i)
-    }
-    
-    public func hasChangedSignificantly() -> Bool {
-        if measurements.count <= numChangeActivity { return false }
-        
-        let rootType = measurements[0].motionType
-        var previousLastType: MeasuredActivity.MotionType? = nil
-        for index in stride(from: (measurements.count-numChangeActivity-1), to: measurements.count, by: 1) {
-            let type = measurements[index].motionType
-            if type == rootType || (previousLastType != nil && previousLastType != type) {
-                return false
-            }
-            previousLastType = type
-        }
-        
-        return true
     }
     
     public func remove(at: Index) {

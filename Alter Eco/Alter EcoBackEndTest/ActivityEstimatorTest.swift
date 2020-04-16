@@ -6,11 +6,13 @@ import MapKit
 class ActivityEstimatorTest: XCTestCase {
     var list : ActivityListMock!
     var estimator : ActivityEstimator<ActivityListMock>!
+    var timers : MultiTimerMock!
     
     override func setUp() {
         super.setUp()
         list = ActivityListMock()
-        estimator = ActivityEstimator<ActivityListMock>(activityList: list, inStationRadius: GPS_UPDATE_DISTANCE_THRESHOLD, stationTimeout: STATION_TIMEOUT, airportTimeout: AIRPORT_TIMEOUT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD)
+        timers = MultiTimerMock()
+        estimator = ActivityEstimator<ActivityListMock>(activityList: list, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: timers)
     }
 
     func testValidMovementIsAppendedToMeasurements() {
@@ -104,7 +106,6 @@ class ActivityEstimatorTest: XCTestCase {
             list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
             date = Date(timeInterval: 10, since: date)
         }
-        XCTAssert(list.count == CHANGE_ACTIVITY_THRESHOLD)
         for _ in 1...CHANGE_ACTIVITY_THRESHOLD {
             list.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
         }
@@ -121,25 +122,140 @@ class ActivityEstimatorTest: XCTestCase {
         XCTAssert(list.dumpToDatabaseArguments[0] == 0 && list.dumpToDatabaseArguments[1] == numElements - CHANGE_ACTIVITY_THRESHOLD - 1, "Arguments where \(list.dumpToDatabaseArguments)")
     }
     
-    func testROIToNonROIIsTreatedAsSpeedBasedActivity() {
+    func testStationToNonStationByCarIsTreatedAsSpeedBasedActivity() {
         let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
-        let coordStationA = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let station = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let nonStation = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
         var date = Date(timeIntervalSince1970: 0)
         for _ in 1...10 {
             list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
             date = Date(timeInterval: 10, since: date)
         }
         
-        let previousLocation = CLLocation(coordinate: coordStationA, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
-        let currentLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 10, longitude: 10), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: previousLocation.timestamp))
+        let previousLocation = CLLocation(coordinate: station, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        let currentLocation = CLLocation(coordinate: nonStation, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: previousLocation.timestamp))
         // set stations to given coordinates and simulate location updates
-        estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: coordStationA))]
+        estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: station))]
         estimator.processLocation(previousLocation)
         // simulate car movement
         estimator.processLocation(currentLocation)
         XCTAssert(list.addCalls == 11, "Incorrect number of calls to add. Got \(list.addCalls)")
-        XCTAssert(list.dumpToDatabaseCalls == 0, "Incorrect number of calls to dumpToDatabase. Got \(list.addCalls)")
-        XCTAssert(list.measurements.last!.motionType == .car)
+        XCTAssert(list.dumpToDatabaseCalls == 0, "Incorrect number of calls to dumpToDatabase. Got \(list.dumpToDatabaseCalls)")
+        XCTAssert(list.addArgs[list.addCalls - 1].motionType == .car)
+    }
+    
+    func testAirportToNonAirportByFootIsTreatedAsSpeedBasedActivity() {
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let airport = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let nonAirport = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
+
+        var date = Date(timeIntervalSince1970: 0)
+        for _ in 1...10 {
+            list.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        
+        let previousLocation = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        let currentLocation = CLLocation(coordinate: nonAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 100000, since: previousLocation.timestamp))
+        // set stations to given coordinates and simulate location updates
+        estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: airport))]
+        estimator.processLocation(previousLocation)
+        // simulate walking movement
+        estimator.processLocation(currentLocation)
+        XCTAssert(list.addCalls == 11, "Incorrect number of calls to add. Got \(list.addCalls)")
+        XCTAssert(list.dumpToDatabaseCalls == 0, "Incorrect number of calls to dumpToDatabase. Got \(list.dumpToDatabaseCalls)")
+        XCTAssert(list.addArgs[list.addCalls - 1].motionType == .walking)
+    }
+    
+    func testAirportFlagIsOffAfterEnoughCars() {
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let airport = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let nonAirport = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
+
+        var date = Date(timeIntervalSince1970: 0)
+        for _ in 1..<CAR_NUM_FOR_PLANE_FLAG_OFF {
+            list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        
+        var airportLoc = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        let nonAirportLoc = CLLocation(coordinate: nonAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: airportLoc.timestamp))
+        // set stations to given coordinates and simulate location updates
+        estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: airport))]
+        estimator.processLocation(airportLoc)
+        // simulate car movement
+        estimator.processLocation(nonAirportLoc)
+        // back in airport
+        airportLoc = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: nonAirportLoc.timestamp.addingTimeInterval(300))
+        estimator.processLocation(airportLoc)
+        XCTAssert(list.addCalls == CAR_NUM_FOR_PLANE_FLAG_OFF + 1, "Incorrect number of calls to add. Got \(list.addCalls)")
+        XCTAssert(list.dumpToDatabaseCalls == 0, "Incorrect number of calls to dumpToDatabase. Got \(list.dumpToDatabaseCalls)")
+        XCTAssert(list.addArgs[list.addCalls - 1].motionType != .plane)
+    }
+    
+    func testStationFlagIsOffAfterEnoughWalking() {
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let stationCoord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let nonStationCoord = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
+
+        var date = Date(timeIntervalSince1970: 0)
+        for _ in 1..<WALK_NUM_FOR_TRAIN_FLAG_OFF {
+            list.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        
+        var stationLoc = CLLocation(coordinate: stationCoord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        let nonStationLoc = CLLocation(coordinate: nonStationCoord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 9999999, since: stationLoc.timestamp))
+        // set stations to given coordinates and simulate location updates
+        estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: stationCoord))]
+        estimator.processLocation(stationLoc)
+        // simulate walk movement
+        estimator.processLocation(nonStationLoc)
+        // back in airport
+        stationLoc = CLLocation(coordinate: stationCoord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: nonStationLoc.timestamp.addingTimeInterval(300))
+        estimator.processLocation(stationLoc)
+        XCTAssert(list.addCalls == WALK_NUM_FOR_TRAIN_FLAG_OFF + 1, "Incorrect number of calls to add. Got \(list.addCalls)")
+        XCTAssert(list.dumpToDatabaseCalls == 0, "Incorrect number of calls to dumpToDatabase. Got \(list.dumpToDatabaseCalls)")
+        XCTAssert(list.addArgs[list.addCalls - 1].motionType != .train)
+    }
+    
+    func testAirportCountdownStartsAfterAirportVisit() {
+        XCTAssert(timers.startCalls == 0)
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let coordAirport = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let loc = CLLocation(coordinate: coordAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: coordAirport))]
+        estimator.processLocation(loc)
+        XCTAssert(timers.startCalls == 1)
+        XCTAssert(timers.startKeys[0] == "airport")
+        XCTAssert(timers.startIntervals[0] == AIRPORT_TIMEOUT)
+    }
+    
+    func testStationCountdownStartsAfterAirportVisit() {
+        XCTAssert(timers.startCalls == 0)
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: coord))]
+        estimator.processLocation(loc)
+        XCTAssert(timers.startCalls == 1)
+        XCTAssert(timers.startKeys[0] == "station")
+        XCTAssert(timers.startIntervals[0] == STATION_TIMEOUT)
+    }
+    
+    class MultiTimerMock : CountdownHandler {
+        public var startCalls : Int = 0
+        public var stopCalls : Int = 0
+        public var startKeys : [String] = []
+        public var startIntervals : [Double] = []
+        
+        func start(key: String, interval: TimeInterval, block: @escaping () -> Void) {
+            startCalls += 1
+            startKeys.append(key)
+            startIntervals.append(interval)
+        }
+        
+        func stop(_ key: String) {}
     }
     
     class ActivityListMock : ActivityList {
@@ -151,6 +267,7 @@ class ActivityEstimatorTest: XCTestCase {
         public var endIndex: Index { return measurements.endIndex }
         
         public var addCalls : Int = 0
+        public var addArgs : [MeasuredActivity] = []
         public var removeCalls : Int = 0
         public var removeAllCalls : Int = 0
         public var dumpToDatabaseCalls : Int = 0
@@ -158,6 +275,7 @@ class ActivityEstimatorTest: XCTestCase {
         
         func add(_ activity:MeasuredActivity) {
             measurements.append(activity)
+            addArgs.append(activity)
             addCalls += 1
         }
         func remove(at:Index) {
@@ -170,22 +288,7 @@ class ActivityEstimatorTest: XCTestCase {
             dumpToDatabaseCalls += 1
             dumpToDatabaseArguments.append(from)
             dumpToDatabaseArguments.append(to)
-        }
-        
-        func hasChangedSignificantly() -> Bool {
-            if measurements.count <= CHANGE_ACTIVITY_THRESHOLD { return false }
-            
-            let rootType = measurements[0].motionType
-            var previousLastType: MeasuredActivity.MotionType? = nil
-            for index in stride(from: (measurements.count-CHANGE_ACTIVITY_THRESHOLD-1), to: measurements.count, by: 1) {
-                let type = measurements[index].motionType
-                if type == rootType || (previousLastType != nil && previousLastType != type) {
-                    return false
-                }
-                previousLastType = type
-            }
-            
-            return true
+            measurements.removeSubrange(from...to)
         }
         
         // Returns an iterator over the elements of the collection

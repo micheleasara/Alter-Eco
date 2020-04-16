@@ -3,11 +3,11 @@ import CoreLocation
 
 public class MeasuredActivity : Equatable {
     // define threshold to identify an automotive type of motion in m/s
-    public static let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4
+    private static let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4
     // set precision for date equality in seconds
-    public static let TIME_PRECISION: Double = 1
+    private static let DATE_TIME_PRECISION: Double = 1
     // set precision for distance equality in meters
-    public static let SPACE_PRECISION: Double = 0.001
+    private static let SPACE_PRECISION: Double = 0.001
     
     public enum MotionType : CaseIterable {
         case car
@@ -35,7 +35,7 @@ public class MeasuredActivity : Equatable {
         
         return (lhs.motionType == rhs.motionType &&
             (lhs.distance - rhs.distance < SPACE_PRECISION) &&
-            differenceStart < TIME_PRECISION && differenceEnd < TIME_PRECISION)
+            differenceStart < DATE_TIME_PRECISION && differenceEnd < DATE_TIME_PRECISION)
     }
 
     public static func motionTypeToString(type:MotionType) -> String {

@@ -1,11 +1,11 @@
 import Foundation
 
-protocol CountdownHandler {
+public protocol CountdownHandler {
     func start(key: String, interval: TimeInterval, block: @escaping () -> Void)
     func stop(_ key: String)
 }
 
-class MultiTimer : CountdownHandler {
+public class MultiTimer : CountdownHandler {
     private var timers : [String: Timer] = [:]
     
     public func start(key: String, interval: TimeInterval, block: @escaping () -> Void) {
