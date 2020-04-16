@@ -12,12 +12,6 @@ public let PLANE_PTS: Double = 0
 
 // ProgressBar Icons number
 public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
-public let ICON_ONE: Int = 1
-public let ICON_TWO: Int = 2
-public let ICON_THREE: Int = 3
-public let ICON_FOUR: Int = 4
-public let ICON_FIVE: Int = 5
-public let NUMBER_OF_ICONS: Double = 6
 
 /// Data structure containing all information related to the score of a user.
 public class UserScore : Equatable{
@@ -31,7 +25,7 @@ public class UserScore : Equatable{
     /// Returns the default initial user score.
     public static func getInitialScore() -> UserScore {
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        return UserScore(totalPoints: 0, date: dateFormatter.string(from: Date()), league: "sun.max")
+        return UserScore(totalPoints: 0, date: dateFormatter.string(from: Date()), league: "🌱")
     }
     
     /// Initializes a UserScore with the given parameters.
@@ -78,46 +72,23 @@ public class UserScore : Equatable{
 /* League Helper Functions */
 func getNewLeague(userLeague: String) -> String {
 
-    if userLeague == "sun.max" {
-        return "flame.fill"
+    if userLeague == "🌱" {
+        return "🌿"
     }
-    else if userLeague == "flame.fill" {
-        return "tortoise.fill"
+    else if userLeague == "🌿" {
+        return "🌳"
     }
     
-    return "tortoise.fill"
+    return "🌳"
 }
 
-func getNewLeagueName(leagueName: String) -> String {
-    
-    if leagueName == "flame.fill" {
-        return "flame"
-    }
-    else if leagueName == "tortoise.fill" {
-        return "tortoise"
-    }
-    
-    return "sun"
-    
-}
-
-func getLeagueProgress() -> Int {
+func getLeagueProgress() -> Void {
     
     let userScore = try! DBMS.retrieveLatestScore()
     
     if userScore.totalPoints >= POINTS_REQUIRED_FOR_NEXT_LEAGUE {
         try! DBMS.updateLeague(newLeague: getNewLeague(userLeague: userScore.league))
-        return 0
     }
-    
-    return Int(((userScore.totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE) * NUMBER_OF_ICONS).rounded())
 }
 
-func getColor(iconNb: Int) -> Color {
-    
-    if iconNb <= getLeagueProgress() {
-        return .blue
-    }
-    
-    return .gray
-}
+

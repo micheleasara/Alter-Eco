@@ -5,80 +5,66 @@ struct ProgressBarView: View {
 
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    @State private var showingInfo = false
     
+    let proportion = try! DBMS.retrieveLatestScore().totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE
+   
     var body: some View {
-        
-        VStack(spacing: CGFloat(screenMeasurements.broadcastedHeight / 23)) {
-        
-            // Display container for league information
+    
+        VStack {
+            Text("Your League")
+                .font(.headline)
+                .padding(.trailing, CGFloat(screenMeasurements.broadcastedWidth)/1.8)
+           
+            //text box for league information
             ZStack() {
-                RoundedRectangle(cornerRadius: 25, style: .continuous)
-                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth) * 0.9, height: CGFloat(screenMeasurements.broadcastedHeight) / 5)
-                    .foregroundColor(Color("fill_colour"))
-                VStack() {
-                    HStack {
-                        Text("You have reached league")
-                        Image(systemName: (try! DBMS.retrieveLatestScore()).league)
-                            .resizable()
-                            .foregroundColor(.blue)
-                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight) / 20)
-                    }
+               RoundedRectangle(cornerRadius: 25, style: .continuous)
+                   .frame(width: CGFloat(screenMeasurements.broadcastedWidth) * 0.9, height: CGFloat(screenMeasurements.broadcastedHeight) / 9)
+                   .foregroundColor(Color("fill_colour"))
+            
+            VStack() {
+                Text("Grow your plant into a 🌳! Your plant is now a \((try! DBMS.retrieveLatestScore()).league)")
+                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/10)
+                     
+                   // depending on which league user is in, display next one
+                   if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
+                       Text("The ecosystem is thriving! Congratulations.")
+                            .font(.headline)
+                            .fontWeight(.regular)
+                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/8)
+                   }
+               }
+           }
+ 
+            //progress bar
+            HStack{
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/45)
+                        .opacity(0.3)
+                        .foregroundColor(Color("fill_colour"))
+              
                     
-                    // depending on which league user is in, display next one
-                    if ((try! DBMS.retrieveLatestScore()).league != "tortoise.fill") {
-                        Text("Only \(POINTS_REQUIRED_FOR_NEXT_LEAGUE - (try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") points needed")
-                        Text("to reach league \(getNewLeagueName(leagueName: getNewLeague(userLeague: (try! DBMS.retrieveLatestScore()).league)))!")
-                    }
-                    else {
-                        Text("You have reached the top league!")
-                        Text("You are a true Alter Ecoer :)")
-                    }
-                    
-                    Button(action: {self.showingInfo = true}) {
-                        Image(systemName: "info.circle")
-                    }
-                        .alert(isPresented: $showingInfo) {
-                               Alert(title: Text("Your Eco League"), message: Text("The greener the transport modes you use, the more points you accumulate. Gather enough points, and you will move up a league! Improve yourself, reduce your carbon footprint and save planet earth."), dismissButton: .default(Text("OK")))
-                        }
-                    .offset(x: CGFloat(screenMeasurements.broadcastedWidth)*0.38)
-                    
-                }
+                        Rectangle()
+                           .frame(width: (CGFloat(screenMeasurements.broadcastedWidth)*CGFloat(0.7*proportion)), height: CGFloat(screenMeasurements.broadcastedHeight)/45)
+                            .foregroundColor(Color("graphBars"))
+                            .animation(.linear)
+                            
+                    }.cornerRadius(25.0)
+
+                Text("\(getNewLeague(userLeague: (try! DBMS.retrieveLatestScore()).league))")
+                .font(.largeTitle)
             }
-                // Progress bar (stacked horizontally are current league icon coloured or not depending on how close user is to next league)
-                HStack() {
-                    ProgressBarIconView(iconNumber: ICON_ONE)
-                    ProgressBarIconView(iconNumber: ICON_TWO)
-                    ProgressBarIconView(iconNumber: ICON_THREE)
-                    ProgressBarIconView(iconNumber: ICON_FOUR)
-                    ProgressBarIconView(iconNumber: ICON_FIVE)
-            }
+          Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") / \(POINTS_REQUIRED_FOR_NEXT_LEAGUE, specifier: "%.0f")")
+            .font(.body)
+            .padding(.leading, CGFloat(screenMeasurements.broadcastedWidth)/3.2)
+            
         }
     }
 }
 
-struct ProgressBarIconView: View {
-    
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    
-    var iconNumber: Int
-    
-    init(iconNumber: Int) {
-        self.iconNumber = iconNumber
-    }
-    
-    var body: some View {
-        HStack {
-        Image(systemName: (try! DBMS.retrieveLatestScore()).league)
-            .resizable()
-            .foregroundColor(getColor(iconNb: iconNumber))
-            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.1, height: CGFloat(screenMeasurements.broadcastedHeight)/20)
-        if (iconNumber < ICON_FIVE) {
-        RoundedRectangle(cornerRadius: CGFloat(45.0)).frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.05, height: CGFloat(screenMeasurements.broadcastedHeight)/100)
-                .opacity(1.0)
-                .foregroundColor(Color("fill_colour"))
-        }
-        }
+struct ProgressBarView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProgressBarView()
     }
 }
 
