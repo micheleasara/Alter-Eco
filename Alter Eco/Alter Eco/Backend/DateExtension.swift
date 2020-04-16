@@ -53,7 +53,7 @@ extension Date {
     public static func getDateFromWeekdayName(weekDayToDisplay: String) -> Date? {
         var dateToView = Date()
         let dayToday = getDayNameFromDate(dateToView)
-        let dayDifference = dayNameToOrderInWeek(dayToday)! - dayNameToOrderInWeek(weekDayToDisplay)!
+        let dayDifference = dayNameToOrderInWeek(weekDayToDisplay)! - dayNameToOrderInWeek(dayToday)!
         dateToView = Calendar(identifier: .gregorian).date(byAdding: .day, value: dayDifference, to: dateToView)!
         return setDateToSpecificHour(date: dateToView, hour: "00:00:00")
     }
