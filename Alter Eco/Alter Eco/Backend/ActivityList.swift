@@ -1,15 +1,22 @@
 import Foundation
 
+/// Represents a list of activities connected to a database.
 public protocol ActivityList : AnyObject, MutableCollection
 where Index == Int, Element == Array<MeasuredActivity>.Element {
-    
+    /// Adds the given activity to the list.
     func add(_ activity:MeasuredActivity)
+    /// Remove the element at the given index.
     func remove(at:Index)
+    /// Removes all elements.
     func removeAll()
+    /// Writes the elements in the range given to the database and then deletes them.
     func dumpToDatabase(from:Int, to:Int)
+    /// Writes the elements in the range given to the database.
     func writeToDatabase(from:Int, to:Int)
 }
 
+
+/// A list of activities which can store activities in memory and then write their weighted average to a database.
 public class WeightedActivityList: ActivityList {
     public typealias Index = Array<MeasuredActivity>.Index
     public typealias Element = Array<MeasuredActivity>.Element
@@ -19,35 +26,40 @@ public class WeightedActivityList: ActivityList {
     public var startIndex: Index { return measurements.startIndex }
     public var endIndex: Index { return measurements.endIndex }
     private let activityWeights: [MeasuredActivity.MotionType: Int]
-    private let numChangeActivity: Int
     private let DBMS: DBWriter
     
-    init(activityWeights: [MeasuredActivity.MotionType: Int], numChangeActivity: Int, DBMS: DBWriter) {
+    /**
+     Initializes a list of activities which can store activities in memory and then write their weighted average to a database.
+     - Parameters activityWeights: dictionary linking a motion type to a weight.
+     - Parameters DBWriter: object to write to a database.
+     */
+    init(activityWeights: [MeasuredActivity.MotionType: Int], DBMS: DBWriter) {
         self.activityWeights = activityWeights
-        self.numChangeActivity = numChangeActivity
         self.DBMS = DBMS
     }
     
-    // Returns an iterator over the elements of the collection
+    /// Returns an iterator over the elements of the collection.
     public __consuming func makeIterator() -> Iterator {
         return measurements.makeIterator()
     }
     
-    // Accesses the element at the specified position
+    /// Accesses the element at the specified position.
     public subscript(index: Index) -> Iterator.Element {
         get { return measurements[index] }
         set { measurements[index] = newValue}
     }
 
-    // Returns the next index when iterating
+    /// Returns the next index when iterating.
     public func index(after i: Index) -> Index {
         return measurements.index(after: i)
     }
     
+    /// Removes an element at the specified position.
     public func remove(at: Index) {
         measurements.remove(at: at)
     }
 
+    /// Adds the given activity.
     public func add(_ activity: MeasuredActivity) {
         if activity.motionType == .plane || activity.motionType == .train {
             writeToDatabase(activity)
@@ -57,6 +69,7 @@ public class WeightedActivityList: ActivityList {
         }
     }
     
+    /// Returns the weighted average of the activities between the given indexes.
     public func getAverage(from:Int, to:Int) -> MeasuredActivity {
         let activity = MeasuredActivity(motionType: getAverageMotionType(from:from, to:to),
                                         distance: getCumulativeDistance(from:from, to:to),
@@ -64,6 +77,7 @@ public class WeightedActivityList: ActivityList {
         return activity
     }
 
+    /// Returns the cumulative distance contained in the activities in the range provided.
     public func getCumulativeDistance(from:Int, to:Int) -> Double {
         var distance = 0.0
         for i in stride(from: from, to: to, by: 1) {
@@ -72,6 +86,7 @@ public class WeightedActivityList: ActivityList {
         return distance
     }
     
+    /// Returns the average motion type determined by the activities in the range provided.
     public func getAverageMotionType(from:Int, to: Int) -> MeasuredActivity.MotionType {
         var carCounter = 0
         var walkingCounter = 0
@@ -95,15 +110,18 @@ public class WeightedActivityList: ActivityList {
         return motion
     }
     
+    /// Removes all activities.
     public func removeAll() {
         measurements.removeAll()
     }
     
+    /// Writes to the database the average of the activities in the range provided, then deletes them.
     public func dumpToDatabase(from:Int, to:Int) {
         writeToDatabase(from:from, to:to)
         measurements.removeSubrange(from...to)
     }
     
+    /// Writes to the database the average of the activities in the range provided.
     public func writeToDatabase(from: Int, to: Int) {
         writeToDatabase(getAverage(from: from, to: to))
     }

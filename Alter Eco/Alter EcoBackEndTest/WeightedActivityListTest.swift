@@ -17,7 +17,7 @@ class WeightedActivityListTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        measurements = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS)
+        measurements = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, DBMS: DBMS)
     }
     
     func testListIsOrderlyAndIterable() {
