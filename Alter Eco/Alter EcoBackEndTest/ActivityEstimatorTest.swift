@@ -243,16 +243,66 @@ class ActivityEstimatorTest: XCTestCase {
         XCTAssert(timers.startIntervals[0] == STATION_TIMEOUT)
     }
     
+    func testStationCountdownEndProcessesSpeedActivitiesChanges() {
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: coord))]
+        estimator.processLocation(loc)
+        XCTAssert(timers.startCalls == 1)
+        XCTAssert(timers.startKeys[0] == "station")
+        XCTAssert(timers.startIntervals[0] == STATION_TIMEOUT)
+        
+        // add activities which should trigger a change
+        var date = Date(timeIntervalSince1970: 0)
+        for _ in 1...CHANGE_ACTIVITY_THRESHOLD {
+            list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        for _ in 1...CHANGE_ACTIVITY_THRESHOLD + 1 {
+            list.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+        }
+        // call end procedure of timer
+        timers.startBlocks[0]()
+        XCTAssert(list.dumpToDatabaseCalls == 2, "Expected one call, but got \(list.dumpToDatabaseCalls)")
+    }
+    
+    func testAirportCountdownEndProcessesSpeedActivitiesChanges() {
+        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: coord))]
+        estimator.processLocation(loc)
+        XCTAssert(timers.startCalls == 1)
+        XCTAssert(timers.startKeys[0] == "airport")
+        XCTAssert(timers.startIntervals[0] == AIRPORT_TIMEOUT)
+        
+        // add activities which should trigger a change
+        var date = Date(timeIntervalSince1970: 0)
+        for _ in 1...CHANGE_ACTIVITY_THRESHOLD {
+            list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        for _ in 1...CHANGE_ACTIVITY_THRESHOLD + 1 {
+            list.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+        }
+        // call end procedure of timer
+        timers.startBlocks[0]()
+        XCTAssert(list.dumpToDatabaseCalls == 2, "Expected one call, but got \(list.dumpToDatabaseCalls)")
+    }
+
+    
     class MultiTimerMock : CountdownHandler {
         public var startCalls : Int = 0
         public var stopCalls : Int = 0
         public var startKeys : [String] = []
         public var startIntervals : [Double] = []
-        
+        public var startBlocks : [() -> Void] = []
         func start(key: String, interval: TimeInterval, block: @escaping () -> Void) {
             startCalls += 1
             startKeys.append(key)
             startIntervals.append(interval)
+            startBlocks.append(block)
         }
         
         func stop(_ key: String) {}
