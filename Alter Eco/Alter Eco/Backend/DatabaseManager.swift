@@ -248,6 +248,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return carbonTotal
     }
     
+    /// Updates score by adding score computed from a given activity.
     public func updateScore(activity: MeasuredActivity) throws {
         let managedContext = try getManagedContext()
 
