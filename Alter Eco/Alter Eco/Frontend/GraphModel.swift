@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-let AV_UK_DAILYCARBON: Double = 2200
+let AV_UK_DAILYCARBON: Double = 2.2
 
 //create dynamic years for graph queries
 let thisYear = Date()
