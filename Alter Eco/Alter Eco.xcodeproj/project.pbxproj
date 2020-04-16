@@ -76,6 +76,7 @@
 		DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
 		DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
+		DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFEEC502448987C009BE765 /* MultiTimerTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +160,7 @@
 		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
 		DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlterEcoBackend.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEDE54BB24467B4E003FE0DE /* Alter Eco copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Alter Eco copy-Info.plist"; path = "/Users/delideleon/Desktop/developBranch/Alter Eco/Alter Eco copy-Info.plist"; sourceTree = "<absolute>"; };
+		DEFEEC502448987C009BE765 /* MultiTimerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTimerTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +200,7 @@
 			children = (
 				9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */,
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
+				DEFEEC502448987C009BE765 /* MultiTimerTest.swift */,
 				9CD5945A24296BD100B1D0B4 /* Info.plist */,
 				DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */,
 				9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */,
@@ -495,6 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */,
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
 				DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */,
 				9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */,
