@@ -9,7 +9,6 @@ let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
-    // Instantiate the scene
     #if NO_BACKEND_TESTING
     let scene = SceneDelegate()
     #endif

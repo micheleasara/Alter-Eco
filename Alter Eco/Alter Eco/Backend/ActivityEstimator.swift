@@ -30,32 +30,31 @@ public class ActivityEstimator<T:ActivityList> {
     public func processLocation(_ location: CLLocation) {
         if isLocationAccurate(location) && isLocationFarEnough(location) && !isLocationUpdateInstantaneous(location) {
             print("valid location received")
+            
             // determine regions of interest
             let currentStation = getCurrentROI(currentLocation: location, regionsOfInterest: self.stations, gpsThreshold: GPS_UPDATE_CONFIDENCE_THRESHOLD)
             let currentAirport = getCurrentROI(currentLocation: location, regionsOfInterest: self.airports, gpsThreshold: GPS_UPDATE_AIRPORT_THRESHOLD)
-            // add current speed-based measurement to list
+            
+            // append speed-based measurement to list
             addSpeedBasedActivity(location: location)
             
-            // check if we are currently in a train station
-            if currentStation != nil {
+            if visitedRegionOfInterest(currentStation) {
                 processCurrentROI(currentStation!, prevROI: &previousStation, motionType: .train, currentLoc: location)
             }
-            // check if we are currently in an airport
-            else if currentAirport != nil {
+            else if visitedRegionOfInterest(currentAirport) {
                 processCurrentROI(currentAirport!, prevROI: &previousAirport, motionType: .plane, currentLoc: location)
             }
-            // not in station and were before: check validity of station flag
-            else if currentStation == nil && previousStation != nil {
+            else if visitedRegionOfInterest(previousStation) && !visitedRegionOfInterest(currentStation) {
                 checkROIFlagStillValid(activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF, motionType: .walking, prevROI: &previousStation, currentLoc: location)
             }
-            // not in airport and were before: check validity of airport flag
-            else if currentAirport == nil && previousAirport != nil {
+            else if visitedRegionOfInterest(previousAirport) && !visitedRegionOfInterest(currentAirport) {
                 checkROIFlagStillValid(activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF, motionType: .car, prevROI: &previousAirport, currentLoc: location)
             }
             // not the first location received
             else if previousLoc != nil {
                 // check if there has been a significant change in speed-based activities
                 processSignificantChanges()
+                // start countdown for activity list expiration
                 timers.start(key: "expired", interval: ACTIVITY_TIMEOUT, block: activityHasExpired)
             }
         
@@ -81,6 +80,10 @@ public class ActivityEstimator<T:ActivityList> {
         return location.timestamp.timeIntervalSince(previousLoc!.timestamp).rounded() <= 0
     }
     
+    private func visitedRegionOfInterest(_ regionOfInterest: CLLocation?) -> Bool {
+        return regionOfInterest != nil
+    }
+    
     private func addSpeedBasedActivity(location: CLLocation) {
         // cannot compute if this is the first location we receive
         if let previousLoc = previousLoc {
@@ -94,6 +97,7 @@ public class ActivityEstimator<T:ActivityList> {
     }
     
     private func processSignificantChanges() {
+        guard measurements.count > 0 else { return }
         // look for indexes of changes in motion type
         var changes : [Int] = []
         for i in stride(from: 0, to: measurements.count - 1, by: 1) {
@@ -130,23 +134,24 @@ public class ActivityEstimator<T:ActivityList> {
         return nil
     }
     
+    
     private func processCurrentROI(_ currentROI: CLLocation, prevROI: inout CLLocation?, motionType: MeasuredActivity.MotionType, currentLoc: CLLocation) {
         print("processing with previous ROI: ", prevROI?.coordinate ?? "NIL", " and current ROI: ", currentROI.coordinate)
-        // check if there was a journey (plane or train)
-        if prevROI != nil && currentROI.distance(from: prevROI!).rounded() > 0 {
-            let speed = (motionType == .train) ? AVERAGE_TUBE_SPEED : AVERAGE_PLANE_SPEED
-            addROIBasedActivity(currentRegionOfInterest: currentROI, previousRegionOfInterest: &prevROI, speed: speed, motionType: motionType)
-            resetROITimer(motionType)
-        } else {
-            // while in same airport/tube station, update timestamp
-            if prevROI != nil && currentROI.distance(from: prevROI!).rounded() <= 0 {
-                prevROI = CLLocation(coordinate: prevROI!.coordinate, altitude: prevROI!.altitude, horizontalAccuracy: prevROI!.horizontalAccuracy, verticalAccuracy: prevROI!.verticalAccuracy, course: prevROI!.course, speed: prevROI!.speed, timestamp: currentROI.timestamp)
-            }
-            // In regionOfInterest right now and weren't before
-            else if prevROI == nil {
-                prevROI = currentROI
+        
+        if visitedRegionOfInterest(prevROI) {
+            if currentROI.distance(from: prevROI!).rounded() > 0 {
+                // different ROIs: a trip has occurred!
+                let speed = (motionType == .train) ? AVERAGE_TUBE_SPEED : AVERAGE_PLANE_SPEED
+                addROIBasedActivity(currentRegionOfInterest: currentROI, previousRegionOfInterest: &prevROI, speed: speed, motionType: motionType)
                 resetROITimer(motionType)
+            } else {
+                // update timestamp, as the current ROI is the same as before
+                prevROI = currentROI
             }
+        } else {
+            // first time visiting this ROI
+            prevROI = currentROI
+            resetROITimer(motionType)
         }
     }
     

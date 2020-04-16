@@ -19,7 +19,6 @@
 		573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */; };
 		573693832438F85F00992BB0 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
 		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
-		9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */; };
 		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
 		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
 		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
@@ -71,7 +70,6 @@
 		DEDE54AF24467B4E003FE0DE /* WalkToSupermarket.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */; };
 		DEDE54B024467B4E003FE0DE /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
 		DEDE54B124467B4E003FE0DE /* SKToVictoria_car_30kmh.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */; };
-		DEDE54B224467B4E003FE0DE /* MilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */; };
 		DEDE54B324467B4E003FE0DE /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
 		DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
 		DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
@@ -116,7 +114,6 @@
 		573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphLogicTestsTwo.swift; sourceTree = "<group>"; };
 		573693822438F85F00992BB0 /* GraphModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
 		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
-		9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = MilanLIN.gpx; sourceTree = "<group>"; };
 		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
 		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
 		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
@@ -274,7 +271,6 @@
 				9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */,
 				9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */,
 				9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */,
-				9C17CA7E24323D1C00378A67 /* MilanLIN.gpx */,
 			);
 			path = GPX;
 			sourceTree = "<group>";
@@ -465,7 +461,6 @@
 				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
 				9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */,
 				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
-				9C17CA8624323D1D00378A67 /* MilanLIN.gpx in Resources */,
 				9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */,
 				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
@@ -483,7 +478,6 @@
 				DEDE54AF24467B4E003FE0DE /* WalkToSupermarket.gpx in Resources */,
 				DEDE54B024467B4E003FE0DE /* CarTripToHeathrowAirport.gpx in Resources */,
 				DEDE54B124467B4E003FE0DE /* SKToVictoria_car_30kmh.gpx in Resources */,
-				DEDE54B224467B4E003FE0DE /* MilanLIN.gpx in Resources */,
 				DEDE54B324467B4E003FE0DE /* WalkToHeathrowAirport.gpx in Resources */,
 				DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */,
 				DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */,
