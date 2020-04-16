@@ -17,9 +17,9 @@ public let QUERY_TRAIN_STATIONS:String = "underground train subway tube station"
 public let QUERY_AIRPORTS: String = "airport"
 
 // MARK: - Region-Of-Interest (ROI) activities constants
-// define average radius of airport m
+/// Defines average radius of airport in meters.
 public let MAX_DISTANCE_WITHIN_AIRPORT:Double = 1000
-// define average radius of station m
+/// Defines average radius of station in meters.
 public let MAX_DISTANCE_WITHIN_STATION:Double = 60
 /// Idle time (in seconds) after which the activity estimator should forget the user was in a station.
 public let STATION_TIMEOUT:Double = 90*60
