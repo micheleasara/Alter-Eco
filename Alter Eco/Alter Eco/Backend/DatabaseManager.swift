@@ -22,6 +22,8 @@ public protocol DBReader {
 public protocol DBWriter {
     // Appends new activity (tube, plane, walking, car) to Event table
     func append(activity: MeasuredActivity) throws
+    // Updates score by adding score compute from given activity
+    func updateScore(activity: MeasuredActivity) throws
 }
 
 public protocol DBManager : AnyObject, DBReader, DBWriter {
@@ -31,7 +33,6 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from:Date, interval:TimeInterval) throws -> Double
     func carbonWithinIntervalAll(from:Date, interval:TimeInterval) throws -> Double
     
-    func updateScore(activity: MeasuredActivity) throws
     func updateLeague(newLeague: String) throws
     func retrieveLatestScore() throws -> UserScore
     func getFirstDate() throws -> Date

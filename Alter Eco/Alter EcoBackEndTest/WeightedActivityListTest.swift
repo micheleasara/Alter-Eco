@@ -12,12 +12,11 @@ import XCTest
 
 class WeightedActivityListTest: XCTestCase {
 
-    var DBMS: CoreDataManager!
+    var DBMS = DBManagerMock()
     var measurements: WeightedActivityList!
     
     override func setUp() {
         super.setUp()
-        DBMS = CoreDataManager(persistentContainer: (UIApplication.shared.delegate as! AppDelegate).mockPersistentContainer())
         measurements = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, DBMS: DBMS)
     }
     
@@ -60,9 +59,8 @@ class WeightedActivityListTest: XCTestCase {
         XCTAssert(measurements.count == 0, "Expected empty list but got \(measurements.count)")
         
         // ensure only plane activity was put in the database
-        let retrieved = try! DBMS.queryActivities(predicate: "start == %@ AND end == %@", args: [start as NSDate, end as NSDate])
-        XCTAssert(retrieved.count == 1)
-        XCTAssert(retrieved[0] == activities[2])
+        XCTAssert(DBMS.appendArgs.count == 1)
+        XCTAssert(DBMS.appendArgs[0] == activities[2])
     }
     
     func testAddingTrainPutsIntoDatabaseAndDiscardsTheRest() {
@@ -79,9 +77,8 @@ class WeightedActivityListTest: XCTestCase {
         XCTAssert(measurements.count == 0)
         
         // ensure only plane activity was put in the database
-        let retrieved = try! DBMS.queryActivities(predicate: "start == %@ AND end == %@", args: [start as NSDate, end as NSDate])
-        XCTAssert(retrieved.count == 1)
-        XCTAssert(retrieved[0] == activities[2])
+        XCTAssert(DBMS.appendArgs.count == 1)
+        XCTAssert(DBMS.appendArgs[0] == activities[2])
     }
     
     func testRemovingAnIndexRemovesFromTheList() {
@@ -166,8 +163,20 @@ class WeightedActivityListTest: XCTestCase {
         let average = measurements.getAverage(from: 0, to: measurements.count-1)
         measurements.dumpToDatabase(from: 0, to: measurements.count-1)
         XCTAssert(measurements.count == 0)
-        let retrieved = try! DBMS.queryActivities(predicate: "motionType == %@", args: [MeasuredActivity.motionTypeToString(type: activities[0].motionType)])
-        XCTAssert(retrieved.count == 1)
-        XCTAssert(retrieved[0] == average)
+        XCTAssert(DBMS.appendArgs.count == 1)
+        XCTAssert(DBMS.appendArgs[0] == average)
+    }
+    
+    class DBManagerMock : DBWriter {
+        var appendArgs : [MeasuredActivity] = []
+        var updateScoreArgs : [MeasuredActivity] = []
+        
+        func append(activity: MeasuredActivity) throws {
+            appendArgs.append(activity)
+        }
+        
+        func updateScore(activity: MeasuredActivity) throws {
+            updateScoreArgs.append(activity)
+        }
     }
 }

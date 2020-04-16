@@ -20,9 +20,9 @@ public class WeightedActivityList: ActivityList {
     public var endIndex: Index { return measurements.endIndex }
     private let activityWeights: [MeasuredActivity.MotionType: Int]
     private let numChangeActivity: Int
-    private let DBMS: DBManager
+    private let DBMS: DBWriter
     
-    init(activityWeights: [MeasuredActivity.MotionType: Int], numChangeActivity: Int, DBMS: DBManager) {
+    init(activityWeights: [MeasuredActivity.MotionType: Int], numChangeActivity: Int, DBMS: DBWriter) {
         self.activityWeights = activityWeights
         self.numChangeActivity = numChangeActivity
         self.DBMS = DBMS

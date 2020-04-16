@@ -32,7 +32,4 @@ class MultiTimerTest: XCTestCase {
         timers.stop("test")
         XCTAssertTrue(true)
     }
-
 }
-//    func start(key: String, interval: TimeInterval, block: @escaping () -> Void)
-// func stop(_ key: String)
