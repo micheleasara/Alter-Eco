@@ -77,7 +77,7 @@ func findCorrectUnits(currentMax: Double, value: Int) -> (Double, String, String
     var savedOrEmitted: String
     var maxVal: Double = currentMax
     
-    //Units change depending on whether the total amount of carbon in Kgs is over or under 1000 (helps ensure the y-axis labels fit on the screen and adds clarity
+    //Units change depending on whether the total amount of carbon in Kgs is over or under 1000 (helps ensure the y-axis labels fit on the screen and adds clarity)
     
     // Keeps kg if between 1-100
     if (currentMax>1 && currentMax<=100){
@@ -88,6 +88,12 @@ func findCorrectUnits(currentMax: Double, value: Int) -> (Double, String, String
     // Get tonnes if more 100 kg
     if (currentMax>100) {
         maxVal=currentMax/1000
+        carbonUnit="  Carbon Tonnes"
+        decimalPlaces = "%.0f"
+    }
+    
+    if (currentMax<=14) {
+        maxVal=14
         carbonUnit="  Carbon Tonnes"
         decimalPlaces = "%.0f"
     }
