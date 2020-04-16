@@ -8,36 +8,37 @@ struct ExplanationView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("Your Eco Graph:")
+                Spacer()
+                Text("Privacy and Data")
                     .bold()
                     .padding()
                 
-                Text("The Alter Eco graph shows you the amount of carbon dioxide you emitted from taking different modes of transport. Walking is the greenest form of transport! The walking option on the graph displays the carbon dioxide you saved instead of driving! Keep an eye out on the graph changing colour! Green shows you that you have emmitted less than (or equal to) the average UK citizen and a red graph shows that you have emitted more than the average!")
+                Text("We care about your privacy! We want you to feel comfortable using our app and knowing that your data is protected.")
                     .fontWeight(.regular)
                     .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.98)
-                
-                Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.05)
-                
-                Text("Your Eco Score:")
-                    .bold()
                     .padding()
-                
-                Text("We estimate your modes of transport throughout the day. Walking gets you 10 points. That's a lot of points! If you take the tube you gain 7 points! You only gain 3 points by taking the car. Unfortunately, we don't award any points for taking the plane. Gain more points to move up our Alter Eco Leagues!")
+                Text("That's why all of your information is stored locally on your device, and can't be seen by anybody else - not even us at Alter Eco! This includes all your transport data, profile pictures, nicknames and even which awards you have won.")
                     .fontWeight(.regular)
-                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.98)
+                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.95)
+                    .padding()
+                Text("If you  would like to remove your data from your device, please delete the app from your phone.")
+                    .fontWeight(.regular)
+                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.95)
+                    .padding()
                 
-                Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.05)
+                //Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.05)
                 
-                Text("Your Eco League:")
+                Text("Credits")
                     .bold()
                     .padding()
                 
-               Text("In the Alter Eco community, your league defines you! The greener the transport modes you use,the more points you accumulate. Compete against yourself, improve your carbon footprint and you will soon be part of the élite Alter Ecoers that are in the League Tortoise!!")
+                Text("Icons made by Freepik and Prosymbols from Flaticon.")
                     .fontWeight(.regular)
                     .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.98)
                 
                   Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
             }
+            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.95)
         }
     }
 }
