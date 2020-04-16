@@ -2,31 +2,46 @@ import Foundation
 import CoreLocation
 import MapKit
 
+/**
+ The activity estimator's responsibility is to elaborate location information to infer what kind of activity (e.g. transportation) the user is doing and to then save it in the database.
+ 
+ Activities are computed on the basis of location updates. A location update must be far enough in both time and space as specified by the relative constants.
+ Activities can be speed-based (e.g. car or walking) if they are computed on the basis of the speed estimated by the location updates.
+ Alternatively, an activity is said to be region-of-interest (ROI) based if its estimation depends on whether the user has visited specific locations (e.g. airports).
+ */
 public class ActivityEstimator<T:ActivityList> {
-    // nearby stations
+    /// Nearby train/underground stations. Used to determine train activities.
     public var stations: [MKMapItem] = []
-    // nearby airports
+    /// Nearby airports. Used to determine flight activities.
     public var airports: [MKMapItem] = []
     
-    // contains location information of visit to tube station, nil if not recently in a tube station
+    /// Contains location information of visit to tube station, nil if not recently in a tube station
     private var previousStation: CLLocation? = nil
-    // contains location information of visit to airport, nil if not recently in an airport
+    /// Contains location information of visit to airport, nil if not recently in an airport
     private var previousAirport: CLLocation? = nil
-    // contains location from previous valid update
+    /// Contains location from previous valid update
     private var previousLoc: CLLocation? = nil
-    // manages countdowns to expire flags for ROI-based activities
+    /// Manages countdowns to expire flags for ROI-based activities
     private var timers : CountdownHandler!
 
-    // container for user activities containing a motion type and timestamps
+    /// Container for user activities containing a motion type and timestamps
     private var measurements: T
+    /// Defines how many activities' motion types must be different from the previous ones for a new speed-based activity to be computed
     private let numChangeActivity: Int
-        
+    
+    /**
+     Initializes an activity estimator which makes use of the ActivityList provided.
+     - Parameter activityList: activity list which will be used to contain activities and to write to a database.
+     - Parameter numChangeActivity: how many activities' motion types must be different from the previous ones for a new speed-based activity to be computed.
+     - Parameter timer: object to perform delayed actions; used to deactivate ROIs' flags and other time-based actions.
+     */
     public init(activityList: T, numChangeActivity: Int, timers: CountdownHandler) {
         self.measurements = activityList
         self.numChangeActivity = numChangeActivity
         self.timers = timers
     }
     
+    /// Processes the location provided to estimate an activity. Computation and storage of activities is automatic as long as locations are provided.
     public func processLocation(_ location: CLLocation) {
         if isLocationAccurate(location) && isLocationFarEnough(location) && !isLocationUpdateInstantaneous(location) {
             print("valid location received")
