@@ -176,10 +176,12 @@ public class ActivityEstimator<T:ActivityList> {
         
         let newActivityIndex = measurements.count - activityNumToOff
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {
+            // flag is still valid
             if measurements[i].motionType != motionType {
                 return
             }
         }
+        // flag is invalid
         prevROI = nil
         processSignificantChanges()
     }
