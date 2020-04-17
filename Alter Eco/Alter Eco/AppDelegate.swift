@@ -3,6 +3,7 @@ import CoreLocation
 import MapKit
 import CoreData
 import BackgroundTasks
+import Network
 
 // share database handler amaong all modules
 let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
@@ -18,6 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal var DBMS : DBManager!
     // estimates activities based on given information (such as location updates)
     internal var activityEstimator : ActivityEstimator<WeightedActivityList>!
+    
+    let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
+    
+    class WifiStatus: ObservableObject {
+        @Published var isConnected: Bool = false
+    }
+    
+    internal var wifistatus = WifiStatus()
     
     override init() {
         super.init()
@@ -51,6 +60,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // the app before the background task was called to do this for us.
         // The scheduleBSTscore() functon reschedules the BGTscore task for tomorrow.
         BGTaskScheduler.shared.cancelAllTaskRequests()
+        
+        self.monitor.pathUpdateHandler = {path in
+            self.respondToWifiChange(wifi: path.status == .satisfied)
+        }
+
+        // Begin monitoring:
+        print("Wi-fi monitoring currently off to allow simulator testing")
+        self.monitor.start(queue: DispatchQueue.global(qos: .background))
+        
+        
         return true
     }
     
@@ -176,7 +195,64 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
+    // MARK: - Functions to respond to a changes in network status
+    /// Function to respond to a change in Network status
+    func respondToWifiChange(wifi: Bool) {
+        if wifi {
+            // Check if we're in background, and whether we've gone from no wifi to wifi:
+            if !self.wifistatus.isConnected {
+                // Toggle the isConnected boolean to true:
+                self.wifistatus.isConnected = true
+                // Stop updating the location
+                self.manager.stopUpdatingLocation()
+                // Send wifi notification to user:
+                self.registerWifiNotification()
+                
+            }
+        } else {
+            // Check if we're in background, and whether we've gone from wifi to no wifi:
+            if self.wifistatus.isConnected {
+                // Toggle the isConnected boolean to false:
+                self.wifistatus.isConnected = false
+                // Resume updating the location
+                self.manager.startUpdatingLocation()
+                // Send no wifi notification to user:
+                self.registerNoWifiNotification()
+            }
+        }
+    }
     
+    /// Function to register a notification that tells the user that device has connected to WiFi and tracking has been paused
+    private func registerWifiNotification() {
+        // Make Content
+        let content = UNMutableNotificationContent()
+        content.title = "Detected Wifi"
+        content.body = "Tracking paused - We care about your battery life."
+        // Set up Trigger
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (1), repeats: false)
+        // Create UID
+        let uuid = UUID().uuidString
+        // Set up Request
+        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        // Register Request
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    /// Function to register a notification that tells the user that WifFi has connected to WiFi and tracking has resumed
+    private func registerNoWifiNotification() {
+        // Make Content
+        let content = UNMutableNotificationContent()
+        content.title = "Wifi Disconnected"
+        content.body = "Tracking resumed - Let's hit the road!"
+        // Set up Trigger
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (1), repeats: false)
+        // Create UID
+        let uuid = UUID().uuidString
+        // Set up Request
+        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        // Register Request
+        UNUserNotificationCenter.current().add(request)
+    }
     
     // MARK: - Functions to register for notifications
     func registerForPushNotifications() {
