@@ -216,4 +216,30 @@ class DatabaseTest: XCTestCase {
         XCTAssert(abs(carbonRetrieved - expectedCarbon) < tolerance, "carbonRetrieved was " + String(carbonRetrieved) + " expectedCarbon was " + String(expectedCarbon))
     }
     
+    func testSelectOnlyYearFromDate() {
+        
+        let thisYear = Date()
+        let oneYearAgo = Calendar.current.date(byAdding: .year, value: -1, to: thisYear)
+        let nextYear = Calendar.current.date(byAdding: .year, value: 1, to: thisYear)
+        
+        let listOfDates = [oneYearAgo, nextYear]
+        
+        let listOfYearsStr = Date.toYearString(years: listOfDates as! [Date])
+        
+        let oneYearAgoStr = Calendar.current.component(.year, from: oneYearAgo!)
+        let nextYearStr = Calendar.current.component(.year, from: nextYear!)
+        
+        XCTAssert(listOfYearsStr[0] == String(oneYearAgoStr) && listOfYearsStr[1] == String(nextYearStr), "Cannot convert year from date to string.")
+    }
+    
+    func testTwoDatesAreNotInSameDay() {
+    
+        let today = Date()
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: today)!
+        
+        let inSameDay = Date.inSameDay(date1: today, date2: yesterday)
+        
+        XCTAssert(inSameDay == false, "Dates are in same day but should not.")
+    }
+    
 }

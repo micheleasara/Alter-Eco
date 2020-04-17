@@ -21,7 +21,7 @@ struct DetailView: View {
                     
                     //Progress Bar
                    ProgressBarView()
-                       .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 25))
+                       .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 35))
                    
                    //Comparisons
                    ComparisonView()

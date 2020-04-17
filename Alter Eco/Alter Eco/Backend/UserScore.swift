@@ -67,28 +67,23 @@ public class UserScore : Equatable{
         }
         return 0
     }
-}
+    
+    /**
+    Returns the user's upgraded league based on current league.
+     - Parameter userLeague: the current user's league.
+     */
+    public static func getNewLeague(userLeague: String) -> String {
 
-/* League Helper Functions */
-func getNewLeague(userLeague: String) -> String {
-
-    if userLeague == "🌱" {
-        return "🌿"
-    }
-    else if userLeague == "🌿" {
+        if userLeague == "🌱" {
+            return "🌿"
+        }
+        else if userLeague == "🌿" {
+            return "🌳"
+        }
+        
         return "🌳"
     }
-    
-    return "🌳"
 }
 
-func getLeagueProgress() -> Void {
-    
-    let userScore = try! DBMS.retrieveLatestScore()
-    
-    if userScore.totalPoints >= POINTS_REQUIRED_FOR_NEXT_LEAGUE {
-        try! DBMS.updateLeague(newLeague: getNewLeague(userLeague: userScore.league))
-    }
-}
 
 

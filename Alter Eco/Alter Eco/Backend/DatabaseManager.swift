@@ -82,6 +82,11 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     - Returns: A UserScore object having its properties set to the values in the database.
      */
     func retrieveLatestScore() throws -> UserScore
+    /**
+    Checks user progress and updates league if enough points have been accumulated.
+     */
+    func getLeagueProgress(dbms: CoreDataManager) throws -> Void
+    
     /// Returns the earliest start date within the Event entity.
     func getFirstDate() throws -> Date
     
@@ -301,6 +306,35 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         
         return userScore
+    }
+    
+    public func resetScore() throws -> Void {
+        let managedContext = try getManagedContext()
+        let dateToday = Date()
+        let dateTodayStr = Date.toInternationalString(dateToday)
+        
+        let newScore = 0.0
+        
+        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
+        if queryResult.count != 0 {
+            queryResult[0].setValue(newScore, forKey: "score")
+            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
+        }
+        
+        try managedContext.save()
+        
+    }
+    /**
+    Checks user progress and updates league if enough points have been accumulated.
+     */
+    public func getLeagueProgress(dbms: CoreDataManager) throws -> Void {
+        
+        let userScore = try! dbms.retrieveLatestScore()
+        
+        if userScore.totalPoints >= POINTS_REQUIRED_FOR_NEXT_LEAGUE {
+            try! dbms.updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
+            try! dbms.resetScore()
+        }
     }
     
     /// Returns the earliest start date within the Event entity. If no date is found, the date of today is returned.

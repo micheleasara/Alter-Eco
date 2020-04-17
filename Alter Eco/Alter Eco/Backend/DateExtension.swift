@@ -132,12 +132,6 @@ extension Date {
         return nil
     }
     
-    /// Returns whether the two dates are in the same day.
-    public static func inSameDay(date1:Date, date2:Date) -> Bool {
-        let calendar = Calendar(identifier: .gregorian)
-        return calendar.dateComponents([.day, .month, .year], from: date1) == calendar.dateComponents([.day, .month, .year], from: date2)
-    }
-    
     /// Converts an array of dates into an array of string representations of their years. Year format is yyyy.
     public static func toYearString(years: [Date]) -> [String] {
         dateFormatter.dateFormat = "yyyy"
@@ -148,5 +142,11 @@ extension Date {
         }
         
         return yearsStrings
+    }
+    
+    /// Returns whether the two dates are in the same day. Not used in V1 April 2020.
+    public static func inSameDay(date1:Date, date2:Date) -> Bool {
+        let calendar = Calendar(identifier: .gregorian)
+        return calendar.dateComponents([.day, .month, .year], from: date1) == calendar.dateComponents([.day, .month, .year], from: date2)
     }
 }

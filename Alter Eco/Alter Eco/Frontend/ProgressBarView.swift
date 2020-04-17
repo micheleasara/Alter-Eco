@@ -7,13 +7,15 @@ struct ProgressBarView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     let proportion = try! DBMS.retrieveLatestScore().totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE
-   
-    var body: some View {
     
+    var whenViewLoadedCheckIfUserReachedNewLeague: Void = try! DBMS.getLeagueProgress(dbms: DBMS as! CoreDataManager)
+    
+    var body: some View {
+        
         VStack {
             Text("Your League")
                 .font(.headline)
-                .padding(.trailing, CGFloat(screenMeasurements.broadcastedWidth)/1.8)
+                .padding(.trailing, CGFloat(screenMeasurements.broadcastedWidth)/2.1)
            
             //text box for league information
             ZStack() {
@@ -51,7 +53,7 @@ struct ProgressBarView: View {
                             
                     }.cornerRadius(25.0)
 
-                Text("\(getNewLeague(userLeague: (try! DBMS.retrieveLatestScore()).league))")
+                Text("\(UserScore.getNewLeague(userLeague: (try! DBMS.retrieveLatestScore()).league))")
                 .font(.largeTitle)
             }
           Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") / \(POINTS_REQUIRED_FOR_NEXT_LEAGUE, specifier: "%.0f")")

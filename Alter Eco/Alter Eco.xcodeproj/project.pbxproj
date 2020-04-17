@@ -23,6 +23,7 @@
 		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
 		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
 		9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5D59C4243B102C00238275 /* ProgressBarView.swift */; };
+		9C8601332449884100033B55 /* UserScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8601322449884100033B55 /* UserScoreTest.swift */; };
 		9C87AE27244215FB00490481 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* DatabaseManager.swift */; };
 		9C87AE292442408F00490481 /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
 		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
@@ -118,6 +119,7 @@
 		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
 		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C5D59C4243B102C00238275 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		9C8601322449884100033B55 /* UserScoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScoreTest.swift; sourceTree = "<group>"; };
 		9C87AE26244215FB00490481 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		9C87AE282442408F00490481 /* ActivityList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityList.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 		9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */ = {
 			isa = PBXGroup;
 			children = (
+				9C8601322449884100033B55 /* UserScoreTest.swift */,
 				9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */,
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
 				DEFEEC502448987C009BE765 /* MultiTimerTest.swift */,
@@ -493,6 +496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */,
+				9C8601332449884100033B55 /* UserScoreTest.swift in Sources */,
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
 				DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */,
 				9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */,
