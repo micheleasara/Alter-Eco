@@ -331,7 +331,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         let userScore = try! dbms.retrieveLatestScore()
         
-        if userScore.totalPoints >= POINTS_REQUIRED_FOR_NEXT_LEAGUE {
+        if userScore.totalPoints >= (POINTS_REQUIRED_FOR_NEXT_LEAGUE+1) {
             try! dbms.updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
             try! dbms.resetScore()
         }

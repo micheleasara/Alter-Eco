@@ -6,9 +6,9 @@ struct ProgressBarView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
-    let proportion = try! DBMS.retrieveLatestScore().totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE
-    
     var whenViewLoadedCheckIfUserReachedNewLeague: Void = try! DBMS.getLeagueProgress(dbms: DBMS as! CoreDataManager)
+    
+    let proportion = try! DBMS.retrieveLatestScore().totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE
     
     var body: some View {
         
@@ -23,18 +23,21 @@ struct ProgressBarView: View {
                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth) * 0.9, height: CGFloat(screenMeasurements.broadcastedHeight) / 9)
                    .foregroundColor(Color("fill_colour"))
             
-            VStack() {
-                Text("Grow your plant into a 🌳! Your plant is now a \((try! DBMS.retrieveLatestScore()).league)")
-                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/10)
-                     
-                   // depending on which league user is in, display next one
-                   if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
-                       Text("The ecosystem is thriving! Congratulations.")
-                            .font(.headline)
-                            .fontWeight(.regular)
-                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/8)
-                   }
-               }
+                VStack() {
+                    
+                        if ((try! DBMS.retrieveLatestScore()).league != "🌳") {
+                        Text("Grow your plant into a 🌳! Your plant is now a \((try! DBMS.retrieveLatestScore()).league)")
+                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/10)
+                        }
+                         
+                       // depending on which league user is in, display next one
+                       if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
+                           Text("Your ecosystem is thriving!  🌳 Congratulations 🌳")
+                                .font(.headline)
+                                .fontWeight(.regular)
+                                .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/8)
+                       }
+                }
            }
  
             //progress bar
@@ -69,4 +72,5 @@ struct ProgressBarView_Previews: PreviewProvider {
         ProgressBarView()
     }
 }
+
 
