@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
         // Begin monitoring:
         print("Wi-fi monitoring currently off to allow simulator testing")
-        self.monitor.start(queue: DispatchQueue.global(qos: .background))
+        //self.monitor.start(queue: DispatchQueue.global(qos: .background))
         
         
         return true
