@@ -9,9 +9,9 @@ where Index == Int, Element == Array<MeasuredActivity>.Element {
     func remove(at:Index)
     /// Removes all elements.
     func removeAll()
-    /// Writes the elements in the range given to the database and then deletes them.
+    /// Writes to the database the activity resulting from the measurements in the given range, and then deletes them.
     func dumpToDatabase(from:Int, to:Int)
-    /// Writes the elements in the range given to the database.
+    /// Writes to the database the activity resulting from the measurements in the given range.
     func writeToDatabase(from:Int, to:Int)
 }
 

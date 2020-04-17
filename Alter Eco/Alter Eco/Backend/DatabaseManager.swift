@@ -17,7 +17,7 @@ public let CARBON_UNIT_WALKING: Double = 0.175
 /// Conversion unit for meters into km.
 public let KM_CONVERSION: Double = 0.001
 
-/// Represents an interface for a reader of AlterEco's databases.
+/// Represents an interface for a reader of Alter Eco's databases.
 public protocol DBReader {
     /**
     Queries the Event entity with a predicate.
@@ -36,7 +36,7 @@ public protocol DBReader {
     func executeQuery(entity: String, predicate: String?, args:[Any]?) throws -> [Any]
 }
 
-/// Represents an interface for a writer of AlterEco's databases.
+/// Represents an interface for a writer of Alter Eco's databases.
 public protocol DBWriter {
     /// Appends an activity to the Event entity.
     func append(activity: MeasuredActivity) throws
