@@ -18,11 +18,11 @@ struct BarView: View {
             VStack {
                 //Graph for 'days' and 'months'
                 ZStack(alignment: .bottom) {
-                    Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/18, height:
+                    Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height:
                         CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
                         .foregroundColor(Color("app_background"))
                         .opacity(0.0)
-                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/21, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
+                    Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/24, height: CGFloat(value) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
                         //Colour is determined by the daily carbon query above
                         .foregroundColor(Color(colour))
                 }
