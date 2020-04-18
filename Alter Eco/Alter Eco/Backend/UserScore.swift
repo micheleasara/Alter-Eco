@@ -21,30 +21,34 @@ public class UserScore : Equatable{
     public var date: String!
     /// Current league of the user.
     public var league: String!
+    // Current number of trees planted by user
+    public var counter: Int!
     
     /// Returns the default initial user score.
     public static func getInitialScore() -> UserScore {
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        return UserScore(totalPoints: 0, date: dateFormatter.string(from: Date()), league: "🌱")
+        return UserScore(totalPoints: 0, date: dateFormatter.string(from: Date()), league: "🌱", counter: 0)
     }
     
     /// Initializes a UserScore with the given parameters.
-    public init(totalPoints: Double, date: String, league: String) {
+    public init(totalPoints: Double, date: String, league: String, counter: Int) {
         self.totalPoints = totalPoints
         self.date = date
         self.league = league
+        self.counter = counter
     }
     
     /// Initializes a UserScore calculating the points from the given activity.
-    public init(activity: MeasuredActivity, league: String, date: String) {
+    public init(activity: MeasuredActivity, league: String, date: String, counter: Int) {
         self.date = date
         self.totalPoints = UserScore.activityToScore(activity: activity)
         self.league = league
+        self.counter = counter
     }
     
     /// Checks equality between user scores.
     public static func ==(lhs: UserScore, rhs: UserScore) -> Bool {
-        return lhs.date == rhs.date && lhs.totalPoints == rhs.totalPoints && lhs.league == rhs.league
+        return lhs.date == rhs.date && lhs.totalPoints == rhs.totalPoints && lhs.league == rhs.league && lhs.counter == rhs.counter
     }
     
     /// Converts an activity to a user score.
@@ -81,7 +85,9 @@ public class UserScore : Equatable{
             return "🌳"
         }
         
-        return "🌳"
+        else {
+            return "🌱"
+        }
     }
 }
 

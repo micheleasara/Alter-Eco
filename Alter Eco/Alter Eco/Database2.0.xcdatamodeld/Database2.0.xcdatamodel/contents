@@ -10,6 +10,7 @@
         <attribute name="imageP" optional="YES" attributeType="Binary"/>
     </entity>
     <entity name="Score" representedClassName="Score" syncable="YES" codeGenerationType="class">
+        <attribute name="counter" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="dateStr" optional="YES" attributeType="String"/>
         <attribute name="league" optional="YES" attributeType="String"/>
         <attribute name="score" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
@@ -17,6 +18,6 @@
     <elements>
         <element name="Event" positionX="18" positionY="81" width="128" height="103"/>
         <element name="ProfilePic" positionX="0" positionY="81" width="128" height="58"/>
-        <element name="Score" positionX="-27" positionY="18" width="128" height="88"/>
+        <element name="Score" positionX="-27" positionY="18" width="128" height="103"/>
     </elements>
 </model>

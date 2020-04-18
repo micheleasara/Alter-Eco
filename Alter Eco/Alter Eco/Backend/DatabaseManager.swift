@@ -42,6 +42,10 @@ public protocol DBWriter {
     func append(activity: MeasuredActivity) throws
     /// Updates score by adding score computed from a given activity.
     func updateScore(activity: MeasuredActivity) throws
+    /// Resets score to 0 when user progresses to next league
+    func resetScore() throws -> Void
+    /// Updates number of trees user has grown (i.e. number of times user reached 3rd league)
+    func updateCounter() throws -> Void
 }
 
 /// Represents an interface to an object able to read, write and perform sophisticated queries on AlterEco's databases.
@@ -120,6 +124,7 @@ public protocol CarbonCalculator {
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework. Also provides carbon conversion utilities.
 public class CoreDataManager : DBManager, CarbonCalculator {
+    
     // contains Core Data's stack
     private let persistentContainer : NSPersistentContainer
     // contains the function called when an activity has been written to the database
@@ -268,7 +273,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         // retrieve current score
         let queryResult = try executeQuery(entity: "Score", predicate:nil, args: nil) as! [NSManagedObject]
         if queryResult.count != 0 {
-            let activityScore = UserScore(activity: activity, league: "", date: Date.toInternationalString(Date()))
+            let activityScore = UserScore(activity: activity, league: "", date: Date.toInternationalString(Date()), counter: 0)
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
             queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
             queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
@@ -306,11 +311,12 @@ public class CoreDataManager : DBManager, CarbonCalculator {
             userScore.totalPoints = queryResult[0].value(forKey: "score") as? Double
             userScore.date = queryResult[0].value(forKey: "dateStr") as? String
             userScore.league = queryResult[0].value(forKey: "league") as? String
+            userScore.counter = queryResult[0].value(forKey: "counter") as? Int
         } else {
             let managedContext = try getManagedContext()
             let entity = NSEntityDescription.entity(forEntityName: "Score", in: managedContext)!
             let eventDB = NSManagedObject(entity: entity, insertInto: managedContext)
-            eventDB.setValuesForKeys(["dateStr": userScore.date!, "score": userScore.totalPoints!, "league": userScore.league!])
+            eventDB.setValuesForKeys(["dateStr": userScore.date!, "score": userScore.totalPoints!, "league": userScore.league!, "counter": userScore.counter!])
         }
         
         return userScore
@@ -330,8 +336,22 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         
         try managedContext.save()
-        
     }
+    
+    public func updateCounter() throws -> Void {
+        let managedContext = try getManagedContext()
+        let dateToday = Date()
+        let dateTodayStr = Date.toInternationalString(dateToday)
+        
+        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
+        if queryResult.count != 0 {
+            let oldCounter = queryResult[0].value(forKey: "counter") as! Int
+            queryResult[0].setValue(oldCounter + 1, forKey: "counter")
+            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
+        }
+        try managedContext.save()
+    }
+    
     /**
     Checks user progress and updates league if enough points have been accumulated.
      */
@@ -340,6 +360,9 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         let userScore = try! dbms.retrieveLatestScore()
         
         if userScore.totalPoints >= (POINTS_REQUIRED_FOR_NEXT_LEAGUE+1) {
+            if userScore.league == "🌳" {
+                try! dbms.updateCounter()
+            }
             try! dbms.updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
             try! dbms.resetScore()
         }

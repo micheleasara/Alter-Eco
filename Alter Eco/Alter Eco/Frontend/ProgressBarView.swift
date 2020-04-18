@@ -26,13 +26,13 @@ struct ProgressBarView: View {
                 VStack() {
                     
                         if ((try! DBMS.retrieveLatestScore()).league != "🌳") {
-                        Text("Grow your plant into a 🌳! Your plant is now a \((try! DBMS.retrieveLatestScore()).league)")
+                            Text("Grow your plant into a 🌳! Your plant is now a \((try! DBMS.retrieveLatestScore()).league). You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep going!")
                             .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/10)
                         }
                          
                        // depending on which league user is in, display next one
-                       if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
-                           Text("Your ecosystem is thriving!  🌳 Congratulations 🌳")
+                       else if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
+                           Text("Your ecosystem is thriving! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 Congratulations!")
                                 .font(.headline)
                                 .fontWeight(.regular)
                                 .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/8)
