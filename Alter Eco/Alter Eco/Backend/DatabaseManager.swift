@@ -42,10 +42,6 @@ public protocol DBWriter {
     func append(activity: MeasuredActivity) throws
     /// Updates score by adding score computed from a given activity.
     func updateScore(activity: MeasuredActivity) throws
-    /// Resets score to 0 when user progresses to next league
-    func resetScore() throws -> Void
-    /// Updates number of trees user has grown (i.e. number of times user reached 3rd league)
-    func updateCounter() throws -> Void
 }
 
 /// Represents an interface to an object able to read, write and perform sophisticated queries on AlterEco's databases.

@@ -168,6 +168,7 @@ class WeightedActivityListTest: XCTestCase {
     }
     
     class DBManagerMock : DBWriter {
+        
         var appendArgs : [MeasuredActivity] = []
         var updateScoreArgs : [MeasuredActivity] = []
         

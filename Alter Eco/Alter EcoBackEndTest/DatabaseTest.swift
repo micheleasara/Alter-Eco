@@ -58,8 +58,8 @@ class DatabaseTest: XCTestCase {
     func testUpdatedUserScoreIsRetrieved() {
         let activity1 = MeasuredActivity(motionType: .car, distance: 10000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100))
         let activity2 = MeasuredActivity(motionType: .train, distance: 1000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 1000))
-        let score1 = UserScore(activity: activity1, league: "", date: "")
-        let score2 = UserScore(activity: activity2, league: "", date: "")
+        let score1 = UserScore(activity: activity1, league: "", date: "", counter: 0)
+        let score2 = UserScore(activity: activity2, league: "", date: "", counter: 0)
         
         _ = try! DBMS.retrieveLatestScore() // initialize score row
         try! DBMS.updateScore(activity: activity1)
