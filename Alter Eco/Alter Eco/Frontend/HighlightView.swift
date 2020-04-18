@@ -14,7 +14,7 @@ func generateSentence() -> String {
     let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: dateFormatter.string(from: currentDateTime))
     let number = Int.random(in: 0 ..< 5)
     
-    if (value >= 2300) {
+    if (value >= 2.3) {
        
         if (number == 0) {return "Be careful! You're consuming more than the UK average! You can do better."}
         if (number == 1) {return "To make up for your transport emissions why don't you try buying local produce?"}
@@ -23,7 +23,7 @@ func generateSentence() -> String {
         if (number == 4) {return "To reduce your transport emissions why don't you try cycling more often?"}
     }
     
-    if (value >= 1400 && value < 2300) {
+    if (value >= 1.4 && value < 2.3) {
      
         if (number == 0) {return "So far today you're consuming as much as an average tree can absorb in one month!"}
         if (number == 1) {return "Try to share car rides when you have to drive!"}
@@ -32,7 +32,7 @@ func generateSentence() -> String {
         if (number == 4) {return "The Earth is a fine place and worth fighting for. -- Ernest Hemingway"}
     }
     
-    if (value >= 800 && value < 1400) {
+    if (value >= 0.8 && value < 1.4) {
         
         if (number == 0) {return "So far today you've emitted the same amount of carbon necessary to produce 2 jars of peanut butter! Not bad..."}
         if (number == 1) {return "Twenty-five years ago people could be excused for not knowing much, or doing much, about climate change. Today we have no excuse. -- Desmond Tutu"}
