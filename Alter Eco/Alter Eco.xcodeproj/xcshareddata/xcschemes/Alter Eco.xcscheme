@@ -51,16 +51,6 @@
                ReferencedContainer = "container:Alter Eco.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9CD5948024296E2700B1D0B4"
-               BuildableName = "Alter EcoFullUITest.xctest"
-               BlueprintName = "Alter EcoFullUITest"
-               ReferencedContainer = "container:Alter Eco.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

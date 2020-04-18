@@ -263,12 +263,18 @@ func normaliseYearlyAll() -> Double {
 
 //A dictionary data structure for the bar chart.
 //Access by the data type 'DataParts' declared in the file DataClassGraph. This value is determined by the picker sum (e.g. if day + car view is selected the picker sum will be '1' and therefore DataParts.daycar (position 1 in the dictionary) will be displayed).
-
-var data: [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Double)])] = fetchDataGraph()
-
-func updateDataGraph() {
-    data = fetchDataGraph()
+public class DataGraph : ObservableObject {
+    @Published var data: [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Double)])] = fetchDataGraph()
+    
+    public func update() {
+        data = fetchDataGraph()
+    }
 }
+
+#if NO_BACKEND_TESTING
+/// Contains data for the graph of GraphView
+let dataGraph : DataGraph = DataGraph()
+#endif
 
 func fetchDataGraph() -> [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Double)])] {
     
@@ -573,4 +579,3 @@ func fetchDataGraph() -> [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics,
                ]
     
 }
-

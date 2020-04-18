@@ -39,15 +39,15 @@ class AppDelegateTest: XCTestCase {
     
     func testRespondtoWiFiChangeFromConnectedToDisconnected() {
         app.monitor.cancel()
-        app.wifistatus.isConnected = false
+        app.wifiStatus.isConnected = false
         app.respondToWifiChange(wifi: true)
-        XCTAssert(app.wifistatus.isConnected == true)
+        XCTAssert(app.wifiStatus.isConnected == true)
     }
     
     func testRespondtoWiFiChangeFromDisconnectedToConnected() {
         app.monitor.cancel()
-        app.wifistatus.isConnected = true
+        app.wifiStatus.isConnected = true
         app.respondToWifiChange(wifi: false)
-        XCTAssert(app.wifistatus.isConnected == false)
+        XCTAssert(app.wifiStatus.isConnected == false)
     }
 }

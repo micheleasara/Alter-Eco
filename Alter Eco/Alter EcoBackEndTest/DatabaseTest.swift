@@ -38,6 +38,17 @@ class DatabaseTest: XCTestCase {
         XCTAssert(retrieved.count == 0)
     }
     
+    func testCallbackIsCalledWhenActivityIsWritten() {
+        let expectation = self.expectation(description: "callback")
+        let testActivity = MeasuredActivity(motionType: .car, distance: 10000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100))
+        
+        DBMS.setActivityWrittenCallback(callback: {activity in expectation.fulfill()})
+        try! DBMS.append(activity: testActivity)
+
+        // wait for the expectation to be fullfilled, or time out after 5 seconds
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
     func testScoreIsInitializedWhenRetrievingTheFirstTime() {
         let initial = try! DBMS.retrieveLatestScore() // initializes the first time
         let retrieved = try! DBMS.retrieveLatestScore() // retrieves initialized score

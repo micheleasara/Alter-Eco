@@ -46,6 +46,9 @@ public protocol DBWriter {
 
 /// Represents an interface to an object able to read, write and perform sophisticated queries on AlterEco's databases.
 public protocol DBManager : AnyObject, DBReader, DBWriter {
+    /// Adds a function to be called whenever something is written to the database.
+    func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) 
+
     /**
     Returns the cumulative distance for the given motion type and in the specified timeframe.
      - Parameter motionType: the only motion type to consider.
@@ -117,12 +120,10 @@ public protocol CarbonCalculator {
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework. Also provides carbon conversion utilities.
 public class CoreDataManager : DBManager, CarbonCalculator {
-    
+    // contains Core Data's stack
     private let persistentContainer : NSPersistentContainer
-    
-    private func getManagedContext() throws -> NSManagedObjectContext {
-        return persistentContainer.viewContext
-    }
+    // contains the function called when an activity has been written to the database
+    private var activityWrittenCallback : (MeasuredActivity) -> Void = {_ in }
     
     /**
     Initializes a new database manager that interacts with the Core Data framework.
@@ -130,6 +131,10 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     */
     public init(persistentContainer : NSPersistentContainer) {
         self.persistentContainer = persistentContainer
+    }
+    
+    public func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
+        self.activityWrittenCallback = callback
     }
     
     /**
@@ -182,6 +187,9 @@ public class CoreDataManager : DBManager, CarbonCalculator {
                                   "distance":activity.distance, "start":activity.start, "end":activity.end])
 
         try managedContext.save()
+        
+        // call registered observer with the activity just written
+        activityWrittenCallback(activity)
     }
     
     /**
@@ -472,5 +480,9 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         
         return distance * carbonUnit * KM_CONVERSION
+    }
+    
+    private func getManagedContext() throws -> NSManagedObjectContext {
+        return persistentContainer.viewContext
     }
 }

@@ -5,38 +5,49 @@ import CoreData
 import BackgroundTasks
 import Network
 
-// share database handler amaong all modules
+/// Database handler shared across the application
 let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
-    #if NO_BACKEND_TESTING
-    let scene = SceneDelegate()
-    #endif
     // requests gps updates
     internal let manager = CLLocationManager()
     // interfaces with the database
-    internal var DBMS : DBManager!
+    public var DBMS : DBManager!
     // estimates activities based on given information (such as location updates)
     internal var activityEstimator : ActivityEstimator<WeightedActivityList>!
-    
-    let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
+    // location of last request for stations nearby, to be used with station request radius
+    internal var locationUponRequest: CLLocation? = nil
+    // monitors changes to wifi status
+    internal let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
     
     class WifiStatus: ObservableObject {
         @Published var isConnected: Bool = false
     }
     
-    internal var wifistatus = WifiStatus()
+    internal var wifiStatus = WifiStatus()
+    
+    #if NO_BACKEND_TESTING
+    // called when something is written to the database, used to update the graph
+    func activityWasWrittenToDB(activity: MeasuredActivity) {
+        print("activity of type \(activity.motionType) was written!")
+        dataGraph.update()
+    }
+    
+    var scene = SceneDelegate()
+    #endif
     
     override init() {
         super.init()
-        DBMS = CoreDataManager(persistentContainer: persistentContainer)
-        let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, DBMS: DBMS)
+        self.DBMS = CoreDataManager(persistentContainer: persistentContainer)
         
+        #if NO_BACKEND_TESTING
+        self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
+        #endif
+        
+        let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, DBMS: DBMS)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer())
     }
-    // location of last request for stations nearby, to be used with station request radius
-    internal var locationUponRequest: CLLocation? = nil
     
     // Override point for customization after application launch.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -181,7 +192,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return container
     }
     
-    // MARK: - Core Data Saving support
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -196,13 +206,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     // MARK: - Functions to respond to a changes in network status
-    /// Function to respond to a change in Network status
+    /// Responds to a change in wifi connection by turning on/off location tracking and notifies the user appropriately
     func respondToWifiChange(wifi: Bool) {
         if wifi {
             // Check if we're in background, and whether we've gone from no wifi to wifi:
-            if !self.wifistatus.isConnected {
+            if !self.wifiStatus.isConnected {
                 // Toggle the isConnected boolean to true:
-                self.wifistatus.isConnected = true
+                self.wifiStatus.isConnected = true
                 // Stop updating the location
                 self.manager.stopUpdatingLocation()
                 // Send wifi notification to user:
@@ -211,9 +221,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         } else {
             // Check if we're in background, and whether we've gone from wifi to no wifi:
-            if self.wifistatus.isConnected {
+            if self.wifiStatus.isConnected {
                 // Toggle the isConnected boolean to false:
-                self.wifistatus.isConnected = false
+                self.wifiStatus.isConnected = false
                 // Resume updating the location
                 self.manager.startUpdatingLocation()
                 // Send no wifi notification to user:
@@ -222,7 +232,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    /// Function to register a notification that tells the user that device has connected to WiFi and tracking has been paused
+    /// Registers a notification that tells the user that device has connected to WiFi and tracking has been paused
     private func registerWifiNotification() {
         // Make Content
         let content = UNMutableNotificationContent()
@@ -238,7 +248,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         UNUserNotificationCenter.current().add(request)
     }
     
-    /// Function to register a notification that tells the user that WifFi has connected to WiFi and tracking has resumed
+    /// Registers a notification that tells the user that WifFi has connected to WiFi and tracking has resumed
     private func registerNoWifiNotification() {
         // Make Content
         let content = UNMutableNotificationContent()

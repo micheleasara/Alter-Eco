@@ -7,7 +7,7 @@ struct GraphView: View {
     @State var pickerSelectedItem = 0
     //The following picker represents the travel options of 'all' 'car' 'walk' 'train' 'plane'
     @State var pickerSelectedTwoItem = 0
-    @State var data = fetchDataGraph()
+    @EnvironmentObject var dataGraph : DataGraph
 
     var body: some View {//The top picker represents the time (e.g. day vs week) the user would like to view. For example, if the user selects the week picker, the picker would change to a value of 5. These values have been chosen to correctly index the dictionary above (when added to the picker value of the transport mode)
         
@@ -25,9 +25,9 @@ struct GraphView: View {
                 gridlines(value:self.pickerSelectedItem+self.pickerSelectedTwoItem)
                 //The bar chart is constructed here
                 HStack {//The bar displayed depends on the two pickers chosen
-                    ForEach(0..<data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
+                    ForEach(0..<dataGraph.data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
                     { i in
-                        BarView(value: self.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,label: self.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,wid: self.pickerSelectedItem)}}
+                        BarView(value: self.dataGraph.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,label: self.dataGraph.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,wid: self.pickerSelectedItem)}}
                 
             }
             
@@ -41,9 +41,6 @@ struct GraphView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
-            
-        }.onAppear {
-            self.data = fetchDataGraph()
         }
     }
 }

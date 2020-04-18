@@ -30,6 +30,5 @@ class MultiTimerTest: XCTestCase {
                 XCTFail()
         }
         timers.stop("test")
-        XCTAssertTrue(true)
     }
 }
