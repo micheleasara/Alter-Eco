@@ -58,7 +58,7 @@ struct HighlightView: View {
         VStack {
             Text("Highlights & Tips")
                 .font(.headline)
-                .padding(.trailing, CGFloat(screenMeasurements.broadcastedWidth)/2.5)
+                .fontWeight(.semibold)
             
             ZStack {
             RoundedRectangle(cornerRadius: 25, style: .continuous)

@@ -21,8 +21,8 @@ struct ComparisonView: View {
     var body: some View {
           VStack {
               Text("Your Emissions")
-                  .font(.headline)
-                  .padding(.trailing, CGFloat(screenMeasurements.broadcastedWidth)/2.5)
+                    .font(.headline)
+                    .fontWeight(.semibold)
               
               ZStack {
               RoundedRectangle(cornerRadius: 25, style: .continuous)

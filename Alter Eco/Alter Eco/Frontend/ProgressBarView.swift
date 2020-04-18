@@ -14,25 +14,25 @@ struct ProgressBarView: View {
         
         VStack {
             Text("Your League")
-                .font(.headline)
-                .padding(.trailing, CGFloat(screenMeasurements.broadcastedWidth)/2.1)
-           
+           .font(.headline)
+           .fontWeight(.semibold)
+            
             //text box for league information
             ZStack() {
                RoundedRectangle(cornerRadius: 25, style: .continuous)
-                   .frame(width: CGFloat(screenMeasurements.broadcastedWidth) * 0.9, height: CGFloat(screenMeasurements.broadcastedHeight) / 9)
+                   .frame(width: CGFloat(screenMeasurements.broadcastedWidth) * 0.9, height: CGFloat(screenMeasurements.broadcastedHeight) / 7)
                    .foregroundColor(Color("fill_colour"))
             
                 VStack() {
                     
                         if ((try! DBMS.retrieveLatestScore()).league != "🌳") {
-                            Text("Grow your plant into a 🌳! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep going!")
-                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/10)
+                            Text("Grow your forest! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳s so far, keep earning points to grow a new 🌳!")
+                            .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight) / 8)
                         }
                          
                        // depending on which league user is in, display next one
                        else if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
-                           Text("Your forest is thriving! You just planted another 🌳, for a total of \((try! DBMS.retrieveLatestScore()).counter)! Congratulations!")
+                           Text("Your forest is thriving! You just planted another 🌳, for a total of \((try! DBMS.retrieveLatestScore()).counter)! Congratulations! You're now growing a new sapling.")
                                 .font(.headline)
                                 .fontWeight(.regular)
                                 .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/8)
