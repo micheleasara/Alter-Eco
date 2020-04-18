@@ -45,9 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
         #endif
         
-        try! DBMS.retrieveLatestScore()
-        try! DBMS.updateScore(activity: MeasuredActivity(motionType: .walking, distance: 200000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 60*60)))
-        
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, DBMS: DBMS)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer())
     }

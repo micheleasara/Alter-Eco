@@ -249,8 +249,6 @@ struct ScorePoints: View {
                 .alert(isPresented: $showingInfo) {
                     Alert(title: Text("Your Eco Score"), message: Text("We estimate your modes of transport throughout the day. Walking gets you 10 points, taking the tube 7 points, you only gain 3 points for taking the car and no points for plane travel!"), dismissButton: .default(Text("OK")))
                 }
-                .offset(x: CGFloat(screenMeasurements.broadcastedWidth)*0.2)
-
             }
         }
     }
