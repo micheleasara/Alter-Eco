@@ -26,13 +26,13 @@ struct ProgressBarView: View {
                 VStack() {
                     
                         if ((try! DBMS.retrieveLatestScore()).league != "🌳") {
-                            Text("Grow your plant into a 🌳! Your plant is now a \((try! DBMS.retrieveLatestScore()).league). You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep going!")
+                            Text("Grow your plant into a 🌳! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep going!")
                             .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/10)
                         }
                          
                        // depending on which league user is in, display next one
                        else if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
-                           Text("Your ecosystem is thriving! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 Congratulations!")
+                           Text("Your forest is thriving! You just planted another 🌳, for a total of \((try! DBMS.retrieveLatestScore()).counter)! Congratulations!")
                                 .font(.headline)
                                 .fontWeight(.regular)
                                 .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/8)
@@ -42,6 +42,9 @@ struct ProgressBarView: View {
  
             //progress bar
             HStack{
+                Text("\((try! DBMS.retrieveLatestScore()).league)")
+                .font(.largeTitle)
+                
                 ZStack(alignment: .leading) {
                     Rectangle()
                         .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/45)
@@ -61,7 +64,7 @@ struct ProgressBarView: View {
             }
           Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") / \(POINTS_REQUIRED_FOR_NEXT_LEAGUE, specifier: "%.0f")")
             .font(.body)
-            .padding(.leading, CGFloat(screenMeasurements.broadcastedWidth)/3.2)
+            .padding(.leading, CGFloat(screenMeasurements.broadcastedWidth)/3.5)
             
         }
     }
