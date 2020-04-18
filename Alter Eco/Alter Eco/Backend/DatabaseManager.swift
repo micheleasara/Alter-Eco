@@ -355,11 +355,18 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         let userScore = try! dbms.retrieveLatestScore()
         
+//        if userScore.totalPoints == 0 && userScore.league == "🌳" {
+//           try! dbms.updateCounter()
+//        }
+        
         if userScore.totalPoints >= (POINTS_REQUIRED_FOR_NEXT_LEAGUE+1) {
-            if userScore.league == "🌳" {
+            try! dbms.updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
+            
+            let newUserScore = try! dbms.retrieveLatestScore()
+            if newUserScore.league == "🌳" {
                 try! dbms.updateCounter()
             }
-            try! dbms.updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
+            
             try! dbms.resetScore()
         }
     }
