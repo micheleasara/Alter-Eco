@@ -95,11 +95,11 @@ func findCorrectUnits(currentMax: Double, value: Int) -> (Double, String, String
         maxVal=currentMax
         carbonUnit="  Carbon kgs"
     }
-    //If below 1kg show to 2dp.
+    //If below 1kg convert to grams.
     if (currentMax<=1) {
-        decimalPlaces = "%.2f"
-        maxVal=currentMax
-        carbonUnit="  Carbon kgs"
+        decimalPlaces = "%.1f"
+        maxVal=currentMax*1000
+        carbonUnit="Carbon grams"
     }
    
     if ((value==2)||(value==7)||(value==12)||(value==17)) {
