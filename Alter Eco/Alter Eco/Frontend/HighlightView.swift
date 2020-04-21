@@ -17,7 +17,7 @@ func generateSentence() -> String {
     if (value >= 2.3) {
        
         if (number == 0) {return "Be careful! You're consuming more than the UK average! You can do better."}
-        if (number == 1) {return "To make up for your transport emissions why don't you try buying local produce?"}
+        if (number == 1) {return "To make up for your transport emissions why don't you try buying local products?"}
         if (number == 2) {return "To make up for your transport emissions why don't you try plastic alternatives?"}
         if (number == 3) {return "To make up for your transport emissions why don't you try going vegetarian for a day?"}
         if (number == 4) {return "To reduce your transport emissions why don't you try cycling more often?"}

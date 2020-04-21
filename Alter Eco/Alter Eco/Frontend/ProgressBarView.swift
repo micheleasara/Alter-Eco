@@ -26,7 +26,7 @@ struct ProgressBarView: View {
                 VStack() {
                     
                         if ((try! DBMS.retrieveLatestScore()).league != "🌳") {
-                            Text("Grow your forest! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳s so far, keep earning points to grow a new 🌳!")
+                            Text("Grow your forest! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep earning points to grow a new 🌳!")
                             .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight) / 8)
                         }
                          
