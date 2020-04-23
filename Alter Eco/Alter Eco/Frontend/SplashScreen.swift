@@ -1,9 +1,7 @@
 import Foundation
 import SwiftUI
 
-struct SplashScreen:
-
-View {
+struct SplashScreen: View {
     @State var percent = 0.0
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
