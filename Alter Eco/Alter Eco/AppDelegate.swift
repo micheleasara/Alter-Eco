@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     override init() {
         super.init()
         self.DBMS = CoreDataManager(persistentContainer: persistentContainer)
-        
+
         #if NO_BACKEND_TESTING
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
         #endif
