@@ -165,7 +165,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     */
     public func queryActivities(predicate: String?, args:[Any]?) throws -> [MeasuredActivity] {
         var measuredActivities = [MeasuredActivity]()
-        let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args!)) as! [NSManagedObject]
+        let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args)) as! [NSManagedObject]
 
         for result in queryResult {
             let motionType = MeasuredActivity.stringToMotionType(type: result.value(forKey: "motionType") as! String)
