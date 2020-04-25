@@ -11,7 +11,7 @@ func generateProportion() -> String {
     
     let proportion = Int(round(value * 100 / AV_UK_DAILYCARBON))
     
-    return ("So far today you've consumed \(proportion)% of the UK daily average.")
+    return ("So far today you've emitted \(proportion)% of the UK daily average carbon emissions.")
 }
 
 struct ComparisonView: View {
