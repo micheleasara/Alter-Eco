@@ -80,7 +80,7 @@ public class WeightedActivityList: ActivityList {
     /// Returns the cumulative distance contained in the activities in the range provided.
     public func getCumulativeDistance(from:Int, to:Int) -> Double {
         var distance = 0.0
-        for i in stride(from: from, to: to, by: 1) {
+        for i in stride(from: from, through: to, by: 1) {
             distance += measurements[i].distance
         }
         return distance
@@ -88,10 +88,13 @@ public class WeightedActivityList: ActivityList {
     
     /// Returns the average motion type determined by the activities in the range provided.
     public func getAverageMotionType(from:Int, to: Int) -> MeasuredActivity.MotionType {
+        if measurements.count <= 0 { return .unknown }
+        if measurements.count == 1 { return measurements[0].motionType }
+        
+        // compute weighted average
         var carCounter = 0
         var walkingCounter = 0
-
-        for i in stride(from: from, to: to, by: 1) {
+        for i in stride(from: from, through: to, by: 1) {
             if measurements[i].motionType == .car {
                 carCounter += 1
             }
@@ -101,7 +104,7 @@ public class WeightedActivityList: ActivityList {
         }
         
         var motion : MeasuredActivity.MotionType
-        if carCounter * activityWeights[.car]! > walkingCounter * activityWeights[.walking]! {
+        if carCounter * activityWeights[.car]! >= walkingCounter * activityWeights[.walking]! {
             motion = .car
         }
         else {
@@ -123,7 +126,9 @@ public class WeightedActivityList: ActivityList {
     
     /// Writes to the database the average of the activities in the range provided.
     public func writeToDatabase(from: Int, to: Int) {
-        writeToDatabase(getAverage(from: from, to: to))
+        if measurements.count > 0 {
+            writeToDatabase(getAverage(from: from, to: to))
+        }
     }
     
     private func writeToDatabase(_ activity: MeasuredActivity){

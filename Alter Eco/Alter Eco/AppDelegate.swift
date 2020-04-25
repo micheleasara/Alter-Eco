@@ -30,7 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     #if NO_BACKEND_TESTING
     // called when something is written to the database, used to update the graph
     func activityWasWrittenToDB(activity: MeasuredActivity) {
-        print("activity of type \(activity.motionType) was written!")
+        print("activity \(activity.motionType) of distance \(activity.distance)m",
+            " was written with start \(activity.start) and end \(activity.end)")
         dataGraph.update()
     }
     
@@ -40,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     override init() {
         super.init()
         self.DBMS = CoreDataManager(persistentContainer: persistentContainer)
-                
+        
         #if NO_BACKEND_TESTING
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
         #endif

@@ -112,7 +112,7 @@ class WeightedActivityListTest: XCTestCase {
         }
         measurements.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
             date = Date(timeInterval: 10, since: date)
-        let answer = measurements.getAverage(from: 0, to: measurements.count)
+        let answer = measurements.getAverage(from: 0, to: measurements.count-1)
         
         // sample answer has sum of distances as distance and start and end date of first and last measurement, respectively
         let sampleAnswer = MeasuredActivity(motionType: .walking, distance: 1300, start: measurements[0].start, end: measurements[measurements.count-1].end )

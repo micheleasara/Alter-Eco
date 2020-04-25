@@ -186,7 +186,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
 
         eventDB.setValuesForKeys(["motionType" : MeasuredActivity.motionTypeToString(type: activity.motionType),
                                   "distance":activity.distance, "start":activity.start, "end":activity.end])
-
         try managedContext.save()
         
         // call registered observer with the activity just written
@@ -207,7 +206,8 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         // get activities which share a portion of execution in time with the interval requested
         // e.g. for today's 2-3pm, the following should match: 2-3pm, 1-4pm, 1-2:30pm and 2:01-4pm (all relative to today)
-        let queryMeasuredActivities = try queryActivities(predicate: "motionType == %@ AND ((start <= %@ AND end > %@) OR (start >= %@ AND start < %@))", args: [motionString, from as NSDate, from as NSDate, from as NSDate, endDate as NSDate])
+        let queryMeasuredActivities = try queryActivities(predicate: "motionType == %@ AND ((start <= %@ AND end > %@) OR (start >= %@ AND start < %@))", args: [motionString as NSString, from as NSDate, from as NSDate, from as NSDate, endDate as NSDate])
+
         for measurement in queryMeasuredActivities {
             // get portion of time shared among this activity and the interval requested
             let sharedTime = min(measurement.end, endDate).timeIntervalSince(max(measurement.start, from))

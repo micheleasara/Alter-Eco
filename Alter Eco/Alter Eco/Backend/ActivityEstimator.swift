@@ -141,6 +141,7 @@ public class ActivityEstimator<T:ActivityList> {
     private func activityHasExpired() {
         // do not dump if ROI flags are on
         if !visitedRegionOfInterest(previousAirport) && !visitedRegionOfInterest(previousStation) {
+            print("speed-based activity has expired, now writing to db...")
             measurements.dumpToDatabase(from: 0, to: measurements.count - 1)
         }
     }
