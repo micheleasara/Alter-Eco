@@ -256,7 +256,9 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func carbonWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
         var carbonTotal : Double = 0
         for motion in MeasuredActivity.MotionType.allCases {
-            carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
+            if motion != .walking { // remove walking from total carbon
+                carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
+            }
         }
         
         return carbonTotal

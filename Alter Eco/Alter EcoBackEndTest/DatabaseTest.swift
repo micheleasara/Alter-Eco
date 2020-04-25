@@ -101,9 +101,11 @@ class DatabaseTest: XCTestCase {
         var carbonExpected = 0.0
         
         for motion in MeasuredActivity.MotionType.allCases {
-            let old = MeasuredActivity(motionType: motion, distance: 1, start: longTimeAgo, end: someTimeAgo)
-            carbonExpected += DBMS.computeCarbonUsage(distance: 1, type: motion)
-            try! DBMS.append(activity: old)
+            if motion != .walking {
+                let old = MeasuredActivity(motionType: motion, distance: 1, start: longTimeAgo, end: someTimeAgo)
+                carbonExpected += DBMS.computeCarbonUsage(distance: 1, type: motion)
+                try! DBMS.append(activity: old)
+            }
         }
         let retrievedCarbon = try! DBMS.carbonWithinIntervalAll(from: longTimeAgo, interval: someTimeAgo.timeIntervalSince(longTimeAgo))
         XCTAssert(retrievedCarbon == carbonExpected)
@@ -114,7 +116,7 @@ class DatabaseTest: XCTestCase {
         let oneToFour = MeasuredActivity(motionType: .plane, distance: 9000, start: Date.setToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setToSpecificHour(date: today, hour: "04:00:00")!)
         let oneToTwoHalf = MeasuredActivity(motionType: .car, distance: 18000, start: Date.setToSpecificHour(date: today, hour: "01:00:00")!, end: Date.setToSpecificHour(date: today, hour: "02:30:00")!)
         let twoHalfToFour = MeasuredActivity(motionType: .car, distance: 27000, start: Date.setToSpecificHour(date: today, hour: "02:30:00")!, end: Date.setToSpecificHour(date: today, hour: "04:00:00")!)
-        let twoToThree = MeasuredActivity(motionType: .walking, distance: 3000, start: Date.setToSpecificHour(date: today, hour: "02:00:00")!, end: Date.setToSpecificHour(date: today, hour: "03:00:00")!)
+        let twoToThree = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setToSpecificHour(date: today, hour: "02:00:00")!, end: Date.setToSpecificHour(date: today, hour: "03:00:00")!)
         
         // activities only sharing a portion of time with the query
         let activities = [oneToFour, oneToTwoHalf, twoHalfToFour, twoToThree]
@@ -158,7 +160,7 @@ class DatabaseTest: XCTestCase {
         let yesterdayToTomorrow = MeasuredActivity(motionType: .plane, distance: 9000, start: Date(timeInterval: -24*60*60, since: now), end: Date(timeInterval: 24*60*60, since: now))
         let nowToTomorrow = MeasuredActivity(motionType: .car, distance: 18000, start: now, end: Date(timeInterval: 24*60*60, since: now))
         let yesterdayToNow = MeasuredActivity(motionType: .car, distance: 27000, start: Date(timeInterval: -24*60*60, since: now), end: now)
-        let exactlyToday = MeasuredActivity(motionType: .walking, distance: 3000, start: Date.setToSpecificHour(date: now, hour: "00:00:00")!, end: Date.setToSpecificHour(date: now, hour: "23:59:59")!)
+        let exactlyToday = MeasuredActivity(motionType: .car, distance: 3000, start: Date.setToSpecificHour(date: now, hour: "00:00:00")!, end: Date.setToSpecificHour(date: now, hour: "23:59:59")!)
         
         // activities only sharing a portion of time with the query
         let activities = [yesterdayToNow, nowToTomorrow, yesterdayToTomorrow, exactlyToday]
