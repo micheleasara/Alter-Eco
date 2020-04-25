@@ -69,8 +69,6 @@ public class ActivityEstimator<T:ActivityList> {
             else if previousLoc != nil {
                 // check if there has been a significant change in speed-based activities
                 processSignificantChanges()
-                // start countdown for activity list expiration
-                timers.start(key: "expired", interval: ACTIVITY_TIMEOUT, block: activityHasExpired)
             }
         
             previousLoc = location
@@ -134,6 +132,9 @@ public class ActivityEstimator<T:ActivityList> {
                 activityStart = changes[j]
             }
         }
+        
+        // start countdown for activity list expiration
+        timers.start(key: "expired", interval: ACTIVITY_TIMEOUT, block: activityHasExpired)
     }
     
     /// Activity list is not longer valid and it will be dumped to the database.
