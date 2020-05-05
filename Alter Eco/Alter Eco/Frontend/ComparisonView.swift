@@ -6,6 +6,7 @@ func generateProportion() -> String {
     let currentDateTime = Date()
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "HH:mm:ss"
+    dateFormatter.locale = Locale(identifier: "en-UK")
     
     let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: dateFormatter.string(from: currentDateTime))
     
