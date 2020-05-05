@@ -77,9 +77,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             self.respondToWifiChange(wifi: path.status == .satisfied)
         }
 
-        // Begin monitoring:
-        print("Wi-fi monitoring currently off to allow simulator testing")
-        //self.monitor.start(queue: DispatchQueue.global(qos: .background))
+        // Begin monitoring wifi:
+        self.monitor.start(queue: DispatchQueue.global(qos: .background))
         
         
         return true
