@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Stroll from Max's house to nearest Tesco at an average of 5km/h -->
+<gpx>
+    <wpt lon="-0.20447" lat="51.49389"><time>2020-02-21T11:48:13Z</time></wpt>
+    <wpt lon="-0.20443" lat="51.49386"><time>2020-02-21T11:48:16Z</time></wpt>
+    <wpt lon="-0.20432" lat="51.49378"><time>2020-02-21T11:48:24Z</time></wpt>
+    <wpt lon="-0.20426" lat="51.49373"><time>2020-02-21T11:48:29Z</time></wpt>
+    <wpt lon="-0.20425" lat="51.49372"><time>2020-02-21T11:48:30Z</time></wpt>
+    <wpt lon="-0.20425" lat="51.49369"><time>2020-02-21T11:48:33Z</time></wpt>
+    <wpt lon="-0.20442" lat="51.49361"><time>2020-02-21T11:48:43Z</time></wpt>
+    <wpt lon="-0.20447" lat="51.49352"><time>2020-02-21T11:48:55Z</time></wpt>
+    <wpt lon="-0.20455" lat="51.49346"><time>2020-02-21T11:49:01Z</time></wpt>
+    <wpt lon="-0.20533" lat="51.49285"><time>2020-02-21T11:50:04Z</time></wpt>
+    <wpt lon="-0.20543" lat="51.49288"><time>2020-02-21T11:50:09Z</time></wpt>
+    <wpt lon="-0.20559" lat="51.49292"><time>2020-02-21T11:50:18Z</time></wpt>
+    <wpt lon="-0.20574" lat="51.49294"><time>2020-02-21T11:50:25Z</time></wpt>
+    <wpt lon="-0.20589" lat="51.49295"><time>2020-02-21T11:50:33Z</time></wpt>
+    <wpt lon="-0.20653" lat="51.49277"><time>2020-02-21T11:51:11Z</time></wpt>
+    <wpt lon="-0.20666" lat="51.49263"><time>2020-02-21T11:51:24Z</time></wpt>
+    <wpt lon="-0.20675" lat="51.49248"><time>2020-02-21T11:51:36Z</time></wpt>
+    <wpt lon="-0.20679" lat="51.49241"><time>2020-02-21T11:51:42Z</time></wpt>
+    <wpt lon="-0.20601" lat="51.49219"><time>2020-02-21T11:52:25Z</time></wpt>
+    <wpt lon="-0.20591" lat="51.49219"><time>2020-02-21T11:52:30Z</time></wpt>
+    <wpt lon="-0.20562" lat="51.49225"><time>2020-02-21T11:52:45Z</time></wpt>
+    <wpt lon="-0.20554" lat="51.49226"><time>2020-02-21T11:52:49Z</time></wpt>
+    <wpt lon="-0.20547" lat="51.49226"><time>2020-02-21T11:52:53Z</time></wpt>
+    <wpt lon="-0.20528" lat="51.4922"><time>2020-02-21T11:53:04Z</time></wpt>
+    <wpt lon="-0.20499" lat="51.49207"><time>2020-02-21T11:53:21Z</time></wpt>
+    <wpt lon="-0.20481" lat="51.49197"><time>2020-02-21T11:53:33Z</time></wpt>
+    <wpt lon="-0.20429" lat="51.49159"><time>2020-02-21T11:54:13Z</time></wpt>
+    <wpt lon="-0.20423" lat="51.49154"><time>2020-02-21T11:54:18Z</time></wpt>
+    <wpt lon="-0.2029" lat="51.4917"><time>2020-02-21T11:55:26Z</time></wpt>
+    <wpt lon="-0.20259" lat="51.49172"><time>2020-02-21T11:55:42Z</time></wpt>
+    <wpt lon="-0.20233" lat="51.49178"><time>2020-02-21T11:55:55Z</time></wpt>
+    <wpt lon="-0.20209" lat="51.49187"><time>2020-02-21T11:56:09Z</time></wpt>
+    <wpt lon="-0.20186" lat="51.49195"><time>2020-02-21T11:56:23Z</time></wpt>
+    <wpt lon="-0.20158" lat="51.49205"><time>2020-02-21T11:56:39Z</time></wpt>
+    <wpt lon="-0.20143" lat="51.49213"><time>2020-02-21T11:56:49Z</time></wpt>
+    <wpt lon="-0.20121" lat="51.4923"><time>2020-02-21T11:57:06Z</time></wpt>
+    <wpt lon="-0.20089" lat="51.49259"><time>2020-02-21T11:57:34Z</time></wpt>
+    <wpt lon="-0.2008" lat="51.49272"><time>2020-02-21T11:57:46Z</time></wpt>
+    <wpt lon="-0.2008" lat="51.49273"><time>2020-02-21T11:57:48Z</time></wpt>
+    <wpt lon="-0.20082" lat="51.49272"><time>2020-02-21T11:57:50Z</time></wpt>
+</gpx>

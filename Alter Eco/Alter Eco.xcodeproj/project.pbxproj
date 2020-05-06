@@ -7,51 +7,178 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4223E3885100629E73 /* AppDelegate.swift */; };
-		CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4423E3885100629E73 /* SceneDelegate.swift */; };
-		CD200B4723E3885100629E73 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B4623E3885100629E73 /* ContentView.swift */; };
-		CD200B4923E3885700629E73 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4823E3885700629E73 /* Assets.xcassets */; };
+		2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E158242FB3EC00FD9B5F /* ProfileView.swift */; };
+		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
+		218C4196243DCC910036A2FE /* ProfilePic+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */; };
+		218C4197243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */; };
+		218C419F243E89690036A2FE /* Awards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218C419E243E89690036A2FE /* Awards.swift */; };
+		552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552BB1D324448D2A0010EF6B /* ComparisonView.swift */; };
+		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
+		55C85C5B243CB879006AD075 /* ExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C85C5A243CB879006AD075 /* ExplanationView.swift */; };
+		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
+		573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */; };
+		573693832438F85F00992BB0 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
+		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
+		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
+		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
+		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
+		9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5D59C4243B102C00238275 /* ProgressBarView.swift */; };
+		9C8601332449884100033B55 /* UserScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8601322449884100033B55 /* UserScoreTest.swift */; };
+		9C87AE27244215FB00490481 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* DatabaseManager.swift */; };
+		9C87AE292442408F00490481 /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
+		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
+		9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */; };
+		9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941B2429686900B1D0B4 /* SplashScreen.swift */; };
+		9CD594242429686900B1D0B4 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941C2429686900B1D0B4 /* WelcomeView.swift */; };
+		9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */; };
+		9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */; };
+		9CD59433242968DF00B1D0B4 /* DataClassGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */; };
+		9CD59435242968DF00B1D0B4 /* gridlines.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD59429242968DE00B1D0B4 /* gridlines.swift */; };
+		9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
+		9CD59437242968DF00B1D0B4 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942B242968DE00B1D0B4 /* GraphView.swift */; };
+		9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942C242968DE00B1D0B4 /* HighlightView.swift */; };
+		9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
+		9CD5943A242968DF00B1D0B4 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942E242968DE00B1D0B4 /* DetailView.swift */; };
+		9CD5943B242968DF00B1D0B4 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942F242968DF00B1D0B4 /* BarView.swift */; };
+		9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */; };
+		9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594402429691E00B1D0B4 /* ContentView.swift */; };
+		9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594422429692000B1D0B4 /* AppDelegate.swift */; };
+		9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */; };
+		9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */; };
+		9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */; };
+		9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */; };
+		9CD5948424296E2700B1D0B4 /* Alter_EcoFullUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */; };
+		9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */; };
+		9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
-		CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */; };
-		CD200B5A23E3885800629E73 /* Alter_EcoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B5923E3885800629E73 /* Alter_EcoTests.swift */; };
-		CD200B6523E3885800629E73 /* Alter_EcoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD200B6423E3885800629E73 /* Alter_EcoUITests.swift */; };
+		DE3C10A42447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
+		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
+		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
+		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
+		DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* Launch Screen.storyboard */; };
+		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
+		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
+		DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
+		DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
+		DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
+		DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */; };
+		DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* DatabaseManager.swift */; };
+		DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
+		DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
+		DEDE54A824467B4E003FE0DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594422429692000B1D0B4 /* AppDelegate.swift */; };
+		DEDE54AC24467B4E003FE0DE /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
+		DEDE54AD24467B4E003FE0DE /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
+		DEDE54AE24467B4E003FE0DE /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
+		DEDE54AF24467B4E003FE0DE /* WalkToSupermarket.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */; };
+		DEDE54B024467B4E003FE0DE /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
+		DEDE54B124467B4E003FE0DE /* SKToVictoria_car_30kmh.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */; };
+		DEDE54B324467B4E003FE0DE /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
+		DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
+		DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
+		DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
+		DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFEEC502448987C009BE765 /* MultiTimerTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CD200B5623E3885800629E73 /* PBXContainerItemProxy */ = {
+		9CD5947524296D9300B1D0B4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD200B3723E3885100629E73 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CD200B3E23E3885100629E73;
 			remoteInfo = "Alter Eco";
 		};
-		CD200B6123E3885800629E73 /* PBXContainerItemProxy */ = {
+		9CD5948624296E2700B1D0B4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD200B3723E3885100629E73 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = CD200B3E23E3885100629E73;
 			remoteInfo = "Alter Eco";
+		};
+		DEDE54BC24467D31003FE0DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD200B3723E3885100629E73 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DEDE548C24467B4E003FE0DE;
+			remoteInfo = AlterEcoBackend;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2186E158242FB3EC00FD9B5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfilePic+CoreDataClass.swift"; sourceTree = "<group>"; };
+		218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfilePic+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		218C419E243E89690036A2FE /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
+		552BB1D324448D2A0010EF6B /* ComparisonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparisonView.swift; sourceTree = "<group>"; };
+		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
+		55C85C5A243CB879006AD075 /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
+		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Frontend/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphLogicTestsTwo.swift; sourceTree = "<group>"; };
+		573693822438F85F00992BB0 /* GraphModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
+		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
+		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
+		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
+		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
+		9C5D59C4243B102C00238275 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		9C8601322449884100033B55 /* UserScoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScoreTest.swift; sourceTree = "<group>"; };
+		9C87AE26244215FB00490481 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		9C87AE282442408F00490481 /* ActivityList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityList.swift; sourceTree = "<group>"; };
+		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
+		9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SKToVictoria_car_30kmh.gpx; sourceTree = "<group>"; };
+		9CD5941B2429686900B1D0B4 /* SplashScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		9CD5941C2429686900B1D0B4 /* WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMeasurements.swift; sourceTree = "<group>"; };
+		9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToSupermarket.gpx; sourceTree = "<group>"; };
+		9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClassGraph.swift; sourceTree = "<group>"; };
+		9CD59429242968DE00B1D0B4 /* gridlines.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = gridlines.swift; sourceTree = "<group>"; };
+		9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EarlsCourtStation.gpx; sourceTree = "<group>"; };
+		9CD5942B242968DE00B1D0B4 /* GraphView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		9CD5942C242968DE00B1D0B4 /* HighlightView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
+		9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimator.swift; sourceTree = "<group>"; };
+		9CD5942E242968DE00B1D0B4 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		9CD5942F242968DF00B1D0B4 /* BarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
+		9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		9CD594402429691E00B1D0B4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9CD594422429692000B1D0B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasuredActivity.swift; sourceTree = "<group>"; };
+		9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasuredActivityTest.swift; sourceTree = "<group>"; };
+		9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimatorTest.swift; sourceTree = "<group>"; };
+		9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTest.swift; sourceTree = "<group>"; };
+		9CD5945A24296BD100B1D0B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Alter EcoBackEndTests/Info.plist"; sourceTree = "<group>"; };
+		9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoBackEndTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoFullUITest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoFullUITest.swift; sourceTree = "<group>"; };
+		9CD5948524296E2700B1D0B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatabaseTest.swift; path = "Alter EcoBackEndTest/DatabaseTest.swift"; sourceTree = SOURCE_ROOT; };
+		9CFAF4C4242E2077000B75A7 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD200B4223E3885100629E73 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CD200B4423E3885100629E73 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CD200B4623E3885100629E73 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		CD200B4823E3885700629E73 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		CD200B4E23E3885700629E73 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD200B5523E3885800629E73 /* Alter EcoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD200B5923E3885800629E73 /* Alter_EcoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoTests.swift; sourceTree = "<group>"; };
-		CD200B5B23E3885800629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CD200B6023E3885800629E73 /* Alter EcoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD200B6423E3885800629E73 /* Alter_EcoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoUITests.swift; sourceTree = "<group>"; };
-		CD200B6623E3885800629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
+		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DE77727824523BAD002D28A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
+		DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlterEcoBackend.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEDE54BB24467B4E003FE0DE /* Alter Eco copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Alter Eco copy-Info.plist"; path = "/Users/delideleon/Desktop/developBranch/Alter Eco/Alter Eco copy-Info.plist"; sourceTree = "<absolute>"; };
+		DEFEEC502448987C009BE765 /* MultiTimerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTimerTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9CD5946D24296D9200B1D0B4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CD5947E24296E2700B1D0B4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD200B3C23E3885100629E73 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -59,14 +186,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CD200B5223E3885800629E73 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5D23E3885800629E73 /* Frameworks */ = {
+		DEDE54AA24467B4E003FE0DE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -76,13 +196,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */ = {
+			isa = PBXGroup;
+			children = (
+				9C8601322449884100033B55 /* UserScoreTest.swift */,
+				9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */,
+				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
+				DEFEEC502448987C009BE765 /* MultiTimerTest.swift */,
+				9CD5945A24296BD100B1D0B4 /* Info.plist */,
+				DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */,
+				9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */,
+				573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */,
+				9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */,
+			);
+			path = "Alter EcoBackEndTest";
+			sourceTree = "<group>";
+		};
+		9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */ = {
+			isa = PBXGroup;
+			children = (
+				9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */,
+				9CD5948524296E2700B1D0B4 /* Info.plist */,
+			);
+			path = "Alter EcoFullUITest";
+			sourceTree = "<group>";
+		};
 		CD200B3623E3885100629E73 = {
 			isa = PBXGroup;
 			children = (
 				CD200B4123E3885100629E73 /* Alter Eco */,
-				CD200B5823E3885800629E73 /* Alter EcoTests */,
-				CD200B6323E3885800629E73 /* Alter EcoUITests */,
+				9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */,
+				9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */,
 				CD200B4023E3885100629E73 /* Products */,
+				DEDE54BB24467B4E003FE0DE /* Alter Eco copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,8 +236,9 @@
 			isa = PBXGroup;
 			children = (
 				CD200B3F23E3885100629E73 /* Alter Eco.app */,
-				CD200B5523E3885800629E73 /* Alter EcoTests.xctest */,
-				CD200B6023E3885800629E73 /* Alter EcoUITests.xctest */,
+				9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */,
+				9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */,
+				DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -99,12 +246,12 @@
 		CD200B4123E3885100629E73 /* Alter Eco */ = {
 			isa = PBXGroup;
 			children = (
-				CD200B4223E3885100629E73 /* AppDelegate.swift */,
-				CD200B4423E3885100629E73 /* SceneDelegate.swift */,
-				CD200B4623E3885100629E73 /* ContentView.swift */,
-				CD200B4823E3885700629E73 /* Assets.xcassets */,
-				CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */,
+				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
 				CD200B5023E3885700629E73 /* Info.plist */,
+				9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */,
+				DE1B266C24433C9D007D9B54 /* Backend */,
+				DE1B266D24433DBC007D9B54 /* Frontend */,
+				DE1B2611243F72B4007D9B54 /* GPX */,
 				CD200B4A23E3885700629E73 /* Preview Content */,
 			);
 			path = "Alter Eco";
@@ -118,27 +265,105 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		CD200B5823E3885800629E73 /* Alter EcoTests */ = {
+		DE1B2611243F72B4007D9B54 /* GPX */ = {
 			isa = PBXGroup;
 			children = (
-				CD200B5923E3885800629E73 /* Alter_EcoTests.swift */,
-				CD200B5B23E3885800629E73 /* Info.plist */,
+				9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */,
+				9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */,
+				9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */,
+				9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */,
+				9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */,
+				9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */,
+				9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */,
+				9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */,
 			);
-			path = "Alter EcoTests";
+			path = GPX;
 			sourceTree = "<group>";
 		};
-		CD200B6323E3885800629E73 /* Alter EcoUITests */ = {
+		DE1B266C24433C9D007D9B54 /* Backend */ = {
 			isa = PBXGroup;
 			children = (
-				CD200B6423E3885800629E73 /* Alter_EcoUITests.swift */,
-				CD200B6623E3885800629E73 /* Info.plist */,
+				9C87AE26244215FB00490481 /* DatabaseManager.swift */,
+				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
+				DE3C10A32447B48000107AF4 /* Timers.swift */,
+				DE3C10A62447C5A100107AF4 /* Constants.swift */,
+				5591901D242C0FA400A80ED7 /* UserScore.swift */,
+				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
+				9C87AE282442408F00490481 /* ActivityList.swift */,
+				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
 			);
-			path = "Alter EcoUITests";
+			path = Backend;
+			sourceTree = "<group>";
+		};
+		DE1B266D24433DBC007D9B54 /* Frontend */ = {
+			isa = PBXGroup;
+			children = (
+				DE77727824523BAD002D28A6 /* Launch Screen.storyboard */,
+				9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */,
+				9CD5942E242968DE00B1D0B4 /* DetailView.swift */,
+				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
+				55C85C5A243CB879006AD075 /* ExplanationView.swift */,
+				9CD594402429691E00B1D0B4 /* ContentView.swift */,
+				9CD5941C2429686900B1D0B4 /* WelcomeView.swift */,
+				218C419E243E89690036A2FE /* Awards.swift */,
+				218C4195243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift */,
+				218C4194243DCC910036A2FE /* ProfilePic+CoreDataClass.swift */,
+				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
+				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
+				9CD59429242968DE00B1D0B4 /* gridlines.swift */,
+				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
+				552BB1D324448D2A0010EF6B /* ComparisonView.swift */,
+				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
+				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
+				9CD5941B2429686900B1D0B4 /* SplashScreen.swift */,
+				9CD59427242968DE00B1D0B4 /* DataClassGraph.swift */,
+				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
+				573693822438F85F00992BB0 /* GraphModel.swift */,
+				55DA632A242AC557002CCD07 /* Assets.xcassets */,
+			);
+			path = Frontend;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9CD5946F24296D9200B1D0B4 /* Alter EcoBackEndTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CD5947724296D9300B1D0B4 /* Build configuration list for PBXNativeTarget "Alter EcoBackEndTest" */;
+			buildPhases = (
+				9CD5946C24296D9200B1D0B4 /* Sources */,
+				9CD5946D24296D9200B1D0B4 /* Frameworks */,
+				9CD5946E24296D9200B1D0B4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9CD5947624296D9300B1D0B4 /* PBXTargetDependency */,
+				DEDE54BD24467D31003FE0DE /* PBXTargetDependency */,
+			);
+			name = "Alter EcoBackEndTest";
+			productName = "Alter EcoBackEndTest";
+			productReference = 9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9CD5948024296E2700B1D0B4 /* Alter EcoFullUITest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9CD5948824296E2700B1D0B4 /* Build configuration list for PBXNativeTarget "Alter EcoFullUITest" */;
+			buildPhases = (
+				9CD5947D24296E2700B1D0B4 /* Sources */,
+				9CD5947E24296E2700B1D0B4 /* Frameworks */,
+				9CD5947F24296E2700B1D0B4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9CD5948724296E2700B1D0B4 /* PBXTargetDependency */,
+			);
+			name = "Alter EcoFullUITest";
+			productName = "Alter EcoFullUITest";
+			productReference = 9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		CD200B3E23E3885100629E73 /* Alter Eco */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD200B6923E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter Eco" */;
@@ -156,41 +381,22 @@
 			productReference = CD200B3F23E3885100629E73 /* Alter Eco.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CD200B5423E3885800629E73 /* Alter EcoTests */ = {
+		DEDE548C24467B4E003FE0DE /* AlterEcoBackend */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CD200B6C23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoTests" */;
+			buildConfigurationList = DEDE54B724467B4E003FE0DE /* Build configuration list for PBXNativeTarget "AlterEcoBackend" */;
 			buildPhases = (
-				CD200B5123E3885800629E73 /* Sources */,
-				CD200B5223E3885800629E73 /* Frameworks */,
-				CD200B5323E3885800629E73 /* Resources */,
+				DEDE548D24467B4E003FE0DE /* Sources */,
+				DEDE54AA24467B4E003FE0DE /* Frameworks */,
+				DEDE54AB24467B4E003FE0DE /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				CD200B5723E3885800629E73 /* PBXTargetDependency */,
 			);
-			name = "Alter EcoTests";
-			productName = "Alter EcoTests";
-			productReference = CD200B5523E3885800629E73 /* Alter EcoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		CD200B5F23E3885800629E73 /* Alter EcoUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CD200B6F23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoUITests" */;
-			buildPhases = (
-				CD200B5C23E3885800629E73 /* Sources */,
-				CD200B5D23E3885800629E73 /* Frameworks */,
-				CD200B5E23E3885800629E73 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CD200B6223E3885800629E73 /* PBXTargetDependency */,
-			);
-			name = "Alter EcoUITests";
-			productName = "Alter EcoUITests";
-			productReference = CD200B6023E3885800629E73 /* Alter EcoUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
+			name = AlterEcoBackend;
+			productName = "Alter Eco";
+			productReference = DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -202,16 +408,16 @@
 				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Imperial College London";
 				TargetAttributes = {
+					9CD5946F24296D9200B1D0B4 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = DEDE548C24467B4E003FE0DE;
+					};
+					9CD5948024296E2700B1D0B4 = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = CD200B3E23E3885100629E73;
+					};
 					CD200B3E23E3885100629E73 = {
 						CreatedOnToolsVersion = 11.3;
-					};
-					CD200B5423E3885800629E73 = {
-						CreatedOnToolsVersion = 11.3;
-						TestTargetID = CD200B3E23E3885100629E73;
-					};
-					CD200B5F23E3885800629E73 = {
-						CreatedOnToolsVersion = 11.3;
-						TestTargetID = CD200B3E23E3885100629E73;
 					};
 				};
 			};
@@ -229,93 +435,246 @@
 			projectRoot = "";
 			targets = (
 				CD200B3E23E3885100629E73 /* Alter Eco */,
-				CD200B5423E3885800629E73 /* Alter EcoTests */,
-				CD200B5F23E3885800629E73 /* Alter EcoUITests */,
+				9CD5946F24296D9200B1D0B4 /* Alter EcoBackEndTest */,
+				9CD5948024296E2700B1D0B4 /* Alter EcoFullUITest */,
+				DEDE548C24467B4E003FE0DE /* AlterEcoBackend */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9CD5946E24296D9200B1D0B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CD5947F24296E2700B1D0B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD200B3D23E3885100629E73 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD200B4F23E3885700629E73 /* LaunchScreen.storyboard in Resources */,
+				9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */,
+				9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */,
+				9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */,
+				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
+				9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */,
+				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
+				DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */,
+				9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */,
+				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
-				CD200B4923E3885700629E73 /* Assets.xcassets in Resources */,
+				9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CD200B5323E3885800629E73 /* Resources */ = {
+		DEDE54AB24467B4E003FE0DE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5E23E3885800629E73 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				DEDE54AC24467B4E003FE0DE /* CarToParisCDGToMilanLIN.gpx in Resources */,
+				DEDE54AD24467B4E003FE0DE /* EarlsCourtStation.gpx in Resources */,
+				DEDE54AE24467B4E003FE0DE /* SouthKensingtonStation.gpx in Resources */,
+				DEDE54AF24467B4E003FE0DE /* WalkToSupermarket.gpx in Resources */,
+				DEDE54B024467B4E003FE0DE /* CarTripToHeathrowAirport.gpx in Resources */,
+				DEDE54B124467B4E003FE0DE /* SKToVictoria_car_30kmh.gpx in Resources */,
+				DEDE54B324467B4E003FE0DE /* WalkToHeathrowAirport.gpx in Resources */,
+				DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */,
+				DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */,
+				DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9CD5946C24296D9200B1D0B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */,
+				9C8601332449884100033B55 /* UserScoreTest.swift in Sources */,
+				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
+				DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */,
+				9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */,
+				9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */,
+				9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */,
+				573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CD5947D24296E2700B1D0B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CD5948424296E2700B1D0B4 /* Alter_EcoFullUITest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD200B3B23E3885100629E73 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD200B4323E3885100629E73 /* AppDelegate.swift in Sources */,
-				CD200B4523E3885100629E73 /* SceneDelegate.swift in Sources */,
-				CD200B4723E3885100629E73 /* ContentView.swift in Sources */,
+				9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */,
+				DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */,
+				9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */,
+				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
+				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
+				DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */,
+				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
+				9CD5943A242968DF00B1D0B4 /* DetailView.swift in Sources */,
+				9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */,
+				9CD59437242968DF00B1D0B4 /* GraphView.swift in Sources */,
+				9C87AE27244215FB00490481 /* DatabaseManager.swift in Sources */,
+				9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */,
+				573693832438F85F00992BB0 /* GraphModel.swift in Sources */,
+				9CD59435242968DF00B1D0B4 /* gridlines.swift in Sources */,
+				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
+				55C85C5B243CB879006AD075 /* ExplanationView.swift in Sources */,
+				218C4197243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift in Sources */,
+				218C4196243DCC910036A2FE /* ProfilePic+CoreDataClass.swift in Sources */,
+				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
+				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
+				9CD5943B242968DF00B1D0B4 /* BarView.swift in Sources */,
+				9CD59433242968DF00B1D0B4 /* DataClassGraph.swift in Sources */,
+				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
+				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
+				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,
+				5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */,
+				218C419F243E89690036A2FE /* Awards.swift in Sources */,
+				9C87AE292442408F00490481 /* ActivityList.swift in Sources */,
+				9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */,
+				9CD594242429686900B1D0B4 /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CD200B5123E3885800629E73 /* Sources */ = {
+		DEDE548D24467B4E003FE0DE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD200B5A23E3885800629E73 /* Alter_EcoTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CD200B5C23E3885800629E73 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CD200B6523E3885800629E73 /* Alter_EcoUITests.swift in Sources */,
+				DE3C10A52447B48000107AF4 /* Timers.swift in Sources */,
+				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
+				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
+				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
+				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
+				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
+				DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */,
+				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
+				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
+				DEDE54A824467B4E003FE0DE /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CD200B5723E3885800629E73 /* PBXTargetDependency */ = {
+		9CD5947624296D9300B1D0B4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CD200B3E23E3885100629E73 /* Alter Eco */;
-			targetProxy = CD200B5623E3885800629E73 /* PBXContainerItemProxy */;
+			targetProxy = 9CD5947524296D9300B1D0B4 /* PBXContainerItemProxy */;
 		};
-		CD200B6223E3885800629E73 /* PBXTargetDependency */ = {
+		9CD5948724296E2700B1D0B4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CD200B3E23E3885100629E73 /* Alter Eco */;
-			targetProxy = CD200B6123E3885800629E73 /* PBXContainerItemProxy */;
+			targetProxy = 9CD5948624296E2700B1D0B4 /* PBXContainerItemProxy */;
+		};
+		DEDE54BD24467D31003FE0DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DEDE548C24467B4E003FE0DE /* AlterEcoBackend */;
+			targetProxy = DEDE54BC24467D31003FE0DE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		CD200B4D23E3885700629E73 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CD200B4E23E3885700629E73 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
+		9CD5947824296D9300B1D0B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				INFOPLIST_FILE = "Alter EcoBackEndTest/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "imperial.Alter-EcoBackEndTest";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AlterEcoBackend.app/AlterEcoBackend";
+			};
+			name = Debug;
+		};
+		9CD5947924296D9300B1D0B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				INFOPLIST_FILE = "Alter EcoBackEndTest/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "imperial.Alter-EcoBackEndTest";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AlterEcoBackend.app/AlterEcoBackend";
+			};
+			name = Release;
+		};
+		9CD5948924296E2700B1D0B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "imperial.Alter-EcoFullUITest";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Alter Eco";
+			};
+			name = Debug;
+		};
+		9CD5948A24296E2700B1D0B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
+				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "imperial.Alter-EcoFullUITest";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Alter Eco";
+			};
+			name = Release;
+		};
 		CD200B6723E3885800629E73 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -436,14 +795,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
+				DEVELOPMENT_TEAM = 88749UX665;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = alterecoV0.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG NO_BACKEND_TESTING";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -455,102 +816,85 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
+				DEVELOPMENT_TEAM = 45W4JS2ZU4;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-Eco";
+				PRODUCT_BUNDLE_IDENTIFIER = alterecoV0.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = NO_BACKEND_TESTING;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		CD200B6D23E3885800629E73 /* Debug */ = {
+		DEDE54B824467B4E003FE0DE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
+				DEVELOPMENT_TEAM = C52APMS34X;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoTests";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = altereco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
 			};
 			name = Debug;
 		};
-		CD200B6E23E3885800629E73 /* Release */ = {
+		DEDE54B924467B4E003FE0DE /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
+				DEVELOPMENT_TEAM = ZTFJLYXD2W;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoTests";
+				PRODUCT_BUNDLE_IDENTIFIER = heuyther;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Alter Eco.app/Alter Eco";
-			};
-			name = Release;
-		};
-		CD200B7023E3885800629E73 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Alter Eco";
-			};
-			name = Debug;
-		};
-		CD200B7123E3885800629E73 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = "Alter EcoUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "yourcompany.com.Alter-EcoUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Alter Eco";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9CD5947724296D9300B1D0B4 /* Build configuration list for PBXNativeTarget "Alter EcoBackEndTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CD5947824296D9300B1D0B4 /* Debug */,
+				9CD5947924296D9300B1D0B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9CD5948824296E2700B1D0B4 /* Build configuration list for PBXNativeTarget "Alter EcoFullUITest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9CD5948924296E2700B1D0B4 /* Debug */,
+				9CD5948A24296E2700B1D0B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CD200B3A23E3885100629E73 /* Build configuration list for PBXProject "Alter Eco" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -569,25 +913,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CD200B6C23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoTests" */ = {
+		DEDE54B724467B4E003FE0DE /* Build configuration list for PBXNativeTarget "AlterEcoBackend" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CD200B6D23E3885800629E73 /* Debug */,
-				CD200B6E23E3885800629E73 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CD200B6F23E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter EcoUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CD200B7023E3885800629E73 /* Debug */,
-				CD200B7123E3885800629E73 /* Release */,
+				DEDE54B824467B4E003FE0DE /* Debug */,
+				DEDE54B924467B4E003FE0DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9CFAF4C4242E2077000B75A7 /* Database2.0.xcdatamodel */,
+			);
+			currentVersion = 9CFAF4C4242E2077000B75A7 /* Database2.0.xcdatamodel */;
+			path = Database2.0.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CD200B3723E3885100629E73 /* Project object */;
 }
