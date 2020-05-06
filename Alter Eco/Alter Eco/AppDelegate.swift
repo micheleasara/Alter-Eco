@@ -19,13 +19,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // location of last request for stations nearby, to be used with station request radius
     internal var locationUponRequest: CLLocation? = nil
     // monitors changes to wifi status
-    internal let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
+    //internal let wifimonitor = NWPathMonitor()
+    //internal let wifiqueue = DispatchQueue.global(qos: .background)
     
-    class WifiStatus: ObservableObject {
+    class WifiStatusMonitor: ObservableObject {
         @Published var isConnected: Bool = false
+        let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
+        let queue = DispatchQueue.global(qos: .background)
+        func startMonitoring() {
+            monitor.start(queue: queue)
+        }
+        func stopMonitoring() {
+            monitor.cancel()
+        }
     }
     
-    internal var wifiStatus = WifiStatus()
+    internal var wifiMonitor = WifiStatusMonitor()
     
     #if NO_BACKEND_TESTING
     // called when something is written to the database, used to update the graph
@@ -56,6 +65,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Register for push notifications:
         registerForPushNotifications()
         
+        // Register for background tasks:
+        registerForBackgroundTasks()
+        BGTaskScheduler.shared.cancelAllTaskRequests()
+        
         // following code is to find path to coredata sqlite file
         // let container = NSPersistentContainer(name: "Database")
         // print(container.persistentStoreDescriptions.first!.url)
@@ -71,15 +84,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // function to calculate the user score of the day before, i.e. if we open
         // the app before the background task was called to do this for us.
         // The scheduleBSTscore() functon reschedules the BGTscore task for tomorrow.
-        BGTaskScheduler.shared.cancelAllTaskRequests()
         
-        self.monitor.pathUpdateHandler = {path in
+        self.wifiMonitor.monitor.pathUpdateHandler = {path in
+            print("Detected a WiFi Change, on?", !(path.isExpensive))
             self.respondToWifiChange(wifi: path.status == .satisfied)
         }
-
-        // Begin monitoring wifi:
-        self.monitor.start(queue: DispatchQueue.global(qos: .background))
         
+        scheduleBGTwifi()
         
         return true
     }
@@ -205,31 +216,83 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
     }
+    // MARK: - Functions to register Background Tasks
+    
+    func registerForBackgroundTasks() {
+        // Register the wifi task
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.altereco.wifi",
+                                        using: DispatchQueue.global())
+        { task in
+            //This task is cast with processing request (BGAppRefreshTask)
+            self.handleBGTwifi(task: task as! BGAppRefreshTask)
+        }
+    }
+    
+    /*----- START OF BACKGROUND WIFI STUFF -------*/
+    func scheduleBGTwifi() {
+        // Cancel previous wifi requests:
+        BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: "com.altereco.wifi")
+        // Set up new wifi request:
+        let request = BGAppRefreshTaskRequest(identifier: "com.altereco.wifi")
+        // Schedule no earlier than 10 minutes from now
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 1)
+        
+        do {
+           try BGTaskScheduler.shared.submit(request)
+            print("Successfully scheduled wifi app refresh")
+        } catch {
+           print("Could not schedule wifi app refresh: \(error)")
+        }
+    }
+    
+    func handleBGTwifi(task: BGAppRefreshTask) {
+        print("Handling the wifi task")
+        // Set up OperationQueue
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        // Establish task
+        let appRefreshOperation = self.wifiMonitor.startMonitoring()
+        // Add operation to queue
+        queue.addOperation {appRefreshOperation}
+        // Set up task expiration handler
+        task.expirationHandler = {
+            self.wifiMonitor.stopMonitoring()
+            queue.cancelAllOperations()
+        }
+        // Set the task as completed when the operation queue empty:
+        let lastOperation = queue.operations.last
+        lastOperation?.completionBlock = {
+            task.setTaskCompleted(success: !(lastOperation?.isCancelled ?? false))
+        }
+        // Schedule another background task:
+        scheduleBGTwifi()
+    }
+  
     // MARK: - Functions to respond to a changes in network status
     /// Responds to a change in wifi connection by turning on/off location tracking and notifies the user appropriately
     func respondToWifiChange(wifi: Bool) {
         if wifi {
             // Check if we're in background, and whether we've gone from no wifi to wifi:
-            if !self.wifiStatus.isConnected {
-                // Toggle the isConnected boolean to true:
-                self.wifiStatus.isConnected = true
+            if !self.wifiMonitor.isConnected {
                 // Stop updating the location
                 self.manager.stopUpdatingLocation()
                 // Send wifi notification to user:
                 self.registerWifiNotification()
-                
             }
+            // Toggle the isConnected boolean to true:
+            self.wifiMonitor.isConnected = true
         } else {
             // Check if we're in background, and whether we've gone from wifi to no wifi:
-            if self.wifiStatus.isConnected {
-                // Toggle the isConnected boolean to false:
-                self.wifiStatus.isConnected = false
+            if self.wifiMonitor.isConnected {
                 // Resume updating the location
                 self.manager.startUpdatingLocation()
                 // Send no wifi notification to user:
                 self.registerNoWifiNotification()
             }
+            // Toggle the isConnected boolean to false:
+            self.wifiMonitor.isConnected = false
         }
+        self.registerhandleNotification()
     }
     
     /// Registers a notification that tells the user that device has connected to WiFi and tracking has been paused
@@ -242,6 +305,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (1), repeats: false)
         // Create UID
         let uuid = UUID().uuidString
+        print(uuid)
         // Set up Request
         let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
         // Register Request
@@ -254,6 +318,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let content = UNMutableNotificationContent()
         content.title = "Wifi Disconnected"
         content.body = "Tracking resumed - Let's hit the road!"
+        // Set up Trigger
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (1), repeats: false)
+        // Create UID
+        let uuid = UUID().uuidString
+        // Set up Request
+        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: trigger)
+        // Register Request
+        UNUserNotificationCenter.current().add(request)
+    }
+    /// Registers a notification that tells the user that WifFi has connected to WiFi and tracking has resumed
+    private func registerhandleNotification() {
+        // Make Content
+        let content = UNMutableNotificationContent()
+        content.title = "Wifi Change!"
+        content.body = "STUFF"
         // Set up Trigger
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (1), repeats: false)
         // Create UID
