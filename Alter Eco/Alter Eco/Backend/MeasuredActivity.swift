@@ -41,7 +41,7 @@ public class MeasuredActivity : Equatable {
         let differenceEnd = lhs.end.timeIntervalSince(rhs.end)
         
         return (lhs.motionType == rhs.motionType &&
-            (lhs.distance - rhs.distance < SPACE_PRECISION) &&
+            (abs(lhs.distance - rhs.distance) < SPACE_PRECISION) &&
             differenceStart < DATE_TIME_PRECISION && differenceEnd < DATE_TIME_PRECISION)
     }
 

@@ -118,8 +118,7 @@ class ActivityEstimatorTest: XCTestCase {
         
         let numElements = 2*CHANGE_ACTIVITY_THRESHOLD + 1
         XCTAssert(list.addCalls == numElements, "Expected \(numElements), but got \(list.addCalls)")
-        //XCTAssert(list.dumpToDatabaseCalls == 1, "Expected one call, but got \(list.dumpToDatabaseCalls)")
-        //TODO
+        XCTAssert(list.writeToDatabaseCalls == 1, "Expected one call, but got \(list.writeToDatabaseCalls)")
     }
     
     func testStationToNonStationByCarIsTreatedAsSpeedBasedActivity() {

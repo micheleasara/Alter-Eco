@@ -115,7 +115,7 @@ class WeightedActivityListTest: XCTestCase {
         let answer = measurements.getAverage(from: 0, to: measurements.count-1)
         
         // sample answer has sum of distances as distance and start and end date of first and last measurement, respectively
-        let sampleAnswer = MeasuredActivity(motionType: .walking, distance: 1300, start: measurements[0].start, end: measurements[measurements.count-1].end )
+        let sampleAnswer = MeasuredActivity(motionType: .walking, distance:1100, start: measurements[0].start, end: measurements[measurements.count-1].end )
 
         XCTAssert(answer == sampleAnswer, "Average activity was not computed correctly")
     }
