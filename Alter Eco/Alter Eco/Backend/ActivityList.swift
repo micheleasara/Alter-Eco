@@ -120,8 +120,10 @@ public class WeightedActivityList: ActivityList {
     
     /// Writes to the database the average of the activities in the range provided, then deletes them.
     public func dumpToDatabase(from:Int, to:Int) {
-        writeToDatabase(from:from, to:to)
-        measurements.removeSubrange(from...to)
+        if (from >= to) {
+            writeToDatabase(from:from, to:to)
+            measurements.removeSubrange(from...to)
+        }
     }
     
     /// Writes to the database the average of the activities in the range provided.

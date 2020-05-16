@@ -46,6 +46,10 @@ public class ActivityEstimator<T:ActivityList> {
         if isLocationAccurate(location) && isLocationFarEnough(location) && !isLocationUpdateInstantaneous(location) {
             print("valid location received")
             
+            if (previousLoc != nil) {
+                print("distance travelled: ", location.distance(from: previousLoc!))
+            }
+            
             // determine regions of interest
             let currentStation = getCurrentROI(currentLocation: location, regionsOfInterest: self.stations, gpsThreshold: GPS_UPDATE_CONFIDENCE_THRESHOLD)
             let currentAirport = getCurrentROI(currentLocation: location, regionsOfInterest: self.airports, gpsThreshold: GPS_UPDATE_AIRPORT_THRESHOLD)
@@ -104,6 +108,8 @@ public class ActivityEstimator<T:ActivityList> {
         // cannot compute if this is the first location we receive
         if let previousLoc = previousLoc {
             let distance = location.distance(from: previousLoc)
+            
+            print("distance within speedbased: ", distance)
             let time = location.timestamp.timeIntervalSince(previousLoc.timestamp)
             let speed = distance / time
             let motionType = MeasuredActivity.speedToMotionType(speed: speed)
