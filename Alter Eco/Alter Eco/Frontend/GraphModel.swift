@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+// kg/day
 let AV_UK_DAILYCARBON: Double = 2.2
 
 //create dynamic years for graph queries
