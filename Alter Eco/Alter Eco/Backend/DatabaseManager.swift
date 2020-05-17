@@ -357,10 +357,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         let userScore = try! dbms.retrieveLatestScore()
         
-//        if userScore.totalPoints == 0 && userScore.league == "🌳" {
-//           try! dbms.updateCounter()
-//        }
-        
         if userScore.totalPoints >= (POINTS_REQUIRED_FOR_NEXT_LEAGUE+1) {
             try! dbms.updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
             
@@ -448,7 +444,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func queryMonthlyCarbonAll(month: String) throws -> Double {
         var carbonTotal : Double = 0
         for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .unknown {
+            if motion != .walking {
                 carbonTotal += try queryMonthlyCarbon(motionType: motion, month: month)
             }
         }
@@ -480,7 +476,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func queryYearlyCarbonAll(year: String) throws -> Double {
         var carbonTotal : Double = 0
         for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .unknown {
+            if motion != .walking {
                 carbonTotal += try queryYearlyCarbon(motionType: motion, year: year)
             }
         }
