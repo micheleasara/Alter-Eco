@@ -6,7 +6,7 @@ struct ProgressBarView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
-    var whenViewLoadedCheckIfUserReachedNewLeague: Void = try! DBMS.getLeagueProgress(dbms: DBMS as! CoreDataManager)
+    var whenViewLoadedCheckIfUserReachedNewLeague: Void = try! DBMS.updateLeagueIfEnoughPoints()
     
     let proportion = try! DBMS.retrieveLatestScore().totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE
     

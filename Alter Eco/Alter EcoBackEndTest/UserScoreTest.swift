@@ -62,7 +62,7 @@ class UserScoreTest: XCTestCase {
         _ = try! DBMS.retrieveLatestScore()
         let currentLeagues = ["🌱", "🌿", "🌳"]
         
-        try! DBMS.getLeagueProgress(dbms: DBMS)
+        try! DBMS.getLeagueProgress()
         
         let updatedScore = try! DBMS.retrieveLatestScore()
         
@@ -76,7 +76,7 @@ class UserScoreTest: XCTestCase {
         
         try! DBMS.updateScore(activity: MeasuredActivity(motionType: .walking, distance: 400000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 60*60*24)))
         
-        try! DBMS.getLeagueProgress(dbms: DBMS)
+        try! DBMS.getLeagueProgress()
         let updatedScore = try! DBMS.retrieveLatestScore()
         
         XCTAssert(updatedScore.league == currentLeagues[1], "Should upgrade user league in database from league 1 to league 2.")
@@ -91,7 +91,7 @@ class UserScoreTest: XCTestCase {
         // ~3000 points for each activity
         for _ in stride(from: 0, to: 3, by: 1) {
             try! DBMS.updateScore(activity: MeasuredActivity(motionType: .car, distance: 1001000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 60*60)))
-            try! DBMS.getLeagueProgress(dbms: DBMS)
+            try! DBMS.getLeagueProgress()
         }
 
         let updatedScore = try! DBMS.retrieveLatestScore()

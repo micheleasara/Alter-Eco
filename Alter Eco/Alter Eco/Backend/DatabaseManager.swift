@@ -88,7 +88,7 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     /**
     Checks user progress and updates league if enough points have been accumulated.
      */
-    func getLeagueProgress(dbms: CoreDataManager) throws -> Void
+    func updateLeagueIfEnoughPoints() throws -> Void
     
     /// Returns the earliest start date within the Event entity.
     func getFirstDate() throws -> Date
@@ -353,19 +353,19 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     /**
     Checks user progress and updates league if enough points have been accumulated.
      */
-    public func getLeagueProgress(dbms: CoreDataManager) throws -> Void {
+    public func updateLeagueIfEnoughPoints() throws -> Void {
         
-        let userScore = try! dbms.retrieveLatestScore()
+        let userScore = try! retrieveLatestScore()
         
         if userScore.totalPoints >= (POINTS_REQUIRED_FOR_NEXT_LEAGUE+1) {
-            try! dbms.updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
+            try updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
             
-            let newUserScore = try! dbms.retrieveLatestScore()
+            let newUserScore = try retrieveLatestScore()
             if newUserScore.league == "🌳" {
-                try! dbms.updateCounter()
+                try updateCounter()
             }
             
-            try! dbms.resetScore()
+            try resetScore()
         }
     }
     
