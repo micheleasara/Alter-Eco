@@ -25,13 +25,13 @@ public class WeightedActivityList: ActivityList {
     // the upper and lower bounds of the collection, used in iterations
     public var startIndex: Index { return measurements.startIndex }
     public var endIndex: Index { return measurements.endIndex }
-    private let activityWeights: [MeasuredActivity.MotionType: Int]
+    private let activityWeights: [MeasuredActivity.MotionType: Double]
     
     /**
      Initializes A list of activities which can store activities in memory and then write their weighted average to a database.
      - Parameter activityWeights: dictionary associating a motion type to a weight.
      */
-    init(activityWeights: [MeasuredActivity.MotionType: Int]) {
+    init(activityWeights: [MeasuredActivity.MotionType: Double]) {
         self.activityWeights = activityWeights
     }
     
@@ -97,8 +97,8 @@ public class WeightedActivityList: ActivityList {
         if measurements.count == 1 { return measurements[0].motionType }
         
         // compute weighted average
-        var carCounter = 0
-        var walkingCounter = 0
+        var carCounter = 0.0
+        var walkingCounter = 0.0
         for i in stride(from: from, through: to, by: 1) {
             if measurements[i].motionType == .car {
                 carCounter += 1

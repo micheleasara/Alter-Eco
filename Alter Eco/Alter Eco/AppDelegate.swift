@@ -18,9 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal var activityEstimator : ActivityEstimator<WeightedActivityList>!
     // location of last request for stations nearby, to be used with station request radius
     internal var locationUponRequest: CLLocation? = nil
-    // monitors changes to wifi status
-    //internal let wifimonitor = NWPathMonitor()
-    //internal let wifiqueue = DispatchQueue.global(qos: .background)
     
     class WifiStatusMonitor: ObservableObject {
         @Published var isConnected: Bool = false
@@ -250,10 +247,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Set up OperationQueue
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
-        // Establish task
-        let appRefreshOperation = self.wifiMonitor.startMonitoring()
         // Add operation to queue
-        queue.addOperation {appRefreshOperation}
+        queue.addOperation {self.wifiMonitor.startMonitoring()}
         // Set up task expiration handler
         task.expirationHandler = {
             self.wifiMonitor.stopMonitoring()

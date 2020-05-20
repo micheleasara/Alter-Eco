@@ -34,7 +34,7 @@ public let WALK_NUM_FOR_TRAIN_FLAG_OFF:Int = 3
 /// Defines how many measurements in a row must be different from the root measurement before an activity is estimated.
 public let CHANGE_ACTIVITY_THRESHOLD:Int = 2
 /// Defines weights in computing average of speed-based activities.
-public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Int] = [.car: 2, .walking: 1]
+public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Double] = [.car: 1.5, .walking: 1]
 /// Defines how many seconds must pass for an activity to expire in the absence of ROI flags.
 public let ACTIVITY_TIMEOUT : Double = 60*10
 
