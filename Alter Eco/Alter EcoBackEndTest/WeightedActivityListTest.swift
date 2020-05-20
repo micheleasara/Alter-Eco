@@ -12,12 +12,11 @@ import XCTest
 
 class WeightedActivityListTest: XCTestCase {
 
-    var DBMS = DBManagerMock()
     var measurements: WeightedActivityList!
     
     override func setUp() {
         super.setUp()
-        measurements = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, DBMS: DBMS)
+        measurements = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
     }
     
     func testListIsOrderlyAndIterable() {
@@ -43,42 +42,6 @@ class WeightedActivityListTest: XCTestCase {
         let activity2 = MeasuredActivity(motionType: .walking, distance: 30, start: Date(timeIntervalSince1970: 110), end: Date(timeIntervalSince1970: 200))
         measurements[0] = activity2
         XCTAssert(measurements[0] == activity2)
-    }
-    
-    func testAddingPlanePutsIntoDatabaseAndDiscardsTheRest() {
-        let start = Date(timeIntervalSince1970: 0)
-        let end = Date(timeIntervalSince1970: 100)
-        let activities = [MeasuredActivity(motionType: .car, distance: 1, start: start, end: end),
-        MeasuredActivity(motionType: .walking, distance: 1000, start: start, end: end),
-        MeasuredActivity(motionType: .plane, distance: 1000, start: start, end: end)]
-        
-        // ensure list is empty after adding plane
-        for activity in activities {
-            measurements.add(activity)
-        }
-        XCTAssert(measurements.count == 0, "Expected empty list but got \(measurements.count)")
-        
-        // ensure only plane activity was put in the database
-        XCTAssert(DBMS.appendArgs.count == 1)
-        XCTAssert(DBMS.appendArgs[0] == activities[2])
-    }
-    
-    func testAddingTrainPutsIntoDatabaseAndDiscardsTheRest() {
-        let start = Date(timeIntervalSince1970: 0)
-        let end = Date(timeIntervalSince1970: 100)
-        let activities = [MeasuredActivity(motionType: .car, distance: 1, start: start, end: end),
-        MeasuredActivity(motionType: .walking, distance: 1000, start: start, end: end),
-        MeasuredActivity(motionType: .train, distance: 1000, start: start, end: end)]
-        
-        // ensure list is empty after adding train
-        for activity in activities {
-            measurements.add(activity)
-        }
-        XCTAssert(measurements.count == 0)
-        
-        // ensure only plane activity was put in the database
-        XCTAssert(DBMS.appendArgs.count == 1)
-        XCTAssert(DBMS.appendArgs[0] == activities[2])
     }
     
     func testRemovingAnIndexRemovesFromTheList() {
@@ -155,29 +118,4 @@ class WeightedActivityListTest: XCTestCase {
         XCTAssert(motionType == .car, "Expected car, got " + MeasuredActivity.motionTypeToString(type: motionType))
     }
     
-    func testDumpingToDatabaseWritesAverageAndClears() {
-        let activities = [MeasuredActivity(motionType: .car, distance: 1, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100)), MeasuredActivity(motionType: .car, distance: 1000, start: Date(timeIntervalSince1970: 200), end: Date(timeIntervalSince1970: 1000))]
-        for activity in activities {
-            measurements.add(activity)
-        }
-        let average = measurements.getAverage(from: 0, to: measurements.count-1)
-        measurements.dumpToDatabase(from: 0, to: measurements.count-1)
-        XCTAssert(measurements.count == 0)
-        XCTAssert(DBMS.appendArgs.count == 1)
-        XCTAssert(DBMS.appendArgs[0] == average)
-    }
-    
-    class DBManagerMock : DBWriter {
-        
-        var appendArgs : [MeasuredActivity] = []
-        var updateScoreArgs : [MeasuredActivity] = []
-        
-        func append(activity: MeasuredActivity) throws {
-            appendArgs.append(activity)
-        }
-        
-        func updateScore(activity: MeasuredActivity) throws {
-            updateScoreArgs.append(activity)
-        }
-    }
 }

@@ -55,8 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
         #endif
         
-        let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT, DBMS: DBMS)
-        activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer())
+        let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
+        activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
     }
     
     // Override point for customization after application launch.

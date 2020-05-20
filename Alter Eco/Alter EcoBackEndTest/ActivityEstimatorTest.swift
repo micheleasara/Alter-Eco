@@ -7,12 +7,14 @@ class ActivityEstimatorTest: XCTestCase {
     var list : ActivityListMock!
     var estimator : ActivityEstimator<ActivityListMock>!
     var timers : MultiTimerMock!
+    var DBMS: DBWriterMock!
     
     override func setUp() {
         super.setUp()
         list = ActivityListMock()
         timers = MultiTimerMock()
-        estimator = ActivityEstimator<ActivityListMock>(activityList: list, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: timers)
+        DBMS = DBWriterMock()
+        estimator = ActivityEstimator<ActivityListMock>(activityList: list, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: timers, DBMS: DBMS)
     }
 
     func testValidMovementIsAppendedToMeasurements() {
@@ -78,11 +80,12 @@ class ActivityEstimatorTest: XCTestCase {
         estimator.processLocation(previousLocation)
         estimator.processLocation(currentLocation)
 
-        XCTAssert(list.addCalls == 2, "Expected one call for add, but got \(list.addCalls)")
-        XCTAssert(list.measurements[1].motionType == .train, "Expected train, but got \(list.measurements[1].motionType)")
+        XCTAssert(DBMS.appendArgs.count == 1, "Got \(DBMS.appendArgs.count)")
+        XCTAssert(DBMS.appendArgs[0].motionType == .train,
+                  "Expected train, but got \(DBMS.appendArgs[0].motionType)")
     }
     
-    func testGoingFromAnAirportToAnotherAddsPlane() {
+    func testGoingFromAnAirportToAnotherWritesPlane() {
         let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
         let coordAirportA = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let coordAirportB = CLLocationCoordinate2D(latitude: 30, longitude: 30)
@@ -94,8 +97,9 @@ class ActivityEstimatorTest: XCTestCase {
         estimator.processLocation(previousLocation)
         estimator.processLocation(currentLocation)
 
-        XCTAssert(list.addCalls == 2, "Expected one call for add, but got \(list.addCalls)")
-        XCTAssert(list.measurements[1].motionType == .plane, "Expected plane, but got \(list.measurements[1].motionType)")
+        XCTAssert(DBMS.appendArgs.count == 1, "Got \(DBMS.appendArgs.count)")
+        XCTAssert(DBMS.appendArgs[0].motionType == .plane,
+                  "Expected plane, but got \(DBMS.appendArgs[0].motionType)")
     }
     
     func testEstimatorDumpsToDatabaseIfActivityChangesSignificantly() {
@@ -118,7 +122,7 @@ class ActivityEstimatorTest: XCTestCase {
         
         let numElements = 2*CHANGE_ACTIVITY_THRESHOLD + 1
         XCTAssert(list.addCalls == numElements, "Expected \(numElements), but got \(list.addCalls)")
-        XCTAssert(list.writeToDatabaseCalls == 1, "Expected one call, but got \(list.writeToDatabaseCalls)")
+        XCTAssert(DBMS.appendArgs.count == 1, "Expected one call, but got \(DBMS.appendArgs.count)")
     }
     
     func testStationToNonStationByCarIsTreatedAsSpeedBasedActivity() {
@@ -139,7 +143,7 @@ class ActivityEstimatorTest: XCTestCase {
         // simulate car movement
         estimator.processLocation(currentLocation)
         XCTAssert(list.addCalls == 11, "Incorrect number of calls to add. Got \(list.addCalls)")
-        XCTAssert(list.writeToDatabaseCalls == 0, "Incorrect number of calls to writeToDatabase. Got \(list.writeToDatabaseCalls)")
+        XCTAssert(DBMS.appendArgs.count == 0, "Got \(DBMS.appendArgs.count)")
     }
     
     func testAirportToNonAirportByFootIsTreatedAsSpeedBasedActivity() {
@@ -163,7 +167,7 @@ class ActivityEstimatorTest: XCTestCase {
         // simulate walking movement
         estimator.processLocation(nonAirportLoc)
         XCTAssert(list.addCalls == 11, "Incorrect number of calls to add. Got \(list.addCalls)")
-        XCTAssert(list.writeToDatabaseCalls == 0, "Incorrect number of calls to writeToDatabase. Got \(list.writeToDatabaseCalls)")
+        XCTAssert(DBMS.appendArgs.count == 0, "Got \(DBMS.appendArgs.count)")
     }
     
     func testAirportFlagIsOffAfterEnoughCars() {
@@ -187,8 +191,8 @@ class ActivityEstimatorTest: XCTestCase {
         // back in airport
         airportLoc = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: nonAirportLoc.timestamp.addingTimeInterval(1))
         estimator.processLocation(airportLoc)
-        XCTAssert(list.addCalls == CAR_NUM_FOR_PLANE_FLAG_OFF + 2, "Incorrect number of calls to add. Got \(list.addCalls)")
-        XCTAssert(list.dumpToDatabaseCalls == 0, "Incorrect number of calls to dumpToDatabase. Got \(list.dumpToDatabaseCalls)")
+        XCTAssert(list.addCalls == CAR_NUM_FOR_PLANE_FLAG_OFF + 2, "Got \(list.addCalls)")
+        XCTAssert(DBMS.appendArgs.count == 0, "Got \(DBMS.appendArgs.count)")
         XCTAssert(list.addArgs[list.addCalls - 1].motionType != .plane)
     }
     
@@ -214,7 +218,7 @@ class ActivityEstimatorTest: XCTestCase {
         stationLoc = CLLocation(coordinate: stationCoord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: nonStationLoc.timestamp.addingTimeInterval(9999999))
         estimator.processLocation(stationLoc)
         XCTAssert(list.addCalls == WALK_NUM_FOR_TRAIN_FLAG_OFF + 2, "Incorrect number of calls to add. Got \(list.addCalls)")
-        XCTAssert(list.dumpToDatabaseCalls == 0, "Incorrect number of calls to dumpToDatabase. Got \(list.dumpToDatabaseCalls)")
+        XCTAssert(DBMS.appendArgs.count == 0, "Got \(DBMS.appendArgs.count)")
         XCTAssert(list.addArgs[list.addCalls - 1].motionType != .train)
     }
     
@@ -242,7 +246,7 @@ class ActivityEstimatorTest: XCTestCase {
         XCTAssert(timers.startIntervals[0] == STATION_TIMEOUT)
     }
     
-    func testStationCountdownEndMakesEstimatorProcessSpeedActivitiesChanges() {
+    func testStationCountdownEndMakesEstimatorProcessSpeedActivitiesChangesAndDumpsLeftovers() {
         let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
         let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
@@ -263,11 +267,13 @@ class ActivityEstimatorTest: XCTestCase {
         }
         // call end procedure of timer
         timers.startBlocks[0]()
-        XCTAssert(list.writeToDatabaseCalls == 1, "Expected one call, but got \(list.dumpToDatabaseCalls)")
-        XCTAssert(list.writeToDatabaseArgs[0] == 0 && list.writeToDatabaseArgs[1] == CHANGE_ACTIVITY_THRESHOLD, "Args of call were \(list.writeToDatabaseArgs)")
+        XCTAssert(DBMS.appendArgs.count == 2, "Got \(DBMS.appendArgs.count)")
+        XCTAssert(list.synthesizeArgs == [0, CHANGE_ACTIVITY_THRESHOLD - 1, 0, CHANGE_ACTIVITY_THRESHOLD - 1],
+                  "Args of call were \(list.synthesizeArgs)")
+        XCTAssert(list.count == 0)
     }
     
-    func testAirportCountdownEndMakesEstimatorProcessSpeedActivitiesChanges() {
+    func testAirportCountdownEndMakesEstimatorProcessSpeedActivitiesChangesAndDumpsLeftovers() {
         let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
         let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
@@ -288,8 +294,10 @@ class ActivityEstimatorTest: XCTestCase {
         }
         // call end procedure of timer
         timers.startBlocks[0]()
-        XCTAssert(list.writeToDatabaseCalls == 1, "Expected one call, but got \(list.writeToDatabaseCalls)")
-        XCTAssert(list.writeToDatabaseArgs[0] == 0 && list.writeToDatabaseArgs[1] == CHANGE_ACTIVITY_THRESHOLD, "Args of call were \(list.writeToDatabaseArgs)")
+        XCTAssert(DBMS.appendArgs.count == 2, "Got \(DBMS.appendArgs.count)")
+        XCTAssert(list.synthesizeArgs == [0, CHANGE_ACTIVITY_THRESHOLD - 1, 0, CHANGE_ACTIVITY_THRESHOLD - 1],
+                  "Args of call were \(list.synthesizeArgs)")
+        XCTAssert(list.count == 0)
     }
 
     func testActivityWillExpireIfNoROIFlags() {
@@ -313,8 +321,25 @@ class ActivityEstimatorTest: XCTestCase {
         XCTAssert(timers.startKeys[0] == "expired", "Got \(timers.startKeys)")
         XCTAssert(timers.startIntervals[0] == ACTIVITY_TIMEOUT, "Got \(timers.startIntervals)")
         timers.startBlocks[0]()
-        XCTAssert(list.dumpToDatabaseCalls == 1, "Expected one call, but got \(list.dumpToDatabaseCalls)")
-        XCTAssert(list.dumpToDatabaseArgs[0] == 0 && list.dumpToDatabaseArgs[1] == 5, "Args of call were \(list.dumpToDatabaseArgs)")
+        XCTAssert(DBMS.appendArgs.count == 1, "Expected one call, but got \(DBMS.appendArgs.count)")
+        XCTAssert(list.synthesizeArgs[0] == 0 && list.synthesizeArgs[1] == 5, "Args of call were \(list.synthesizeArgs)")
+    }
+    
+    
+    // MARK: - Mocks
+    
+    class DBWriterMock : DBWriter {
+        
+        var appendArgs : [MeasuredActivity] = []
+        var updateScoreArgs : [MeasuredActivity] = []
+        
+        func append(activity: MeasuredActivity) throws {
+            appendArgs.append(activity)
+        }
+        
+        func updateScore(activity: MeasuredActivity) throws {
+            updateScoreArgs.append(activity)
+        }
     }
     
     class MultiTimerMock : CountdownHandler {
@@ -341,14 +366,27 @@ class ActivityEstimatorTest: XCTestCase {
         public var startIndex: Index { return measurements.startIndex }
         public var endIndex: Index { return measurements.endIndex }
         
+        public var synthesizeCalls : Int = 0
+        public var synthesizeArgs : [Int] = []
         public var addCalls : Int = 0
         public var addArgs : [MeasuredActivity] = []
         public var removeCalls : Int = 0
         public var removeAllCalls : Int = 0
-        public var dumpToDatabaseCalls : Int = 0
-        public var dumpToDatabaseArgs : [Int] = []
-        public var writeToDatabaseCalls : Int = 0
-        public var writeToDatabaseArgs : [Int] = []
+        
+        func synthesize(from: Int, to: Int) -> MeasuredActivity {
+            synthesizeArgs.append(from)
+            synthesizeArgs.append(to)
+            synthesizeCalls += 1
+            // return a random activity
+            return MeasuredActivity(motionType: .unknown, distance: -1, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 1))
+        }
+        
+        func remove(from: Index, to: Index) {
+            for _ in stride(from: from, through: to, by: 1) {
+                removeCalls += 1
+            }
+            measurements.removeSubrange(from...to)
+        }
         
         func add(_ activity:MeasuredActivity) {
             measurements.append(activity)
@@ -357,25 +395,13 @@ class ActivityEstimatorTest: XCTestCase {
         }
         
         func remove(at:Index) {
+            measurements.remove(at: at)
             removeCalls += 1
         }
         
         func removeAll() {
             removeAllCalls += 1
         }
-        
-        func dumpToDatabase(from:Int, to:Int) {
-            dumpToDatabaseCalls += 1
-            dumpToDatabaseArgs.append(from)
-            dumpToDatabaseArgs.append(to)
-            measurements.removeSubrange(from...to)
-        }
-        
-        func writeToDatabase(from:Int, to:Int) {
-               writeToDatabaseCalls += 1
-               writeToDatabaseArgs.append(from)
-               writeToDatabaseArgs.append(to)
-           }
         
         // Returns an iterator over the elements of the collection
         public __consuming func makeIterator() -> Iterator {

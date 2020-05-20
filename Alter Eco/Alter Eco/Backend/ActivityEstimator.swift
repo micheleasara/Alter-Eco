@@ -28,27 +28,27 @@ public class ActivityEstimator<T:ActivityList> {
     private var measurements: T
     /// Defines how many activities' motion types must be different from the previous ones for a new speed-based activity to be computed
     private let numChangeActivity: Int
+    /// Object allowing writing operations to the database.
+    private let DBMS: DBWriter
     
     /**
      Initializes an activity estimator which makes use of the ActivityList provided.
      - Parameter activityList: activity list which will be used to contain activities and to write to a database.
      - Parameter numChangeActivity: how many activities' motion types must be different from the previous ones for a new speed-based activity to be computed.
      - Parameter timer: object to perform delayed actions; used to deactivate ROIs' flags and other time-based actions.
+     - Parameter DBMS: object allowing writing operations to the database.
      */
-    public init(activityList: T, numChangeActivity: Int, timers: CountdownHandler) {
+    public init(activityList: T, numChangeActivity: Int, timers: CountdownHandler, DBMS: DBWriter) {
         self.measurements = activityList
         self.numChangeActivity = numChangeActivity
         self.timers = timers
+        self.DBMS = DBMS
     }
     
     /// Processes the location provided to estimate an activity. Computation and storage of activities is automatic as long as locations are provided.
     public func processLocation(_ location: CLLocation) {
         if isLocationAccurate(location) && isLocationFarEnough(location) && !isLocationUpdateInstantaneous(location) {
             print("valid location received")
-            
-            if (previousLoc != nil) {
-                print("distance travelled: ", location.distance(from: previousLoc!))
-            }
             
             // determine regions of interest
             let currentStation = getCurrentROI(currentLocation: location, regionsOfInterest: self.stations, gpsThreshold: GPS_UPDATE_CONFIDENCE_THRESHOLD)
@@ -109,7 +109,6 @@ public class ActivityEstimator<T:ActivityList> {
         if let previousLoc = previousLoc {
             let distance = location.distance(from: previousLoc)
             
-            print("distance within speedbased: ", distance)
             let time = location.timestamp.timeIntervalSince(previousLoc.timestamp)
             let speed = distance / time
             let motionType = MeasuredActivity.speedToMotionType(speed: speed)
@@ -120,7 +119,7 @@ public class ActivityEstimator<T:ActivityList> {
     
     /// Looks for significant changes in motion types within the measurements and writes the estimated activity if so.
     private func processSignificantChanges() {
-        guard measurements.count > 0 else { return }
+        guard measurements.count > numChangeActivity else { return }
         // look for indexes of changes in motion type
         var changes : [Int] = []
         for i in stride(from: 0, to: measurements.count - 1, by: 1) {
@@ -134,9 +133,15 @@ public class ActivityEstimator<T:ActivityList> {
         var activityStart = 0
         for j in stride(from: 1, to: changes.count, by: 1) {
             if changes[j] - changes[j-1] >= numChangeActivity {
-                measurements.writeToDatabase(from: activityStart, to: changes[j] - 1)
-                activityStart = changes[j]
+                let activityEnd = changes[j] - numChangeActivity
+                writeListToDB(from: activityStart, to: activityEnd)
+                activityStart = changes[j-1] + 1
             }
+        }
+        
+        // remove activities which have been synthesized
+        if activityStart > 0 {
+            measurements.remove(from: 0, to: activityStart - 1)
         }
         
         // start countdown for activity list expiration
@@ -148,7 +153,7 @@ public class ActivityEstimator<T:ActivityList> {
         // do not dump if ROI flags are on
         if !visitedRegionOfInterest(previousAirport) && !visitedRegionOfInterest(previousStation) {
             print("speed-based activity has expired, now writing to db...")
-            measurements.dumpToDatabase(from: 0, to: measurements.count - 1)
+            dumpListToDB(from: 0, to: measurements.count - 1)
         }
     }
     
@@ -193,7 +198,8 @@ public class ActivityEstimator<T:ActivityList> {
         print("Used train/plane to travel distance: ", activityDistance, " m")
         let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
         previousRegionOfInterest = currentRegionOfInterest
-        measurements.add(activity)
+        try! DBMS.append(activity: activity)
+        measurements.removeAll()
     }
     
     /// Determines if the ROI flag is invalid due to sufficient subsequent activities of the right kind.
@@ -218,13 +224,25 @@ public class ActivityEstimator<T:ActivityList> {
     private func stationTimedOut() {
         self.previousStation = nil
         processSignificantChanges()
-        measurements.dumpToDatabase(from: 0, to: measurements.count-1)
+        dumpListToDB(from: 0, to: measurements.count - 1)
     }
     
     /// Called when the ROI countdown for the airport expires.
     private func airportTimedOut() {
         self.previousAirport = nil
         processSignificantChanges()
-        measurements.dumpToDatabase(from: 0, to: measurements.count-1)
+        dumpListToDB(from: 0, to: measurements.count - 1)
+    }
+    
+    /// Writes a synthesis of the activities to the database and removes the elements from the measurements.
+    private func dumpListToDB(from: Int, to: Int) {
+        writeListToDB(from: from, to: to)
+        measurements.remove(from: from, to: to)
+    }
+    
+  /// Writes a synthesis of the activities to the database.
+    private func writeListToDB(from:Int, to:Int) {
+        let synthesis = measurements.synthesize(from: from, to: to)
+        try! DBMS.append(activity: synthesis)
     }
 }

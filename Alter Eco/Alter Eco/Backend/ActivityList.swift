@@ -3,16 +3,16 @@ import Foundation
 /// Represents a list of activities connected to a database.
 public protocol ActivityList : AnyObject, MutableCollection
 where Index == Int, Element == Array<MeasuredActivity>.Element {
+    /// Uses the activities in the given range to synthesize one overall activity.
+    func synthesize(from:Int, to:Int) -> MeasuredActivity
     /// Adds the given activity to the list.
     func add(_ activity:MeasuredActivity)
-    /// Remove the element at the given index.
+    /// Removes the element at the given index.
     func remove(at:Index)
+    /// Removes the elements in the range specified.
+    func remove(from:Index, to:Index)
     /// Removes all elements.
     func removeAll()
-    /// Writes to the database the activity resulting from the measurements in the given range, and then deletes them.
-    func dumpToDatabase(from:Int, to:Int)
-    /// Writes to the database the activity resulting from the measurements in the given range.
-    func writeToDatabase(from:Int, to:Int)
 }
 
 
@@ -26,16 +26,26 @@ public class WeightedActivityList: ActivityList {
     public var startIndex: Index { return measurements.startIndex }
     public var endIndex: Index { return measurements.endIndex }
     private let activityWeights: [MeasuredActivity.MotionType: Int]
-    private let DBMS: DBWriter
     
     /**
      Initializes A list of activities which can store activities in memory and then write their weighted average to a database.
      - Parameter activityWeights: dictionary associating a motion type to a weight.
-     - Parameter DBMS: object to write to the database.
      */
-    init(activityWeights: [MeasuredActivity.MotionType: Int], DBMS: DBWriter) {
+    init(activityWeights: [MeasuredActivity.MotionType: Int]) {
         self.activityWeights = activityWeights
-        self.DBMS = DBMS
+    }
+    
+    /// Removes the elements in the range specified.
+    public func remove(from: Index, to: Index) {
+        for i in stride(from: from, through: to, by: 1) {
+            remove(at: i)
+        }
+    }
+    
+    /// Uses the activities in the given range to synthesize one overall activity via weighted average.
+    public func synthesize(from: Index, to: Index) -> MeasuredActivity {
+        let averaged = getAverage(from: from, to: to)
+        return averaged
     }
     
     /// Returns an iterator over the elements of the collection.
@@ -61,12 +71,7 @@ public class WeightedActivityList: ActivityList {
 
     /// Adds the given activity.
     public func add(_ activity: MeasuredActivity) {
-        if activity.motionType == .plane || activity.motionType == .train {
-            writeToDatabase(activity)
-            removeAll()
-        } else {
-            measurements.append(activity)
-        }
+        measurements.append(activity)
     }
     
     /// Returns the weighted average of the activities between the given indexes.
@@ -116,25 +121,5 @@ public class WeightedActivityList: ActivityList {
     /// Removes all activities.
     public func removeAll() {
         measurements.removeAll()
-    }
-    
-    /// Writes to the database the average of the activities in the range provided, then deletes them.
-    public func dumpToDatabase(from:Int, to:Int) {
-        if (from <= to) {
-            writeToDatabase(from:from, to:to)
-            measurements.removeSubrange(from...to)
-        }
-    }
-    
-    /// Writes to the database the average of the activities in the range provided.
-    public func writeToDatabase(from: Int, to: Int) {
-        if measurements.count > 0 {
-            writeToDatabase(getAverage(from: from, to: to))
-        }
-    }
-    
-    private func writeToDatabase(_ activity: MeasuredActivity){
-        try! DBMS.append(activity: activity)
-        try! DBMS.updateScore(activity: activity)
     }
 }

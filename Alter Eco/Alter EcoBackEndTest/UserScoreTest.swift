@@ -1,38 +1,14 @@
-//
-//  UserScoreTest.swift
-//  Alter EcoBackEndTest
-//
-//  Created by Virtual Machine on 17/04/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import XCTest
 import CoreData
 @testable import AlterEcoBackend
 
 class UserScoreTest: XCTestCase {
 
-    var DBMS: CoreDataManager!
+    var DBMS: DBManager!
 
     override func setUp() {
         super.setUp()
         DBMS = CoreDataManager(persistentContainer: (UIApplication.shared.delegate as! AppDelegate).mockPersistentContainer())
-    }
-
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
     }
     
     func testPrintsNextLeagueFromScore() {
@@ -62,7 +38,7 @@ class UserScoreTest: XCTestCase {
         _ = try! DBMS.retrieveLatestScore()
         let currentLeagues = ["🌱", "🌿", "🌳"]
         
-        try! DBMS.getLeagueProgress()
+        try! DBMS.updateLeagueIfEnoughPoints()
         
         let updatedScore = try! DBMS.retrieveLatestScore()
         
@@ -76,7 +52,7 @@ class UserScoreTest: XCTestCase {
         
         try! DBMS.updateScore(activity: MeasuredActivity(motionType: .walking, distance: 400000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 60*60*24)))
         
-        try! DBMS.getLeagueProgress()
+        try! DBMS.updateLeagueIfEnoughPoints()
         let updatedScore = try! DBMS.retrieveLatestScore()
         
         XCTAssert(updatedScore.league == currentLeagues[1], "Should upgrade user league in database from league 1 to league 2.")
@@ -91,7 +67,7 @@ class UserScoreTest: XCTestCase {
         // ~3000 points for each activity
         for _ in stride(from: 0, to: 3, by: 1) {
             try! DBMS.updateScore(activity: MeasuredActivity(motionType: .car, distance: 1001000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 60*60)))
-            try! DBMS.getLeagueProgress()
+            try! DBMS.updateLeagueIfEnoughPoints()
         }
 
         let updatedScore = try! DBMS.retrieveLatestScore()

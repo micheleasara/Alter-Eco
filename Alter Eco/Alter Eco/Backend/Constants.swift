@@ -47,3 +47,15 @@ public let GPS_UPDATE_DISTANCE_TOLERANCE:Double = 5
 public let GPS_UPDATE_CONFIDENCE_THRESHOLD:Double = 50
 /// Defines the area near airport still considered as an airport location - Paris airport is 5kmx3km
 public let GPS_UPDATE_AIRPORT_THRESHOLD:Double = 4000
+
+// MARK: - Carbon conversion constants
+/// Carbon output for a car in Kg/Km.
+public let CARBON_UNIT_CAR: Double = 0.175
+/// Carbon output for a train in Kg/Km.
+public let CARBON_UNIT_TRAIN: Double = 0.030
+/// Carbon output for a plane in Kg/Km.
+public let CARBON_UNIT_PLANE: Double = 0.200
+/// Carbon output saved by walking as compared to a car in Kg/Km.
+public let CARBON_UNIT_WALKING: Double = 0.175
+/// Conversion unit for meters into km.
+public let KM_CONVERSION: Double = 0.001

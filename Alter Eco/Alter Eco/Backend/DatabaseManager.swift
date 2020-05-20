@@ -6,17 +6,6 @@ import CoreData
 //https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
 //all units below have been converted to kgrams/kilometer
 
-/// Carbon output for a car in Kg/Km.
-public let CARBON_UNIT_CAR: Double = 0.175
-/// Carbon output for a train in Kg/Km.
-public let CARBON_UNIT_TRAIN: Double = 0.030
-/// Carbon output for a plane in Kg/Km.
-public let CARBON_UNIT_PLANE: Double = 0.200
-/// Carbon output saved by walking as compared to a car in Kg/Km.
-public let CARBON_UNIT_WALKING: Double = 0.175
-/// Conversion unit for meters into km.
-public let KM_CONVERSION: Double = 0.001
-
 /// Represents an interface for a reader of Alter Eco's databases.
 public protocol DBReader {
     /**
