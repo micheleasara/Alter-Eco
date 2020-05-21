@@ -9,7 +9,8 @@ struct GraphView: View {
     @State var pickerSelectedTwoItem = 0
     @EnvironmentObject var dataGraph : DataGraph
 
-    var body: some View {//The top picker represents the time (e.g. day vs week) the user would like to view. For example, if the user selects the week picker, the picker would change to a value of 5. These values have been chosen to correctly index the dictionary above (when added to the picker value of the transport mode)
+    var body: some View {
+        //The top picker represents the time (e.g. day vs week) the user would like to view. For example, if the user selects the week picker, the picker would change to a value of 5. These values have been chosen to correctly index the dictionary above (when added to the picker value of the transport mode)
         
         return VStack {
 
@@ -21,13 +22,14 @@ struct GraphView: View {
             }
               .pickerStyle(SegmentedPickerStyle())
               .padding()
-            ZStack{//Gridlines (as declared in gridlines.swift) dynamically change depending on the max value for the view. The value of the sum of the pickers is passed to the gridlines to ensure they adjust for the view.
+            ZStack{
+                //Gridlines (as declared in gridlines.swift) dynamically change depending on the max value for the view. The value of the sum of the pickers is passed to the gridlines to ensure they adjust for the view.
                 gridlines(value:self.pickerSelectedItem+self.pickerSelectedTwoItem)
                 //The bar chart is constructed here
                 HStack {//The bar displayed depends on the two pickers chosen
                     ForEach(0..<dataGraph.data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
                     { i in
-                        BarView(value: self.dataGraph.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,label: self.dataGraph.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,wid: self.pickerSelectedItem)}}
+                        BarView(height: self.dataGraph.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].carbon,label: self.dataGraph.data[self.pickerSelectedItem+self.pickerSelectedTwoItem].carbonByDate[i].day.shortName,wid: self.pickerSelectedItem)}}
                 
             }
             
@@ -48,7 +50,7 @@ struct GraphView: View {
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
-        GraphView()
+        GraphView().environmentObject(DataGraph())
     }
 }
 
