@@ -174,10 +174,10 @@ public class ActivityEstimator<T:ActivityList> {
         print("processing with previous ROI: ", prevROI?.coordinate ?? "NIL", " and current ROI: ", currentROI.coordinate)
         
         if visitedRegionOfInterest(prevROI) && currentROI.distance(from: prevROI!).rounded() > 0 {
-                // different ROIs: a trip has occurred!
-                let speed = (motionType == .train) ? AVERAGE_TUBE_SPEED : AVERAGE_PLANE_SPEED
-                addROIBasedActivity(currentRegionOfInterest: currentROI, previousRegionOfInterest: &prevROI, speed: speed, motionType: motionType)
-                resetROITimer(motionType)
+            // different ROIs: a trip has occurred!
+            let speed = (motionType == .train) ? AVERAGE_TUBE_SPEED : AVERAGE_PLANE_SPEED
+            addROIBasedActivity(currentRegionOfInterest: currentROI, previousRegionOfInterest: &prevROI, speed: speed, motionType: motionType)
+            resetROITimer(motionType)
         } else {
             // first time visiting this ROI
             prevROI = currentROI
@@ -198,7 +198,7 @@ public class ActivityEstimator<T:ActivityList> {
         print("Used train/plane to travel distance: ", activityDistance, " m")
         let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
         previousRegionOfInterest = currentRegionOfInterest
-        try! DBMS.append(activity: activity)
+        writeActivityAndUpdateScore(activity)
         measurements.removeAll()
     }
     
@@ -240,9 +240,14 @@ public class ActivityEstimator<T:ActivityList> {
         measurements.remove(from: from, to: to)
     }
     
-  /// Writes a synthesis of the activities to the database.
+    /// Writes a synthesis of the activities to the database.
     private func writeListToDB(from:Int, to:Int) {
         let synthesis = measurements.synthesize(from: from, to: to)
-        try! DBMS.append(activity: synthesis)
+        writeActivityAndUpdateScore(synthesis)
+    }
+    
+    private func writeActivityAndUpdateScore(_ activity: MeasuredActivity) {
+        try! DBMS.append(activity: activity)
+        try! DBMS.updateScore(activity: activity)
     }
 }
