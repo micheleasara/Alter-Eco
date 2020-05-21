@@ -1,6 +1,6 @@
 import Foundation
 
-/// Represents a list of activities connected to a database.
+/// Represents a list of activities that can use its item to synthesize an overall activity.
 public protocol ActivityList : AnyObject, MutableCollection
 where Index == Int, Element == Array<MeasuredActivity>.Element {
     /// Uses the activities in the given range to synthesize one overall activity.
@@ -16,7 +16,7 @@ where Index == Int, Element == Array<MeasuredActivity>.Element {
 }
 
 
-/// A list of activities which can store activities in memory and then write their weighted average to a database.
+/// A list of activities which can store activities in memory and synthesize their weighted average.
 public class WeightedActivityList: ActivityList {
     public typealias Index = Array<MeasuredActivity>.Index
     public typealias Element = Array<MeasuredActivity>.Element
