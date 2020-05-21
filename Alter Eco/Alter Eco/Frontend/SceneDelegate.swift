@@ -21,8 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
         
-            self.screenMeasurements.broadcastedHeight =  Float(UIScreen.main.bounds.height)
-            self.screenMeasurements.broadcastedWidth =  Float(UIScreen.main.bounds.width)
             window.rootViewController = UIHostingController(rootView: contentView.environmentObject(screenMeasurements).environmentObject(dataGraph))
             
             window.makeKeyAndVisible()

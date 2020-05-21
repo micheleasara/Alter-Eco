@@ -278,13 +278,75 @@ public class DataGraph : ObservableObject {
     }
 }
 
+typealias CarbonOutput = Dictionary<MeasuredActivity.MotionType, Double>
+
+private func getMyData(fromDates: [Date]) -> Dictionary<Int, CarbonOutput> {
+    var data = Dictionary<Int, CarbonOutput>()
+    let dates = fromDates.sorted()
+    for i in stride(from: 1, to: dates.count, by: 1) {
+        var carbonOutput = CarbonOutput()
+        for motion in MeasuredActivity.MotionType.allCases {
+            let interval = dates[i].timeIntervalSince(dates[i-1])
+            let carbon = try! DBMS.carbonWithinInterval(motionType: motion, from: dates[i-1], interval: interval)
+            carbonOutput[motion] = carbon
+        }
+        data[i-1] = carbonOutput
+    }
+    return data
+}
+
+let timer = Timer.init(timeInterval: 1, repeats: true, block: getYearlyData(timer:))
+
+public func getDailyData(timer: Timer) {
+    var dates = [Date.setToSpecificHour(date: Date(), hour: "00:00:00")!]
+    for i in 0..<12 {
+        dates.append(dates[i].addingTimeInterval(2*60*60))
+    }
+    print(dates)
+    print(getMyData(fromDates: dates))
+}
+
+public func getWeeklyData(timer: Timer) {
+    var dates = [Date.setToSpecificHour(date: Date().addingTimeInterval(-6*24*60*60), hour: "00:00:00")!]
+    for i in 0..<7 {
+        dates.append(dates[i].addingTimeInterval(24*60*60))
+    }
+    print(dates)
+    print(getMyData(fromDates: dates))
+}
+
+public func getMonthlyData(timer: Timer) {
+    let firstOfMonth = Date.getStartOfMonth(fromDate: Date())
+    print(firstOfMonth)
+    let start = Date.addMonths(date: firstOfMonth, numMonthsToAdd: -11)
+    var dates = [start]
+    for i in 0..<12 {
+        dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 1))
+    }
+    print(dates)
+    print(getMyData(fromDates: dates))
+}
+
+public func getYearlyData(timer: Timer) {
+    let test = Date.setToSpecificDay(date: Date(), day: 1)!
+    let firstOfJan = Date.setToSpecificMonth(date: test , month: 1)!
+    let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -6*12)
+    
+    var dates = [start]
+    for i in 0..<7 {
+        dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 12))
+    }
+    print(dates)
+    print(getMyData(fromDates: dates))
+}
+
 #if NO_BACKEND_TESTING
 /// Contains data for the graph of GraphView
 let dataGraph : DataGraph = DataGraph()
 #endif
 
 func fetchDataGraph() -> [(dayPart: DataParts, carbonByDate: [(day:DaySpecifics, carbon:Double)])] {
-    
+    timer.fire()
     return [
                 (//Access dictionary via this key
                     DataParts.dayall,

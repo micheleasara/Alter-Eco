@@ -1,6 +1,7 @@
 import Foundation
+import SwiftUI
 
 class ScreenMeasurements: ObservableObject {
-    @Published var broadcastedHeight: Float = 0
-    @Published var broadcastedWidth: Float = 0
+    @Published var broadcastedHeight: Float = Float(UIScreen.main.bounds.height)
+    @Published var broadcastedWidth: Float = Float(UIScreen.main.bounds.width)
 }

@@ -23,6 +23,17 @@ extension Date {
         return calendar.date(byAdding: addendum, to: startOfMonth)!
     }
 
+    public static func addMonths(date:Date, numMonthsToAdd: Int) -> Date {
+        let calendar = NSCalendar(calendarIdentifier: .gregorian)!
+        var addendum = DateComponents()
+        addendum.month = numMonthsToAdd
+        return calendar.date(byAdding: addendum, to: date)!
+    }
+    
+    public static func getStartOfMonth(fromDate: Date) -> Date {
+        return setToSpecificHour(date: setToSpecificDay(date: fromDate, day: 1)!, hour: "00:00:00")!
+    }
+    
     /// Converts a date to a string in the format yyyy-MM-dd.
     public static func toInternationalString(_ date: Date) -> String {
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -83,10 +94,7 @@ extension Date {
         dateFormatter.locale = Locale(identifier: "en-UK")
         let formattedStr = dateFormatter.string(from: date) + " " + hour + " +0000"
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-        if let today = dateFormatter.date(from: formattedStr) {
-            return today
-        }
-        return nil
+        return dateFormatter.date(from: formattedStr)
     }
     
     /** Returns the date given but set to the day provided.
@@ -107,10 +115,20 @@ extension Date {
         
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
         let formattedStr = yearMonth + "-" + dayStr + " " + hour
-        if let formattedDate = dateFormatter.date(from: formattedStr) {
-            return formattedDate
-        }
-        return nil
+        return dateFormatter.date(from: formattedStr)
+    }
+    
+    public static func setToSpecificMonth(date: Date, month: Int) -> Date? {
+        dateFormatter.locale = Locale(identifier: "en-UK")
+        
+        dateFormatter.dateFormat = "dd HH:mm:ss ZZZ"
+        let dayHour = dateFormatter.string(from: date)
+        dateFormatter.dateFormat = "yyyy"
+        let year = dateFormatter.string(from: date)
+        let monthStr = (month > 9) ? String(month) : "0" + String(month)
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
+        let formattedStr = year + "-" + monthStr + "-" + dayHour
+        return dateFormatter.date(from: formattedStr)
     }
     
     /** Returns the date given but set to the year provided.
@@ -126,10 +144,7 @@ extension Date {
         
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
         let formattedStr = String(year) + "-" + monthDayHour
-        if let formattedDate = dateFormatter.date(from: formattedStr) {
-            return formattedDate
-        }
-        return nil
+        return dateFormatter.date(from: formattedStr)
     }
     
     /// Converts an array of dates into an array of string representations of their years. Year format is yyyy.

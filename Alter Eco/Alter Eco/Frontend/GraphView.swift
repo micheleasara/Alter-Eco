@@ -24,7 +24,7 @@ struct GraphView: View {
               .padding()
             ZStack{
                 //Gridlines (as declared in gridlines.swift) dynamically change depending on the max value for the view. The value of the sum of the pickers is passed to the gridlines to ensure they adjust for the view.
-                gridlines(value:self.pickerSelectedItem+self.pickerSelectedTwoItem)
+                Gridlines(value:self.pickerSelectedItem+self.pickerSelectedTwoItem)
                 //The bar chart is constructed here
                 HStack {//The bar displayed depends on the two pickers chosen
                     ForEach(0..<dataGraph.data[pickerSelectedItem+pickerSelectedTwoItem].carbonByDate.count, id: \.self)
@@ -50,7 +50,7 @@ struct GraphView: View {
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
-        GraphView().environmentObject(DataGraph())
+        GraphView()
     }
 }
 

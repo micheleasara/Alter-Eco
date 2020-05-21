@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Represents a bar and the respective axis
 struct BarView: View {
     
     var height: Double
@@ -15,33 +16,32 @@ struct BarView: View {
         if (( wid>=0 && wid<=4)||(wid>=10 && wid<=14)) {
             return getBarView(colour: colour, axisWidth: 24)
         }
-        //Graph for 'weeks' and 'years'
+        // For 'weeks' and 'years'
         return getBarView(colour: colour, axisWidth: 10)
     }
     
     func getBarView(colour: String, axisWidth: Float) -> some View {
         return VStack {
-        ZStack(alignment: .bottom) {
-            Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
-                .foregroundColor(Color("app_background"))
-                .opacity(0.0)
-            Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth/axisWidth), height: CGFloat(height) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
-                //Colour is determined by the daily carbon query above
-                .foregroundColor(Color(colour))
+            ZStack(alignment: .bottom) {
+                Capsule().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)/20, height: CGFloat(self.screenMeasurements.broadcastedHeight)/4.5)
+                    .foregroundColor(Color("app_background"))
+                    .opacity(0.0)
+                Rectangle().frame(width: CGFloat(self.screenMeasurements.broadcastedWidth/axisWidth), height: CGFloat(height) * (CGFloat(self.screenMeasurements.broadcastedHeight)/4.95))
+                    //Colour is determined by the daily carbon query above
+                    .foregroundColor(Color(colour))
             }
-        //Labels displayed below the graph represent the different time points.
-        Text(label)
-            .font(Font.system(size: 13.5, design: .default))
-            .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
-        }
+            
+            //Labels displayed below the graph represent the different time points.
+            Text(label)
+                .font(Font.system(size: 13.5, design: .default))
+                .padding(.top,CGFloat((self.screenMeasurements.broadcastedWidth)/50))
+            }
     }
 }
 
 
-
-
 struct BarView_Previews: PreviewProvider {
     static var previews: some View {
-        BarView(height: 1000, label: "test", wid: 5).environmentObject(ScreenMeasurements())
+        BarView(height: 100, label: "test", wid: 5).environmentObject(ScreenMeasurements())
     }
 }
