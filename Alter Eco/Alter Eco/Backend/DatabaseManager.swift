@@ -123,6 +123,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         self.persistentContainer = persistentContainer
     }
     
+    /// Sets a callback function which is called whenever an activity is added.
     public func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
         self.activityWrittenCallback = callback
     }

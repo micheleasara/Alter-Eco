@@ -37,9 +37,7 @@ public class WeightedActivityList: ActivityList {
     
     /// Removes the elements in the range specified.
     public func remove(from: Index, to: Index) {
-        for i in stride(from: from, through: to, by: 1) {
-            remove(at: i)
-        }
+        measurements.removeSubrange(from...to)
     }
     
     /// Uses the activities in the given range to synthesize one overall activity via weighted average.
