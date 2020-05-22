@@ -14,23 +14,23 @@ struct DetailView: View {
                     Spacer()
                     //welcome, and profile button
                     WelcomeView()
-                        .padding(.bottom, -CGFloat(screenMeasurements.broadcastedHeight / 30))
+                        .padding(.bottom, -screenMeasurements.broadcastedHeight / 30)
                     
                     //Bar chart view
                     GraphView()
                     
                     //Progress Bar
                    ProgressBarView()
-                       .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 35))
+                       .padding(.bottom, screenMeasurements.broadcastedHeight / 35)
                    
                    //Comparisons
                    ComparisonView()
-                       .padding(.bottom, CGFloat(screenMeasurements.broadcastedHeight / 35))
+                       .padding(.bottom, screenMeasurements.broadcastedHeight / 35)
                    
                    //Highlights
                    HighlightView()
                    
-                   Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
+                   Spacer(minLength: screenMeasurements.broadcastedHeight*0.04)
                        
                 }
             }

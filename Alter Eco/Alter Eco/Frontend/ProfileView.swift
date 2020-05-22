@@ -13,7 +13,7 @@ struct ProfileView: View {
                 Spacer()
                 VStack{
                     ProfileImage()
-                        .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.37)
+                        .frame(height: screenMeasurements.broadcastedHeight*0.37)
                     ScorePoints()
                     Divider()
                         .padding(.top, 10)
@@ -22,7 +22,7 @@ struct ProfileView: View {
                         .font(.title)
                         .fontWeight(.semibold)
                     AwardView()
-                    Spacer(minLength: CGFloat(screenMeasurements.broadcastedHeight)*0.04)
+                    Spacer(minLength: screenMeasurements.broadcastedHeight*0.04)
                 }
             }
             .navigationBarTitle("Profile", displayMode: .inline)
@@ -126,23 +126,23 @@ struct AwardView: View {
             ZStack{
                 RoundedRectangle(cornerRadius: 25, style: .continuous)
                     .fill(Color("fill_colour"))
-                    .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(self.screenMeasurements.broadcastedWidth)*0.35)
+                    .frame(width: self.screenMeasurements.broadcastedWidth*0.9, height: self.screenMeasurements.broadcastedWidth*0.35)
                 HStack{
                     VStack{
                         Text(award.Name).font(.headline)
 
                         Text(award.Description).font(.caption)
                     }
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.5, alignment: .center)
+                        .frame(width: self.screenMeasurements.broadcastedWidth*0.5, alignment: .center)
                         .padding(4)
                                    
                     Image(award.Awarded ? award.BadgeTitle : "badge_empty")
-                        .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.22, height: CGFloat(self.screenMeasurements.broadcastedWidth)*0.22, alignment: .center)
-                        .scaleEffect(CGFloat(self.screenMeasurements.broadcastedWidth)/1200)
+                        .frame(width: self.screenMeasurements.broadcastedWidth*0.22, height: self.screenMeasurements.broadcastedWidth*0.22, alignment: .center)
+                        .scaleEffect(self.screenMeasurements.broadcastedWidth/1200)
                         .padding(4)
                 }
             }
-                .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.85, height: CGFloat(self.screenMeasurements.broadcastedWidth)*0.4)
+                .frame(width: self.screenMeasurements.broadcastedWidth*0.85, height: self.screenMeasurements.broadcastedWidth*0.4)
                 .opacity(award.Awarded ? 1.0 : 0.6)
         }
     }
@@ -178,7 +178,7 @@ struct ProfileImage: View {
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
-                            .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6, height: CGFloat(self.screenMeasurements.broadcastedWidth)*0.6)
+                            .frame(width: self.screenMeasurements.broadcastedWidth*0.6, height: self.screenMeasurements.broadcastedWidth*0.6)
                             .shadow(radius: 10)
                     }
                 }
@@ -187,24 +187,24 @@ struct ProfileImage: View {
                 }
                     .foregroundColor(Color.white)
                     .opacity(0.01)
-                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.41, height: CGFloat(screenMeasurements.broadcastedWidth)*0.41)
+                    .frame(width: screenMeasurements.broadcastedWidth*0.41, height: screenMeasurements.broadcastedWidth*0.41)
             }
             
             Button(action: {self.showingImagePicker = true}){
                 if(savings.count == 0){
                     Image("add_profile_pic")
-                        .scaleEffect(CGFloat(screenMeasurements.broadcastedHeight)/1700)
+                        .scaleEffect(screenMeasurements.broadcastedHeight/1700)
                         .foregroundColor(Color("title_colour"))
                 }
             }
                 .background(Color("shadow"))
-                .mask(Circle().scale(CGFloat(screenMeasurements.broadcastedHeight)/1000))
+                .mask(Circle().scale(screenMeasurements.broadcastedHeight/1000))
                     
                 .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
                     ImagePicker(image: self.$inputImage)
                 }
                 
-        }.frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.6, height: CGFloat(screenMeasurements.broadcastedHeight)*0.3)
+        }.frame(width: screenMeasurements.broadcastedWidth*0.6, height: screenMeasurements.broadcastedHeight*0.3)
             
         NameView()
         }
@@ -230,13 +230,13 @@ struct ScorePoints: View {
                // .fill(Color("graphBars"))
                 .fill(Color("fill_colour"))
                 //.opacity(0.7)
-                .frame(width: CGFloat(self.screenMeasurements.broadcastedWidth)*0.9)
+                .frame(width: self.screenMeasurements.broadcastedWidth*0.9)
                // .overlay(
                //     RoundedRectangle(cornerRadius: 25, style: .continuous)
                 //    .stroke(Color("graphBars"), lineWidth: 4)
                // )
                 .padding(.horizontal, 10)
-                .frame(height: CGFloat(screenMeasurements.broadcastedHeight)*0.1)
+                .frame(height: screenMeasurements.broadcastedHeight*0.1)
             HStack(alignment: .top){
                 Text("Score:").font(.title) .fontWeight(.bold)
                 Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
@@ -271,7 +271,7 @@ struct NameView: View {
                 }.font(.callout)
                     .foregroundColor(Color("title_colour"))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7)
+                    .frame(width: screenMeasurements.broadcastedWidth*0.7)
             }
             else
             {

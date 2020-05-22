@@ -28,12 +28,12 @@ struct ComparisonView: View {
               ZStack {
               RoundedRectangle(cornerRadius: 25, style: .continuous)
                   .fill(Color("fill_colour"))
-                  .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.9, height: CGFloat(screenMeasurements.broadcastedHeight)/6)
+                  .frame(width: screenMeasurements.broadcastedWidth*0.9, height: screenMeasurements.broadcastedHeight/6)
                   
               Text(generateProportion())
                   .font(.headline)
                   .fontWeight(.regular)
-                  .frame(width: CGFloat(screenMeasurements.broadcastedWidth)*0.7, height: CGFloat(screenMeasurements.broadcastedHeight)/6)
+                  .frame(width: screenMeasurements.broadcastedWidth*0.7, height: screenMeasurements.broadcastedHeight/6)
               }
           }
       }

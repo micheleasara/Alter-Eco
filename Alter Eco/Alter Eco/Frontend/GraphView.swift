@@ -1,60 +1,94 @@
 import SwiftUI
 
-
 struct GraphView: View {
-    //Two picker variables set to 0 and the values are changed upon the users touch (changed values are found in the code below)
     //The following picker represents the options of 'day' 'week' 'month' 'year'
     @State var timePickerSelection = 0
     //The following picker represents the travel options of 'all' 'car' 'walk' 'train' 'plane'
-    @State var transportPickerSelection = 0
+    @State var transportPickerSelection = MeasuredActivity.MotionType.unknown
     @EnvironmentObject var dataGraph : DataGraph
 
     var body: some View {
-        //The top picker represents the time (e.g. day vs week) the user would like to view. For example, if the user selects the week picker, the picker would change to a value of 5. These values have been chosen to correctly index the dictionary above (when added to the picker value of the transport mode)
+        let max = dataGraph.getMax(i: timePickerSelection, type: transportPickerSelection)
+        print("max is ", max)
+        let axisMax = maxAxisValue(actualMax: max)
         
         return VStack {
-
-            getTimePicker()
-            ZStack{
-                //Gridlines (as declared in gridlines.swift) dynamically change depending on the max value for the view. The value of the sum of the pickers is passed to the gridlines to ensure they adjust for the view.
-                Gridlines(value:self.timePickerSelection+self.transportPickerSelection)
-                //The bar chart is constructed here
-                HStack {//The bar displayed depends on the two pickers chosen
-                    ForEach(0..<dataGraph.data[timePickerSelection+transportPickerSelection].carbonByDate.count, id: \.self)
-                    {
-                        i in
-                        BarView(height: self.dataGraph.data[self.timePickerSelection+self.transportPickerSelection].carbonByDate[i].carbon,label: self.dataGraph.data[self.timePickerSelection+self.transportPickerSelection].carbonByDate[i].day.shortName,wid: self.timePickerSelection)
-                    }
-                    
-                }
+            timePicker()
+            ZStack {
+                Gridlines(numGridLines: 8, maximumValue: axisMax)
+                dataBars(normalizeWith: max)
             }
-            
-            //Transport option picker
-            getTransportPicker()
+            transportPicker()
         }
     }
     
-    func getTimePicker() -> some View {
+    func timePicker() -> some View {
         Picker(selection: $timePickerSelection.animation(), label: Text("")) {
             Text("Daily").tag(0)
-            Text("Weekly").tag(5)
-            Text("Monthly").tag(10)
-            Text("Yearly").tag(15)
+            Text("Weekly").tag(1)
+            Text("Monthly").tag(2)
+            Text("Yearly").tag(3)
         }
           .pickerStyle(SegmentedPickerStyle())
           .padding()
     }
     
-    func getTransportPicker() -> some View {
+    func dataBars(normalizeWith: Double) -> some View {
+        var normalisation = normalizeWith
+        if normalisation == 0.0 {
+            normalisation = 1.0 // avoid divide-by-zero errors
+        }
+        return HStack {
+            ForEach(dataGraph.data[timePickerSelection], id: \.self)
+            {
+                labelledDataPoint in
+                BarView(height: labelledDataPoint.carbonByMotion[self.transportPickerSelection]! / normalisation,
+                        label: labelledDataPoint.label,
+                        timePickerSelection: self.timePickerSelection,
+                        colour: self.barColour())
+            }
+        }
+    }
+    
+    func maxAxisValue(actualMax: Double) -> Double {
+        switch actualMax {
+        case 0.001..<1:
+            return actualMax * 1000
+        case 1000..<Double.infinity:
+            return actualMax / 1000
+        default:
+            return actualMax
+        }
+    }
+    
+    func transportPicker() -> some View {
         Picker(selection: $transportPickerSelection.animation(), label: Image("")) {
-            Text("All").tag(0)
-            Image(systemName: "car").tag(1)
-            Image(systemName: "person").tag(2)
-            Image(systemName: "tram.fill").tag(3)
-            Image(systemName: "airplane").tag(4)
+            Text("All").tag(MeasuredActivity.MotionType.unknown)
+            Image(systemName: "car").tag(MeasuredActivity.MotionType.car)
+            Image(systemName: "person").tag(MeasuredActivity.MotionType.walking)
+            Image(systemName: "tram.fill").tag(MeasuredActivity.MotionType.train)
+            Image(systemName: "airplane").tag(MeasuredActivity.MotionType.plane)
         }
         .pickerStyle(SegmentedPickerStyle())
         .padding()
+    }
+    
+    func barColour() -> String {
+        var colour: String = "graphBars"
+        let todayCarbon = dataGraph.data[1].last!.carbonByMotion
+        var total = 0.0
+        for motion in MeasuredActivity.MotionType.allCases {
+            if let carbon = todayCarbon[motion] {
+                if motion != .walking {
+                    total += carbon
+                }
+            }
+        }
+        
+        if total > AV_UK_DAILYCARBON {
+            colour = "redGraphBar"
+        }
+        return colour
     }
 }
 

@@ -12,6 +12,12 @@ extension Date {
         return dateFormatter.string(from: date)
     }
     
+    public static func getMonthName(_ date: Date) -> String{
+        dateFormatter.dateFormat = "MMMM"
+        dateFormatter.locale = Locale(identifier: "en-UK")
+        return dateFormatter.string(from: date)
+    }
+    
     /// Returns the date of the last of the month from the given date.
     public static func getEndDayOfMonth(date: Date) -> Date {
         let calendar = NSCalendar(calendarIdentifier: .gregorian)!
