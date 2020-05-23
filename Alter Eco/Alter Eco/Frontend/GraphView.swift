@@ -6,18 +6,19 @@ struct GraphView: View {
     //The following picker represents the travel options of 'all' 'car' 'walk' 'train' 'plane'
     @State var transportPickerSelection = MeasuredActivity.MotionType.unknown
     @EnvironmentObject var dataGraph : DataGraph
+    @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
-    var body: some View {
-        let max = dataGraph.getMax(i: timePickerSelection, type: transportPickerSelection)
-        print("max is ", max)
-        let axisMax = maxAxisValue(actualMax: max)
-        
+    var body: some View {        
         return VStack {
             timePicker()
-            ZStack {
-                Gridlines(numGridLines: 8, maximumValue: axisMax)
-                dataBars(normalizeWith: max)
-            }
+            Text("Carbon footprint chart")
+                .font(.headline)
+                .fontWeight(.semibold)
+            BarChart(numGridLines: 5,
+                     labelledDataPoints: dataGraph.data[timePickerSelection][transportPickerSelection]!,
+                     colour: "graphBars").frame(height: screenMeasurements.height/3.8).padding().border(Color.black).padding(.horizontal)
+
+            
             transportPicker()
         }
     }
@@ -33,34 +34,6 @@ struct GraphView: View {
           .padding()
     }
     
-    func dataBars(normalizeWith: Double) -> some View {
-        var normalisation = normalizeWith
-        if normalisation == 0.0 {
-            normalisation = 1.0 // avoid divide-by-zero errors
-        }
-        return HStack {
-            ForEach(dataGraph.data[timePickerSelection], id: \.self)
-            {
-                labelledDataPoint in
-                BarView(height: labelledDataPoint.carbonByMotion[self.transportPickerSelection]! / normalisation,
-                        label: labelledDataPoint.label,
-                        timePickerSelection: self.timePickerSelection,
-                        colour: self.barColour())
-            }
-        }
-    }
-    
-    func maxAxisValue(actualMax: Double) -> Double {
-        switch actualMax {
-        case 0.001..<1:
-            return actualMax * 1000
-        case 1000..<Double.infinity:
-            return actualMax / 1000
-        default:
-            return actualMax
-        }
-    }
-    
     func transportPicker() -> some View {
         Picker(selection: $transportPickerSelection.animation(), label: Image("")) {
             Text("All").tag(MeasuredActivity.MotionType.unknown)
@@ -73,29 +46,28 @@ struct GraphView: View {
         .padding()
     }
     
-    func barColour() -> String {
-        var colour: String = "graphBars"
-        let todayCarbon = dataGraph.data[1].last!.carbonByMotion
-        var total = 0.0
-        for motion in MeasuredActivity.MotionType.allCases {
-            if let carbon = todayCarbon[motion] {
-                if motion != .walking {
-                    total += carbon
-                }
-            }
-        }
-        
-        if total > AV_UK_DAILYCARBON {
-            colour = "redGraphBar"
-        }
-        return colour
-    }
+//    func barColour() -> String {
+//        var colour: String = "graphBars"
+//        let todayCarbon = dataGraph.data[1].last!.carbonByMotion
+//        var total = 0.0
+//        for motion in MeasuredActivity.MotionType.allCases {
+//            if let carbon = todayCarbon[motion] {
+//                if motion != .walking {
+//                    total += carbon
+//                }
+//            }
+//        }
+//
+//        if total > AV_UK_DAILYCARBON {
+//            colour = "redGraphBar"
+//        }
+//        return colour
+//    }
 }
 
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
-        GraphView().environmentObject(DataGraph())
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }
-

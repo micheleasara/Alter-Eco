@@ -63,12 +63,12 @@ struct HighlightView: View {
             ZStack {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .fill(Color("fill_colour"))
-                .frame(width: screenMeasurements.broadcastedWidth*0.9, height: screenMeasurements.broadcastedHeight/6)
+                .frame(width: screenMeasurements.width*0.9, height: screenMeasurements.height/6)
                 
             Text(generateSentence())
                 .font(.headline)
                 .fontWeight(.regular)
-                .frame(width: screenMeasurements.broadcastedWidth*0.7, height: screenMeasurements.broadcastedHeight/7)
+                .frame(width: screenMeasurements.width*0.7, height: screenMeasurements.height/7)
             }
         }
     }

@@ -9,29 +9,29 @@ struct DetailView: View {
         ScrollView {
             ZStack {
                 Color("app_background")
-                
+
                 VStack {
                     Spacer()
                     //welcome, and profile button
                     WelcomeView()
-                        .padding(.bottom, -screenMeasurements.broadcastedHeight / 30)
-                    
+                        .padding(.bottom, -screenMeasurements.height / 30)
+
                     //Bar chart view
                     GraphView()
-                    
+
                     //Progress Bar
                    ProgressBarView()
-                       .padding(.bottom, screenMeasurements.broadcastedHeight / 35)
-                   
+                       .padding(.bottom, screenMeasurements.height / 35)
+
                    //Comparisons
                    ComparisonView()
-                       .padding(.bottom, screenMeasurements.broadcastedHeight / 35)
-                   
+                       .padding(.bottom, screenMeasurements.height / 35)
+
                    //Highlights
                    HighlightView()
-                   
-                   Spacer(minLength: screenMeasurements.broadcastedHeight*0.04)
-                       
+
+                   Spacer(minLength: screenMeasurements.height*0.04)
+
                 }
             }
         }
