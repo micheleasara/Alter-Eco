@@ -25,24 +25,32 @@ public struct LabelledDataPoint : Hashable {
 }
 public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
 public typealias LabelledDataPoints = [LabelledDataPoint]
+
 private func carbonBreakdownFromIntervals(fromDates: [Date], withLabels: [String]) -> CarbonBreakdown {
     let dates = fromDates.sorted()
-    
     var intervals = [TimeInterval]()
     for i in stride(from: 1, to: dates.count, by: 1) {
         intervals.append(dates[i].timeIntervalSince(dates[i-1]))
     }
     
     var carbonBreakdown = CarbonBreakdown()
+    var dataTotal = LabelledDataPoints() // carbon for all motions combined
     for motion in MeasuredActivity.MotionType.allCases {
-        var labelledData = LabelledDataPoints()
+        var dataMotion = LabelledDataPoints()
         for i in stride(from: 1, to: dates.count, by: 1) {
             let carbon = try! DBMS.carbonWithinInterval(motionType: motion, from: dates[i-1], interval: intervals[i-1])
-            labelledData.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
+            dataMotion.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
+            
+            if dataTotal.count > i {
+                dataTotal[i].data += carbon
+            } else { // not initialised
+                dataTotal.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
+            }
         }
-        carbonBreakdown[motion] = labelledData
-        carbonBreakdown[.unknown] = labelledData
+        carbonBreakdown[motion] = dataMotion
     }
+    carbonBreakdown[.unknown] = dataTotal
+    
     return carbonBreakdown
 }
 
@@ -54,7 +62,7 @@ public func getDailyData() -> CarbonBreakdown {
     var labels = [String]()
     for i in stride(from: 0, through: 24, by: 2) {
         let label = i>9 ? String(i) : String(0)+String(i)
-        labels.append(i % 4 == 0 ? label : "")
+        labels.append(i % 1 == 0 ? label : "")
     }
     return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
 }

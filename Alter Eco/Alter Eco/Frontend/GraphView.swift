@@ -10,15 +10,42 @@ struct GraphView: View {
 
     var body: some View {        
         return VStack {
-            timePicker().padding(.top).padding(.horizontal)
+            timePicker.padding(.top).padding(.horizontal)
             
-            Text("Carbon footprint chart")
+            Text("Total carbon " + savedOrEmittedLabel + ": " +
+                kgToReadableLabel(valueInKg: totalCarbonInKg()))
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            BarChart(values: getValues(), labels: getLabels(), colour: Color("graphBars")).frame(height: screenMeasurements.height/3.8).padding(.horizontal)
+            BarChart(values: getValues(), labels: getLabels(), colour: barColour).frame(height: screenMeasurements.height/3.8).padding(.horizontal)
 
-            transportPicker().padding(.bottom).padding(.horizontal)
+            transportPicker.padding(.bottom).padding(.horizontal)
+        }
+    }
+    
+    var savedOrEmittedLabel : String {
+        return transportPickerSelection == .walking ? "saved" : "emitted"
+    }
+    
+    func totalCarbonInKg() -> Double {
+        var total = 0.0
+        if let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection] {
+            for labelledPoint in  labelledPoints {
+                total += labelledPoint.data
+            }
+        }
+        return total
+    }
+    
+    func kgToReadableLabel(valueInKg: Double) -> String {
+        let format = "%.1f"
+        switch valueInKg {
+        case 0.001..<1:
+            return String(format: format + " g", 1000*valueInKg)
+        case 1000..<Double.infinity:
+            return String(format: format + " tonne", 0.001*valueInKg)
+        default:
+            return String(format: format + " kg", valueInKg)
         }
     }
     
@@ -40,7 +67,7 @@ struct GraphView: View {
         return values
     }
     
-    func timePicker() -> some View {
+    var timePicker : some View {
         Picker(selection: $timePickerSelection.animation(), label: Text("")) {
             Text("Daily").tag(0)
             Text("Weekly").tag(1)
@@ -50,7 +77,7 @@ struct GraphView: View {
           .pickerStyle(SegmentedPickerStyle())
     }
     
-    func transportPicker() -> some View {
+    var transportPicker : some View {
         Picker(selection: $transportPickerSelection.animation(), label: Image("")) {
             Text("All").tag(MeasuredActivity.MotionType.unknown)
             Image(systemName: "car").tag(MeasuredActivity.MotionType.car)
@@ -61,25 +88,26 @@ struct GraphView: View {
         .pickerStyle(SegmentedPickerStyle())
     }
     
-//    func barColour() -> String {
-//        var colour: String = "graphBars"
-//        let todayCarbon = dataGraph.data[1].last!.carbonByMotion
-//        var total = 0.0
-//        for motion in MeasuredActivity.MotionType.allCases {
-//            if let carbon = todayCarbon[motion] {
-//                if motion != .walking {
-//                    total += carbon
-//                }
-//            }
-//        }
-//
-//        if total > AV_UK_DAILYCARBON {
-//            colour = "redGraphBar"
-//        }
-//        return colour
-//    }
-}
+    var barColour : Color {
+        var colour: String = "graphBars"
+        let carbonByTransport = dataGraph.data[1]
+        
+        // graph changes colour depending on users's daily carbon footprint
+        var todayTotal = 0.0
+        for motion in MeasuredActivity.MotionType.allCases {
+            if let labelledValue = carbonByTransport[motion]?.last {
+                if motion != .walking {
+                    todayTotal += labelledValue.data
+                }
+            }
+        }
 
+        if todayTotal > AV_UK_DAILYCARBON {
+            colour = "redGraphBar"
+        }
+        return Color(colour)
+    }
+}
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {

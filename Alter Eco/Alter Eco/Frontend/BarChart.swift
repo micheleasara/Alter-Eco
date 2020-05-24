@@ -93,24 +93,6 @@ struct BarChart: View {
     func getMaxValue() -> Double {
         return values.max()!
     }
-    
-    func unitConversion(actualMax: Double) -> Double {
-        switch actualMax {
-        case 0.001..<1:
-            return 1000
-        case 1000..<Double.infinity:
-            return 0.001
-        default:
-            return 1.0
-        }
-    }
-    
-    func decimalFormat(maxValue: Double) -> String {
-        if maxValue > 0 && maxValue < 100 {
-            return "%g"
-        }
-        return "%.0f"
-    }
 }
 
 struct BarChart_Previews: PreviewProvider {
