@@ -10,25 +10,32 @@ struct BarChart: View {
     //@EnvironmentObject var screenMeasurements: ScreenMeasurements
 
     let numGridLines : UInt
-    let labelledDataPoints : LabelledDataPoints
-    let colour: String
+    //let labelledDataPoints : LabelledDataPoints
+    let values : [Double]
+    let labels : [String]
+    let colour: Color
+    static let SPACING_RATIO : CGFloat = 0.2
+    static let DRAWING_RATIO : CGFloat = 1 - SPACING_RATIO
     
     var body: some View {
-        let spaceRatio = 0.2/CGFloat(self.labelledDataPoints.count - 1)
-        let barWidthRatio = 0.8/CGFloat(self.labelledDataPoints.count)
+        let barSpaceRatio = BarChart.SPACING_RATIO/CGFloat(self.values.count - 1)
+        let barWidthRatio = BarChart.DRAWING_RATIO/CGFloat(self.values.count)
+        let barsToLabelsRatio = CGFloat(self.values.count) / CGFloat(self.labels.count)
+        let textSpaceRatio = barsToLabelsRatio * barSpaceRatio
+        let textWidthRatio = barsToLabelsRatio * barWidthRatio
         
         return GeometryReader { geometry in
             VStack(spacing: 0.05*geometry.size.height) {
                 self.bars(barWidth: geometry.size.width * barWidthRatio,
-                          spacing: geometry.size.width * spaceRatio,
+                          spacing: geometry.size.width * barSpaceRatio,
                           maxBarHeight: 0.9*geometry.size.height)
 
                 // axis is forced to be at the bottom even when no data
                 // by using exploding stacks
                 // see https://netsplit.com/swiftui/exploding-stacks/
-                self.horizontalAxis(textWidth: geometry.size.width * barWidthRatio,
+                self.horizontalAxis(textWidth: geometry.size.width * textWidthRatio,
                                     textHeight: 0.05*geometry.size.height,
-                                    spacing: geometry.size.width * spaceRatio)
+                                    spacing: geometry.size.width * textSpaceRatio)
                 .frame(minWidth: 0, maxWidth: .infinity,
                 minHeight: 0, maxHeight: .infinity,
                 alignment: .bottom)
@@ -43,12 +50,11 @@ struct BarChart: View {
         }
         
         return HStack(alignment:.bottom, spacing: spacing) {
-            ForEach(self.labelledDataPoints, id: \.self)
-            {
-                labelledDataPoint in
+            ForEach(self.values, id: \.self) { value in
                 Rectangle()
+                    .fill(self.colour)
                     .frame(width: barWidth,
-                           height: maxBarHeight * CGFloat(labelledDataPoint.data / normalisation),
+                           height: maxBarHeight * CGFloat(value / normalisation),
                            alignment:  .bottom)
             }
         }
@@ -56,24 +62,20 @@ struct BarChart: View {
     
     func horizontalAxis(textWidth: CGFloat, textHeight: CGFloat, spacing: CGFloat) -> some View {
         HStack(alignment:.bottom, spacing: spacing) {
-            ForEach(self.labelledDataPoints, id: \.self) {labelledDataPoint in
-                Text(labelledDataPoint.label)
+            ForEach(self.labels, id: \.self) { label in
+                Text(label)
                     .font(.caption)
                     .allowsTightening(true)
-                    .frame(width: textWidth, height: textHeight)
+                    .frame(width: textWidth, height: textHeight, alignment: .bottomLeading)
             }
-        }
+        // align axis to the leading edge
+        }.frame(minWidth: 0, maxWidth: .infinity,
+        minHeight: 0, maxHeight: .infinity,
+        alignment: .bottomLeading)
     }
     
     func getMaxValue() -> Double {
-        var max = 0.0
-        for labelledData in labelledDataPoints {
-            if labelledData.data > max {
-                max = labelledData.data
-            }
-        }
-        
-        return max
+        return values.max()!
     }
     
     func unitConversion(actualMax: Double) -> Double {
@@ -97,15 +99,28 @@ struct BarChart: View {
 
 struct BarChart_Previews: PreviewProvider {
 
+    static let barsToLabelsRatios = [1, 2, 4]
+    
     static var previews: some View {
-        var testData : LabelledDataPoints = []
-        for i in stride(from: 10, to: 120, by: 11) {
-            testData.append(LabelledDataPoint(data: Double(i), label: i%2 == 0 ? String(i): ""))
+        Group {
+            ForEach(barsToLabelsRatios, id: \.self) { r in
+                BarChart_Previews.previewWithRatio(numBars: 12, ratio: r).padding().border(Color.black)
+                    .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
+                .previewDisplayName("Bars to labels ratio: " + String(r))
+            }
         }
-        testData.append(LabelledDataPoint(data: 500, label: String(500)))
-        return BarChart(numGridLines: 5,
-             labelledDataPoints: testData,
-             colour: "graphBar").padding().frame(height:300)
+    }
+    
+    static func previewWithRatio(numBars: Int, ratio: Int) -> some View {
+        var testData : [Double] = []
+        var labels : [String] = []
+        for i in stride(from: 0, to: numBars, by: 1) {
+            testData.append(Double(i))
+            if i % ratio == 0 {
+                labels.append(String(i))
+            }
+        }
         
+        return BarChart(numGridLines: 5, values: testData, labels: labels, colour: Color.green)
     }
 }

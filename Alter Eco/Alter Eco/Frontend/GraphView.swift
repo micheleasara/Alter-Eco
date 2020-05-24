@@ -14,9 +14,9 @@ struct GraphView: View {
             Text("Carbon footprint chart")
                 .font(.headline)
                 .fontWeight(.semibold)
-            BarChart(numGridLines: 5,
-                     labelledDataPoints: dataGraph.data[timePickerSelection][transportPickerSelection]!,
-                     colour: "graphBars").frame(height: screenMeasurements.height/3.8).padding().border(Color.black).padding(.horizontal)
+//            BarChart(numGridLines: 5,
+//                     labelledDataPoints: dataGraph.data[timePickerSelection][transportPickerSelection]!,
+//                     colour: "graphBars").frame(height: screenMeasurements.height/3.8).padding().border(Color.black).padding(.horizontal)
 
             
             transportPicker()
