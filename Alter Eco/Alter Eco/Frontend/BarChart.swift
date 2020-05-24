@@ -26,9 +26,12 @@ struct BarChart: View {
         
         return GeometryReader { geometry in
             VStack(spacing: 0.05*geometry.size.height) {
-                self.bars(barWidth: geometry.size.width * barWidthRatio,
+                ZStack {
+                    self.bars(barWidth: geometry.size.width * barWidthRatio,
                           spacing: geometry.size.width * barSpaceRatio,
                           maxBarHeight: 0.9*geometry.size.height)
+                    self.grid(textWidth: geometry.size.width * textWidthRatio, maxBarHeight: 0.9*geometry.size.height, spacing: geometry.size.width * textSpaceRatio)
+                }
 
                 // axis is forced to be at the bottom even when no data
                 // by using exploding stacks
@@ -41,6 +44,16 @@ struct BarChart: View {
                 alignment: .bottom)
             }
         }
+    }
+    
+    func grid(textWidth: CGFloat, maxBarHeight: CGFloat, spacing: CGFloat) -> some View {
+        HStack(alignment:.bottom, spacing: spacing) {
+            ForEach(labels, id: \.self) { _ in
+                Divider().frame(width: textWidth, height: maxBarHeight, alignment: .bottomLeading)//.background(Color.blue)
+            }
+        }.frame(minWidth: 0, maxWidth: .infinity,
+        minHeight: 0, maxHeight: .infinity,
+        alignment: .bottomLeading)
     }
     
     func bars(barWidth: CGFloat, spacing: CGFloat, maxBarHeight: CGFloat) -> some View {
@@ -68,7 +81,7 @@ struct BarChart: View {
                     .allowsTightening(true)
                     .frame(width: textWidth, height: textHeight, alignment: .bottomLeading)
             }
-        // align axis to the leading edge
+        // align axis to the leading edge via an exploding stack
         }.frame(minWidth: 0, maxWidth: .infinity,
         minHeight: 0, maxHeight: .infinity,
         alignment: .bottomLeading)
