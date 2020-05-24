@@ -17,7 +17,7 @@ struct GraphView: View {
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            BarChart(values: getValues(), labels: getLabels(), colour: barColour).frame(height: screenMeasurements.height/3.8).padding(.horizontal)
+            BarChart(values: getValues(), labels: getLabels(), infoOnBarTap: getInfoOnBarTap(), colour: barColour).frame(height: screenMeasurements.height/3.8).padding(.horizontal)
 
             transportPicker.padding(.bottom).padding(.horizontal)
         }
@@ -37,18 +37,6 @@ struct GraphView: View {
         return total
     }
     
-    func kgToReadableLabel(valueInKg: Double) -> String {
-        let format = "%.1f"
-        switch valueInKg {
-        case 0.001..<1:
-            return String(format: format + " g", 1000*valueInKg)
-        case 1000..<Double.infinity:
-            return String(format: format + " tonne", 0.001*valueInKg)
-        default:
-            return String(format: format + " kg", valueInKg)
-        }
-    }
-    
     func getLabels() -> [String] {
         var labels = [String]()
         let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
@@ -65,6 +53,19 @@ struct GraphView: View {
             values.append(labelledPoint.data)
         }
         return values
+    }
+    
+    func getInfoOnBarTap() -> [String] {
+        var infoOnBarTap = [String]()
+        let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
+         for labelledPoint in labelledPoints {
+            var info = ""
+            if labelledPoint.data > 0.0 {
+                info = kgToReadableLabel(valueInKg: labelledPoint.data)
+            }
+            infoOnBarTap.append(info)
+        }
+        return infoOnBarTap
     }
     
     var timePicker : some View {
@@ -106,6 +107,18 @@ struct GraphView: View {
             colour = "redGraphBar"
         }
         return Color(colour)
+    }
+    
+    func kgToReadableLabel(valueInKg: Double) -> String {
+        let format = "%.1f"
+        switch valueInKg {
+        case 0.0001..<1:
+            return String(format: format + " g", 1000*valueInKg)
+        case 1000..<Double.infinity:
+            return String(format: format + " tonne", 0.001*valueInKg)
+        default:
+            return String(format: format + " kg", valueInKg)
+        }
     }
 }
 

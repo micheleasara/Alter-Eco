@@ -38,7 +38,6 @@
 		9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942C242968DE00B1D0B4 /* HighlightView.swift */; };
 		9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
 		9CD5943A242968DF00B1D0B4 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942E242968DE00B1D0B4 /* DetailView.swift */; };
-		9CD5943B242968DF00B1D0B4 /* BarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942F242968DF00B1D0B4 /* BarView.swift */; };
 		9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */; };
 		9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594402429691E00B1D0B4 /* ContentView.swift */; };
 		9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594422429692000B1D0B4 /* AppDelegate.swift */; };
@@ -55,6 +54,7 @@
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* Launch Screen.storyboard */; };
+		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
 		DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
@@ -134,7 +134,6 @@
 		9CD5942C242968DE00B1D0B4 /* HighlightView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
 		9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimator.swift; sourceTree = "<group>"; };
 		9CD5942E242968DE00B1D0B4 /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		9CD5942F242968DF00B1D0B4 /* BarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarView.swift; sourceTree = "<group>"; };
 		9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		9CD594402429691E00B1D0B4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9CD594422429692000B1D0B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -155,6 +154,7 @@
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
 		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
 		DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlterEcoBackend.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -312,7 +312,7 @@
 				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
 				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
 				9CD5941B2429686900B1D0B4 /* SplashScreen.swift */,
-				9CD5942F242968DF00B1D0B4 /* BarView.swift */,
+				DE847297247B0D0C00420F9E /* BarWithInfo.swift */,
 				9CD59429242968DE00B1D0B4 /* BarChart.swift */,
 				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
 				573693822438F85F00992BB0 /* GraphModel.swift */,
@@ -533,13 +533,13 @@
 				9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */,
 				573693832438F85F00992BB0 /* GraphModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */,
+				DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */,
 				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
 				55C85C5B243CB879006AD075 /* ExplanationView.swift in Sources */,
 				218C4197243DCC910036A2FE /* ProfilePic+CoreDataProperties.swift in Sources */,
 				218C4196243DCC910036A2FE /* ProfilePic+CoreDataClass.swift in Sources */,
 				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
-				9CD5943B242968DF00B1D0B4 /* BarView.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
 				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,

@@ -10,6 +10,7 @@ struct BarChart: View {
 
     let values : [Double]
     let labels : [String]
+    let infoOnBarTap : [String]
     let colour: Color
     static let SPACING_RATIO : CGFloat = 0.2
     static let DRAWING_RATIO : CGFloat = 1 - SPACING_RATIO
@@ -22,19 +23,24 @@ struct BarChart: View {
         let textWidthRatio = barsToLabelsRatio * barWidthRatio
         
         return GeometryReader { geometry in
-            VStack(spacing: 0.05*geometry.size.height) {
+            VStack(spacing: 0.03*geometry.size.height) {
                 ZStack() {
                     self.bars(barWidth: geometry.size.width * barWidthRatio,
                           spacing: geometry.size.width * barSpaceRatio,
                           maxBarHeight: 0.9*geometry.size.height)
-                    self.grid(textWidth: geometry.size.width * textWidthRatio, maxBarHeight: 0.9*geometry.size.height, spacing: geometry.size.width * textSpaceRatio)
-                    }
+                    
+                    self.grid(textWidth: geometry.size.width * textWidthRatio,
+                              maxBarHeight: 0.9*geometry.size.height,
+                              spacing: geometry.size.width * textSpaceRatio)
+                    
+                    //if self.tappedBarID > 0 { Text(self.getBarInfo()) }
+                }
 
                 // axis is forced to be at the bottom even when no data
                 // by using exploding stacks
                 // see https://netsplit.com/swiftui/exploding-stacks/
                 self.horizontalAxis(textWidth: geometry.size.width * textWidthRatio,
-                                    textHeight: 0.05*geometry.size.height,
+                                    textHeight: 0.07*geometry.size.height,
                                     spacing: geometry.size.width * textSpaceRatio)
             }.frame(minWidth: 0, maxWidth: .infinity,
             minHeight: 0, maxHeight: .infinity,
@@ -60,18 +66,18 @@ struct BarChart: View {
     }
     
     func bars(barWidth: CGFloat, spacing: CGFloat, maxBarHeight: CGFloat) -> some View {
-        var normalisation = getMaxValue()
+        var normalisation = CGFloat(values.max() ?? 1.0)
         if normalisation == 0.0 {
             normalisation = 1.0 // avoid divide-by-zero errors
         }
+        normalisation = maxBarHeight / normalisation
         
         return HStack(alignment:.bottom, spacing: spacing) {
-            ForEach(self.values, id: \.self) { value in
-                Rectangle()
-                    .fill(self.colour)
-                    .frame(width: barWidth,
-                           height: maxBarHeight * CGFloat(value / normalisation),
-                           alignment:  .bottom)
+            ForEach(0..<self.values.count, id: \.self) { i in
+                BarWithInfo(size:
+                    CGSize(width: barWidth, height: normalisation*CGFloat(self.values[i])),
+                            colour: self.colour,
+                            information: self.infoOnBarTap[i])
             }
         }
     }
@@ -89,10 +95,6 @@ struct BarChart: View {
         minHeight: 0, maxHeight: .infinity,
         alignment: .bottomLeading)
     }
-    
-    func getMaxValue() -> Double {
-        return values.max()!
-    }
 }
 
 struct BarChart_Previews: PreviewProvider {
@@ -101,7 +103,7 @@ struct BarChart_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
-            BarChart(values: [0,0,0,0], labels: ["a","b","c","d"], colour: Color.green).padding()
+            BarChart(values: [0,0,0,0], labels: ["a","b","c","d"], infoOnBarTap: ["","","",""], colour: Color.green).padding()
                 .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
             .previewDisplayName("0-valued bars")
             
@@ -116,13 +118,15 @@ struct BarChart_Previews: PreviewProvider {
     static func previewWithRatio(numBars: Int, ratio: Int) -> some View {
         var testData : [Double] = []
         var labels : [String] = []
+        var infoBarsOnTap : [String] = []
         for i in stride(from: 0, to: numBars, by: 1) {
             testData.append(Double(i))
             if i % ratio == 0 {
                 labels.append(String(i))
             }
+            infoBarsOnTap.append(String(i))
         }
         
-        return BarChart(values: testData, labels: labels, colour: Color.green)
+        return BarChart(values: testData, labels: labels, infoOnBarTap: infoBarsOnTap, colour: Color.green)
     }
 }
