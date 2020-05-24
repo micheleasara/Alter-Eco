@@ -10,17 +10,34 @@ struct GraphView: View {
 
     var body: some View {        
         return VStack {
-            timePicker()
+            timePicker().padding(.top).padding(.horizontal)
+            
             Text("Carbon footprint chart")
                 .font(.headline)
                 .fontWeight(.semibold)
-//            BarChart(numGridLines: 5,
-//                     labelledDataPoints: dataGraph.data[timePickerSelection][transportPickerSelection]!,
-//                     colour: "graphBars").frame(height: screenMeasurements.height/3.8).padding().border(Color.black).padding(.horizontal)
-
             
-            transportPicker()
+            BarChart(values: getValues(), labels: getLabels(), colour: Color("graphBars")).frame(height: screenMeasurements.height/3.8).padding(.horizontal)
+
+            transportPicker().padding(.bottom).padding(.horizontal)
         }
+    }
+    
+    func getLabels() -> [String] {
+        var labels = [String]()
+        let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
+        for labelledPoint in labelledPoints {
+            labels.append(labelledPoint.label)
+        }
+        return labels
+    }
+    
+    func getValues() -> [Double] {
+        var values = [Double]()
+        let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
+        for labelledPoint in labelledPoints {
+            values.append(labelledPoint.data)
+        }
+        return values
     }
     
     func timePicker() -> some View {
@@ -31,7 +48,6 @@ struct GraphView: View {
             Text("Yearly").tag(3)
         }
           .pickerStyle(SegmentedPickerStyle())
-          .padding()
     }
     
     func transportPicker() -> some View {
@@ -43,7 +59,6 @@ struct GraphView: View {
             Image(systemName: "airplane").tag(MeasuredActivity.MotionType.plane)
         }
         .pickerStyle(SegmentedPickerStyle())
-        .padding()
     }
     
 //    func barColour() -> String {

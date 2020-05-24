@@ -7,10 +7,7 @@ import SwiftUI
                 //For each gridline, the dimensions are set and the label that it represents is brought in from the switch statement above which found the max value.
 
 struct BarChart: View {
-    //@EnvironmentObject var screenMeasurements: ScreenMeasurements
 
-    let numGridLines : UInt
-    //let labelledDataPoints : LabelledDataPoints
     let values : [Double]
     let labels : [String]
     let colour: Color
@@ -26,12 +23,12 @@ struct BarChart: View {
         
         return GeometryReader { geometry in
             VStack(spacing: 0.05*geometry.size.height) {
-                ZStack {
+                ZStack() {
                     self.bars(barWidth: geometry.size.width * barWidthRatio,
                           spacing: geometry.size.width * barSpaceRatio,
                           maxBarHeight: 0.9*geometry.size.height)
                     self.grid(textWidth: geometry.size.width * textWidthRatio, maxBarHeight: 0.9*geometry.size.height, spacing: geometry.size.width * textSpaceRatio)
-                }
+                    }
 
                 // axis is forced to be at the bottom even when no data
                 // by using exploding stacks
@@ -39,21 +36,27 @@ struct BarChart: View {
                 self.horizontalAxis(textWidth: geometry.size.width * textWidthRatio,
                                     textHeight: 0.05*geometry.size.height,
                                     spacing: geometry.size.width * textSpaceRatio)
-                .frame(minWidth: 0, maxWidth: .infinity,
-                minHeight: 0, maxHeight: .infinity,
-                alignment: .bottom)
-            }
+            }.frame(minWidth: 0, maxWidth: .infinity,
+            minHeight: 0, maxHeight: .infinity,
+            alignment: .bottom)
         }
     }
     
     func grid(textWidth: CGFloat, maxBarHeight: CGFloat, spacing: CGFloat) -> some View {
-        HStack(alignment:.bottom, spacing: spacing) {
-            ForEach(labels, id: \.self) { _ in
-                Divider().frame(width: textWidth, height: maxBarHeight, alignment: .bottomLeading)//.background(Color.blue)
-            }
-        }.frame(minWidth: 0, maxWidth: .infinity,
-        minHeight: 0, maxHeight: .infinity,
-        alignment: .bottomLeading)
+        VStack(spacing: 0){
+            HStack(alignment:.bottom, spacing: spacing) {
+                ForEach(labels, id: \.self) { _ in
+                    Divider().frame(width: textWidth, height: maxBarHeight, alignment: .bottomLeading)//.background(Color.blue)
+                }
+            }// exploding stack for alignment
+            // combined with an outer frame for height sizing
+            .frame(minWidth: 0, maxWidth: .infinity,
+            minHeight: 0, maxHeight: maxBarHeight,
+            alignment: .bottomLeading)
+                .frame(height: maxBarHeight)
+            Divider()
+        }
+        
     }
     
     func bars(barWidth: CGFloat, spacing: CGFloat, maxBarHeight: CGFloat) -> some View {
@@ -77,7 +80,7 @@ struct BarChart: View {
         HStack(alignment:.bottom, spacing: spacing) {
             ForEach(self.labels, id: \.self) { label in
                 Text(label)
-                    .font(.caption)
+                    .font(.caption).fontWeight(.light)
                     .allowsTightening(true)
                     .frame(width: textWidth, height: textHeight, alignment: .bottomLeading)
             }
@@ -116,8 +119,12 @@ struct BarChart_Previews: PreviewProvider {
     
     static var previews: some View {
         Group {
+            BarChart(values: [0,0,0,0], labels: ["a","b","c","d"], colour: Color.green).padding()
+                .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
+            .previewDisplayName("0-valued bars")
+            
             ForEach(barsToLabelsRatios, id: \.self) { r in
-                BarChart_Previews.previewWithRatio(numBars: 12, ratio: r).padding().border(Color.black)
+                previewWithRatio(numBars: 12, ratio: r).padding()
                     .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
                 .previewDisplayName("Bars to labels ratio: " + String(r))
             }
@@ -134,6 +141,6 @@ struct BarChart_Previews: PreviewProvider {
             }
         }
         
-        return BarChart(numGridLines: 5, values: testData, labels: labels, colour: Color.green)
+        return BarChart(values: testData, labels: labels, colour: Color.green)
     }
 }

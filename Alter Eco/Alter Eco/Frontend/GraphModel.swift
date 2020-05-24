@@ -52,9 +52,9 @@ public func getDailyData() -> CarbonBreakdown {
         dates.append(dates[i].addingTimeInterval(2*60*60))
     }
     var labels = [String]()
-    for i in stride(from: 2, through: 24, by: 2) {
+    for i in stride(from: 0, through: 24, by: 2) {
         let label = i>9 ? String(i) : String(0)+String(i)
-        labels.append(label)
+        labels.append(i % 4 == 0 ? label : "")
     }
     return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
 }
@@ -84,7 +84,7 @@ public func getMonthlyData() -> CarbonBreakdown {
 public func getYearlyData() -> CarbonBreakdown {
     let test = Date.setToSpecificDay(date: Date(), day: 1)!
     let firstOfJan = Date.setToSpecificMonth(date: test , month: 1)!
-    let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -6*12)
+    let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -5*12)
     
     var dates = [start]
     for i in 0..<6 {
