@@ -17,7 +17,7 @@ struct GraphView: View {
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            BarChart(values: getValues(), labels: getLabels(), infoOnBarTap: getInfoOnBarTap(), colour: barColour).frame(height: screenMeasurements.height/3.8).padding(.horizontal)
+            BarChart(values: getValues(), labels: getLabels(), infoOnBarTap: getInfoOnBarTap(), colour: barColour).frame(height: screenMeasurements.height/3.8).padding()
 
             transportPicker.padding(.bottom).padding(.horizontal)
         }
@@ -59,10 +59,7 @@ struct GraphView: View {
         var infoOnBarTap = [String]()
         let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
          for labelledPoint in labelledPoints {
-            var info = ""
-            if labelledPoint.data > 0.0 {
-                info = kgToReadableLabel(valueInKg: labelledPoint.data)
-            }
+            let info = "Carbon: " + kgToReadableLabel(valueInKg: labelledPoint.data)
             infoOnBarTap.append(info)
         }
         return infoOnBarTap

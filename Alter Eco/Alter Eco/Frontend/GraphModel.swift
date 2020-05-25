@@ -41,8 +41,8 @@ private func carbonBreakdownFromIntervals(fromDates: [Date], withLabels: [String
             let carbon = try! DBMS.carbonWithinInterval(motionType: motion, from: dates[i-1], interval: intervals[i-1])
             dataMotion.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
             
-            if dataTotal.count > i {
-                dataTotal[i].data += carbon
+            if dataTotal.count > i-1 {
+                dataTotal[i-1].data += carbon
             } else { // not initialised
                 dataTotal.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
             }

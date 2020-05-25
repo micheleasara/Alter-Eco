@@ -14,92 +14,127 @@ struct BarChart: View {
     let colour: Color
     static let SPACING_RATIO : CGFloat = 0.2
     static let DRAWING_RATIO : CGFloat = 1 - SPACING_RATIO
-    
+    static let AXIS_DISTANCE_FROM_CHART: CGFloat = 8
+    static let xAxisHeight = 2*BarChart.AXIS_DISTANCE_FROM_CHART
+    static let yAxisWidth = 2*BarChart.AXIS_DISTANCE_FROM_CHART
     var body: some View {
-        let barSpaceRatio = BarChart.SPACING_RATIO/CGFloat(self.values.count - 1)
-        let barWidthRatio = BarChart.DRAWING_RATIO/CGFloat(self.values.count)
-        let barsToLabelsRatio = CGFloat(self.values.count) / CGFloat(self.labels.count)
-        let textSpaceRatio = barsToLabelsRatio * barSpaceRatio
-        let textWidthRatio = barsToLabelsRatio * barWidthRatio
-        
-        return GeometryReader { geometry in
-            VStack(spacing: 0.03*geometry.size.height) {
-                ZStack() {
-                    self.bars(barWidth: geometry.size.width * barWidthRatio,
-                          spacing: geometry.size.width * barSpaceRatio,
-                          maxBarHeight: 0.9*geometry.size.height)
-                    
-                    self.grid(textWidth: geometry.size.width * textWidthRatio,
-                              maxBarHeight: 0.9*geometry.size.height,
-                              spacing: geometry.size.width * textSpaceRatio)
-                    
-                    //if self.tappedBarID > 0 { Text(self.getBarInfo()) }
-                }
-
-                // axis is forced to be at the bottom even when no data
-                // by using exploding stacks
-                // see https://netsplit.com/swiftui/exploding-stacks/
-                self.horizontalAxis(textWidth: geometry.size.width * textWidthRatio,
-                                    textHeight: 0.07*geometry.size.height,
-                                    spacing: geometry.size.width * textSpaceRatio)
-            }.frame(minWidth: 0, maxWidth: .infinity,
-            minHeight: 0, maxHeight: .infinity,
-            alignment: .bottom)
+        GeometryReader { geo in
+            self.outOfBoundChart()
+                .frame(width: geo.size.width - BarChart.yAxisWidth - BarChart.AXIS_DISTANCE_FROM_CHART, height: geo.size.height - BarChart.xAxisHeight)
         }
     }
     
-    func grid(textWidth: CGFloat, maxBarHeight: CGFloat, spacing: CGFloat) -> some View {
-        VStack(spacing: 0){
-            HStack(alignment:.bottom, spacing: spacing) {
-                ForEach(labels, id: \.self) { _ in
-                    Divider().frame(width: textWidth, height: maxBarHeight, alignment: .bottomLeading)//.background(Color.blue)
-                }
-            }// exploding stack for alignment
-            // combined with an outer frame for height sizing
-            .frame(minWidth: 0, maxWidth: .infinity,
-            minHeight: 0, maxHeight: maxBarHeight,
-            alignment: .bottomLeading)
-                .frame(height: maxBarHeight)
-            Divider()
+    func outOfBoundChart() -> some View {
+        GeometryReader { geometry in
+            ZStack (alignment: .bottomLeading) {
+                self.bars().overlay(self.grid())
+                    .frame(width: geometry.size.width, height: geometry.size.height).offset(x:BarChart.yAxisWidth + BarChart.AXIS_DISTANCE_FROM_CHART)
+                
+                self.xAxis().frame(width: geometry.size.width, height: BarChart.xAxisHeight).offset(x:BarChart.yAxisWidth + BarChart.AXIS_DISTANCE_FROM_CHART, y: BarChart.xAxisHeight)
+                
+                self.yAxis().frame(width: BarChart.yAxisWidth, height: geometry.size.height)
+            }
         }
-        
     }
     
-    func bars(barWidth: CGFloat, spacing: CGFloat, maxBarHeight: CGFloat) -> some View {
+    func grid() -> some View {
+        return verticalGridlines().overlay(
+            horizontalGridlines())
+    }
+    
+    func verticalGridlines() -> some View {
+        let numGridlines = CGFloat(self.labels.count)
+        
+        return GeometryReader { geo in
+        HStack(spacing: 0) {
+            ForEach(self.labels, id: \.self) { _ in
+                Divider().frame(width: geo.size.width/numGridlines, height: geo.size.height, alignment: .bottomLeading)
+                }
+            }
+        }
+    }
+    
+    func bars() -> some View {
         var normalisation = CGFloat(values.max() ?? 1.0)
         if normalisation == 0.0 {
             normalisation = 1.0 // avoid divide-by-zero errors
         }
-        normalisation = maxBarHeight / normalisation
+        let barCount = CGFloat(values.count)
         
-        return HStack(alignment:.bottom, spacing: spacing) {
-            ForEach(0..<self.values.count, id: \.self) { i in
-                BarWithInfo(size:
-                    CGSize(width: barWidth, height: normalisation*CGFloat(self.values[i])),
-                            colour: self.colour,
-                            information: self.infoOnBarTap[i])
+        return GeometryReader{ geo in
+            HStack(alignment:.bottom, spacing: BarChart.SPACING_RATIO * geo.size.width / barCount) {
+                ForEach(0..<self.values.count, id: \.self) { i in
+                    BarWithInfo(size:
+                        CGSize(width: geo.size.width * BarChart.DRAWING_RATIO / barCount,
+                               height: CGFloat(self.values[i]) * geo.size.height/normalisation),
+                                colour: self.colour,
+                                information: self.infoOnBarTap[i])
+                }
             }
         }
     }
     
-    func horizontalAxis(textWidth: CGFloat, textHeight: CGFloat, spacing: CGFloat) -> some View {
-        HStack(alignment:.bottom, spacing: spacing) {
-            ForEach(self.labels, id: \.self) { label in
-                Text(label)
-                    .font(.caption).fontWeight(.light)
-                    .allowsTightening(true)
-                    .frame(width: textWidth, height: textHeight, alignment: .bottomLeading)
+    
+    func horizontalGridlines() -> some View {
+        let yAxisTicksCount = 4
+        let ticksCount = CGFloat(yAxisTicksCount)
+        return GeometryReader { geo in
+            VStack(spacing: 0) {
+
+                ForEach(1...yAxisTicksCount, id: \.self) {_ in
+                    Divider().frame(width: geo.size.width, height: geo.size.height / ticksCount, alignment: .bottomLeading)
+                }
             }
-        // align axis to the leading edge via an exploding stack
-        }.frame(minWidth: 0, maxWidth: .infinity,
-        minHeight: 0, maxHeight: .infinity,
-        alignment: .bottomLeading)
+        }
+    }
+    
+    func yAxis() -> some View {
+        let yAxisTicksCount = 4
+        let ticksCount = Double(yAxisTicksCount)
+        var max = values.max() ?? 42 * ticksCount
+        if max == 0 {
+            max = 42 * ticksCount
+        } else if max < 1 {
+            max = max * 1000
+        }
+        let interval = Int((max / ticksCount).rounded(.up))
+
+        return GeometryReader { geo in
+            VStack(spacing: 0) {
+                ForEach((0..<yAxisTicksCount).reversed(), id: \.self) { i in
+                    Text(String(i*interval))
+                        .allowsTightening(true)
+                        .font(.system(size: 10))
+                        .minimumScaleFactor(0.1)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .frame(width: geo.size.width, height: geo.size.height / CGFloat(yAxisTicksCount), alignment: .bottomTrailing)
+                }
+            }
+        }
+    }
+    
+    func xAxis() -> some View {
+        let ticksCount = CGFloat(labels.count)
+        return GeometryReader { geo in
+            HStack(alignment:.bottom, spacing: 0) {
+                ForEach(self.labels, id: \.self) { label in
+                    Text(label)
+                        .allowsTightening(true)
+                        .font(.system(size: 10))
+                        .minimumScaleFactor(0.1)
+                        .lineLimit(1)
+                        .fixedSize()
+                        .frame(width: geo.size.width/ticksCount, height: geo.size.height, alignment: .bottomLeading)
+                }
+            }
+        }
     }
 }
 
 struct BarChart_Previews: PreviewProvider {
 
-    static let barsToLabelsRatios = [1, 2, 4]
+    static let barsToLabelsRatios = [1, 2]
     
     static var previews: some View {
         Group {

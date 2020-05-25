@@ -15,7 +15,7 @@ struct BarWithInfo: View {
                     }
                 }
         }.alert(isPresented: $showingAlert) {
-            Alert(title: Text("Value of tapped bar"), message: Text(information), dismissButton: .default(Text("OK")))
+            Alert(title: Text(information).fontWeight(.regular))
         }
     }
 }
