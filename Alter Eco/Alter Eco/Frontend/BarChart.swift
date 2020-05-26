@@ -1,72 +1,108 @@
 import SwiftUI
 
-//                Text(String(carbonUnit))
-//                    .font(Font.system(size: 12, design: .default))
-//                    .offset(x:CGFloat(self.screenMeasurements.broadcastedWidth)/60+CGFloat(self.screenMeasurements.broadcastedWidth)/3, y:-CGFloat(self.screenMeasurements.broadcastedHeight)/7.2)
-//                savedOrEmittedLabel(savedOrEmitted: savedOrEmitted)
-                //For each gridline, the dimensions are set and the label that it represents is brought in from the switch statement above which found the max value.
-
-struct BarChart: View {
-
-    let values : [Double]
-    let labels : [String]
-    let infoOnBarTap : [String]
-    let colour: Color
-    static let SPACING_RATIO : CGFloat = 0.2
-    static let DRAWING_RATIO : CGFloat = 1 - SPACING_RATIO
-    static let AXIS_DISTANCE_FROM_CHART: CGFloat = 8
-    static let xAxisHeight = 2*BarChart.AXIS_DISTANCE_FROM_CHART
-    static let yAxisWidth = 2*BarChart.AXIS_DISTANCE_FROM_CHART
-    var body: some View {
+/// Represents a bar chart that can display information when a bar is clicked.
+/// To avoid displaying any information, provide an empty string.
+public struct BarChart: View {
+    /// Collection of values displayed in the chart.
+    public let values: [Double]
+    /// Collection of labels for the x-axis.
+    public let xLabels: [String]
+    /// Collection of information displayed when tapping on a bar.
+    public let infoOnBarTap: [String]
+    /// The colour of each bar in the chart.
+    public let colour: Color
+    public let yAxisTicksCount: Int
+    /// Amount of relative space used for spacing among bars.
+    static let SPACING_RATIO: CGFloat = 0.2
+    /// Amount of relative space used for all bars widths.
+    static let DRAWING_RATIO: CGFloat = 1 - SPACING_RATIO
+    /// Absolute distance of the y-axis from the chart.
+    static let Y_AXIS_DISTANCE_FROM_CHART: CGFloat = 6
+    /// Absolute height of the x-axis.
+    static let xAxisHeight = 2*BarChart.Y_AXIS_DISTANCE_FROM_CHART
+    /// Absolute width of the y-axis.
+    static let yAxisWidth = 2*BarChart.Y_AXIS_DISTANCE_FROM_CHART
+    /// Defines the minimum amount of space between the chart height and
+    /// the top y-axis tick required for the latter to appear (for aesthetics).
+    private static let MIN_SPACE_FOR_FINAL_TICK_TO_APPEAR: CGFloat = 10
+    private let ANSWER_TO_EVERYTHING: Double = 42
+    
+    public var body: some View {
         GeometryReader { geo in
-            self.outOfBoundChart()
-                .frame(width: geo.size.width - BarChart.yAxisWidth - BarChart.AXIS_DISTANCE_FROM_CHART, height: geo.size.height - BarChart.xAxisHeight)
+            // In order to align both the x-axis and the y-axis with the chart we use offsets
+            // So, to keep the chart within the parent view, the chart is framed in a smaller box
+            self.outOfBoundsChart
+                .frame(width: geo.size.width - 2*BarChart.yAxisWidth - BarChart.Y_AXIS_DISTANCE_FROM_CHART,
+                       height: geo.size.height - BarChart.xAxisHeight)
         }
     }
     
-    func outOfBoundChart() -> some View {
+    private var outOfBoundsChart: some View {
         GeometryReader { geometry in
             ZStack (alignment: .bottomLeading) {
-                self.bars().overlay(self.grid())
-                    .frame(width: geometry.size.width, height: geometry.size.height).offset(x:BarChart.yAxisWidth + BarChart.AXIS_DISTANCE_FROM_CHART)
+                ZStack(alignment: .bottomLeading) {
+                    self.bars.frame(width: geometry.size.width, height: geometry.size.height)
+                    self.grid.frame(width: geometry.size.width, height: geometry.size.height)
+                }
+                .offset(x: BarChart.yAxisWidth)
                 
-                self.xAxis().frame(width: geometry.size.width, height: BarChart.xAxisHeight).offset(x:BarChart.yAxisWidth + BarChart.AXIS_DISTANCE_FROM_CHART, y: BarChart.xAxisHeight)
-                
-                self.yAxis().frame(width: BarChart.yAxisWidth, height: geometry.size.height)
+                self.xAxis
+                    .frame(width: geometry.size.width, height: BarChart.xAxisHeight)
+                    .offset(x: BarChart.yAxisWidth, y: BarChart.xAxisHeight)
+
+                self.yAxis
+                    .frame(width: BarChart.yAxisWidth, height: geometry.size.height, alignment: .bottom)
+                    .offset(x: -BarChart.Y_AXIS_DISTANCE_FROM_CHART)
             }
+            .offset(x: BarChart.yAxisWidth)
         }
     }
     
-    func grid() -> some View {
-        return verticalGridlines().overlay(
-            horizontalGridlines())
+    private var grid: some View {
+        VStack(spacing: 0) {
+            verticalGridlines.overlay(horizontalGridlines)
+            Divider()
+        }
+            
     }
     
-    func verticalGridlines() -> some View {
-        let numGridlines = CGFloat(self.labels.count)
+    private var verticalGridlines: some View {
+        let numGridlines = CGFloat(self.xLabels.count)
         
         return GeometryReader { geo in
         HStack(spacing: 0) {
-            ForEach(self.labels, id: \.self) { _ in
+            ForEach(self.xLabels, id: \.self) { _ in
                 Divider().frame(width: geo.size.width/numGridlines, height: geo.size.height, alignment: .bottomLeading)
                 }
             }
         }
     }
     
-    func bars() -> some View {
-        var normalisation = CGFloat(values.max() ?? 1.0)
-        if normalisation == 0.0 {
-            normalisation = 1.0 // avoid divide-by-zero errors
+    private var horizontalGridlines: some View {
+        GeometryReader { geo in
+            VStack(spacing: 0) {
+                if geo.size.height - self.yAxisSpacing(chartHeight: geo.size.height)*CGFloat(self.yAxisTicksCount) >= BarChart.MIN_SPACE_FOR_FINAL_TICK_TO_APPEAR {
+                    Divider().frame(width: geo.size.width,
+                    height: self.yAxisSpacing(chartHeight: geo.size.height), alignment: .top)
+                }
+                // line of graph frame
+                ForEach(1..<self.yAxisTicksCount, id: \.self) {_ in
+                    Divider().frame(width: geo.size.width,
+                                    height: self.yAxisSpacing(chartHeight: geo.size.height), alignment: .top)
+                }
+            }.frame(width: geo.size.width, height: geo.size.height, alignment: .bottom)
         }
+    }
+    
+    private var bars: some View {
         let barCount = CGFloat(values.count)
-        
-        return GeometryReader{ geo in
+
+        return GeometryReader { geo in
             HStack(alignment:.bottom, spacing: BarChart.SPACING_RATIO * geo.size.width / barCount) {
                 ForEach(0..<self.values.count, id: \.self) { i in
                     BarWithInfo(size:
                         CGSize(width: geo.size.width * BarChart.DRAWING_RATIO / barCount,
-                               height: CGFloat(self.values[i]) * geo.size.height/normalisation),
+                               height: geo.size.height * CGFloat(self.values[i])/CGFloat(self.maxBarValue)),
                                 colour: self.colour,
                                 information: self.infoOnBarTap[i])
                 }
@@ -74,58 +110,66 @@ struct BarChart: View {
         }
     }
     
-    
-    func horizontalGridlines() -> some View {
-        let yAxisTicksCount = 4
-        let ticksCount = CGFloat(yAxisTicksCount)
+    private var yAxis: some View {
         return GeometryReader { geo in
-            VStack(spacing: 0) {
-
-                ForEach(1...yAxisTicksCount, id: \.self) {_ in
-                    Divider().frame(width: geo.size.width, height: geo.size.height / ticksCount, alignment: .bottomLeading)
+            VStack(spacing: self.yAxisSpacing(chartHeight: geo.size.height)/2) {
+                
+                if geo.size.height - self.yAxisSpacing(chartHeight: geo.size.height)*CGFloat(self.yAxisTicksCount) > BarChart.MIN_SPACE_FOR_FINAL_TICK_TO_APPEAR {
+                    Text(String(self.yAxisTicksCount*self.yAxisInterval))
+                    .allowsTightening(true)
+                    .font(.system(size: 10))
+                    .minimumScaleFactor(0.1)
+                    .lineLimit(1)
+                    .fixedSize()
+                    .frame(width: geo.size.width,
+                           height: self.yAxisSpacing(chartHeight: geo.size.height)/2, alignment:.bottomTrailing)
                 }
-            }
-        }
-    }
-    
-    func yAxis() -> some View {
-        let yAxisTicksCount = 4
-        let ticksCount = Double(yAxisTicksCount)
-        var max = values.max() ?? 42 * ticksCount
-        if max == 0 {
-            max = 42 * ticksCount
-        } else if max < 1 {
-            max = max * 1000
-        }
-        let interval = Int((max / ticksCount).rounded(.up))
-
-        return GeometryReader { geo in
-            VStack(spacing: 0) {
-                ForEach((0..<yAxisTicksCount).reversed(), id: \.self) { i in
-                    Text(String(i*interval))
+                
+                // reversed as it goes from top to bottom
+                ForEach((0..<self.yAxisTicksCount).reversed(), id: \.self) { i in
+                    Text(String(i*self.yAxisInterval))
                         .allowsTightening(true)
                         .font(.system(size: 10))
                         .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .fixedSize()
-                        .frame(width: geo.size.width, height: geo.size.height / CGFloat(yAxisTicksCount), alignment: .bottomTrailing)
+                        .frame(width: geo.size.width,
+                               height: self.yAxisSpacing(chartHeight: geo.size.height)/2, alignment:.bottomTrailing)
                 }
-            }
+            }.frame(height: geo.size.height, alignment: .bottomTrailing)
         }
     }
     
-    func xAxis() -> some View {
-        let ticksCount = CGFloat(labels.count)
+    private var yAxisInterval: Int {
+        return Int((maxBarValue / Double(yAxisTicksCount)).rounded(.down))
+    }
+    
+    private func yAxisSpacing(chartHeight: CGFloat) -> CGFloat {
+        return CGFloat(yAxisInterval)/CGFloat(maxBarValue) * chartHeight
+    }
+    
+    private var maxBarValue: Double {
+        let ticksCount = Double(yAxisTicksCount)
+        var max = values.max() ?? ANSWER_TO_EVERYTHING * ticksCount
+        if max == 0 {
+            max = ANSWER_TO_EVERYTHING * ticksCount
+        }
+        return max
+    }
+    
+    private var xAxis : some View {
+        let ticksCount = CGFloat(xLabels.count)
         return GeometryReader { geo in
             HStack(alignment:.bottom, spacing: 0) {
-                ForEach(self.labels, id: \.self) { label in
+                ForEach(self.xLabels, id: \.self) { label in
                     Text(label)
                         .allowsTightening(true)
                         .font(.system(size: 10))
                         .minimumScaleFactor(0.1)
                         .lineLimit(1)
                         .fixedSize()
-                        .frame(width: geo.size.width/ticksCount, height: geo.size.height, alignment: .bottomLeading)
+                        .frame(width: geo.size.width/ticksCount,
+                               height: geo.size.height, alignment: .bottomLeading)
                 }
             }
         }
@@ -138,9 +182,9 @@ struct BarChart_Previews: PreviewProvider {
     
     static var previews: some View {
         return Group {
-            BarChart(values: [0,0,0,0], labels: ["a","b","c","d"], infoOnBarTap: ["","","",""], colour: Color.green).padding()
+            BarChart(values: [0,0,0,0], xLabels: ["a","b","c","d"], infoOnBarTap: ["","","",""], colour: Color.green, yAxisTicksCount: 4).padding()
                 .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
-            .previewDisplayName("0-valued bars")
+            .previewDisplayName("0-valued bars and 4 y-ticks")
             
             ForEach(barsToLabelsRatios, id: \.self) { r in
                 previewWithRatio(numBars: 12, ratio: r)
@@ -162,6 +206,6 @@ struct BarChart_Previews: PreviewProvider {
             infoBarsOnTap.append(String(i))
         }
         
-        return BarChart(values: testData, labels: labels, infoOnBarTap: infoBarsOnTap, colour: Color.green)
+        return BarChart(values: testData, xLabels: labels, infoOnBarTap: infoBarsOnTap, colour: Color.green, yAxisTicksCount: 5).padding()
     }
 }
