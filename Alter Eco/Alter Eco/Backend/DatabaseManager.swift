@@ -94,18 +94,18 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     
     /// Returns the earliest start date within the Event entity.
     func getFirstDate() throws -> Date
-    
-    /// Returns a carbon breakdown for the day in intervals of 2 hours.
-    func getDailyData() -> CarbonBreakdown
-
-    /// Returns a carbon breakdown for the last week in intervals of 24 hours.
-    func getWeeklyData() -> CarbonBreakdown
-
-    /// Returns a carbon breakdown for the last 9 months.
-    func getMonthlyData() -> CarbonBreakdown
-
-    /// Returns a carbon breakdown for the past 5 years.
-    func getYearlyData() -> CarbonBreakdown
+//    
+//    /// Returns a carbon breakdown for the day in intervals of 2 hours.
+//    func getDailyData() -> CarbonBreakdown
+//
+//    /// Returns a carbon breakdown for the last week in intervals of 24 hours.
+//    func getWeeklyData() -> CarbonBreakdown
+//
+//    /// Returns a carbon breakdown for the last 9 months.
+//    func getMonthlyData() -> CarbonBreakdown
+//
+//    /// Returns a carbon breakdown for the past 5 years.
+//    func getYearlyData() -> CarbonBreakdown
 }
 
 public protocol CarbonCalculator {
@@ -116,7 +116,6 @@ public protocol CarbonCalculator {
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework. Also provides carbon conversion utilities.
 public class CoreDataManager : DBManager, CarbonCalculator {
-    
     // contains Core Data's stack
     private let persistentContainer : NSPersistentContainer
     // contains the function called when an activity has been written to the database
@@ -347,88 +346,8 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         try managedContext.save()
     }
     
-    private func carbonBreakdownFromIntervals(fromDates: [Date], withLabels: [String]) -> CarbonBreakdown {
-        let dates = fromDates.sorted()
-        var intervals = [TimeInterval]()
-        for i in stride(from: 1, to: dates.count, by: 1) {
-            intervals.append(dates[i].timeIntervalSince(dates[i-1]))
-        }
-        
-        var carbonBreakdown = CarbonBreakdown()
-        var dataTotal = LabelledDataPoints() // carbon for all motions combined
-        for motion in MeasuredActivity.MotionType.allCases {
-            var dataMotion = LabelledDataPoints()
-            for i in stride(from: 1, to: dates.count, by: 1) {
-                let carbon = try! DBMS.carbonWithinInterval(motionType: motion, from: dates[i-1], interval: intervals[i-1])
-                dataMotion.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
-                
-                if dataTotal.count > i-1 {
-                    dataTotal[i-1].data += carbon
-                } else { // not initialised
-                    dataTotal.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
-                }
-            }
-            carbonBreakdown[motion] = dataMotion
-        }
-        carbonBreakdown[.unknown] = dataTotal
-        
-        return carbonBreakdown
-    }
-
-    public func getDailyData() -> CarbonBreakdown {
-        var dates = [Date.setToSpecificHour(date: Date(), hour: "00:00:00")!]
-        for i in 0..<12 {
-            dates.append(dates[i].addingTimeInterval(2*60*60))
-        }
-        var labels = [String]()
-        for i in stride(from: 0, through: 24, by: 2) {
-            let label = i>9 ? String(i) : String(0)+String(i)
-            labels.append(i % 1 == 0 ? label : "")
-        }
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
-    }
-
-    public func getWeeklyData() -> CarbonBreakdown {
-        var dates = [Date.setToSpecificHour(date: Date().addingTimeInterval(-6*24*60*60), hour: "00:00:00")!]
-        var labels = [String(Date.getDayName(dates[0]).prefix(3))]
-        for i in 0..<7 {
-            dates.append(dates[i].addingTimeInterval(24*60*60))
-            labels.append(String(Date.getDayName(dates[i+1]).prefix(3)))
-        }
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
-    }
-
-    public func getMonthlyData() -> CarbonBreakdown {
-        let firstOfMonth = Date.getStartOfMonth(fromDate: Date())
-        let start = Date.addMonths(date: firstOfMonth, numMonthsToAdd: -8)
-        var dates = [start]
-        var labels = [String(Date.getMonthName(dates[0]).prefix(3))]
-        for i in 0..<9 {
-            dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 1))
-            labels.append(String(Date.getMonthName(dates[i+1]).prefix(3)))
-        }
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
-    }
-
-    public func getYearlyData() -> CarbonBreakdown {
-        let test = Date.setToSpecificDay(date: Date(), day: 1)!
-        let firstOfJan = Date.setToSpecificMonth(date: test , month: 1)!
-        let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -5*12)
-        
-        var dates = [start]
-        for i in 0..<6 {
-            dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 12))
-        }
-        
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: Date.toYearString(years: dates))
-    }
-    
-    
-    /**
-    Checks user progress and updates league if enough points have been accumulated.
-     */
+    /// Checks user progress and updates league if enough points have been accumulated.
     public func updateLeagueIfEnoughPoints() throws -> Void {
-        
         let userScore = try! retrieveLatestScore()
         
         if userScore.totalPoints >= (POINTS_REQUIRED_FOR_NEXT_LEAGUE+1) {
@@ -455,108 +374,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         return oldDate
     }
-    
-    /**
-     Returns the carbon output produced in the given hours for the current day and for the given motion type.
-     - Remark: hours should be given in the format HH:mm:ss.
-    */
-    public func queryHourlyCarbon(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) throws -> Double {
-        let startDate = Date.setToSpecificHour(date: Date(), hour: hourStart)!
-        let endDate = Date.setToSpecificHour(date: Date(), hour: hourEnd)!
-        let timeInterval = endDate.timeIntervalSince(startDate)
-        return try carbonWithinInterval(motionType: motionType, from: startDate, interval: timeInterval)
-    }
-
-    /**
-     Returns the carbon output produced in the given hours for the current day.
-     - Remark: hours should be given in the format HH:mm:ss.
-     */
-    public func queryHourlyCarbonAll(hourStart: String, hourEnd: String) throws -> Double {
-        let startDate = Date.setToSpecificHour(date: Date(), hour: hourStart)!
-        let endDate = Date.setToSpecificHour(date: Date(), hour: hourEnd)!
-        let timeInterval = endDate.timeIntervalSince(startDate)
-        return try carbonWithinIntervalAll(from: startDate, interval: timeInterval)
-    }
-
-    /**
-     Returns the carbon output produced in the given day for the current week and for the given motion type.
-     - Remark: day should be given in full and in standard UK english.
-     */
-    public func queryDailyCarbon(motionType: MeasuredActivity.MotionType, weekDayToDisplay: String) throws -> Double {
-        let date = Date.fromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
-        return try carbonWithinInterval(motionType: motionType, from: date, interval: 24*60*60)
-    }
-
-    /**
-    Returns the carbon output in kg produced in the given day for the current week.
-    - Remark: day name should be given in full and in standard UK english.
-    */
-    public func queryDailyCarbonAll(weekDayToDisplay: String) throws -> Double {
-        let date = Date.fromWeekdayName(weekDayToDisplay: weekDayToDisplay)!
-        return try carbonWithinIntervalAll(from: date, interval: 24*60*60)
-    }
-
-    /**
-    Returns the carbon output in kg produced in the given month for the current year and for the given motion type.
-    - Remark: month name should be given in full and in standard UK english.
-    */
-    public func queryMonthlyCarbon(motionType:MeasuredActivity.MotionType, month: String) throws -> Double {
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-        dateFormatter.locale = Locale(identifier: "en-UK")
         
-        let firstOfMonth = Date.monthNameToFirstOfMonth(month: month)!
-        let lastOfMonth = Date.setToSpecificHour(date: Date.getEndDayOfMonth(date: firstOfMonth), hour: "23:59:59")!
-        
-        let interval = lastOfMonth.timeIntervalSince(firstOfMonth)
-        return try carbonWithinInterval(motionType: motionType, from: firstOfMonth, interval: interval)
-    }
-
-    /**
-    Returns the carbon output in kg produced in the given month for the current year.
-    - Remark: month name should be given in full and in standard UK english.
-    */
-    public func queryMonthlyCarbonAll(month: String) throws -> Double {
-        var carbonTotal : Double = 0
-        for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .walking {
-                carbonTotal += try queryMonthlyCarbon(motionType: motion, month: month)
-            }
-        }
-        return carbonTotal
-    }
-    
-    /**
-    Returns the carbon output in kg produced in the given year and for the given motion type.
-    - Remark: year should be given in the format yyyy.
-    */
-    public func queryYearlyCarbon(motionType: MeasuredActivity.MotionType, year: String) throws -> Double {
-        let yearStart = year + "-01-01 00:00:00 +0000"
-        let yearEnd = year + "-12-31 23:59:59 +0000"
-
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-        dateFormatter.locale = Locale(identifier: "en-UK")
-        
-        let startDate = dateFormatter.date(from: yearStart)!
-        let endDate = dateFormatter.date(from: yearEnd)!
-        
-        let interval = endDate.timeIntervalSince(startDate)
-        return try carbonWithinInterval(motionType: motionType, from: startDate, interval: interval)
-    }
-    
-    /**
-    Returns the carbon output in kg produced in the given year.
-    - Remark: year should be given in the format yyyy.
-    */
-    public func queryYearlyCarbonAll(year: String) throws -> Double {
-        var carbonTotal : Double = 0
-        for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .walking {
-                carbonTotal += try queryYearlyCarbon(motionType: motion, year: year)
-            }
-        }
-        return carbonTotal
-    }
-    
     /**
      Returns the carbon output in kg produced for the given distance and for the given motion type.
      - Parameter distance: distance in meters.

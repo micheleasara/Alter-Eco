@@ -1,18 +1,6 @@
 import Foundation
 import SwiftUI
 
-/// Points for walking.
-public let WALKING_PTS: Double = 10
-/// Points for car rides.
-public let CAR_PTS: Double = 3
-/// Points for train rides.
-public let TRAIN_PTS: Double = 7
-/// Points for flights.
-public let PLANE_PTS: Double = 0
-
-// ProgressBar Icons number
-public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
-
 /// Data structure containing all information related to the score of a user.
 public class UserScore : Equatable{
     /// Points accumulated so far.

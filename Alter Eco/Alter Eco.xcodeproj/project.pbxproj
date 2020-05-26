@@ -54,6 +54,7 @@
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* Launch Screen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
+		DECD0956247DD36F0099747D /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
 		DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
@@ -287,6 +288,7 @@
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
 				9C87AE282442408F00490481 /* ActivityList.swift */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
+				573693822438F85F00992BB0 /* GraphModel.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -312,7 +314,6 @@
 				DE847297247B0D0C00420F9E /* BarWithInfo.swift */,
 				9CD59429242968DE00B1D0B4 /* BarChart.swift */,
 				9CD5942B242968DE00B1D0B4 /* GraphView.swift */,
-				573693822438F85F00992BB0 /* GraphModel.swift */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
 			);
 			path = Frontend;
@@ -561,6 +562,7 @@
 				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
 				DEDE54A824467B4E003FE0DE /* AppDelegate.swift in Sources */,
+				DECD0956247DD36F0099747D /* GraphModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -59,3 +59,15 @@ public let CARBON_UNIT_PLANE: Double = 0.200
 public let CARBON_UNIT_WALKING: Double = 0.175
 /// Conversion unit for meters into km.
 public let KM_CONVERSION: Double = 0.001
+
+// MARK: - League constants
+/// Points for walking.
+public let WALKING_PTS: Double = 10
+/// Points for car rides.
+public let CAR_PTS: Double = 3
+/// Points for train rides.
+public let TRAIN_PTS: Double = 7
+/// Points for flights.
+public let PLANE_PTS: Double = 0
+/// Number of points needed to pass to the next league.
+public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
