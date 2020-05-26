@@ -25,7 +25,6 @@ public struct ComparisonView: View {
       }
     
     private func generateProportion() -> String {
-        let currentDateTime = Date()
         dateFormatter.dateFormat = "HH:mm:ss"
         dateFormatter.locale = Locale(identifier: "en-UK")
         let now = Date()

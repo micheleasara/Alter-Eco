@@ -1,7 +1,5 @@
 import Foundation
 import SwiftUI
-// kg/day
-public let AV_UK_DAILYCARBON: Double = 2.2
 
 public class GraphDataModel : ObservableObject {
     @Published public var data: [CarbonBreakdown] = getCarbonBreakdown()

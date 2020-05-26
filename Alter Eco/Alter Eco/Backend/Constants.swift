@@ -71,3 +71,7 @@ public let TRAIN_PTS: Double = 7
 public let PLANE_PTS: Double = 0
 /// Number of points needed to pass to the next league.
 public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
+
+// MARK: - Other
+/// Average carbon output for a day in the UK in kg/km.
+public let AV_UK_DAILYCARBON: Double = 2.2
