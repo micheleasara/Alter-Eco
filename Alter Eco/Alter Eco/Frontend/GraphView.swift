@@ -120,6 +120,9 @@ struct GraphView: View {
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
-        Text("hello")
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+         return GraphView()
+            .environment(\.managedObjectContext, context)
+            .environmentObject(DataGraph())
     }
 }

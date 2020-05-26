@@ -21,3 +21,13 @@ struct DetailView: View {
         }
     }
 }
+
+struct DetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        return DetailView()
+           .environment(\.managedObjectContext, context)
+           .environmentObject(ScreenMeasurements())
+           .environmentObject(DataGraph())
+    }
+}

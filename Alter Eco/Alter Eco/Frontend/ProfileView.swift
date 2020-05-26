@@ -227,14 +227,8 @@ struct ScorePoints: View {
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: 25, style: .continuous)
-               // .fill(Color("graphBars"))
                 .fill(Color("fill_colour"))
-                //.opacity(0.7)
                 .frame(width: self.screenMeasurements.trasversal*0.9)
-               // .overlay(
-               //     RoundedRectangle(cornerRadius: 25, style: .continuous)
-                //    .stroke(Color("graphBars"), lineWidth: 4)
-               // )
                 .padding(.horizontal, 10)
                 .frame(height: screenMeasurements.longitudinal*0.1)
             HStack(alignment: .top){
@@ -295,8 +289,9 @@ struct NameView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-            NameView()
-                .previewDevice(PreviewDevice(rawValue: "iPhone 11 Pro Max"))
-                .previewDisplayName("iPhone 11 Pro Max")
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        return ProfileView()
+                .environment(\.managedObjectContext, context)
+                .environmentObject(ScreenMeasurements())
     }
 }

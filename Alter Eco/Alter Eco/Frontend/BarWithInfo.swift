@@ -19,3 +19,9 @@ struct BarWithInfo: View {
         }
     }
 }
+
+struct BarWithInfo_Previews: PreviewProvider {
+    static var previews: some View {
+        BarWithInfo(size: CGSize(width: 20, height: 80), colour: Color.green, information: "Hello, World!")
+    }
+}
