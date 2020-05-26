@@ -1,11 +1,11 @@
 import Foundation
 import SwiftUI
 
-struct ComparisonView: View {
+public struct ComparisonView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
-    var body: some View {
+    public var body: some View {
           VStack {
               Text("Your Emissions")
                     .font(.headline)
@@ -24,7 +24,7 @@ struct ComparisonView: View {
           }
       }
     
-    func generateProportion() -> String {
+    private func generateProportion() -> String {
         let currentDateTime = Date()
         dateFormatter.dateFormat = "HH:mm:ss"
         dateFormatter.locale = Locale(identifier: "en-UK")

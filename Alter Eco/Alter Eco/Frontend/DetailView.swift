@@ -1,9 +1,9 @@
 import SwiftUI
 
-struct DetailView: View {
+public struct DetailView: View {
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
     
-    var body: some View {
+    public var body: some View {
         ScrollView {
             VStack {
                 WelcomeView()

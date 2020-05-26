@@ -1,11 +1,11 @@
 import Foundation
 import SwiftUI
 
-struct ExplanationView: View {
+public struct ExplanationView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
        
-    var body: some View {
+    public var body: some View {
         ScrollView {
             VStack {
                 Spacer()
@@ -16,7 +16,7 @@ struct ExplanationView: View {
         }
     }
     
-    var privacyAndData: some View {
+    private var privacyAndData: some View {
         Group {
             Text("Privacy and Data")
             .bold()
@@ -40,7 +40,7 @@ struct ExplanationView: View {
         }
     }
     
-    var credits : some View {
+    private var credits : some View {
         Group {
             Text("Credits")
             .bold()

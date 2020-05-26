@@ -6,11 +6,11 @@ import SwiftUI
 // data for conversion to oxygen production of trees comes from:
 //https://www.eea.europa.eu/articles/forests-health-and-climate-change/key-facts/trees-help-tackle-climate-change
 
-struct HighlightView: View {
+public struct HighlightView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
-    var body: some View {
+    public var body: some View {
         VStack {
             Text("Highlights & Tips")
                 .font(.headline)
@@ -29,13 +29,13 @@ struct HighlightView: View {
         }
     }
     
-    func generateSentence() -> String {
+    private func generateSentence() -> String {
         let possibileSentences = getGreenSentences()
         let rnd = Int.random(in: 0..<possibileSentences.count)
         return possibileSentences[rnd]
     }
     
-    func getGreenSentences() -> [String] {
+    private func getGreenSentences() -> [String] {
         let currentDateTime = Date()
         dateFormatter.dateFormat = "HH:mm:ss"
         let value = try! DBMS.queryHourlyCarbonAll(hourStart: "00:00:00", hourEnd: dateFormatter.string(from: currentDateTime))

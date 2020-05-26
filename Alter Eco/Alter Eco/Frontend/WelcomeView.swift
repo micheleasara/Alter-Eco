@@ -1,9 +1,9 @@
 import SwiftUI
 
-struct WelcomeView: View {
+public struct WelcomeView: View {
     @State private var showingInfo = false
     
-    var body: some View {
+    public var body: some View {
         HStack {
             Text("My Alter Eco")
             .foregroundColor(Color("title_colour"))
