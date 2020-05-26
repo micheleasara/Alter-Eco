@@ -137,13 +137,13 @@ struct BarChart_Previews: PreviewProvider {
     static let barsToLabelsRatios = [1, 2]
     
     static var previews: some View {
-        Group {
+        return Group {
             BarChart(values: [0,0,0,0], labels: ["a","b","c","d"], infoOnBarTap: ["","","",""], colour: Color.green).padding()
                 .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
             .previewDisplayName("0-valued bars")
             
             ForEach(barsToLabelsRatios, id: \.self) { r in
-                previewWithRatio(numBars: 12, ratio: r).padding()
+                previewWithRatio(numBars: 12, ratio: r)
                     .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
                 .previewDisplayName("Bars to labels ratio: " + String(r))
             }

@@ -13,19 +13,19 @@ struct SplashScreen: View {
             ZStack {
                 Image("earth")
                 .resizable()
-                .frame(width: screenMeasurements.width*0.25,
-                       height:screenMeasurements.width*0.25,
+                .frame(width: screenMeasurements.trasversal*0.25,
+                       height:screenMeasurements.trasversal*0.25,
                        alignment: .center)
                 
               Earth(percent: percent)
-                .stroke(Color("app_background"), lineWidth: screenMeasurements.width)
+                .stroke(Color("app_background"), lineWidth: screenMeasurements.trasversal)
                 .rotationEffect(.degrees(360))
 
               .onAppear() {
                 self.handleAnimations()
               }
-              .frame(width: screenMeasurements.width*0.15,
-                     height: screenMeasurements.width*0.15,
+              .frame(width: screenMeasurements.trasversal*0.15,
+                     height: screenMeasurements.trasversal*0.15,
                      alignment: .center)
             }
             

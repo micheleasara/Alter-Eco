@@ -1,12 +1,9 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @State private var rect: CGRect = CGRect()
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var showingInfo = false
     
     var body: some View {
-        
         HStack {
             Text("My Alter Eco")
             .foregroundColor(Color("title_colour"))
@@ -14,10 +11,9 @@ struct WelcomeView: View {
             
             Button(action: {self.showingInfo = true}) {
                 Image(systemName: "info.circle")
-            }
-                .alert(isPresented: $showingInfo) {
+            }.alert(isPresented: $showingInfo) {
                     Alert(title: Text("Your Eco Graph"), message: Text("The Alter Eco graph displays your CO2 emissions automatically! If you walk, the graph displays how much carbon dioxide you saved instead of driving. A green graph means you're emitting less carbon than the average Londoner, and red means you are doing worse."), dismissButton: .default(Text("OK")))
-                }
+            }
         }
     }
 }

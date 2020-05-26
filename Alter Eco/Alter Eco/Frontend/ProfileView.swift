@@ -13,7 +13,7 @@ struct ProfileView: View {
                 Spacer()
                 VStack{
                     ProfileImage()
-                        .frame(height: screenMeasurements.height*0.37)
+                        .frame(height: screenMeasurements.longitudinal*0.37)
                     ScorePoints()
                     Divider()
                         .padding(.top, 10)
@@ -22,7 +22,7 @@ struct ProfileView: View {
                         .font(.title)
                         .fontWeight(.semibold)
                     AwardView()
-                    Spacer(minLength: screenMeasurements.height*0.04)
+                    Spacer(minLength: screenMeasurements.longitudinal*0.04)
                 }
             }
             .navigationBarTitle("Profile", displayMode: .inline)
@@ -126,23 +126,23 @@ struct AwardView: View {
             ZStack{
                 RoundedRectangle(cornerRadius: 25, style: .continuous)
                     .fill(Color("fill_colour"))
-                    .frame(width: self.screenMeasurements.width*0.9, height: self.screenMeasurements.width*0.35)
+                    .frame(width: self.screenMeasurements.trasversal*0.9, height: self.screenMeasurements.trasversal*0.35)
                 HStack{
                     VStack{
                         Text(award.Name).font(.headline)
 
                         Text(award.Description).font(.caption)
                     }
-                        .frame(width: self.screenMeasurements.width*0.5, alignment: .center)
+                        .frame(width: self.screenMeasurements.trasversal*0.5, alignment: .center)
                         .padding(4)
                                    
                     Image(award.Awarded ? award.BadgeTitle : "badge_empty")
-                        .frame(width: self.screenMeasurements.width*0.22, height: self.screenMeasurements.width*0.22, alignment: .center)
-                        .scaleEffect(self.screenMeasurements.width/1200)
+                        .frame(width: self.screenMeasurements.trasversal*0.22, height: self.screenMeasurements.trasversal*0.22, alignment: .center)
+                        .scaleEffect(self.screenMeasurements.trasversal/1200)
                         .padding(4)
                 }
             }
-                .frame(width: self.screenMeasurements.width*0.85, height: self.screenMeasurements.width*0.4)
+                .frame(width: self.screenMeasurements.trasversal*0.85, height: self.screenMeasurements.trasversal*0.4)
                 .opacity(award.Awarded ? 1.0 : 0.6)
         }
     }
@@ -178,7 +178,7 @@ struct ProfileImage: View {
                             .resizable()
                             .scaledToFit()
                             .clipShape(Circle())
-                            .frame(width: self.screenMeasurements.width*0.6, height: self.screenMeasurements.width*0.6)
+                            .frame(width: self.screenMeasurements.trasversal*0.6, height: self.screenMeasurements.trasversal*0.6)
                             .shadow(radius: 10)
                     }
                 }
@@ -187,24 +187,24 @@ struct ProfileImage: View {
                 }
                     .foregroundColor(Color.white)
                     .opacity(0.01)
-                    .frame(width: screenMeasurements.width*0.41, height: screenMeasurements.width*0.41)
+                    .frame(width: screenMeasurements.trasversal*0.41, height: screenMeasurements.trasversal*0.41)
             }
             
             Button(action: {self.showingImagePicker = true}){
                 if(savings.count == 0){
                     Image("add_profile_pic")
-                        .scaleEffect(screenMeasurements.height/1700)
+                        .scaleEffect(screenMeasurements.longitudinal/1700)
                         .foregroundColor(Color("title_colour"))
                 }
             }
                 .background(Color("shadow"))
-                .mask(Circle().scale(screenMeasurements.height/1000))
+                .mask(Circle().scale(screenMeasurements.longitudinal/1000))
                     
                 .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
                     ImagePicker(image: self.$inputImage)
                 }
                 
-        }.frame(width: screenMeasurements.width*0.6, height: screenMeasurements.height*0.3)
+        }.frame(width: screenMeasurements.trasversal*0.6, height: screenMeasurements.longitudinal*0.3)
             
         NameView()
         }
@@ -230,13 +230,13 @@ struct ScorePoints: View {
                // .fill(Color("graphBars"))
                 .fill(Color("fill_colour"))
                 //.opacity(0.7)
-                .frame(width: self.screenMeasurements.width*0.9)
+                .frame(width: self.screenMeasurements.trasversal*0.9)
                // .overlay(
                //     RoundedRectangle(cornerRadius: 25, style: .continuous)
                 //    .stroke(Color("graphBars"), lineWidth: 4)
                // )
                 .padding(.horizontal, 10)
-                .frame(height: screenMeasurements.height*0.1)
+                .frame(height: screenMeasurements.longitudinal*0.1)
             HStack(alignment: .top){
                 Text("Score:").font(.title) .fontWeight(.bold)
                 Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
@@ -271,7 +271,7 @@ struct NameView: View {
                 }.font(.callout)
                     .foregroundColor(Color("title_colour"))
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: screenMeasurements.width*0.7)
+                    .frame(width: screenMeasurements.trasversal*0.7)
             }
             else
             {

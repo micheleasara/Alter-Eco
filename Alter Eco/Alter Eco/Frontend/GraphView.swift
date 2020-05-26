@@ -1,25 +1,24 @@
 import SwiftUI
 
 struct GraphView: View {
-    //The following picker represents the options of 'day' 'week' 'month' 'year'
+    // 'Daily' 'Weekly', 'Monthly' and 'Yearly'
     @State var timePickerSelection = 0
-    //The following picker represents the travel options of 'all' 'car' 'walk' 'train' 'plane'
+    // 'All', 'Car', 'Walk', 'Train' and 'Plane'
     @State var transportPickerSelection = MeasuredActivity.MotionType.unknown
     @EnvironmentObject var dataGraph : DataGraph
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
-    var body: some View {        
-        return VStack {
-            timePicker.padding(.top).padding(.horizontal)
-            
-            Text("Total carbon " + savedOrEmittedLabel + ": " +
-                kgToReadableLabel(valueInKg: totalCarbonInKg()))
+    var body: some View {
+        VStack () {
+            self.timePicker.padding(.horizontal)
+
+            Text("Total carbon " + self.savedOrEmittedLabel + ": " +
+                self.kgToReadableLabel(valueInKg: self.totalCarbonInKg()))
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            BarChart(values: getValues(), labels: getLabels(), infoOnBarTap: getInfoOnBarTap(), colour: barColour).frame(height: screenMeasurements.height/3.8).padding()
+            BarChart(values: self.getValues(), labels: self.getLabels(), infoOnBarTap: self.getInfoOnBarTap(), colour: self.barColour).padding(.horizontal)
 
-            transportPicker.padding(.bottom).padding(.horizontal)
+            self.transportPicker.padding()
         }
     }
     
@@ -121,6 +120,6 @@ struct GraphView: View {
 
 struct GraphView_Previews: PreviewProvider {
     static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+        Text("hello")
     }
 }

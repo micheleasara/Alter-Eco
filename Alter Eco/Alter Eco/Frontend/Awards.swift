@@ -1,7 +1,6 @@
 import Foundation
 
 struct Awards: Identifiable, Codable {
-    
     let id: Int
     let Name: String
     let Description: String
@@ -14,5 +13,5 @@ struct Awards: Identifiable, Codable {
         self.Description = description
         self.BadgeTitle = badgeTitle
         self.Awarded = awarded
-       }
+    }
 }

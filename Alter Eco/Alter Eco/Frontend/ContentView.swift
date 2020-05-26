@@ -2,11 +2,7 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
-
     @State var showSplash = true
-    @State private var selection = 0
-    @State private var rect: CGRect = CGRect()
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
     var body: some View {
         ZStack{
@@ -20,29 +16,35 @@ struct ContentView: View {
                 }
             }
             if (!self.showSplash) {
-                TabView(selection: $selection){
-                    DetailView()
-                        .tabItem {
-                            VStack {
-                                Image(systemName: "chart.bar.fill")
-                                Text("Stats").font(.title)
+                tabView
+            }
+        }
+    }
+    
+    var tabView : some View {
+        TabView(){
+            DetailView()
+                .tabItem {
+                    VStack {
+                        Image(systemName: "chart.bar.fill")
+                        Text("Stats").font(.title)
+                    }
+                }
 
-                            }
-                        }
-                    .tag(0)
-
-                        ProfileView()
-                            .tabItem {
-                            VStack {
-                                Image(systemName: "person.circle")
-                                Text("Profile").font(.title)
-                            }
-                        }
-                    .tag(1)
-
+            ProfileView()
+                    .tabItem {
+                    VStack {
+                        Image(systemName: "person.circle")
+                        Text("Profile").font(.title)
                 }
             }
         }
     }
 }
 
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
