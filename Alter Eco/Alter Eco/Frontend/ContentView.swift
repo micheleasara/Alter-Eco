@@ -49,6 +49,6 @@ struct ContentView_Previews: PreviewProvider {
         return ContentView()
            .environment(\.managedObjectContext, context)
            .environmentObject(ScreenMeasurements())
-           .environmentObject(DataGraph())
+           .environmentObject(GraphDataModel())
     }
 }

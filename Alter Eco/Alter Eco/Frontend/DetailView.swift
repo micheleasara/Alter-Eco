@@ -28,6 +28,6 @@ struct DetailView_Previews: PreviewProvider {
         return DetailView()
            .environment(\.managedObjectContext, context)
            .environmentObject(ScreenMeasurements())
-           .environmentObject(DataGraph())
+           .environmentObject(GraphDataModel())
     }
 }

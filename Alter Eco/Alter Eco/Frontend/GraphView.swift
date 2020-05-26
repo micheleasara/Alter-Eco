@@ -5,7 +5,7 @@ struct GraphView: View {
     @State private var timePickerSelection = 0
     // 'All', 'Car', 'Walk', 'Train' and 'Plane'
     @State private var transportPickerSelection = MeasuredActivity.MotionType.unknown
-    @EnvironmentObject var dataGraph : DataGraph
+    @EnvironmentObject var dataGraph : GraphDataModel
 
     var body: some View {
         VStack () {
@@ -135,6 +135,6 @@ struct GraphView_Previews: PreviewProvider {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
          return GraphView()
             .environment(\.managedObjectContext, context)
-            .environmentObject(DataGraph())
+            .environmentObject(GraphDataModel())
     }
 }
