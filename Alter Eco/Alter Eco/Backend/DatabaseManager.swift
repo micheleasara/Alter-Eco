@@ -2,9 +2,22 @@ import Foundation
 import SwiftUI
 import CoreData
 
+
 //all the constants for carbon conversions come from:
 //https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
 //all units below have been converted to kgrams/kilometer
+
+public struct LabelledDataPoint : Hashable {
+    public var data: Double
+    public var label: String
+    init(data: Double, label: String) {
+        self.data = data
+        self.label = label
+    }
+}
+public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
+public typealias LabelledDataPoints = [LabelledDataPoint]
+
 
 /// Represents an interface for a reader of Alter Eco's databases.
 public protocol DBReader {
@@ -82,32 +95,17 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     /// Returns the earliest start date within the Event entity.
     func getFirstDate() throws -> Date
     
-    
+    /// Returns a carbon breakdown for the day in intervals of 2 hours.
     func getDailyData() -> CarbonBreakdown
 
+    /// Returns a carbon breakdown for the last week in intervals of 24 hours.
     func getWeeklyData() -> CarbonBreakdown
 
+    /// Returns a carbon breakdown for the last 9 months.
     func getMonthlyData() -> CarbonBreakdown
 
+    /// Returns a carbon breakdown for the past 5 years.
     func getYearlyData() -> CarbonBreakdown
-    
-    
-    /// Returns the carbon output produced in the given hours for the current day and for the given motion type.
-    func queryHourlyCarbon(motionType: MeasuredActivity.MotionType, hourStart: String, hourEnd: String) throws -> Double
-    /// Returns the carbon output produced in the given hours for the current day.
-    func queryHourlyCarbonAll(hourStart: String, hourEnd: String) throws -> Double
-    /// Returns the carbon output produced in the given day for the current week and for the given motion type.
-    func queryDailyCarbon(motionType: MeasuredActivity.MotionType, weekDayToDisplay: String) throws -> Double
-    /// Returns the carbon output produced in the given day for the current week.
-    func queryDailyCarbonAll(weekDayToDisplay: String) throws -> Double
-    /// Returns the carbon output produced in the given month for the current year and for the given motion type.
-    func queryMonthlyCarbon(motionType:MeasuredActivity.MotionType, month: String) throws -> Double
-    /// Returns the carbon output produced in the given month for the current year.
-    func queryMonthlyCarbonAll(month: String) throws -> Double
-    /// Returns the carbon output produced in the given year for the given motion type.
-    func queryYearlyCarbon(motionType: MeasuredActivity.MotionType, year: String) throws -> Double
-    /// Returns the carbon output produced in the given year.
-    func queryYearlyCarbonAll(year: String) throws -> Double
 }
 
 public protocol CarbonCalculator {

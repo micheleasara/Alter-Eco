@@ -15,17 +15,6 @@ public class GraphDataModel : ObservableObject {
     }
 }
 
-public struct LabelledDataPoint : Hashable {
-    public var data: Double
-    public var label: String
-    init(data: Double, label: String) {
-        self.data = data
-        self.label = label
-    }
-}
-public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
-public typealias LabelledDataPoints = [LabelledDataPoint]
-
 #if NO_BACKEND_TESTING
 /// Contains data for the graph of GraphView
 let dataGraph : GraphDataModel = GraphDataModel()
