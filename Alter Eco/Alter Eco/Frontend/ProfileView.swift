@@ -90,19 +90,19 @@ struct AwardView: View {
         //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
-        if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*60*60*24) == 0 && timeInterval > (SECONDS_MONTH*6))
+        if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*DAY_IN_SECONDS) == 0 && timeInterval > (SECONDS_MONTH*6))
         {
             UserDefaults.standard.set(true, forKey: String(0))
             awardsList[0].Awarded = UserDefaults.standard.bool(forKey: String(0))
         }
         
-        if(try! DBMS.carbonWithinIntervalAll(from: Date(), interval: -7*60*60*24) < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
+        if(try! DBMS.carbonWithinIntervalAll(from: Date(), interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
         {
             UserDefaults.standard.set(true, forKey: String(1))
             awardsList[1].Awarded = UserDefaults.standard.bool(forKey: String(1))
         }
         
-        if(try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -7*60*60*24) > 10000 && timeInterval > SECONDS_WEEK)
+        if(try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -WEEK_IN_SECONDS) > 10000 && timeInterval > SECONDS_WEEK)
         {
             UserDefaults.standard.set(true, forKey: String(2))
             awardsList[2].Awarded = UserDefaults.standard.bool(forKey: String(2))

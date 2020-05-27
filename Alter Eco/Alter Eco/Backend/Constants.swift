@@ -24,7 +24,7 @@ public let MAX_DISTANCE_WITHIN_STATION:Double = 60
 /// Idle time (in seconds) after which the activity estimator should forget the user was in a station.
 public let STATION_TIMEOUT:Double = 60*90
 /// Idle time (in seconds) after which the activity estimator should forget the user was in an airport.
-public let AIRPORT_TIMEOUT:Double = 60*60*24
+public let AIRPORT_TIMEOUT:Double = DAY_IN_SECONDS
 /// Determines how many measurements of type car the activity estimator needs before resetting airport flag.
 public let CAR_NUM_FOR_PLANE_FLAG_OFF:Int = 10
 /// Determines how many measurements of type walking the activity estimator needs before resetting train flag.
@@ -75,3 +75,6 @@ public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
 // MARK: - Other
 /// Average carbon output for a day in the UK in kg/km.
 public let AV_UK_DAILYCARBON: Double = 2.2
+public let HOUR_IN_SECONDS: Double = 60 * 60
+public let DAY_IN_SECONDS: Double = 24 * HOUR_IN_SECONDS
+public let WEEK_IN_SECONDS: Double = 7 * DAY_IN_SECONDS

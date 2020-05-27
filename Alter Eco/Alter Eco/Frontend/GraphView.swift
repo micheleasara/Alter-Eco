@@ -48,7 +48,7 @@ struct GraphView: View {
     /// Returns the colour of the bars in the graph, which change according to daily carbon footprint.
     public var barColour : Color {
         var colour: String = "graphBars"
-        let carbonByTransport = dataGraph.data[1]
+        let carbonByTransport = dataGraph.carbonBreakdown[1]
         
         // graph changes colour depending on users's daily carbon footprint
         var todayTotal = 0.0
@@ -73,7 +73,7 @@ struct GraphView: View {
     
     private func totalCarbonInKg() -> Double {
         var total = 0.0
-        if let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection] {
+        if let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection] {
             for labelledPoint in  labelledPoints {
                 total += labelledPoint.data
             }
@@ -83,7 +83,7 @@ struct GraphView: View {
     
     private func getLabels() -> [String] {
         var labels = [String]()
-        let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
+        let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection]!
         for labelledPoint in labelledPoints {
             labels.append(labelledPoint.label)
         }
@@ -92,7 +92,7 @@ struct GraphView: View {
     
     private func getValues() -> [Double] {
         var values = [Double]()
-        let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
+        let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection]!
         
         for labelledPoint in labelledPoints {
             values.append(labelledPoint.data)
@@ -109,7 +109,7 @@ struct GraphView: View {
     
     private func getInfoOnBarTap() -> [String] {
         var infoOnBarTap = [String]()
-        let labelledPoints = dataGraph.data[timePickerSelection][transportPickerSelection]!
+        let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection]!
          for labelledPoint in labelledPoints {
             let info = "Carbon: " + kgToReadableLabel(valueInKg: labelledPoint.data)
             infoOnBarTap.append(info)

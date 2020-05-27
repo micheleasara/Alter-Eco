@@ -36,7 +36,7 @@ public struct HighlightView: View {
     }
     
     private func getGreenSentences() -> [String] {
-        let value = try! DBMS.carbonWithinIntervalAll(from: Date.setToSpecificHour(date: Date(), hour: "00:00:00")!, interval: 24*60*60)
+        let value = try! DBMS.carbonWithinIntervalAll(from: Date.setToSpecificHour(date: Date(), hour: "00:00:00")!, interval: DAY_IN_SECONDS)
         
         switch value {
         case AV_UK_DAILYCARBON..<Double.infinity:

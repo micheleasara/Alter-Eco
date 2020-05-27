@@ -1,73 +1,98 @@
 import Foundation
 import SwiftUI
 
+/// Represents the data shown in the graph.
 public class GraphDataModel : ObservableObject {
-    @Published public var data: [CarbonBreakdown] = getCarbonBreakdown()
+    /// Hour granularity for the daily data.
+    public static let HOUR_GRANULARITY = 2
+    /// Number of weekdays to include in the weekly data.
+    public static let WEEKDAYS_SHOWN = 7
+    /// Number of months to include in the monthly data.
+    public static let MONTHS_SHOWN = 9
+    /// Number of years to include in the yearly data.
+    public static let YEARS_SHOWN = 5
     
+    /// Carbon breakdown by timespans (daily, weekly, monthly, yearly) and means of transport.
+    /// Contains labelled data points, where each value is associated with the corresponding time value appropriately formatted.
+    @Published public var carbonBreakdown: [CarbonBreakdown] = getCarbonBreakdown()
+    
+    /// Fetches the data from the database and updates the observing views.
     public func update() {
-        data = GraphDataModel.getCarbonBreakdown()
+        carbonBreakdown = GraphDataModel.getCarbonBreakdown()
     }
 
+    /// Fetches the data from the database.
     public static func getCarbonBreakdown() -> [CarbonBreakdown] {
-        return [getDailyData(), getWeeklyData(), getMonthlyData(), getYearlyData()]
+        let now = Date()
+        return [dailyDataUpTo(now),
+                weeklyDataUpTo(now),
+                monthlyDataUpTo(now),
+                yearlyDataUpTo(now)]
     }
     
-    private static func getDailyData() -> CarbonBreakdown {
-        var dates = [Date.setToSpecificHour(date: Date(), hour: "00:00:00")!]
-        for i in 0..<12 {
-            dates.append(dates[i].addingTimeInterval(2*60*60))
+    private static func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
+        var dates = [Date.setToSpecificHour(date: last, hour: "00:00:00")!]
+        for i in 0..<24/HOUR_GRANULARITY {
+            let interval = TimeInterval(Double(HOUR_GRANULARITY) * HOUR_IN_SECONDS)
+            dates.append(dates[i].addingTimeInterval(interval))
         }
         var labels = [String]()
-        for i in stride(from: 0, through: 24, by: 2) {
+        for i in stride(from: 0, through: 24, by: HOUR_GRANULARITY) {
             let label = i>9 ? String(i) : String(0)+String(i)
             labels.append(label)
         }
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
+        return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private static func getWeeklyData() -> CarbonBreakdown {
-        var dates = [Date.setToSpecificHour(date: Date().addingTimeInterval(-6*24*60*60), hour: "00:00:00")!]
+    private static func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
+        let numDaysAgo = Double((WEEKDAYS_SHOWN - 1))
+        var dates = [Date.setToSpecificHour(date:
+                     last.addingTimeInterval(-numDaysAgo * DAY_IN_SECONDS), hour: "00:00:00")!]
         var labels = [String(Date.getDayName(dates[0]).prefix(3))]
-        for i in 0..<7 {
-            dates.append(dates[i].addingTimeInterval(24*60*60))
+        
+        for i in 0..<WEEKDAYS_SHOWN {
+            dates.append(dates[i].addingTimeInterval(DAY_IN_SECONDS))
             labels.append(String(Date.getDayName(dates[i+1]).prefix(3)))
         }
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
+        return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private static func getMonthlyData() -> CarbonBreakdown {
-        let firstOfMonth = Date.getStartOfMonth(fromDate: Date())
-        let start = Date.addMonths(date: firstOfMonth, numMonthsToAdd: -8)
+    private static func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+        // start from the first month shown at midnight
+        let monthStart = Date.getStartOfMonth(fromDate: last)
+        let start = Date.addMonths(date: monthStart, numMonthsToAdd: -(MONTHS_SHOWN - 1))
+        
+        // last date added is the first of next month at midnight
         var dates = [start]
         var labels = [String(Date.getMonthName(dates[0]).prefix(3))]
-        for i in 0..<9 {
+        for i in stride(from: 0, to: MONTHS_SHOWN, by: 1) {
             dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 1))
             labels.append(String(Date.getMonthName(dates[i+1]).prefix(3)))
         }
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
+        return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private static func getYearlyData() -> CarbonBreakdown {
-        let test = Date.setToSpecificDay(date: Date(), day: 1)!
-        let firstOfJan = Date.setToSpecificMonth(date: test , month: 1)!
-        let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -5*12)
+    private static func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+        // start from the first year shown on the 1st of Jan at midnight
+        let monthStart = Date.getStartOfMonth(fromDate: last)
+        let firstOfJan = Date.setToSpecificMonth(date: monthStart, month: 1)!
+        let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -(YEARS_SHOWN - 1) * 12)
         
+        // last date added is the first of next year at midnight
         var dates = [start]
         var labels = [Date.getYearAsString(dates[0])]
-        for i in 0..<6 {
+        for i in stride(from: 0, to: YEARS_SHOWN, by: 1) {
             dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 12))
-            labels.append(String(Date.getYearAsString(dates[i+1]).prefix(3)))
+            labels.append(Date.getYearAsString(dates[i+1]))
         }
         
-        return carbonBreakdownFromIntervals(fromDates: dates, withLabels: labels)
+        return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
     
-    private static func carbonBreakdownFromIntervals(fromDates: [Date], withLabels: [String]) -> CarbonBreakdown {
-        let dates = fromDates.sorted()
-        var intervals = [TimeInterval]()
-        for i in stride(from: 1, to: dates.count, by: 1) {
-            intervals.append(dates[i].timeIntervalSince(dates[i-1]))
-        }
+    private static func breakdownFromDateRanges(rangesBoundaries: [Date],
+                                               withLabels: [String]) -> CarbonBreakdown {
+        let dates = rangesBoundaries.sorted()
+        let intervals = intervalsFromDateRanges(boundaries: rangesBoundaries)
         
         var carbonBreakdown = CarbonBreakdown()
         var dataTotal = LabelledDataPoints() // carbon for all motions combined
@@ -88,6 +113,14 @@ public class GraphDataModel : ObservableObject {
         carbonBreakdown[.unknown] = dataTotal
         
         return carbonBreakdown
+    }
+    
+    private static func intervalsFromDateRanges(boundaries: [Date]) -> [TimeInterval] {
+        var intervals = [TimeInterval]()
+        for i in stride(from: 1, to: boundaries.count, by: 1) {
+            intervals.append(boundaries[i].timeIntervalSince(boundaries[i-1]))
+        }
+        return intervals
     }
 }
 

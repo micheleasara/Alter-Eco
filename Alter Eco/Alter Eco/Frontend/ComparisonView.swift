@@ -28,7 +28,7 @@ public struct ComparisonView: View {
         dateFormatter.dateFormat = "HH:mm:ss"
         dateFormatter.locale = Locale(identifier: "en-UK")
         let now = Date()
-        let value = try! DBMS.carbonWithinIntervalAll(from: Date.setToSpecificHour(date: now, hour: "00:00:00")!, interval: 24*60*60)
+        let value = try! DBMS.carbonWithinIntervalAll(from: Date.setToSpecificHour(date: now, hour: "00:00:00")!, interval: DAY_IN_SECONDS)
         
         let proportion = Int(round(value * 100 / AV_UK_DAILYCARBON))
         

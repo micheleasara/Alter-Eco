@@ -50,7 +50,7 @@ class UserScoreTest: XCTestCase {
         _ = try! DBMS.retrieveLatestScore()
         let currentLeagues = ["🌱", "🌿", "🌳"]
         
-        try! DBMS.updateScore(activity: MeasuredActivity(motionType: .walking, distance: 400000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 60*60*24)))
+        try! DBMS.updateScore(activity: MeasuredActivity(motionType: .walking, distance: 400000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: DAY_IN_SECONDS)))
         
         try! DBMS.updateLeagueIfEnoughPoints()
         let updatedScore = try! DBMS.retrieveLatestScore()
