@@ -115,33 +115,33 @@ public struct BarChart: View {
             VStack(spacing: self.yAxisSpacing(chartHeight: geo.size.height)/2) {
                 
                 if geo.size.height - self.yAxisSpacing(chartHeight: geo.size.height)*CGFloat(self.yAxisTicksCount) > BarChart.MIN_SPACE_FOR_FINAL_TICK_TO_APPEAR {
-                    Text(String(self.yAxisTicksCount*self.yAxisInterval))
-                    .allowsTightening(true)
-                    .font(.system(size: 10))
-                    .minimumScaleFactor(0.1)
-                    .lineLimit(1)
-                    .fixedSize()
+                    self.axisLabel(text: String(format: "%g", Double(self.yAxisTicksCount) * self.yAxisInterval))
                     .frame(width: geo.size.width,
-                           height: self.yAxisSpacing(chartHeight: geo.size.height)/2, alignment:.bottomTrailing)
+                           height: self.yAxisSpacing(chartHeight: geo.size.height)/2,
+                           alignment:.bottomTrailing)
                 }
                 
                 // reversed as it goes from top to bottom
                 ForEach((0..<self.yAxisTicksCount).reversed(), id: \.self) { i in
-                    Text(String(i*self.yAxisInterval))
-                        .allowsTightening(true)
-                        .font(.system(size: 10))
-                        .minimumScaleFactor(0.1)
-                        .lineLimit(1)
-                        .fixedSize()
+                    self.axisLabel(text: String(format: "%g", Double(i) * self.yAxisInterval))
                         .frame(width: geo.size.width,
-                               height: self.yAxisSpacing(chartHeight: geo.size.height)/2, alignment:.bottomTrailing)
+                               height: self.yAxisSpacing(chartHeight: geo.size.height)/2,
+                               alignment:.bottomTrailing)
                 }
             }.frame(height: geo.size.height, alignment: .bottomTrailing)
         }
     }
     
-    private var yAxisInterval: Int {
-        return Int((maxBarValue / Double(yAxisTicksCount)).rounded(.down))
+    private var yAxisInterval: Double {
+        var interval = maxBarValue / Double(yAxisTicksCount)
+        if interval >= 1 {
+            interval.round(.down)
+        } else {
+            // if too small to be rounded down (as it would give 0)
+            // keep up to 2 significant digits
+            interval = (interval / 0.01).rounded(.up) * 0.01
+        }
+        return interval
     }
     
     private func yAxisSpacing(chartHeight: CGFloat) -> CGFloat {
@@ -162,17 +162,21 @@ public struct BarChart: View {
         return GeometryReader { geo in
             HStack(alignment:.bottom, spacing: 0) {
                 ForEach(self.xLabels, id: \.self) { label in
-                    Text(label)
-                        .allowsTightening(true)
-                        .font(.system(size: 10))
-                        .minimumScaleFactor(0.1)
-                        .lineLimit(1)
-                        .fixedSize()
+                    self.axisLabel(text: label)
                         .frame(width: geo.size.width/ticksCount,
                                height: geo.size.height, alignment: .bottomLeading)
                 }
             }
         }
+    }
+    
+    private func axisLabel(text: String) -> some View {
+        return Text(text)
+            .allowsTightening(true)
+            .font(.system(size: 10))
+            .minimumScaleFactor(0.1)
+            .lineLimit(1)
+            .fixedSize()
     }
 }
 

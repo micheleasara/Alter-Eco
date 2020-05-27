@@ -16,7 +16,10 @@ public class GraphDataModel : ObservableObject {
     /// Contains labelled data points, where each value is associated with the corresponding time value appropriately formatted.
     @Published public var carbonBreakdown: [CarbonBreakdown]!
     
-    public init() {
+    private let DBMS: DBManager!
+    
+    public init(DBMS: DBManager) {
+        self.DBMS = DBMS
         update()
     }
     
@@ -132,5 +135,5 @@ public class GraphDataModel : ObservableObject {
 
 #if NO_BACKEND_TESTING
 /// Contains data for the graph of GraphView
-let dataGraph : GraphDataModel = GraphDataModel()
+let dataGraph : GraphDataModel = GraphDataModel(DBMS: DBMS)
 #endif
