@@ -5,7 +5,6 @@ import MapKit
 import Network
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelegate {
-    // graphical object, do not touch if not necessary
     var window: UIWindow?
     var screenMeasurements = ScreenMeasurements()
     

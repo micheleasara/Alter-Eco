@@ -1,15 +1,6 @@
-//
-//  DatabaseTest.swift
-//  Alter EcoBackEndTest
-//
-//  Created by Virtual Machine on 26/03/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import XCTest
 import CoreLocation
 import CoreData
-//@testable import Alter_Eco
 @testable import AlterEcoBackend
 
 class DatabaseTest: XCTestCase {
@@ -79,7 +70,6 @@ class DatabaseTest: XCTestCase {
         try! DBMS.append(activity: old)
         let new = MeasuredActivity(motionType: .car, distance: 100, start: someTimeAgo, end: recently)
         try! DBMS.append(activity: new)
-        print(try! DBMS.getFirstDate())
         XCTAssert(try! DBMS.getFirstDate() == old.start)
     }
     

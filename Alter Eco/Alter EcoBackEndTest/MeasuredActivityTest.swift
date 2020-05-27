@@ -12,7 +12,7 @@ class MeasuredActivityTest: XCTestCase {
         XCTAssert(activityTwo == activityOne, "Expected equality between two activities")
     }
     
-    func testTwoUnequalActivitiesResultDifferent() {
+    func testTwoDifferentActivitiesResultDifferent() {
         let date = Date()
         let activityOne = MeasuredActivity(motionType: .car, distance: 11, start: date, end: Date(timeInterval: 10, since: date))
         let activityTwo = MeasuredActivity(motionType: .car, distance: 11, start: Date(timeInterval: 1000, since: date), end: activityOne.end)

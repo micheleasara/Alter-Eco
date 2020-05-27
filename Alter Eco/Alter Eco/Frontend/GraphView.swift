@@ -1,10 +1,8 @@
 import SwiftUI
 
 struct GraphView: View {
-    // 'Daily' 'Weekly', 'Monthly' and 'Yearly'
-    @State private var timePickerSelection = 0
-    // 'All', 'Car', 'Walk', 'Train' and 'Plane'
-    @State private var transportPickerSelection = MeasuredActivity.MotionType.unknown
+    @State private var timespanSelection = GraphDataModel.Timespan.day
+    @State private var transportSelection = MeasuredActivity.MotionType.unknown
     @EnvironmentObject var dataGraph : GraphDataModel
 
     var body: some View {
@@ -24,18 +22,18 @@ struct GraphView: View {
     
     /// Represents the picker for the timespan the user's wishes to see.
     public var timePicker : some View {
-        Picker(selection: $timePickerSelection.animation(), label: Text("")) {
-            Text("Daily").tag(0)
-            Text("Weekly").tag(1)
-            Text("Monthly").tag(2)
-            Text("Yearly").tag(3)
+        Picker(selection: $timespanSelection.animation(), label: Text("")) {
+            Text("Daily").tag(GraphDataModel.Timespan.day)
+            Text("Weekly").tag(GraphDataModel.Timespan.week)
+            Text("Monthly").tag(GraphDataModel.Timespan.month)
+            Text("Yearly").tag(GraphDataModel.Timespan.year)
         }
           .pickerStyle(SegmentedPickerStyle())
     }
     
     /// Represents the picker for transport selection.
     public var transportPicker : some View {
-        Picker(selection: $transportPickerSelection.animation(), label: Image("")) {
+        Picker(selection: $transportSelection.animation(), label: Image("")) {
             Text("All").tag(MeasuredActivity.MotionType.unknown)
             Image(systemName: "car").tag(MeasuredActivity.MotionType.car)
             Image(systemName: "person").tag(MeasuredActivity.MotionType.walking)
@@ -48,7 +46,7 @@ struct GraphView: View {
     /// Returns the colour of the bars in the graph, which change according to daily carbon footprint.
     public var barColour : Color {
         var colour: String = "graphBars"
-        let carbonByTransport = dataGraph.carbonBreakdown[1]
+        let carbonByTransport = dataGraph.carbonBreakdown[.week]!
         
         // graph changes colour depending on users's daily carbon footprint
         var todayTotal = 0.0
@@ -68,12 +66,12 @@ struct GraphView: View {
     
     /// Returns whether the carbon shown was saved or emitted.
     public var savedOrEmittedLabel : String {
-        return transportPickerSelection == .walking ? "saved" : "emitted"
+        return transportSelection == .walking ? "saved" : "emitted"
     }
     
     private func totalCarbonInKg() -> Double {
         var total = 0.0
-        if let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection] {
+        if let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection] {
             for labelledPoint in  labelledPoints {
                 total += labelledPoint.data
             }
@@ -83,7 +81,7 @@ struct GraphView: View {
     
     private func getLabels() -> [String] {
         var labels = [String]()
-        let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection]!
+        let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection]!
         for labelledPoint in labelledPoints {
             labels.append(labelledPoint.label)
         }
@@ -92,7 +90,7 @@ struct GraphView: View {
     
     private func getValues() -> [Double] {
         var values = [Double]()
-        let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection]!
+        let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection]!
         
         for labelledPoint in labelledPoints {
             values.append(labelledPoint.data)
@@ -109,7 +107,7 @@ struct GraphView: View {
     
     private func getInfoOnBarTap() -> [String] {
         var infoOnBarTap = [String]()
-        let labelledPoints = dataGraph.carbonBreakdown[timePickerSelection][transportPickerSelection]!
+        let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection]!
          for labelledPoint in labelledPoints {
             let info = "Carbon: " + kgToReadableLabel(valueInKg: labelledPoint.data)
             infoOnBarTap.append(info)

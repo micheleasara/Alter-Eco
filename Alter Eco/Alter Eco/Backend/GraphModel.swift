@@ -14,7 +14,7 @@ public class GraphDataModel : ObservableObject {
     
     /// Carbon breakdown by timespans (daily, weekly, monthly, yearly) and means of transport.
     /// Contains labelled data points, where each value is associated with the corresponding time value appropriately formatted.
-    @Published public var carbonBreakdown: [CarbonBreakdown]!
+    @Published public var carbonBreakdown = Dictionary<Timespan, CarbonBreakdown>()
     
     private let DBMS: DBManager!
     
@@ -26,12 +26,20 @@ public class GraphDataModel : ObservableObject {
     /// Fetches the data from the database and updates the observing views.
     public func update() {
         let now = Date()
-        carbonBreakdown = [dailyDataUpTo(now),
-                            weeklyDataUpTo(now),
-                            monthlyDataUpTo(now),
-                            yearlyDataUpTo(now)]
+        carbonBreakdown[.day] = dailyDataUpTo(now)
+        carbonBreakdown[.week] = weeklyDataUpTo(now)
+        carbonBreakdown[.month] = monthlyDataUpTo(now)
+        carbonBreakdown[.year] = yearlyDataUpTo(now)
     }
 
+    /// Represents the timespans shown in the graph.
+    public enum Timespan: CaseIterable {
+        case day
+        case week
+        case month
+        case year
+    }
+    
     private func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
         var dates = [Date.setToSpecificHour(date: last, hour: "00:00:00")!]
         for i in 0..<24/HOUR_GRANULARITY {
