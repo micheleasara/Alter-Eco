@@ -22,18 +22,13 @@ public class GraphDataModel : ObservableObject {
     
     /// Fetches the data from the database and updates the observing views.
     public func update() {
-        carbonBreakdown = getCarbonBreakdown()
+        let now = Date()
+        carbonBreakdown = [dailyDataUpTo(now),
+                            weeklyDataUpTo(now),
+                            monthlyDataUpTo(now),
+                            yearlyDataUpTo(now)]
     }
 
-    /// Fetches the data from the database.
-    public func getCarbonBreakdown() -> [CarbonBreakdown] {
-        let now = Date()
-        return [dailyDataUpTo(now),
-                weeklyDataUpTo(now),
-                monthlyDataUpTo(now),
-                yearlyDataUpTo(now)]
-    }
-    
     private func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
         var dates = [Date.setToSpecificHour(date: last, hour: "00:00:00")!]
         for i in 0..<24/HOUR_GRANULARITY {
