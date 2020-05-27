@@ -16,6 +16,11 @@ public typealias LabelledDataPoints = [LabelledDataPoint]
 /// A container for carbon values divided by motion type and associated to a label.
 public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
 
+#if NO_BACKEND_TESTING
+/// Contains data for the graph of GraphView.
+let graphModel : GraphDataModel = GraphDataModel(limit: Date(), DBMS: DBMS)
+#endif
+
 /// Represents the data shown in the graph and can be observed by views wishing to be notified of data changes.
 public class GraphDataModel : ObservableObject {
     /// Hour granularity for the daily data.
@@ -33,6 +38,7 @@ public class GraphDataModel : ObservableObject {
     
     private let DBMS: DBManager!
     
+    /// Initializes a new graph model which fetches data up to the limit provided and with the DBManager given.
     public init(limit: Date, DBMS: DBManager) {
         self.DBMS = DBMS
         getDataUpTo(limit)
@@ -54,6 +60,7 @@ public class GraphDataModel : ObservableObject {
         case year
     }
     
+    /// Retrieves the carbon breakdown for the day given starting from midnight and with a fixed hourly granularity.
     public func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
         var dates = [Date.setToSpecificHour(date: last, hour: "00:00:00")!]
         for i in 0..<24/HOUR_GRANULARITY {
@@ -69,6 +76,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
+    /// Retrieves the carbon breakdown up until the day given and for a fixed number of days.
     public func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first day shown at midnight
         let numDaysAgo = Double((WEEKDAYS_SHOWN - 1))
@@ -85,6 +93,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
+    /// Retrieves the carbon breakdown up until the day given and for a fixed number of months.
     public func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first month shown at midnight
         let monthStart = Date.getStartOfMonth(fromDate: last)
@@ -102,6 +111,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
+    /// Retrieves the carbon breakdown up until the day given and for a fixed number of years.
     public func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first year shown on the 1st of Jan at midnight
         let monthStart = Date.getStartOfMonth(fromDate: last)
@@ -157,8 +167,3 @@ public class GraphDataModel : ObservableObject {
         return intervals
     }
 }
-
-#if NO_BACKEND_TESTING
-/// Contains data for the graph of GraphView
-let dataGraph : GraphDataModel = GraphDataModel(limit: Date(), DBMS: DBMS)
-#endif

@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
         
-            window.rootViewController = UIHostingController(rootView: contentView.environmentObject(screenMeasurements).environmentObject(dataGraph))
+            window.rootViewController = UIHostingController(rootView: contentView.environmentObject(screenMeasurements).environmentObject(graphModel))
             
             window.makeKeyAndVisible()
         
