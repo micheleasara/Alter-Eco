@@ -130,11 +130,11 @@ struct GraphView: View {
     }
 }
 
-//struct GraphView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-//         return GraphView()
-//            .environment(\.managedObjectContext, context)
-//            .environmentObject(GraphDataModel())
-//    }
-//}
+struct GraphView_Previews: PreviewProvider {
+    static var previews: some View {
+        let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+        let DBMS = CoreDataManager(persistentContainer: container)
+        return GraphView()
+            .environmentObject(GraphDataModel(DBMS: DBMS))
+    }
+}
