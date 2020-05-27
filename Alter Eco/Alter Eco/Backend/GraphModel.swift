@@ -44,15 +44,19 @@ public class GraphDataModel : ObservableObject {
     }
 
     private func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
+        // start from the first day shown at midnight
         let numDaysAgo = Double((WEEKDAYS_SHOWN - 1))
         var dates = [Date.setToSpecificHour(date:
                      last.addingTimeInterval(-numDaysAgo * DAY_IN_SECONDS), hour: "00:00:00")!]
         var labels = [String(Date.getDayName(dates[0]).prefix(3))]
         
-        for i in 0..<WEEKDAYS_SHOWN {
+        for i in stride(from: 0, to: WEEKDAYS_SHOWN-1, by: 1) {
             dates.append(dates[i].addingTimeInterval(DAY_IN_SECONDS))
             labels.append(String(Date.getDayName(dates[i+1]).prefix(3)))
         }
+        dates.append(last)
+        labels.append(String(Date.getDayName(last).prefix(3)))
+        
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
@@ -61,13 +65,15 @@ public class GraphDataModel : ObservableObject {
         let monthStart = Date.getStartOfMonth(fromDate: last)
         let start = Date.addMonths(date: monthStart, numMonthsToAdd: -(MONTHS_SHOWN - 1))
         
-        // last date added is the first of next month at midnight
         var dates = [start]
         var labels = [String(Date.getMonthName(dates[0]).prefix(3))]
-        for i in stride(from: 0, to: MONTHS_SHOWN, by: 1) {
+        for i in stride(from: 0, to: MONTHS_SHOWN-1, by: 1) {
             dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 1))
             labels.append(String(Date.getMonthName(dates[i+1]).prefix(3)))
         }
+        dates.append(last)
+        labels.append(String(Date.getMonthName(last).prefix(3)))
+        
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
@@ -77,13 +83,14 @@ public class GraphDataModel : ObservableObject {
         let firstOfJan = Date.setToSpecificMonth(date: monthStart, month: 1)!
         let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -(YEARS_SHOWN - 1) * 12)
         
-        // last date added is the first of next year at midnight
         var dates = [start]
         var labels = [Date.getYearAsString(dates[0])]
-        for i in stride(from: 0, to: YEARS_SHOWN, by: 1) {
+        for i in stride(from: 0, to: YEARS_SHOWN-1, by: 1) {
             dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 12))
             labels.append(Date.getYearAsString(dates[i+1]))
         }
+        dates.append(last)
+        labels.append(String(Date.getYearAsString(last).prefix(3)))
         
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
