@@ -1,28 +1,32 @@
 import Foundation
 import SwiftUI
 
-/// Represents the data shown in the graph.
+/// Represents the data shown in the graph and can be observed by views wishing to be notified of data changes.
 public class GraphDataModel : ObservableObject {
     /// Hour granularity for the daily data.
-    public static let HOUR_GRANULARITY = 2
+    public let HOUR_GRANULARITY = 2
     /// Number of weekdays to include in the weekly data.
-    public static let WEEKDAYS_SHOWN = 7
+    public let WEEKDAYS_SHOWN = 7
     /// Number of months to include in the monthly data.
-    public static let MONTHS_SHOWN = 9
+    public let MONTHS_SHOWN = 9
     /// Number of years to include in the yearly data.
-    public static let YEARS_SHOWN = 5
+    public let YEARS_SHOWN = 5
     
     /// Carbon breakdown by timespans (daily, weekly, monthly, yearly) and means of transport.
     /// Contains labelled data points, where each value is associated with the corresponding time value appropriately formatted.
-    @Published public var carbonBreakdown: [CarbonBreakdown] = getCarbonBreakdown()
+    @Published public var carbonBreakdown: [CarbonBreakdown]!
+    
+    public init() {
+        update()
+    }
     
     /// Fetches the data from the database and updates the observing views.
     public func update() {
-        carbonBreakdown = GraphDataModel.getCarbonBreakdown()
+        carbonBreakdown = getCarbonBreakdown()
     }
 
     /// Fetches the data from the database.
-    public static func getCarbonBreakdown() -> [CarbonBreakdown] {
+    public func getCarbonBreakdown() -> [CarbonBreakdown] {
         let now = Date()
         return [dailyDataUpTo(now),
                 weeklyDataUpTo(now),
@@ -30,7 +34,7 @@ public class GraphDataModel : ObservableObject {
                 yearlyDataUpTo(now)]
     }
     
-    private static func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    private func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
         var dates = [Date.setToSpecificHour(date: last, hour: "00:00:00")!]
         for i in 0..<24/HOUR_GRANULARITY {
             let interval = TimeInterval(Double(HOUR_GRANULARITY) * HOUR_IN_SECONDS)
@@ -44,7 +48,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private static func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    private func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
         let numDaysAgo = Double((WEEKDAYS_SHOWN - 1))
         var dates = [Date.setToSpecificHour(date:
                      last.addingTimeInterval(-numDaysAgo * DAY_IN_SECONDS), hour: "00:00:00")!]
@@ -57,7 +61,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private static func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    private func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first month shown at midnight
         let monthStart = Date.getStartOfMonth(fromDate: last)
         let start = Date.addMonths(date: monthStart, numMonthsToAdd: -(MONTHS_SHOWN - 1))
@@ -72,7 +76,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private static func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    private func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first year shown on the 1st of Jan at midnight
         let monthStart = Date.getStartOfMonth(fromDate: last)
         let firstOfJan = Date.setToSpecificMonth(date: monthStart, month: 1)!
@@ -89,7 +93,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
     
-    private static func breakdownFromDateRanges(rangesBoundaries: [Date],
+    private func breakdownFromDateRanges(rangesBoundaries: [Date],
                                                withLabels: [String]) -> CarbonBreakdown {
         let dates = rangesBoundaries.sorted()
         let intervals = intervalsFromDateRanges(boundaries: rangesBoundaries)
@@ -115,7 +119,7 @@ public class GraphDataModel : ObservableObject {
         return carbonBreakdown
     }
     
-    private static func intervalsFromDateRanges(boundaries: [Date]) -> [TimeInterval] {
+    private func intervalsFromDateRanges(boundaries: [Date]) -> [TimeInterval] {
         var intervals = [TimeInterval]()
         for i in stride(from: 1, to: boundaries.count, by: 1) {
             intervals.append(boundaries[i].timeIntervalSince(boundaries[i-1]))
