@@ -58,7 +58,7 @@ struct GraphView: View {
             }
         }
 
-        if todayTotal > AV_UK_DAILYCARBON {
+        if todayTotal > AVERAGE_UK_DAILY_CARBON {
             colour = "redGraphBar"
         }
         return Color(colour)
@@ -133,6 +133,6 @@ struct GraphView_Previews: PreviewProvider {
         let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
         let DBMS = CoreDataManager(persistentContainer: container)
         return GraphView()
-            .environmentObject(GraphDataModel(DBMS: DBMS))
+            .environmentObject(GraphDataModel(limit: Date(), DBMS: DBMS))
     }
 }

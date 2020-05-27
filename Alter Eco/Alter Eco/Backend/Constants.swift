@@ -74,7 +74,7 @@ public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
 
 // MARK: - Other
 /// Average carbon output for a day in the UK in kg/km.
-public let AV_UK_DAILYCARBON: Double = 2.2
+public let AVERAGE_UK_DAILY_CARBON: Double = 2.2
 public let HOUR_IN_SECONDS: Double = 60 * 60
 public let DAY_IN_SECONDS: Double = 24 * HOUR_IN_SECONDS
 public let WEEK_IN_SECONDS: Double = 7 * DAY_IN_SECONDS

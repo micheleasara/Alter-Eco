@@ -39,14 +39,14 @@ public struct HighlightView: View {
         let value = try! DBMS.carbonWithinIntervalAll(from: Date.setToSpecificHour(date: Date(), hour: "00:00:00")!, interval: DAY_IN_SECONDS)
         
         switch value {
-        case AV_UK_DAILYCARBON..<Double.infinity:
+        case AVERAGE_UK_DAILY_CARBON..<Double.infinity:
             return ["Be careful! You're consuming more than the UK average! You can do better.",
             "To make up for your transport emissions why don't you try buying local products?",
             "To make up for your transport emissions why don't you try plastic alternatives?",
             "To make up for your transport emissions why don't you try going vegetarian for a day?",
             "To reduce your transport emissions why don't you try cycling more often?"]
             
-        case 1.4..<AV_UK_DAILYCARBON:
+        case 1.4..<AVERAGE_UK_DAILY_CARBON:
             return ["So far today you're consuming as much as an average tree can absorb in one month!",
             "Try to share car rides when you have to drive!",
             "Remember to avoid bottled water! Bring your own bottle.",

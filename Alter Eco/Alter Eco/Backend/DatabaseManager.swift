@@ -7,18 +7,6 @@ import CoreData
 //https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
 //all units below have been converted to kgrams/kilometer
 
-public struct LabelledDataPoint : Hashable {
-    public var data: Double
-    public var label: String
-    init(data: Double, label: String) {
-        self.data = data
-        self.label = label
-    }
-}
-public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
-public typealias LabelledDataPoints = [LabelledDataPoint]
-
-
 /// Represents an interface for a reader of Alter Eco's databases.
 public protocol DBReader {
     /**
@@ -72,10 +60,13 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
      - Parameter interval: interval to be added to the starting date.
      */
     func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from:Date, interval:TimeInterval) throws -> Double
+    
     /**
-    Returns the cumulative carbon output for all motion types and in the specified timeframe.
+    Returns the cumulative carbon output in kg for all polluting motion types and in the specified timeframe.
+     - Parameter motionType: the only motion type to consider.
      - Parameter from: starting date.
      - Parameter interval: interval to be added to the starting date.
+     - Remark: walking is considered not polluting and does not contribute to the returned value.
      */
     func carbonWithinIntervalAll(from:Date, interval:TimeInterval) throws -> Double
     
@@ -94,18 +85,6 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     
     /// Returns the earliest start date within the Event entity.
     func getFirstDate() throws -> Date
-//    
-//    /// Returns a carbon breakdown for the day in intervals of 2 hours.
-//    func getDailyData() -> CarbonBreakdown
-//
-//    /// Returns a carbon breakdown for the last week in intervals of 24 hours.
-//    func getWeeklyData() -> CarbonBreakdown
-//
-//    /// Returns a carbon breakdown for the last 9 months.
-//    func getMonthlyData() -> CarbonBreakdown
-//
-//    /// Returns a carbon breakdown for the past 5 years.
-//    func getYearlyData() -> CarbonBreakdown
 }
 
 public protocol CarbonCalculator {
@@ -142,7 +121,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     - Returns: List of objects that satisfy the predicate.
     - Remark: See .xcdatamodeld file for information about valid entities.
     */
-    public func executeQuery(entity: String, predicate: String?, args:[Any]?) throws -> [Any]{
+    public func executeQuery(entity: String, predicate: String? = nil, args:[Any]? = nil) throws -> [Any] {
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
         if predicate != nil && args != nil {
@@ -159,7 +138,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     - Parameter args: List of arguments to include in the predicate.
     - Returns: List of activities that satisfy the predicate.
     */
-    public func queryActivities(predicate: String?, args:[Any]?) throws -> [MeasuredActivity] {
+    public func queryActivities(predicate: String? = nil, args:[Any]? = nil) throws -> [MeasuredActivity] {
         var measuredActivities = [MeasuredActivity]()
         let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args)) as! [NSManagedObject]
 
@@ -244,15 +223,17 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     }
     
     /**
-    Returns the cumulative carbon output in kg for all motion types and in the specified timeframe.
+    Returns the cumulative carbon output in kg for all polluting motion types and in the specified timeframe.
      - Parameter motionType: the only motion type to consider.
      - Parameter from: starting date.
      - Parameter interval: interval to be added to the starting date.
+     - Remark: walking is considered not polluting and does not contribute to the returned value.
      */
     public func carbonWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
         var carbonTotal : Double = 0
         for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .walking { // remove walking from total carbon
+            // remove walking from total carbon as considered not polluting
+            if motion != .walking {
                 carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
             }
         }
@@ -265,7 +246,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         let managedContext = try getManagedContext()
 
         // retrieve current score
-        let queryResult = try executeQuery(entity: "Score", predicate:nil, args: nil) as! [NSManagedObject]
+        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
         if queryResult.count != 0 {
             let activityScore = UserScore(activity: activity, league: "", date: Date.toInternationalString(Date()), counter: 0)
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
@@ -282,8 +263,8 @@ public class CoreDataManager : DBManager, CarbonCalculator {
        let dateToday = Date()
        let dateTodayStr = Date.toInternationalString(dateToday)
     
-       // retrieve current userscore
-        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
+       // retrieve current user's score
+        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
         if queryResult.count != 0 {
            queryResult[0].setValue(newLeague, forKey: "league")
            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
@@ -300,7 +281,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func retrieveLatestScore() throws -> UserScore {
         let userScore = UserScore.getInitialScore()
 
-        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
+        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
         if queryResult.count != 0 {
             userScore.totalPoints = queryResult[0].value(forKey: "score") as? Double
             userScore.date = queryResult[0].value(forKey: "dateStr") as? String
@@ -316,6 +297,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return userScore
     }
     
+    /// Sets the user's score to 0.
     public func resetScore() throws -> Void {
         let managedContext = try getManagedContext()
         let dateToday = Date()
@@ -323,26 +305,12 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         let newScore = 0.0
         
-        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
+        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
         if queryResult.count != 0 {
             queryResult[0].setValue(newScore, forKey: "score")
             queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
         }
         
-        try managedContext.save()
-    }
-    
-    public func updateCounter() throws -> Void {
-        let managedContext = try getManagedContext()
-        let dateToday = Date()
-        let dateTodayStr = Date.toInternationalString(dateToday)
-        
-        let queryResult = try executeQuery(entity: "Score", predicate: nil, args: nil) as! [NSManagedObject]
-        if queryResult.count != 0 {
-            let oldCounter = queryResult[0].value(forKey: "counter") as! Int
-            queryResult[0].setValue(oldCounter + 1, forKey: "counter")
-            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
-        }
         try managedContext.save()
     }
     
@@ -355,7 +323,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
             
             let newUserScore = try retrieveLatestScore()
             if newUserScore.league == "🌳" {
-                try updateCounter()
+                try updateTreeCounter()
             }
             
             try resetScore()
@@ -397,6 +365,20 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         return distance * carbonUnit * KM_CONVERSION
     }
+    
+    private func updateTreeCounter() throws -> Void {
+           let managedContext = try getManagedContext()
+           let dateToday = Date()
+           let dateTodayStr = Date.toInternationalString(dateToday)
+           
+           let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
+           if queryResult.count != 0 {
+               let oldCounter = queryResult[0].value(forKey: "counter") as! Int
+               queryResult[0].setValue(oldCounter + 1, forKey: "counter")
+               queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
+           }
+           try managedContext.save()
+       }
     
     private func getManagedContext() throws -> NSManagedObjectContext {
         return persistentContainer.viewContext

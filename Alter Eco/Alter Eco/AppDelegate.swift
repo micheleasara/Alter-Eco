@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func activityWasWrittenToDB(activity: MeasuredActivity) {
         print("activity \(activity.motionType) of distance \(activity.distance)m",
             " was written with start \(activity.start) and end \(activity.end)")
-        dataGraph.update()
+        dataGraph.getDataUpTo(Date())
     }
     
     var scene = SceneDelegate()

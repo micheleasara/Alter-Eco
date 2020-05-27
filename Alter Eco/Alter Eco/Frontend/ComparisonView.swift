@@ -30,7 +30,7 @@ public struct ComparisonView: View {
         let now = Date()
         let value = try! DBMS.carbonWithinIntervalAll(from: Date.setToSpecificHour(date: now, hour: "00:00:00")!, interval: DAY_IN_SECONDS)
         
-        let proportion = Int(round(value * 100 / AV_UK_DAILYCARBON))
+        let proportion = Int(round(value * 100 / AVERAGE_UK_DAILY_CARBON))
         
         return ("So far today you've emitted \(proportion)% of the UK daily average carbon emissions.")
     }

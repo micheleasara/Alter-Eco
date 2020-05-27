@@ -15,7 +15,6 @@
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55C85C5B243CB879006AD075 /* ExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C85C5A243CB879006AD075 /* ExplanationView.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
-		573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */; };
 		573693832438F85F00992BB0 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
 		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
 		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
@@ -48,6 +47,8 @@
 		9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */; };
 		9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
+		DE2B027F247EC1D900926935 /* GraphDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B027E247EC1D900926935 /* GraphDataModelTest.swift */; };
+		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
 		DE3C10A42447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
@@ -111,7 +112,6 @@
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55C85C5A243CB879006AD075 /* ExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationView.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Frontend/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
-		573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIGraphLogicTestsTwo.swift; sourceTree = "<group>"; };
 		573693822438F85F00992BB0 /* GraphModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
 		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
@@ -150,6 +150,8 @@
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE2B027E247EC1D900926935 /* GraphDataModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphDataModelTest.swift; sourceTree = "<group>"; };
+		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -157,7 +159,6 @@
 		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
 		DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlterEcoBackend.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DEDE54BB24467B4E003FE0DE /* Alter Eco copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Alter Eco copy-Info.plist"; path = "/Users/delideleon/Desktop/developBranch/Alter Eco/Alter Eco copy-Info.plist"; sourceTree = "<absolute>"; };
 		DEFEEC502448987C009BE765 /* MultiTimerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiTimerTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -196,15 +197,16 @@
 		9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */ = {
 			isa = PBXGroup;
 			children = (
+				DE2B0280247ED28C00926935 /* Mocks.swift */,
 				9C8601322449884100033B55 /* UserScoreTest.swift */,
 				9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */,
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
 				DEFEEC502448987C009BE765 /* MultiTimerTest.swift */,
-				9CD5945A24296BD100B1D0B4 /* Info.plist */,
 				DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */,
 				9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */,
-				573693802438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift */,
+				DE2B027E247EC1D900926935 /* GraphDataModelTest.swift */,
 				9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */,
+				9CD5945A24296BD100B1D0B4 /* Info.plist */,
 			);
 			path = "Alter EcoBackEndTest";
 			sourceTree = "<group>";
@@ -225,7 +227,6 @@
 				9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */,
 				9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */,
 				CD200B4023E3885100629E73 /* Products */,
-				DEDE54BB24467B4E003FE0DE /* Alter Eco copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -494,14 +495,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE2B027F247EC1D900926935 /* GraphDataModelTest.swift in Sources */,
 				DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */,
 				9C8601332449884100033B55 /* UserScoreTest.swift in Sources */,
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
 				DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */,
+				DE2B0281247ED28C00926935 /* Mocks.swift in Sources */,
 				9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */,
 				9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */,
 				9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */,
-				573693812438D8B400992BB0 /* SwiftUIGraphLogicTestsTwo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

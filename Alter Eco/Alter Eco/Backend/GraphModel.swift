@@ -1,6 +1,21 @@
 import Foundation
 import SwiftUI
 
+/// Represents a value associated to a label.
+public struct LabelledDataPoint : Hashable {
+    public var data: Double
+    public var label: String
+    init(data: Double, label: String) {
+        self.data = data
+        self.label = label
+    }
+}
+/// A collection of values associated to a label.
+public typealias LabelledDataPoints = [LabelledDataPoint]
+
+/// A container for carbon values divided by motion type and associated to a label.
+public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
+
 /// Represents the data shown in the graph and can be observed by views wishing to be notified of data changes.
 public class GraphDataModel : ObservableObject {
     /// Hour granularity for the daily data.
@@ -18,18 +33,17 @@ public class GraphDataModel : ObservableObject {
     
     private let DBMS: DBManager!
     
-    public init(DBMS: DBManager) {
+    public init(limit: Date, DBMS: DBManager) {
         self.DBMS = DBMS
-        update()
+        getDataUpTo(limit)
     }
     
     /// Fetches the data from the database and updates the observing views.
-    public func update() {
-        let now = Date()
-        carbonBreakdown[.day] = dailyDataUpTo(now)
-        carbonBreakdown[.week] = weeklyDataUpTo(now)
-        carbonBreakdown[.month] = monthlyDataUpTo(now)
-        carbonBreakdown[.year] = yearlyDataUpTo(now)
+    public func getDataUpTo(_ date: Date) {
+        carbonBreakdown[.day] = dailyDataUpTo(date)
+        carbonBreakdown[.week] = weeklyDataUpTo(date)
+        carbonBreakdown[.month] = monthlyDataUpTo(date)
+        carbonBreakdown[.year] = yearlyDataUpTo(date)
     }
 
     /// Represents the timespans shown in the graph.
@@ -40,7 +54,7 @@ public class GraphDataModel : ObservableObject {
         case year
     }
     
-    private func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
         var dates = [Date.setToSpecificHour(date: last, hour: "00:00:00")!]
         for i in 0..<24/HOUR_GRANULARITY {
             let interval = TimeInterval(Double(HOUR_GRANULARITY) * HOUR_IN_SECONDS)
@@ -51,10 +65,11 @@ public class GraphDataModel : ObservableObject {
             let label = i>9 ? String(i) : String(0)+String(i)
             labels.append(label)
         }
+
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first day shown at midnight
         let numDaysAgo = Double((WEEKDAYS_SHOWN - 1))
         var dates = [Date.setToSpecificHour(date:
@@ -67,11 +82,10 @@ public class GraphDataModel : ObservableObject {
         }
         dates.append(last)
         labels.append(String(Date.getDayName(last).prefix(3)))
-        
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first month shown at midnight
         let monthStart = Date.getStartOfMonth(fromDate: last)
         let start = Date.addMonths(date: monthStart, numMonthsToAdd: -(MONTHS_SHOWN - 1))
@@ -88,7 +102,7 @@ public class GraphDataModel : ObservableObject {
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
-    private func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first year shown on the 1st of Jan at midnight
         let monthStart = Date.getStartOfMonth(fromDate: last)
         let firstOfJan = Date.setToSpecificMonth(date: monthStart, month: 1)!
@@ -119,10 +133,13 @@ public class GraphDataModel : ObservableObject {
                 let carbon = try! DBMS.carbonWithinInterval(motionType: motion, from: dates[i-1], interval: intervals[i-1])
                 dataMotion.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
                 
-                if dataTotal.count > i-1 {
-                    dataTotal[i-1].data += carbon
-                } else { // not initialised
-                    dataTotal.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
+                // walking is not considered polluting, so it is not added
+                if motion != .walking {
+                    if dataTotal.count > i-1 {
+                        dataTotal[i-1].data += carbon
+                    } else { // not initialised
+                        dataTotal.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
+                    }
                 }
             }
             carbonBreakdown[motion] = dataMotion
@@ -143,5 +160,5 @@ public class GraphDataModel : ObservableObject {
 
 #if NO_BACKEND_TESTING
 /// Contains data for the graph of GraphView
-let dataGraph : GraphDataModel = GraphDataModel(DBMS: DBMS)
+let dataGraph : GraphDataModel = GraphDataModel(limit: Date(), DBMS: DBMS)
 #endif

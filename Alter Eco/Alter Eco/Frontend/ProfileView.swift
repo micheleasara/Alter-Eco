@@ -86,7 +86,7 @@ struct AwardView: View {
        
     init() {
         self.originalDate = try! DBMS.getFirstDate()
-        ///Uncomment below to show some of the awards
+        // Uncomment below to show some of the awards
         //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 

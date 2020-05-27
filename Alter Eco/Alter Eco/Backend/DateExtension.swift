@@ -93,22 +93,6 @@ extension Date {
         return dateFormatter.date(from: formattedStr)
     }
     
-    /** Returns the date given but set to the year provided.
-    - Parameter date: date to modify.
-    - Parameter day: year the date will be set to.
-    - Returns: the date given set to the year provided, or nil if the action failed.
-    */
-    public static func setToSpecificYear(date: Date, year: Int) -> Date? {
-        dateFormatter.locale = Locale(identifier: "en-UK")
-        
-        dateFormatter.dateFormat = "MM-dd HH:mm:ss ZZZ"
-        let monthDayHour = dateFormatter.string(from: date)
-        
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss ZZZ"
-        let formattedStr = String(year) + "-" + monthDayHour
-        return dateFormatter.date(from: formattedStr)
-    }
-    
     /// Returns the year of the specified date as a string. Year format is yyyy.
     public static func getYearAsString(_ date: Date) -> String {
         dateFormatter.dateFormat = "yyyy"

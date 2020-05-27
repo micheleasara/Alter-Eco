@@ -28,6 +28,6 @@ struct DetailView_Previews: PreviewProvider {
         let DBMS = CoreDataManager(persistentContainer: container)
         return DetailView()
            .environmentObject(ScreenMeasurements())
-           .environmentObject(GraphDataModel(DBMS: DBMS))
+            .environmentObject(GraphDataModel(limit: Date(), DBMS: DBMS))
     }
 }

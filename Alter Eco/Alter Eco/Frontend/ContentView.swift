@@ -46,6 +46,7 @@ struct ContentView_Previews: PreviewProvider {
         let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
         return ContentView()
            .environmentObject(ScreenMeasurements())
-            .environmentObject(GraphDataModel(DBMS: CoreDataManager(persistentContainer: container)))
+            .environmentObject(GraphDataModel(limit: Date(),
+                                              DBMS: CoreDataManager(persistentContainer: container)))
     }
 }
