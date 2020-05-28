@@ -21,8 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     class WifiStatusMonitor: ObservableObject {
         @Published var isConnected: Bool = false
-        let monitor = NWPathMonitor(requiredInterfaceType: .wifi)
-        let queue = DispatchQueue.global(qos: .background)
+        let monitor = NWPathMonitor()//requiredInterfaceType: .wifi)
+        let queue = DispatchQueue.global()//qos: .background)
         func startMonitoring() {
             monitor.start(queue: queue)
         }
@@ -80,13 +80,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.distanceFilter = GPS_UPDATE_DISTANCE_THRESHOLD
         manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         manager.startUpdatingLocation()
-        // REDUNDENT PLACEDHOLDER COMMENT:
-        // Following code is to check whether we should run the replaceScore()
-        // function to calculate the user score of the day before, i.e. if we open
-        // the app before the background task was called to do this for us.
-        // The scheduleBSTscore() functon reschedules the BGTscore task for tomorrow.
         
-        self.wifiMonitor.monitor.pathUpdateHandler = {path in
+        self.wifiMonitor.monitor.pathUpdateHandler = { path in
+            print("hello")
             print("Detected a WiFi Change, on?", !(path.isExpensive))
             self.respondToWifiChange(wifi: path.status == .satisfied)
         }
@@ -270,6 +266,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // MARK: - Functions to respond to a changes in network status
     /// Responds to a change in wifi connection by turning on/off location tracking and notifies the user appropriately
     func respondToWifiChange(wifi: Bool) {
+        print("respondToWifiChange ", wifi)
         if wifi {
             // Check if we're in background, and whether we've gone from no wifi to wifi:
             if !self.wifiMonitor.isConnected {

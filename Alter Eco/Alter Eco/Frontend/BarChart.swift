@@ -173,8 +173,8 @@ public struct BarChart: View {
     private func axisLabel(text: String) -> some View {
         return Text(text)
             .allowsTightening(true)
-            .font(.system(size: 10))
-            .minimumScaleFactor(0.1)
+            .font(.system( size: 10))
+            .minimumScaleFactor(0.01)
             .lineLimit(1)
             .fixedSize()
     }
