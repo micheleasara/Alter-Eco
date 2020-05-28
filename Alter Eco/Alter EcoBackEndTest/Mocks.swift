@@ -4,6 +4,8 @@ import AlterEcoBackend
 // Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
 class DBWriterMock: DBWriter {
+    func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {}
+    
     var appendArgs: [MeasuredActivity] = []
     var updateScoreArgs: [MeasuredActivity] = []
     
@@ -118,4 +120,5 @@ class DBManagerMock: DBManager {
     func executeQuery(entity: String, predicate: String?, args: [Any]?) throws -> [Any] {return []}
     func append(activity: MeasuredActivity) throws {}
     func updateScore(activity: MeasuredActivity) throws {}
+    func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {}
 }

@@ -35,18 +35,4 @@ class AppDelegateTest: XCTestCase {
 
         XCTAssert(app.locationUponRequest == newLoc, "Stations have not been updated.")
     }
-    
-    func testRespondtoWiFiChangeFromConnectedToDisconnected() {
-        app.wifiMonitor.stopMonitoring()
-        app.wifiMonitor.isConnected = false
-        app.respondToWifiChange(wifi: true)
-        XCTAssert(app.wifiMonitor.isConnected == true)
-    }
-    
-    func testRespondtoWiFiChangeFromDisconnectedToConnected() {
-        app.wifiMonitor.stopMonitoring()
-        app.wifiMonitor.isConnected = true
-        app.respondToWifiChange(wifi: false)
-        XCTAssert(app.wifiMonitor.isConnected == false)
-    }
 }

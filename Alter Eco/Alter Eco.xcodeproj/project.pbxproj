@@ -53,6 +53,8 @@
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
+		DE74E35224804E3E00F785CF /* WiFiStatusMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74E35124804E3E00F785CF /* WiFiStatusMonitor.swift */; };
+		DE74E35324804E3E00F785CF /* WiFiStatusMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74E35124804E3E00F785CF /* WiFiStatusMonitor.swift */; };
 		DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* Launch Screen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
 		DECD0956247DD36F0099747D /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
@@ -154,6 +156,7 @@
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DE74E35124804E3E00F785CF /* WiFiStatusMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WiFiStatusMonitor.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
 		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -285,6 +288,7 @@
 				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
 				DE3C10A32447B48000107AF4 /* Timers.swift */,
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
+				DE74E35124804E3E00F785CF /* WiFiStatusMonitor.swift */,
 				5591901D242C0FA400A80ED7 /* UserScore.swift */,
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
 				9C87AE282442408F00490481 /* ActivityList.swift */,
@@ -539,6 +543,7 @@
 				218C4196243DCC910036A2FE /* ProfilePic.swift in Sources */,
 				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
+				DE74E35224804E3E00F785CF /* WiFiStatusMonitor.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
 				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,
@@ -559,6 +564,7 @@
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
+				DE74E35324804E3E00F785CF /* WiFiStatusMonitor.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */,
 				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,

@@ -28,6 +28,8 @@ public protocol DBReader {
 
 /// Represents an interface for a writer of Alter Eco's databases.
 public protocol DBWriter {
+    /// Sets properties of the receiver entity with values from a given dictionary, using its keys to identify the properties.
+    func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws
     /// Appends an activity to the Event entity.
     func append(activity: MeasuredActivity) throws
     /// Updates score by adding score computed from a given activity.
@@ -152,15 +154,18 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return measuredActivities
     }
     
+    /// Sets properties of the receiver entity with values from a given dictionary, using its keys to identify the properties.
+    public func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {
+        let managedContext = try getManagedContext()
+        let entity = NSEntityDescription.entity(forEntityName: entity, in: managedContext)!
+        let db = NSManagedObject(entity: entity, insertInto: managedContext)
+        db.setValuesForKeys(keyedValues)
+        try managedContext.save()
+    }
+    
     /// Appends an activity to the Event entity.
     public func append(activity: MeasuredActivity) throws {
-        let managedContext = try getManagedContext()
-        let entity = NSEntityDescription.entity(forEntityName: "Event", in: managedContext)!
-        let eventDB = NSManagedObject(entity: entity, insertInto: managedContext)
-
-        eventDB.setValuesForKeys(["motionType" : MeasuredActivity.motionTypeToString(type: activity.motionType),
-                                  "distance":activity.distance, "start":activity.start, "end":activity.end])
-        try managedContext.save()
+        try setValuesForKeys(entity: "Event", keyedValues: ["motionType" : MeasuredActivity.motionTypeToString(type: activity.motionType), "distance":activity.distance, "start":activity.start, "end":activity.end])
         
         // call registered observer with the activity just written
         activityWrittenCallback(activity)
