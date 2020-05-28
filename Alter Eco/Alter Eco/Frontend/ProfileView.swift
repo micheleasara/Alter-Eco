@@ -96,7 +96,7 @@ struct AwardView: View {
             awardsList[0].Awarded = UserDefaults.standard.bool(forKey: String(0))
         }
         
-        if(try! DBMS.carbonWithinIntervalAll(from: Date(), interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
+        if(try! DBMS.carbonFromPollutingMotions(from: Date(), interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
         {
             UserDefaults.standard.set(true, forKey: String(1))
             awardsList[1].Awarded = UserDefaults.standard.bool(forKey: String(1))

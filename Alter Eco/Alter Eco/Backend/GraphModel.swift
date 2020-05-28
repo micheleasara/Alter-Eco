@@ -143,8 +143,7 @@ public class GraphDataModel : ObservableObject {
                 let carbon = try! DBMS.carbonWithinInterval(motionType: motion, from: dates[i-1], interval: intervals[i-1])
                 dataMotion.append(LabelledDataPoint(data: carbon, label: withLabels[i-1]))
                 
-                // walking is not considered polluting, so it is not added
-                if motion != .walking {
+                if motion.isPolluting() {
                     if dataTotal.count > i-1 {
                         dataTotal[i-1].data += carbon
                     } else { // not initialised

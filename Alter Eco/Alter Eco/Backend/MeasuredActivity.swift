@@ -17,6 +17,11 @@ public class MeasuredActivity : Equatable {
         case train
         case plane
         case unknown
+        
+        /// Returns whether the current motion is considered polluting.
+        public func isPolluting() -> Bool {
+            return self != .walking
+        }
     }
     
     /// Motion type associated to this activity.

@@ -85,20 +85,36 @@ class DatabaseTest: XCTestCase {
         XCTAssert(distance == Double(MeasuredActivity.MotionType.allCases.count))
     }
     
-    func testQueryForCarbonRetrieval() {
+    func testCarbonRetrievalOfPollutingMotions() {
         let someTimeAgo = Date.init(timeIntervalSince1970: 100)
         let longTimeAgo = Date.init(timeIntervalSince1970: 1)
         var carbonExpected = 0.0
         
         for motion in MeasuredActivity.MotionType.allCases {
-            if motion != .walking {
+            if motion.isPolluting() {
                 let old = MeasuredActivity(motionType: motion, distance: 1, start: longTimeAgo, end: someTimeAgo)
                 carbonExpected += DBMS.computeCarbonUsage(distance: 1, type: motion)
                 try! DBMS.append(activity: old)
             }
         }
-        let retrievedCarbon = try! DBMS.carbonWithinIntervalAll(from: longTimeAgo, interval: someTimeAgo.timeIntervalSince(longTimeAgo))
+        let retrievedCarbon = try! DBMS.carbonFromPollutingMotions(from: longTimeAgo, interval: someTimeAgo.timeIntervalSince(longTimeAgo))
         XCTAssert(retrievedCarbon == carbonExpected)
+    }
+    
+    func testCarbonRetrievalOfNonPollutingMotions() {
+        let someTimeAgo = Date.init(timeIntervalSince1970: 100)
+        let longTimeAgo = Date.init(timeIntervalSince1970: 1)
+        
+        for motion in MeasuredActivity.MotionType.allCases {
+            if !motion.isPolluting() {
+                let old = MeasuredActivity(motionType: motion, distance: 1, start: longTimeAgo, end: someTimeAgo)
+                let carbonExpected = DBMS.computeCarbonUsage(distance: 1, type: motion)
+                try! DBMS.append(activity: old)
+                
+                let retrievedCarbon = try! DBMS.carbonWithinInterval(motionType: motion, from: longTimeAgo, interval: someTimeAgo.timeIntervalSince(longTimeAgo))
+                XCTAssert(retrievedCarbon == carbonExpected)
+            }
+        }
     }
     
 }

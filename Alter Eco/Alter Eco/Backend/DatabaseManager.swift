@@ -63,12 +63,11 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     
     /**
     Returns the cumulative carbon output in kg for all polluting motion types and in the specified timeframe.
-     - Parameter motionType: the only motion type to consider.
      - Parameter from: starting date.
      - Parameter interval: interval to be added to the starting date.
      - Remark: walking is considered not polluting and does not contribute to the returned value.
      */
-    func carbonWithinIntervalAll(from:Date, interval:TimeInterval) throws -> Double
+    func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double
     
     /// Updates the league attribute of the Score entity with the given string.
     func updateLeague(newLeague: String) throws
@@ -121,7 +120,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     - Returns: List of objects that satisfy the predicate.
     - Remark: See .xcdatamodeld file for information about valid entities.
     */
-    public func executeQuery(entity: String, predicate: String? = nil, args:[Any]? = nil) throws -> [Any] {
+    public func executeQuery(entity: String, predicate: String? = nil, args: [Any]? = nil) throws -> [Any] {
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
         if predicate != nil && args != nil {
@@ -138,7 +137,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     - Parameter args: List of arguments to include in the predicate.
     - Returns: List of activities that satisfy the predicate.
     */
-    public func queryActivities(predicate: String? = nil, args:[Any]? = nil) throws -> [MeasuredActivity] {
+    public func queryActivities(predicate: String? = nil, args: [Any]? = nil) throws -> [MeasuredActivity] {
         var measuredActivities = [MeasuredActivity]()
         let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args)) as! [NSManagedObject]
 
@@ -224,16 +223,14 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     
     /**
     Returns the cumulative carbon output in kg for all polluting motion types and in the specified timeframe.
-     - Parameter motionType: the only motion type to consider.
      - Parameter from: starting date.
      - Parameter interval: interval to be added to the starting date.
      - Remark: walking is considered not polluting and does not contribute to the returned value.
      */
-    public func carbonWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
+    public func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double {
         var carbonTotal : Double = 0
         for motion in MeasuredActivity.MotionType.allCases {
-            // remove walking from total carbon as considered not polluting
-            if motion != .walking {
+            if motion.isPolluting() {
                 carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
             }
         }

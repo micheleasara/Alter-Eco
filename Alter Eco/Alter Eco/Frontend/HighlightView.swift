@@ -36,7 +36,7 @@ public struct HighlightView: View {
     }
     
     private func getGreenSentences() -> [String] {
-        let value = try! DBMS.carbonWithinIntervalAll(from: Date.setToSpecificHour(date: Date(), hour: "00:00:00")!, interval: DAY_IN_SECONDS)
+        let value = try! DBMS.carbonFromPollutingMotions(from: Date.setToSpecificHour(date: Date(), hour: "00:00:00")!, interval: DAY_IN_SECONDS)
         
         switch value {
         case AVERAGE_UK_DAILY_CARBON..<Double.infinity:
