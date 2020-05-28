@@ -41,6 +41,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         graphModel.getDataUpTo(Date())
     }
     
+    /// Contains data for the graph of GraphView.
+    var graphModel : GraphDataModel!
+    
     var scene = SceneDelegate()
     #endif
     
@@ -50,6 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         #if NO_BACKEND_TESTING
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
+        graphModel = GraphDataModel(limit: Date(), DBMS: self.DBMS)
         #endif
         
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)

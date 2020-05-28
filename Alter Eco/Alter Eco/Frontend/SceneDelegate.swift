@@ -9,10 +9,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     var screenMeasurements = ScreenMeasurements()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Create the SwiftUI view that provides the window contents.
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        let contentView = ContentView().environment(\.managedObjectContext, context)       
-        _ = DetailView().environment(\.managedObjectContext, context)
+
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let contentView = ContentView().environment(\.managedObjectContext, context)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
@@ -20,7 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
         
-            window.rootViewController = UIHostingController(rootView: contentView.environmentObject(screenMeasurements).environmentObject(graphModel))
+            window.rootViewController = UIHostingController(rootView: contentView
+                .environmentObject(screenMeasurements)
+                .environmentObject(appDelegate.graphModel))
             
             window.makeKeyAndVisible()
         }

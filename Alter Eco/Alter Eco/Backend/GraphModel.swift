@@ -16,11 +16,6 @@ public typealias LabelledDataPoints = [LabelledDataPoint]
 /// A container for carbon values divided by motion type and associated to a label.
 public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
 
-#if NO_BACKEND_TESTING
-/// Contains data for the graph of GraphView.
-let graphModel : GraphDataModel = GraphDataModel(limit: Date(), DBMS: DBMS)
-#endif
-
 /// Represents the data shown in the graph and can be observed by views wishing to be notified of data changes.
 public class GraphDataModel : ObservableObject {
     /// Hour granularity for the daily data.
