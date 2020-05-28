@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
-        
+            
             window.rootViewController = UIHostingController(rootView: contentView
                 .environmentObject(screenMeasurements)
                 .environmentObject(appDelegate.graphModel))
@@ -29,11 +29,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
-        (UIApplication.shared.delegate as? AppDelegate)?.manager.startUpdatingLocation()
-    }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            // force restart unless user does not want to
+            if !appDelegate.userPausedTracking {
+                appDelegate.manager.startUpdatingLocation()
+            }
+        }
     }
 
 }

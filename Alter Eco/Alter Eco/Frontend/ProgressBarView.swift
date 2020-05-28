@@ -16,9 +16,11 @@ struct ProgressBarView: View {
            .fontWeight(.semibold)
             
             textBoxLeagueInformation
-            progressBar
-            Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") / \(POINTS_REQUIRED_FOR_NEXT_LEAGUE, specifier: "%.0f")")
-            .font(.body)
+            VStack (spacing: 0) {
+                progressBar
+                Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") / \(POINTS_REQUIRED_FOR_NEXT_LEAGUE, specifier: "%.0f")")
+                        .font(.body)
+            }
         }
     }
     

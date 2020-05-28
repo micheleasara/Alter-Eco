@@ -89,6 +89,7 @@ public class ActivityEstimator<T:ActivityList> {
     private func isLocationFarEnough(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return true }
         let distance = location.distance(from: previousLoc!)
+        print("moved ", distance, "m")
         return distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD
     }
     

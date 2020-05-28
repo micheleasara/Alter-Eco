@@ -2,21 +2,42 @@ import SwiftUI
 
 public struct DetailView: View {
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
+    @State var userPausedTracking =         (UIApplication.shared.delegate as? AppDelegate)?.userPausedTracking
+
     
     public var body: some View {
         ScrollView {
-            VStack {
+            VStack(alignment: .center) {
                 WelcomeView()
                 GraphView().frame(height: measurementsOnLaunch.longitudinal / 2)
                 
-                Spacer()
-                ProgressBarView()
+                Button(action: {
+                    self.toggleTracking()
+                }) {
+                    if userPausedTracking ?? false {
+                        Text("Resume tracking").underline()
+                    } else {
+                        Text("Pause tracking").underline()
+                    }
+                }.padding(.bottom)
+                
+                ProgressBarView().padding(.bottom)
 
-                Spacer()
                 ComparisonView()
 
-                Spacer()
                 HighlightView()
+            }
+        }
+    }
+    
+    func toggleTracking() {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.userPausedTracking.toggle()
+            self.userPausedTracking = appDelegate.userPausedTracking
+            if appDelegate.userPausedTracking {
+                appDelegate.manager.stopUpdatingLocation()
+            } else {
+                appDelegate.manager.startUpdatingLocation()
             }
         }
     }
