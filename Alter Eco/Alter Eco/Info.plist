@@ -24,10 +24,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Location to estimate modes of transport</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>For the best experience, allow the app to track your position in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location to estimate modes of transport</string>
+	<string>For the best experience, allow the app to track your position in the background.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>For the best experience, allow the app to track your position in the background.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

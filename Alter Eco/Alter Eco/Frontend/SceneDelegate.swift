@@ -1,15 +1,13 @@
 import UIKit
 import SwiftUI
 import CoreLocation
-import MapKit
-import Network
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelegate {
     var window: UIWindow?
     var screenMeasurements = ScreenMeasurements()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let contentView = ContentView().environment(\.managedObjectContext, context)
@@ -29,11 +27,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {
+        // remove reminders for paused tracking
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            print(appDelegate.userPausedTracking)
-            // force restart unless user does not want to
-            if !appDelegate.userPausedTracking {
-                appDelegate.manager.startUpdatingLocation()
+            // resume tracking unless user does not want to or it is first launch
+            if !appDelegate.isFirstLaunch && !appDelegate.userPausedTracking {
+                appDelegate.startLocationTracking()
             }
         }
     }
@@ -45,5 +45,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             }
         }
     }
-
 }

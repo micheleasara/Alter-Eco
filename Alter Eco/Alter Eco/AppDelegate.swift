@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal var locationUponRequest: CLLocation? = nil
     internal let notificationUUID = UUID().uuidString
     internal var userPausedTracking: Bool = false
+    internal var isFirstLaunch: Bool!
     
     #if NO_BACKEND_TESTING
     // called when something is written to the database, used to update the graph
@@ -44,22 +45,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
+        
+        isFirstLaunch = queryDBForFirstLaunch()
     }
     
     // Override point for customization after application launch.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        requestNotificationsPermission()
-        
         // following code is to find path to coredata sqlite file
         // let container = NSPersistentContainer(name: "Database2.0")
         // print(container.persistentStoreDescriptions.first!.url)
-        startLocationTracking()
+        requestNotificationsPermission()
+        return true
+    }
+    
+    func queryDBForFirstLaunch() -> Bool {
+        let query = try! DBMS.executeQuery(entity: "UserPreference",
+                                      predicate: nil, args: nil) as! [NSManagedObject]
+        if query.count > 0 {
+            return (query[0].value(forKey: "firstLaunch") as! Bool)
+        }
+        // if nothing is in the database, this is the first launch
         return true
     }
     
     // MARK:- Location tracking and MapKit requests
     func startLocationTracking() {
-        manager.requestAlwaysAuthorization()
+        manager.requestWhenInUseAuthorization()
         manager.allowsBackgroundLocationUpdates = true
         manager.delegate = self
         manager.distanceFilter = GPS_UPDATE_DISTANCE_THRESHOLD
@@ -123,6 +134,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         print("Error while retrieving location: ", error.localizedDescription)
     }
     
+    func locationManager(_ manager: CLLocationManager,
+                         didChangeAuthorization status: CLAuthorizationStatus) {
+        print("called with status ", status.rawValue)
+        if status == .denied || status == .restricted || status == .authorizedWhenInUse {
+            print("not authorised")
+        }
+    }
+    
     //MARK:- Notifications
     func inactivityAndPausedNotification() {
         let content = UNMutableNotificationContent()
@@ -174,7 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                                         
             // Check if creating container wrong
             if let error = error {
-                fatalError("An error occurred: \(error)")
+                print("An error occurred: \(error)")
             }
         }
         return container

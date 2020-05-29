@@ -8,15 +8,11 @@ public struct DetailView: View {
     public var body: some View {
         ScrollView {
             VStack(alignment: .center) {
-                WelcomeView()
+                WelcomeView().padding(.top)
                 GraphView().frame(height: measurementsOnLaunch.longitudinal / 2)
                 
                 Button(action: {
                     self.toggleTracking()
-                    if self.userPausedTracking != nil && self.userPausedTracking! == false {
-                        // remove reminders for paused tracking
-                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
-                    }
                 }) {
                     if userPausedTracking ?? false {
                         Text("Resume tracking").underline()

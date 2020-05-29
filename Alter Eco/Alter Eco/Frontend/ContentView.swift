@@ -1,11 +1,9 @@
 import SwiftUI
-import MapKit
+import CoreLocation
 
 struct ContentView: View {
     @State var showSplash = true
-    @FetchRequest(entity: UserPreference.entity(), sortDescriptors: [NSSortDescriptor(keyPath: \UserPreference.firstLaunch, ascending: true)]) var preferences: FetchedResults<UserPreference>
-    @Environment(\.managedObjectContext) var context
-
+    @State var isFirstLaunch: Bool = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
     
     var body: some View {
         ZStack {
@@ -20,7 +18,7 @@ struct ContentView: View {
             }
             
             if !self.showSplash {
-                if isFirstLaunch() {
+                if isFirstLaunch {
                     introductionViewWithButton
                 } else {
                     tabView
@@ -29,27 +27,21 @@ struct ContentView: View {
         }
     }
     
-    func isFirstLaunch() -> Bool {
-        // for loop executes only if data is present
-        for preference in preferences {
-            return preference.firstLaunch
-        }
-        // by default, assume first launch
-        return true
-    }
-    
     var introductionViewWithButton: some View {
         VStack {
             IntroductionView()
             Button(action: {
-                let pref = UserPreference(context: self.context)
-                pref.firstLaunch = false
-                try? self.context.save()
-                
+                try? DBMS.setValuesForKeys(entity: "UserPreference", keyedValues: ["firstLaunch":false])
+                // refresh UI and display tabView
+                let delegate = (UIApplication.shared.delegate as! AppDelegate)
+                delegate.isFirstLaunch = false
+                self.isFirstLaunch = false
+                delegate.startLocationTracking()
             }) { Text("Let's go!").underline()}
                 .padding(.bottom)
         }
     }
+    
     
     var tabView : some View {
         TabView() {
