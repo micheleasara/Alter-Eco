@@ -14,12 +14,11 @@ public struct ComparisonView: View {
               ZStack {
                   RoundedRectangle(cornerRadius: 25, style: .continuous)
                       .fill(Color("fill_colour"))
-                      .frame(width: screenMeasurements.trasversal*0.9, height: screenMeasurements.longitudinal/6)
-                      
-                  Text(generateProportion())
-                      .font(.headline)
-                      .fontWeight(.regular)
-                      .frame(width: screenMeasurements.trasversal*0.7, height: screenMeasurements.longitudinal/6)
+                      .frame(width: screenMeasurements.trasversal*0.9, height: screenMeasurements.longitudinal/7)
+                    .overlay(
+                      Text(generateProportion())
+                        .allowsTightening(true)
+                        .padding())
               }
           }
       }

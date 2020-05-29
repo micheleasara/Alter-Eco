@@ -16,16 +16,13 @@ public struct HighlightView: View {
                 .font(.headline)
                 .fontWeight(.semibold)
             
-            ZStack {
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .fill(Color("fill_colour"))
-                .frame(width: screenMeasurements.trasversal*0.9, height: screenMeasurements.longitudinal/6)
-                
-            Text(generateSentence())
-                .font(.headline)
-                .fontWeight(.regular)
-                .frame(width: screenMeasurements.trasversal*0.7, height: screenMeasurements.longitudinal/7)
-            }
+                .frame(width: screenMeasurements.trasversal*0.9, height: screenMeasurements.longitudinal/7)
+                .overlay(
+                    Text(generateSentence())
+                    .allowsTightening(true)
+                    .padding())
         }
     }
     
