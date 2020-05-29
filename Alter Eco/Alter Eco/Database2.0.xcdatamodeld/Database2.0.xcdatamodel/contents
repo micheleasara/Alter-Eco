@@ -6,9 +6,6 @@
         <attribute name="motionType" optional="YES" attributeType="String"/>
         <attribute name="start" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
-    <entity name="Notification" representedClassName="Notification" syncable="YES" codeGenerationType="class">
-        <attribute name="showWifi" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-    </entity>
     <entity name="ProfilePic" representedClassName="ProfilePic" syncable="YES">
         <attribute name="imageP" optional="YES" attributeType="Binary"/>
     </entity>
@@ -18,10 +15,13 @@
         <attribute name="league" optional="YES" attributeType="String"/>
         <attribute name="score" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <entity name="UserPreference" representedClassName="UserPreference" syncable="YES" codeGenerationType="class">
+        <attribute name="firstLaunch" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+    </entity>
     <elements>
         <element name="Event" positionX="18" positionY="81" width="128" height="103"/>
+        <element name="UserPreference" positionX="0" positionY="81" width="128" height="58"/>
         <element name="ProfilePic" positionX="0" positionY="81" width="128" height="58"/>
         <element name="Score" positionX="-27" positionY="18" width="128" height="103"/>
-        <element name="Notification" positionX="0" positionY="81" width="128" height="58"/>
     </elements>
 </model>

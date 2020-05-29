@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-public struct ExplanationView: View {
+public struct PrivacyInfoView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
        
@@ -54,6 +54,6 @@ public struct ExplanationView: View {
 
 struct ExplanationView_Previews: PreviewProvider {
     static var previews: some View {
-        ExplanationView().environmentObject(ScreenMeasurements())
+        PrivacyInfoView().environmentObject(ScreenMeasurements())
     }
 }

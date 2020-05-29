@@ -26,7 +26,7 @@ struct ProfileView: View {
                 }
             }
             .navigationBarTitle("Profile", displayMode: .inline)
-            .navigationBarItems(trailing: NavigationLink(destination: ExplanationView())
+            .navigationBarItems(trailing: NavigationLink(destination: PrivacyInfoView())
             {
                 Text("Privacy")
             })
