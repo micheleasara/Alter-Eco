@@ -31,7 +31,7 @@ struct ProgressBarView: View {
              .foregroundColor(Color("fill_colour"))
           
             if ((try! DBMS.retrieveLatestScore()).league != "🌳") {
-                      Text("Grow your forest! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep earning points to grow a new 🌳!")
+                      Text("Grow your forest! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep earning points to grow a new 🌳")
                       .frame(width: screenMeasurements.trasversal*0.7, height: screenMeasurements.longitudinal / 8)
                   }
                    
