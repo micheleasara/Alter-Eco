@@ -28,7 +28,7 @@ struct ProfileView: View {
             .navigationBarTitle("Profile", displayMode: .inline)
             .navigationBarItems(trailing: NavigationLink(destination: ExplanationView())
             {
-                Text("Info")
+                Text("Privacy")
             })
         }
 
@@ -38,12 +38,8 @@ struct ProfileView: View {
 struct AwardView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    
-    let SECONDS_WEEK = 604800.0
-    let SECONDS_MONTH = 2592000.0
-    let LONDON_AVG_CARBON_WEEK = 15.8
 
-    var originalDate = Date() //setting current date as placeholder
+    var originalDate = try! DBMS.getFirstDate()
     var timeInterval = 0.0
     
     var awardsList = [
@@ -85,36 +81,35 @@ struct AwardView: View {
     ]
        
     init() {
-        self.originalDate = try! DBMS.getFirstDate()
         // Uncomment below to show some of the awards
         //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
         self.timeInterval = Date().timeIntervalSince(self.originalDate)
 
-        if(try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*DAY_IN_SECONDS) == 0 && timeInterval > (SECONDS_MONTH*6))
+        if (try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*DAY_IN_SECONDS) == 0 && timeInterval > (30*DAY_IN_SECONDS*6))
         {
             UserDefaults.standard.set(true, forKey: String(0))
             awardsList[0].Awarded = UserDefaults.standard.bool(forKey: String(0))
         }
         
-        if(try! DBMS.carbonFromPollutingMotions(from: Date(), interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > SECONDS_WEEK)
+        if (try! DBMS.carbonFromPollutingMotions(from: Date(), interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > WEEK_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(1))
             awardsList[1].Awarded = UserDefaults.standard.bool(forKey: String(1))
         }
         
-        if(try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -WEEK_IN_SECONDS) > 10000 && timeInterval > SECONDS_WEEK)
+        if (try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -WEEK_IN_SECONDS) > 10000 && timeInterval > WEEK_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(2))
             awardsList[2].Awarded = UserDefaults.standard.bool(forKey: String(2))
         }
         
-        if(try! DBMS.carbonWithinInterval(motionType: MeasuredActivity.MotionType.car, from: Date(), interval: -30*60*60*24) == 0 && timeInterval > SECONDS_MONTH)
+        if (try! DBMS.carbonWithinInterval(motionType: MeasuredActivity.MotionType.car, from: Date(), interval: -30*DAY_IN_SECONDS) == 0 && timeInterval > 30*DAY_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(3))
             awardsList[3].Awarded = UserDefaults.standard.bool(forKey: String(3))
         }
         
-        if(try! DBMS.distanceWithinIntervalAll(from: Date(), interval: -30*60*60*24) < 300 && timeInterval > SECONDS_MONTH)
+        if (try! DBMS.distanceWithinIntervalAll(from: Date(), interval: -30*DAY_IN_SECONDS) < 300 && timeInterval > 30*DAY_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(4))
             awardsList[4].Awarded = UserDefaults.standard.bool(forKey: String(4))
@@ -145,13 +140,6 @@ struct AwardView: View {
                 .frame(width: self.screenMeasurements.trasversal*0.85, height: self.screenMeasurements.trasversal*0.4)
                 .opacity(award.Awarded ? 1.0 : 0.6)
         }
-    }
-    
-    func getMonth(dateArg: Date = Date()) -> String {
-        let date = dateArg
-        dateFormatter.dateFormat = "LLLL"
-        let monthString = dateFormatter.string(from: date)
-        return monthString
     }
 }
 
@@ -241,7 +229,7 @@ struct ScorePoints: View {
                 Image(systemName: "info.circle")
             }
                 .alert(isPresented: $showingInfo) {
-                    Alert(title: Text("Your Eco Score"), message: Text("We estimate your modes of transport throughout the day. Walking gets you 10 points, taking the tube 7 points, you only gain 3 points for taking the car and no points for plane travel!"), dismissButton: .default(Text("OK")))
+                    Alert(title: Text("Your Eco Score"), message: Text("We estimate your modes of transport throughout the day. The more eco-friendly your commute is, the more points you earn!"), dismissButton: .default(Text("OK")))
                 }
             }
         }
