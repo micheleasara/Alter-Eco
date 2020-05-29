@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.allowsBackgroundLocationUpdates = true
         manager.delegate = self
         manager.distanceFilter = GPS_UPDATE_DISTANCE_THRESHOLD
-        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         manager.pausesLocationUpdatesAutomatically = true
         manager.activityType = .automotiveNavigation
         manager.startUpdatingLocation()
