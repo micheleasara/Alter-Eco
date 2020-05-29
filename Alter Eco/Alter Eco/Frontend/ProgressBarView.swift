@@ -25,23 +25,21 @@ struct ProgressBarView: View {
     }
     
     var textBoxLeagueInformation : some View {
-         ZStack() {
-            RoundedRectangle(cornerRadius: 25, style: .continuous)
+         RoundedRectangle(cornerRadius: 25, style: .continuous)
              .frame(width: screenMeasurements.trasversal * 0.9, height: screenMeasurements.longitudinal / 7)
              .foregroundColor(Color("fill_colour"))
-          
-            if ((try! DBMS.retrieveLatestScore()).league != "🌳") {
-                      Text("Grow your forest! You have planted \((try! DBMS.retrieveLatestScore()).counter) 🌳 so far, keep earning points to grow a new 🌳")
-                      .frame(width: screenMeasurements.trasversal*0.7, height: screenMeasurements.longitudinal / 8)
-                  }
-                   
-                 // depending on which league user is in, display next one
-            else if ((try! DBMS.retrieveLatestScore()).league == "🌳") {
-                     Text("Your forest is thriving! You just planted another 🌳, for a total of \((try! DBMS.retrieveLatestScore()).counter)! Congratulations! You're now growing a new sapling.")
-                          .font(.headline)
-                          .fontWeight(.regular)
-                          .frame(width: screenMeasurements.trasversal*0.7, height: screenMeasurements.longitudinal/8)
-            }
+            .overlay(
+                Text(retrieveLabel())
+                .allowsTightening(true)
+                .padding())
+    }
+    
+    func retrieveLabel() -> String {
+        let latestScore = try! DBMS.retrieveLatestScore()
+        if latestScore.league != "🌳" {
+            return "Grow your forest! You have planted \(latestScore.counter ?? 0) 🌳\nKeep earning points to grow a new one."
+        } else {
+           return "Your forest is thriving! You just planted another 🌳, for a total of \(latestScore.counter!)! Congratulations! You're now growing a new sapling."
         }
     }
     
