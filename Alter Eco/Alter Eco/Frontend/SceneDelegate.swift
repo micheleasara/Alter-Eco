@@ -28,11 +28,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         }
     }
     
-    func sceneWillEnterForeground(_ scene: UIScene) {
+    func sceneDidBecomeActive(_ scene: UIScene) {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            print(appDelegate.userPausedTracking)
             // force restart unless user does not want to
             if !appDelegate.userPausedTracking {
+                print("restarting updating locations")
                 appDelegate.manager.startUpdatingLocation()
+            }
+        }
+    }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            if appDelegate.userPausedTracking {
+                appDelegate.inactivityAndPausedNotification()
             }
         }
     }

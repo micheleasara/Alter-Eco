@@ -2,7 +2,7 @@ import SwiftUI
 
 public struct DetailView: View {
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
-    @State var userPausedTracking =         (UIApplication.shared.delegate as? AppDelegate)?.userPausedTracking
+    @State var userPausedTracking = (UIApplication.shared.delegate as? AppDelegate)?.userPausedTracking
 
     
     public var body: some View {
@@ -13,6 +13,10 @@ public struct DetailView: View {
                 
                 Button(action: {
                     self.toggleTracking()
+                    if self.userPausedTracking != nil && self.userPausedTracking! == false {
+                        // remove reminders for paused tracking
+                        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                    }
                 }) {
                     if userPausedTracking ?? false {
                         Text("Resume tracking").underline()
@@ -37,7 +41,7 @@ public struct DetailView: View {
             if appDelegate.userPausedTracking {
                 appDelegate.manager.stopUpdatingLocation()
             } else {
-                appDelegate.manager.startUpdatingLocation()
+                appDelegate.startLocationTracking()
             }
         }
     }

@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func activityWasWrittenToDB(activity: MeasuredActivity) {
         print("activity \(activity.motionType) of distance \(activity.distance)m",
             " was written with start \(activity.start) and end \(activity.end)")
-        graphModel.getDataUpTo(Date())
+        graphModel.updateUpTo(Date())
     }
     
     /// Contains data for the graph of GraphView.
@@ -48,13 +48,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     // Override point for customization after application launch.
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        requestNotificationsPermission()
         
-        registerForPushNotifications()
-                
         // following code is to find path to coredata sqlite file
         // let container = NSPersistentContainer(name: "Database2.0")
         // print(container.persistentStoreDescriptions.first!.url)
-                
+        startLocationTracking()
+        return true
+    }
+    
+    // MARK:- Location tracking and MapKit requests
+    func startLocationTracking() {
         manager.requestAlwaysAuthorization()
         manager.allowsBackgroundLocationUpdates = true
         manager.delegate = self
@@ -63,41 +67,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.pausesLocationUpdatesAutomatically = true
         manager.activityType = .automotiveNavigation
         manager.startUpdatingLocation()
-                
-        return true
     }
-      
+    
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
         let content = UNMutableNotificationContent()
         content.title = "Looks like you have not moved in a while"
-        content.body = "We care about your battery life. Open Alter Eco to resume tracking."
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: (1), repeats: false)
+        content.body = "Tracking paused: we care about your battery life. Open Alter Eco to resume."
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: notificationUUID, content: content, trigger: trigger)
 
         // Register Request
         UNUserNotificationCenter.current().add(request)
     }
-      
-    // MARK: - Notifications
     
-    func registerForPushNotifications() {
-        UNUserNotificationCenter.current()
-          .requestAuthorization(options: [.alert, .sound, .badge]) {
-            [weak self] granted, error in
-      
-            guard granted else { return }
-            self?.getNotificationSettings()
-        }
-      }
-      
-    func getNotificationSettings() {
-        UNUserNotificationCenter.current().getNotificationSettings { settings in
-            guard settings.authorizationStatus == .authorized else { return }
-            DispatchQueue.main.async { UIApplication.shared.registerForRemoteNotifications() }
-        }
-    }
-    
-    // MARK:- Location tracking and MapKit requests
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
         let location = locations.last!
         
@@ -140,6 +122,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error while retrieving location: ", error.localizedDescription)
     }
+    
+    //MARK:- Notifications
+    func inactivityAndPausedNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Friendly reminder"
+        content.body = "Tracking is paused. Open Alter Eco if you wish to resume."
+        
+        let oneTime = UNTimeIntervalNotificationTrigger(timeInterval: 2*HOUR_IN_SECONDS, repeats: false)
+        let shortRequest = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: oneTime)
+        UNUserNotificationCenter.current().add(shortRequest)
+        
+        let repeating = UNTimeIntervalNotificationTrigger(timeInterval: DAY_IN_SECONDS, repeats: true)
+        let repeatingRequest = UNNotificationRequest(identifier: notificationUUID, content: content, trigger: repeating)
+        UNUserNotificationCenter.current().add(repeatingRequest)
+    }
+    
+    func requestNotificationsPermission() {
+        UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert, .sound, .badge, .provisional]) { granted, error in
+                if let error = error { print("Error in registering notifications. Description: \(error.localizedDescription)")}
+        }
+      }
     
     // MARK: - Core Data
     lazy var persistentContainer: NSPersistentContainer = {

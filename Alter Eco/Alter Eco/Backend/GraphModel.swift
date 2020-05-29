@@ -36,11 +36,11 @@ public class GraphDataModel : ObservableObject {
     /// Initializes a new graph model which fetches data up to the limit provided and with the DBManager given.
     public init(limit: Date, DBMS: DBManager) {
         self.DBMS = DBMS
-        getDataUpTo(limit)
+        updateUpTo(limit)
     }
     
     /// Fetches the data from the database and updates the observing views.
-    public func getDataUpTo(_ date: Date) {
+    public func updateUpTo(_ date: Date) {
         carbonBreakdown[.day] = dailyDataUpTo(date)
         carbonBreakdown[.week] = weeklyDataUpTo(date)
         carbonBreakdown[.month] = monthlyDataUpTo(date)
