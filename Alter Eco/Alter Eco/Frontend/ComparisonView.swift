@@ -17,6 +17,7 @@ public struct ComparisonView: View {
                       .frame(width: screenMeasurements.trasversal*0.9, height: screenMeasurements.longitudinal/7)
                     .overlay(
                       Text(generateProportion())
+                        .minimumScaleFactor(0.01)
                         .allowsTightening(true)
                         .padding())
               }

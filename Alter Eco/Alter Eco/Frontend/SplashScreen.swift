@@ -6,7 +6,7 @@ public struct SplashScreen: View {
     @State private var percent = 0.0
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    private let ANIMATION_LENGTH: Double = 2 // in seconds
+    public static let ANIMATION_LENGTH: Double = 1.8 // in seconds
 
     public var body: some View {
         VStack {
@@ -30,7 +30,7 @@ public struct SplashScreen: View {
     }
       
     private func handleAnimations() {
-        withAnimation(.easeIn(duration: ANIMATION_LENGTH)) {
+        withAnimation(.easeIn(duration: SplashScreen.ANIMATION_LENGTH)) {
             percent = 1
         }
     }

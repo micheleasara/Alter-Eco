@@ -22,6 +22,7 @@ public struct HighlightView: View {
                 .overlay(
                     Text(generateSentence())
                     .allowsTightening(true)
+                    .minimumScaleFactor(0.01)
                     .padding())
         }
     }

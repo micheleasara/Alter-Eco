@@ -30,6 +30,7 @@ struct ProgressBarView: View {
              .foregroundColor(Color("fill_colour"))
             .overlay(
                 Text(retrieveLabel())
+                .minimumScaleFactor(0.01)
                 .allowsTightening(true)
                 .padding())
     }

@@ -33,7 +33,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             print(appDelegate.userPausedTracking)
             // force restart unless user does not want to
             if !appDelegate.userPausedTracking {
-                print("restarting updating locations")
                 appDelegate.manager.startUpdatingLocation()
             }
         }
