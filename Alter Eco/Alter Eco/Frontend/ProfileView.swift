@@ -28,7 +28,7 @@ struct ProfileView: View {
             .navigationBarTitle("Profile", displayMode: .inline)
             .navigationBarItems(trailing: NavigationLink(destination: PrivacyInfoView())
             {
-                Text("Privacy")
+                Text("Info")
             })
         }
 
@@ -36,7 +36,6 @@ struct ProfileView: View {
 }
 
 struct AwardView: View {
-    @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
     var originalDate = try! DBMS.getFirstDate()
@@ -145,7 +144,6 @@ struct AwardView: View {
 
 
 struct ProfileImage: View {
-    @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
@@ -208,7 +206,6 @@ struct ProfileImage: View {
 }
 
 struct ScorePoints: View {
-    @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var showingInfo = false
     
@@ -237,7 +234,6 @@ struct ScorePoints: View {
 }
 
 struct NameView: View {
-    @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State var name: String = ""
     @State var nickname: String = UserDefaults.standard.string(forKey: "Nickname") ?? ""
