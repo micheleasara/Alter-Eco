@@ -6,29 +6,24 @@ struct ProfileView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     var body: some View {
-        NavigationView() {
-            ScrollView {
-                Spacer()
-                VStack{
+        //NavigationView() {
+        ScrollView {
+            VStack(spacing: 0) {
                     ProfileImage()
-                        .frame(height: screenMeasurements.longitudinal*0.37)
-                    ScorePoints()
+                        .frame(height: 0.5*screenMeasurements.trasversal)
+                NameView().padding(.bottom)
+                    ScorePoints().frame(height: screenMeasurements.trasversal/7)
                     Divider()
-                        .padding(.top, 10)
-                        .padding(.bottom, 10)
+                        .padding()
                     Text("Achievements")
                         .font(.title)
                         .fontWeight(.semibold)
                     AwardView()
-                    Spacer(minLength: screenMeasurements.longitudinal*0.04)
-                }
+                }.padding()
             }
-            .navigationBarTitle("Profile", displayMode: .inline)
-            .navigationBarItems(trailing: NavigationLink(destination: PrivacyInfoView())
-            {
-                Text("Info")
-            })
-        }
+//        }.navigationBarTitle("Profile", displayMode: .inline)
+//        .navigationBarItems(trailing: NavigationLink(destination: PrivacyInfoView())
+//        { Text("Info") })
 
     }
 }
@@ -37,7 +32,6 @@ struct ProfileImage: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
-    @State var placeholder : Data = .init(count: 0)
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(entity: ProfilePic.entity(), sortDescriptors: [
         NSSortDescriptor(keyPath: \ProfilePic.imageP, ascending: true)
@@ -45,70 +39,57 @@ struct ProfileImage: View {
     ) var savings : FetchedResults<ProfilePic>
     
     var body: some View {
-        VStack(spacing: 0){
-        ZStack{
-            if(savings.count != 0){
-                ForEach(savings, id: \.self) { save in
-                    VStack() {
-                        Image(uiImage: UIImage(data: save.imageP ?? self.placeholder)!)
-                            .resizable()
-                            .scaledToFit()
-                            .clipShape(Circle())
-                            .frame(width: self.screenMeasurements.trasversal*0.6, height: self.screenMeasurements.trasversal*0.6)
-                            .shadow(radius: 10)
-                    }
-                }
-                Button(action: {self.showingImagePicker = true}){
-                    Circle()
-                }
-                    .foregroundColor(Color.white)
-                    .opacity(0.01)
-                    .frame(width: screenMeasurements.trasversal*0.41, height: screenMeasurements.trasversal*0.41)
+        GeometryReader { geo in
+            if self.savings.count > 0 {
+                self.loadStoredImage(height: geo.size.height)
+                .sheet(isPresented: self.$showingImagePicker, onDismiss: self.loadSelectedImage) {
+                    ImagePicker(image: self.$inputImage) }
+                .onTapGesture { self.showingImagePicker = true }
+                .clipShape(Circle())
+                .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+            } else {
+                self.loadDefaultAvatar(height: 0.65*geo.size.height)
+                    .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
             }
-            
-            Button(action: {self.showingImagePicker = true}){
-                if(savings.count == 0){
-                    Image("add_profile_pic")
-                        .scaleEffect(screenMeasurements.longitudinal/1700)
-                        .foregroundColor(Color("title_colour"))
-                }
-            }
-                .background(Color("shadow"))
-                .mask(Circle().scale(screenMeasurements.longitudinal/1000))
-                    
-                .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
-                    ImagePicker(image: self.$inputImage)
-                }
-                
-        }.frame(width: screenMeasurements.trasversal*0.6, height: screenMeasurements.longitudinal*0.3)
-            
-        NameView()
         }
     }
     
-    func loadImage() {
-        guard let inputImage = inputImage else { return}
-        if(savings.count != 0){
-            self.moc.delete(savings[0])}
+    func loadStoredImage(height: CGFloat) -> some View {
+        let img = UIImage(data: savings[0].imageP!)!
+        return resizeImageToFitHeight(image: img, height: height)
+    }
+    
+    func loadDefaultAvatar(height: CGFloat) -> some View {
+        return resizeImageToFitHeight(image: UIImage(named: "add_profile_pic")!, height: height)
+    }
+    
+    func resizeImageToFitHeight(image: UIImage, height: CGFloat) -> some View {
+        let widthToHeight = image.size.width / image.size.height
+        let width = widthToHeight * height
+        let fit = Image(uiImage: image).resizable()
+        return fit.frame(width: width, height: height)
+    }
+    
+    func loadSelectedImage() {
+        guard let inputImage = inputImage else { return }
+        if savings.count != 0 {
+            self.moc.delete(savings[0])
+        }
         let newPic = ProfilePic(context: self.moc)
         newPic.imageP = inputImage.jpegData(compressionQuality: CGFloat(1.0))
     }
 }
 
 struct ScorePoints: View {
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var showingInfo = false
     
     var body: some View {
         ZStack{
             RoundedRectangle(cornerRadius: 25, style: .continuous)
                 .fill(Color("fill_colour"))
-                .frame(width: self.screenMeasurements.trasversal*0.9)
-                .padding(.horizontal, 10)
-                .frame(height: screenMeasurements.longitudinal*0.1)
-            HStack(alignment: .top){
-                Text("Score:").font(.title) .fontWeight(.bold)
-                Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
+            HStack(alignment: .center){
+                Text("Current score: ").font(.title)
+                + Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
                     .font(.title)
 
             
@@ -124,35 +105,38 @@ struct ScorePoints: View {
 }
 
 struct NameView: View {
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State var name: String = ""
     @State var nickname: String = UserDefaults.standard.string(forKey: "Nickname") ?? ""
     @State private var changingNickname = false
 
     var body: some View {
         VStack {
-            if(nickname == "" || changingNickname == true)
-            {
-                TextField(" Enter Your Nickname", text: $name){
-                    self.addNickname()
-                    self.changingNickname = false
-                }.font(.callout)
-                    .foregroundColor(Color("title_colour"))
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(width: screenMeasurements.trasversal*0.7)
+            if(nickname == "" || changingNickname) {
+                enterNicknameTextField
             }
-            else
-            {
-                VStack{
-                    Text("Hello \(nickname)!")
-                        .layoutPriority(1.0)
-                    Button(action: {self.changingNickname = true}){
-                        Text("Change nickname")
-                        }.font(.body)
-                }
+            else {
+                greetingWithChangeButton
             }
         }
-        .font(.title)
+    }
+    
+    var enterNicknameTextField: some View {
+        TextField(" Enter Your Nickname", text: $name) {
+            self.addNickname()
+            self.changingNickname = false
+        }
+            .font(.callout)
+            .foregroundColor(Color("title_colour"))
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+    }
+    
+    var greetingWithChangeButton: some View {
+        VStack {
+            Text("Hello \(nickname)!")
+            Button(action: {
+                self.changingNickname = true
+            }) { Text("Change nickname").font(.body)}
+        }
     }
     
     func addNickname() {
@@ -273,8 +257,15 @@ struct AwardView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        return ProfileView()
-                .environment(\.managedObjectContext, context)
-                .environmentObject(ScreenMeasurements())
+        return Group {
+            ProfileView()
+            ProfileImage()
+            ScorePoints()
+            NameView()
+            VStack {
+                AwardView()
+            }
+        }.environment(\.managedObjectContext, context)
+        .environmentObject(ScreenMeasurements())
     }
 }
