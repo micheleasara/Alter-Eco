@@ -16,8 +16,8 @@ public typealias LabelledDataPoints = [LabelledDataPoint]
 /// A container for carbon values divided by motion type and associated to a label.
 public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
 
-/// Represents the data shown in the graph and can be observed by views wishing to be notified of data changes.
-public class GraphDataModel : ObservableObject {
+/// Represents the data shown in the chart and can be observed by views wishing to be notified of data changes.
+public class ChartDataModel : ObservableObject {
     /// Hour granularity for the daily data.
     public let HOUR_GRANULARITY = 2
     /// Number of weekdays to include in the weekly data.
@@ -47,7 +47,7 @@ public class GraphDataModel : ObservableObject {
         carbonBreakdown[.year] = yearlyDataUpTo(date)
     }
 
-    /// Represents the timespans shown in the graph.
+    /// Represents the timespans shown in the chart.
     public enum Timespan: CaseIterable {
         case day
         case week

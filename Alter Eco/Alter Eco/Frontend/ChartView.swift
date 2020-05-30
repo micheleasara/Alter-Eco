@@ -1,9 +1,9 @@
 import SwiftUI
 
-struct GraphView: View {
-    @State private var timespanSelection = GraphDataModel.Timespan.day
+struct ChartView: View {
+    @State private var timespanSelection = ChartDataModel.Timespan.day
     @State private var transportSelection = MeasuredActivity.MotionType.unknown
-    @EnvironmentObject var dataGraph : GraphDataModel
+    @EnvironmentObject var chartData : ChartDataModel
 
     var body: some View {
         VStack () {
@@ -23,10 +23,10 @@ struct GraphView: View {
     /// Represents the picker for the timespan the user's wishes to see.
     public var timePicker : some View {
         Picker(selection: $timespanSelection.animation(), label: Text("")) {
-            Text("Daily").tag(GraphDataModel.Timespan.day)
-            Text("Weekly").tag(GraphDataModel.Timespan.week)
-            Text("Monthly").tag(GraphDataModel.Timespan.month)
-            Text("Yearly").tag(GraphDataModel.Timespan.year)
+            Text("Daily").tag(ChartDataModel.Timespan.day)
+            Text("Weekly").tag(ChartDataModel.Timespan.week)
+            Text("Monthly").tag(ChartDataModel.Timespan.month)
+            Text("Yearly").tag(ChartDataModel.Timespan.year)
         }
           .pickerStyle(SegmentedPickerStyle())
     }
@@ -43,12 +43,12 @@ struct GraphView: View {
         .pickerStyle(SegmentedPickerStyle())
     }
     
-    /// Returns the colour of the bars in the graph, which change according to daily carbon footprint.
+    /// Returns the colour of the bars in the chart, which change according to daily carbon footprint.
     public var barColour : Color {
         var colour: String = "graphBars"
-        let carbonByTransport = dataGraph.carbonBreakdown[.week]!
+        let carbonByTransport = chartData.carbonBreakdown[.week]!
         
-        // graph changes colour depending on users's daily carbon footprint
+        // chart changes colour depending on users's daily carbon footprint
         var todayTotal = 0.0
         for motion in MeasuredActivity.MotionType.allCases {
             if let labelledValue = carbonByTransport[motion]?.last {
@@ -71,7 +71,7 @@ struct GraphView: View {
     
     private func totalCarbonInKg() -> Double {
         var total = 0.0
-        if let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection] {
+        if let labelledPoints = chartData.carbonBreakdown[timespanSelection]![transportSelection] {
             for labelledPoint in  labelledPoints {
                 total += labelledPoint.data
             }
@@ -81,7 +81,7 @@ struct GraphView: View {
     
     private func getLabels() -> [String] {
         var labels = [String]()
-        let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection]!
+        let labelledPoints = chartData.carbonBreakdown[timespanSelection]![transportSelection]!
         for labelledPoint in labelledPoints {
             labels.append(labelledPoint.label)
         }
@@ -90,7 +90,7 @@ struct GraphView: View {
     
     private func getValues() -> [Double] {
         var values = [Double]()
-        let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection]!
+        let labelledPoints = chartData.carbonBreakdown[timespanSelection]![transportSelection]!
         
         for labelledPoint in labelledPoints {
             values.append(labelledPoint.data)
@@ -107,7 +107,7 @@ struct GraphView: View {
     
     private func getInfoOnBarTap() -> [String] {
         var infoOnBarTap = [String]()
-        let labelledPoints = dataGraph.carbonBreakdown[timespanSelection]![transportSelection]!
+        let labelledPoints = chartData.carbonBreakdown[timespanSelection]![transportSelection]!
          for labelledPoint in labelledPoints {
             let info = "Carbon: " + kgToReadableLabel(valueInKg: labelledPoint.data)
             infoOnBarTap.append(info)
@@ -128,11 +128,11 @@ struct GraphView: View {
     }
 }
 
-struct GraphView_Previews: PreviewProvider {
+struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
         let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
         let DBMS = CoreDataManager(persistentContainer: container)
-        return GraphView()
-            .environmentObject(GraphDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
+        return ChartView()
+            .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }

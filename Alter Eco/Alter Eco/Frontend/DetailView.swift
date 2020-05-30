@@ -8,7 +8,7 @@ public struct DetailView: View {
         ScrollView {
             VStack(alignment: .center) {
                 WelcomeView().padding(.top)
-                GraphView().frame(height: measurementsOnLaunch.longitudinal / 2)
+                ChartView().frame(height: measurementsOnLaunch.longitudinal / 2)
                 
                 Button(action: {
                     self.toggleTracking()
@@ -47,6 +47,6 @@ struct DetailView_Previews: PreviewProvider {
         let DBMS = CoreDataManager(persistentContainer: container)
         return DetailView()
            .environmentObject(ScreenMeasurements())
-            .environmentObject(GraphDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
+            .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }

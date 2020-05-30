@@ -28,11 +28,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func activityWasWrittenToDB(activity: MeasuredActivity) {
         print("activity \(activity.motionType) of distance \(activity.distance)m",
             " was written with start \(activity.start) and end \(activity.end)")
-        graphModel.updateUpTo(Date().toLocalTime())
+        chartModel.updateUpTo(Date().toLocalTime())
     }
     
-    /// Contains data for the graph of GraphView.
-    internal var graphModel : GraphDataModel!
+    /// Contains data for the chart of ChartView.
+    internal var chartModel : ChartDataModel!
     
     var scene = SceneDelegate()
     #endif
@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         #if NO_BACKEND_TESTING
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
-        graphModel = GraphDataModel(limit: Date().toLocalTime(), DBMS: self.DBMS)
+        chartModel = ChartDataModel(limit: Date().toLocalTime(), DBMS: self.DBMS)
         #endif
                 
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)

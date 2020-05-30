@@ -1,15 +1,15 @@
 import XCTest
 @testable import AlterEcoBackend
 
-class GraphDataModelTest: XCTestCase {
+class ChartDataModelTest: XCTestCase {
     var DBMS: DBManagerMock!
-    var model: GraphDataModel!
+    var model: ChartDataModel!
     let limit = Date(timeIntervalSince1970: 0)
     
     override func setUp() {
         super.setUp()
         DBMS = DBManagerMock()
-        model = GraphDataModel(limit: limit, DBMS: DBMS)
+        model = ChartDataModel(limit: limit, DBMS: DBMS)
     }
     
     func testRetrievesDailyDataWithSpecifiedGranularity() {

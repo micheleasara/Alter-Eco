@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             
             window.rootViewController = UIHostingController(rootView: contentView
                 .environmentObject(screenMeasurements)
-                .environmentObject(appDelegate.graphModel))
+                .environmentObject(appDelegate.chartModel))
             
             window.makeKeyAndVisible()
         }
