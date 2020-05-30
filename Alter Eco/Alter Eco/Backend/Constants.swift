@@ -22,7 +22,7 @@ public let MAX_DISTANCE_WITHIN_AIRPORT:Double = 1000
 /// Defines average radius of station in meters.
 public let MAX_DISTANCE_WITHIN_STATION:Double = 60
 /// Idle time (in seconds) after which the activity estimator should forget the user was in a station.
-public let STATION_TIMEOUT:Double = 60*90
+public let STATION_TIMEOUT:Double = 90 * 60
 /// Idle time (in seconds) after which the activity estimator should forget the user was in an airport.
 public let AIRPORT_TIMEOUT:Double = DAY_IN_SECONDS
 /// Determines how many measurements of type car the activity estimator needs before resetting airport flag.
@@ -33,10 +33,12 @@ public let WALK_NUM_FOR_TRAIN_FLAG_OFF:Int = 3
 // MARK: - Speed-based activities constants
 /// Defines how many measurements in a row must be different from the root measurement before an activity is estimated.
 public let CHANGE_ACTIVITY_THRESHOLD:Int = 2
+/// Defines the number of speed-based measurements of the same kind which are needed to compute an activity.
+public let NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY = CHANGE_ACTIVITY_THRESHOLD + 1
 /// Defines weights in computing average of speed-based activities.
 public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Double] = [.car: 1.5, .walking: 1]
 /// Defines how many seconds must pass for an activity to expire in the absence of ROI flags.
-public let ACTIVITY_TIMEOUT : Double = 60*5
+public let ACTIVITY_TIMEOUT : Double = 60 * 5
 
 // MARK: - GPS constants
 /// Defines how many meters to request a gps update.

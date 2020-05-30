@@ -27,7 +27,7 @@ public struct ComparisonView: View {
     private func generateProportion() -> String {
         dateFormatter.dateFormat = "HH:mm:ss"
         dateFormatter.locale = Locale(identifier: "en-UK")
-        let now = Date()
+        let now = Date().toLocalTime()
         let value = try! DBMS.carbonFromPollutingMotions(from: Date.setToSpecificHour(date: now, hour: "00:00:00")!, interval: DAY_IN_SECONDS)
         
         let proportion = Int(round(value * 100 / AVERAGE_UK_DAILY_CARBON))

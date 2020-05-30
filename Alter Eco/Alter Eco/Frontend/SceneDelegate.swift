@@ -32,7 +32,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             // resume tracking unless user does not want to or it is first launch
-            if !appDelegate.isFirstLaunch && !appDelegate.userPausedTracking {
+            if !appDelegate.isFirstLaunch.rawValue && !appDelegate.isTrackingPaused.rawValue {
                 appDelegate.startLocationTracking()
             }
         }
@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     
     func sceneDidEnterBackground(_ scene: UIScene) {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            if appDelegate.userPausedTracking {
+            if appDelegate.isTrackingPaused.rawValue {
                 appDelegate.inactivityAndPausedNotification()
             }
         }

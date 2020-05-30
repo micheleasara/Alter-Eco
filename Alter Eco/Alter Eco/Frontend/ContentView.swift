@@ -3,7 +3,7 @@ import CoreLocation
 
 struct ContentView: View {
     @State var showSplash = true
-    @State var isFirstLaunch: Bool = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
+    @ObservedObject var isFirstLaunch: Observable<Bool> = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
     
     var body: some View {
         ZStack {
@@ -18,7 +18,7 @@ struct ContentView: View {
             }
             
             if !self.showSplash {
-                if isFirstLaunch {
+                if isFirstLaunch.rawValue {
                     introductionViewWithButton
                 } else {
                     tabView
@@ -34,8 +34,7 @@ struct ContentView: View {
                 try? DBMS.setValuesForKeys(entity: "UserPreference", keyedValues: ["firstLaunch":false])
                 // refresh UI and display tabView
                 let delegate = (UIApplication.shared.delegate as! AppDelegate)
-                delegate.isFirstLaunch = false
-                self.isFirstLaunch = false
+                delegate.isFirstLaunch.rawValue = false
                 delegate.startLocationTracking()
             }) { Text("Let's go!").underline()}
                 .padding(.bottom)
@@ -58,6 +57,8 @@ struct ContentView: View {
                     Text("Profile").font(.title)
                 }
             }
+        }.onAppear() {
+            (UIApplication.shared.delegate as? AppDelegate)?.requestNotificationsPermission()
         }
     }
 }
@@ -67,7 +68,7 @@ struct ContentView_Previews: PreviewProvider {
         let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
         return ContentView()
            .environmentObject(ScreenMeasurements())
-            .environmentObject(GraphDataModel(limit: Date(),
+            .environmentObject(GraphDataModel(limit: Date().toLocalTime(),
                                               DBMS: CoreDataManager(persistentContainer: container)))
             .environment(\.managedObjectContext, container.viewContext)
     }

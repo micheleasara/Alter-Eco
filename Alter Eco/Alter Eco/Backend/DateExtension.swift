@@ -98,4 +98,11 @@ extension Date {
         dateFormatter.dateFormat = "yyyy"
         return dateFormatter.string(from: date)
     }
+
+    /// Converts date to local time.
+    public func toLocalTime() -> Date {
+        let timezone = TimeZone.current
+        let seconds = TimeInterval(timezone.secondsFromGMT(for: self))
+        return Date(timeInterval: seconds, since: self)
+    }
 }

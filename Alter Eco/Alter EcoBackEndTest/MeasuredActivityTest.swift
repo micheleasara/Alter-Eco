@@ -5,7 +5,7 @@ import CoreLocation
 
 class MeasuredActivityTest: XCTestCase {
     func testTwoEqualActivitiesResultEqual() {
-        let date = Date()
+        let date = Date(timeIntervalSince1970: 0)
         let activityOne = MeasuredActivity(motionType: .car, distance: 11, start: date, end: Date(timeInterval: 10, since: date))
         let activityTwo = MeasuredActivity(motionType: .car, distance: 11, start: date, end: activityOne.end)
         
@@ -13,7 +13,7 @@ class MeasuredActivityTest: XCTestCase {
     }
     
     func testTwoDifferentActivitiesResultDifferent() {
-        let date = Date()
+        let date = Date(timeIntervalSince1970: 0)
         let activityOne = MeasuredActivity(motionType: .car, distance: 11, start: date, end: Date(timeInterval: 10, since: date))
         let activityTwo = MeasuredActivity(motionType: .car, distance: 11, start: Date(timeInterval: 1000, since: date), end: activityOne.end)
         

@@ -5,7 +5,6 @@ import CoreData
 struct ProfileView: View {
     @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-
     
     var body: some View {
         NavigationView() {
@@ -82,33 +81,33 @@ struct AwardView: View {
     init() {
         // Uncomment below to show some of the awards
         //self.originalDate = Date(timeIntervalSinceNow: -50000000 * 60)
-        self.timeInterval = Date().timeIntervalSince(self.originalDate)
+        self.timeInterval = Date().toLocalTime().timeIntervalSince(self.originalDate)
 
-        if (try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date(), interval: -183*DAY_IN_SECONDS) == 0 && timeInterval > (30*DAY_IN_SECONDS*6))
+        if (try! DBMS.carbonWithinInterval(motionType:MeasuredActivity.MotionType.plane, from: Date().toLocalTime(), interval: -183*DAY_IN_SECONDS) == 0 && timeInterval > (30*DAY_IN_SECONDS*6))
         {
             UserDefaults.standard.set(true, forKey: String(0))
             awardsList[0].Awarded = UserDefaults.standard.bool(forKey: String(0))
         }
         
-        if (try! DBMS.carbonFromPollutingMotions(from: Date(), interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > WEEK_IN_SECONDS)
+        if (try! DBMS.carbonFromPollutingMotions(from: Date().toLocalTime(), interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > WEEK_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(1))
             awardsList[1].Awarded = UserDefaults.standard.bool(forKey: String(1))
         }
         
-        if (try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date(), interval: -WEEK_IN_SECONDS) > 10000 && timeInterval > WEEK_IN_SECONDS)
+        if (try! DBMS.distanceWithinInterval(motionType: MeasuredActivity.MotionType.walking, from: Date().toLocalTime(), interval: -WEEK_IN_SECONDS) > 10000 && timeInterval > WEEK_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(2))
             awardsList[2].Awarded = UserDefaults.standard.bool(forKey: String(2))
         }
         
-        if (try! DBMS.carbonWithinInterval(motionType: MeasuredActivity.MotionType.car, from: Date(), interval: -30*DAY_IN_SECONDS) == 0 && timeInterval > 30*DAY_IN_SECONDS)
+        if (try! DBMS.carbonWithinInterval(motionType: MeasuredActivity.MotionType.car, from: Date().toLocalTime(), interval: -30*DAY_IN_SECONDS) == 0 && timeInterval > 30*DAY_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(3))
             awardsList[3].Awarded = UserDefaults.standard.bool(forKey: String(3))
         }
         
-        if (try! DBMS.distanceWithinIntervalAll(from: Date(), interval: -30*DAY_IN_SECONDS) < 300 && timeInterval > 30*DAY_IN_SECONDS)
+        if (try! DBMS.distanceWithinIntervalAll(from: Date().toLocalTime(), interval: -30*DAY_IN_SECONDS) < 300 && timeInterval > 30*DAY_IN_SECONDS)
         {
             UserDefaults.standard.set(true, forKey: String(4))
             awardsList[4].Awarded = UserDefaults.standard.bool(forKey: String(4))

@@ -250,7 +250,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         // retrieve current score
         let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
         if queryResult.count != 0 {
-            let activityScore = UserScore(activity: activity, league: "", date: Date.toInternationalString(Date()), counter: 0)
+            let activityScore = UserScore(activity: activity, league: "", date: Date.toInternationalString(Date().toLocalTime()), counter: 0)
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
             queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
             queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
@@ -262,7 +262,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     /// Updates league attribute of the Score entity with the given string.
     public func updateLeague(newLeague: String) throws {
        let managedContext = try getManagedContext()
-       let dateToday = Date()
+       let dateToday = Date().toLocalTime()
        let dateTodayStr = Date.toInternationalString(dateToday)
     
        // retrieve current user's score
@@ -302,7 +302,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     /// Sets the user's score to 0.
     public func resetScore() throws -> Void {
         let managedContext = try getManagedContext()
-        let dateToday = Date()
+        let dateToday = Date().toLocalTime()
         let dateTodayStr = Date.toInternationalString(dateToday)
         
         let newScore = 0.0
@@ -334,7 +334,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     
     /// Returns the earliest start date within the Event entity. If no date is found, the date of today is returned.
     public func getFirstDate() throws -> Date {
-        var oldDate = Date()
+        var oldDate = Date().toLocalTime()
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Event")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "start", ascending: true)]
@@ -370,7 +370,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     
     private func updateTreeCounter() throws -> Void {
            let managedContext = try getManagedContext()
-           let dateToday = Date()
+           let dateToday = Date().toLocalTime()
            let dateTodayStr = Date.toInternationalString(dateToday)
            
            let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]

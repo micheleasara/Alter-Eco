@@ -2,8 +2,7 @@ import SwiftUI
 
 public struct DetailView: View {
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
-    @State var userPausedTracking = (UIApplication.shared.delegate as? AppDelegate)?.userPausedTracking
-
+    @ObservedObject var isTrackingPaused = (UIApplication.shared.delegate as! AppDelegate).isTrackingPaused
     
     public var body: some View {
         ScrollView {
@@ -14,7 +13,7 @@ public struct DetailView: View {
                 Button(action: {
                     self.toggleTracking()
                 }) {
-                    if userPausedTracking ?? false {
+                    if isTrackingPaused.rawValue {
                         Text("Resume tracking").underline()
                     } else {
                         Text("Pause tracking").underline()
@@ -32,9 +31,8 @@ public struct DetailView: View {
     
     func toggleTracking() {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            appDelegate.userPausedTracking.toggle()
-            self.userPausedTracking = appDelegate.userPausedTracking
-            if appDelegate.userPausedTracking {
+            appDelegate.isTrackingPaused.rawValue.toggle()
+            if appDelegate.isTrackingPaused.rawValue {
                 appDelegate.manager.stopUpdatingLocation()
             } else {
                 appDelegate.startLocationTracking()
@@ -49,6 +47,6 @@ struct DetailView_Previews: PreviewProvider {
         let DBMS = CoreDataManager(persistentContainer: container)
         return DetailView()
            .environmentObject(ScreenMeasurements())
-            .environmentObject(GraphDataModel(limit: Date(), DBMS: DBMS))
+            .environmentObject(GraphDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }

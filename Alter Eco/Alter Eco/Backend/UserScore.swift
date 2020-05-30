@@ -15,7 +15,7 @@ public class UserScore : Equatable{
     /// Returns the default initial user score.
     public static func getInitialScore() -> UserScore {
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        return UserScore(totalPoints: 0, date: dateFormatter.string(from: Date()), league: "🌱", counter: 0)
+        return UserScore(totalPoints: 0, date: dateFormatter.string(from: Date().toLocalTime()), league: "🌱", counter: 0)
     }
     
     /// Initializes a UserScore with the given parameters.

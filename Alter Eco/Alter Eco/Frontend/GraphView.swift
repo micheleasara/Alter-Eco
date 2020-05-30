@@ -133,6 +133,6 @@ struct GraphView_Previews: PreviewProvider {
         let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
         let DBMS = CoreDataManager(persistentContainer: container)
         return GraphView()
-            .environmentObject(GraphDataModel(limit: Date(), DBMS: DBMS))
+            .environmentObject(GraphDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }

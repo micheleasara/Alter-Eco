@@ -8,24 +8,27 @@ let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
-    // requests gps updates
+    /// Requests gps updates.
     internal let manager = CLLocationManager()
-    // interfaces with the database
-    public var DBMS : DBManager!
-    // estimates activities based on given information (such as location updates)
-    internal var activityEstimator : ActivityEstimator<WeightedActivityList>!
-    // location of last request for stations nearby, to be used with station request radius
+    /// Interfaces with the database.
+    public var DBMS: DBManager!
+    /// Estimates activities based on given information (such as location updates).
+    internal var activityEstimator: ActivityEstimator<WeightedActivityList>!
+    /// Location of last request for stations nearby, to be used with station request radius.
     internal var locationUponRequest: CLLocation? = nil
+    /// UUID for repeating notifications.
     internal let notificationUUID = UUID().uuidString
-    internal var userPausedTracking: Bool = false
-    internal var isFirstLaunch: Bool!
+    /// Observable state of location tracking.
+    internal var isTrackingPaused = Observable<Bool>(rawValue: false)
+    /// Observable representation of whether this is the first time the app is launched.
+    internal var isFirstLaunch: Observable<Bool>!
     
     #if NO_BACKEND_TESTING
     // called when something is written to the database, used to update the graph
     func activityWasWrittenToDB(activity: MeasuredActivity) {
         print("activity \(activity.motionType) of distance \(activity.distance)m",
             " was written with start \(activity.start) and end \(activity.end)")
-        graphModel.updateUpTo(Date())
+        graphModel.updateUpTo(Date().toLocalTime())
     }
     
     /// Contains data for the graph of GraphView.
@@ -40,22 +43,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         #if NO_BACKEND_TESTING
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
-        graphModel = GraphDataModel(limit: Date(), DBMS: self.DBMS)
+        graphModel = GraphDataModel(limit: Date().toLocalTime(), DBMS: self.DBMS)
         #endif
                 
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
         
-        isFirstLaunch = queryDBForFirstLaunch()
-    }
-    
-    // Override point for customization after application launch.
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // following code is to find path to coredata sqlite file
-        // let container = NSPersistentContainer(name: "Database2.0")
-        // print(container.persistentStoreDescriptions.first!.url)
-        requestNotificationsPermission()
-        return true
+        isFirstLaunch = Observable<Bool>(rawValue: queryDBForFirstLaunch())
     }
     
     func queryDBForFirstLaunch() -> Bool {
@@ -84,11 +78,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let content = UNMutableNotificationContent()
         content.title = "Looks like you have not moved in a while"
         content.body = "Tracking paused: we care about your battery life. Open Alter Eco to resume."
+        content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let request = UNNotificationRequest(identifier: notificationUUID, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
 
-        // Register Request
         UNUserNotificationCenter.current().add(request)
+        isTrackingPaused.rawValue = true
     }
     
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
@@ -124,7 +119,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                
                locationUponRequest = location
            }
-           
            else {
                activityEstimator.processLocation(location)
            }
@@ -136,8 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManager(_ manager: CLLocationManager,
                          didChangeAuthorization status: CLAuthorizationStatus) {
-        print("called with status ", status.rawValue)
-        if status == .denied || status == .restricted || status == .authorizedWhenInUse {
+        if status == .denied || status == .restricted {
             print("not authorised")
         }
     }
@@ -145,8 +138,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //MARK:- Notifications
     func inactivityAndPausedNotification() {
         let content = UNMutableNotificationContent()
-        content.title = "Friendly reminder"
+        content.title = "Heads up!"
         content.body = "Tracking is paused. Open Alter Eco if you wish to resume."
+        content.sound = UNNotificationSound.default
         
         let oneTime = UNTimeIntervalNotificationTrigger(timeInterval: 2*HOUR_IN_SECONDS, repeats: false)
         let shortRequest = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: oneTime)
@@ -158,10 +152,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func requestNotificationsPermission() {
-        UNUserNotificationCenter.current()
-            .requestAuthorization(options: [.alert, .sound, .badge, .provisional]) { granted, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge])
+            { granted, error in
                 if let error = error { print("Error in registering notifications. Description: \(error.localizedDescription)")}
-        }
+            }
+        
       }
     
     // MARK: - Core Data

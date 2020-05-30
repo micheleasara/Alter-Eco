@@ -76,6 +76,7 @@ class ActivityListMock : ActivityList {
     }
     
     func removeAll() {
+        remove(from: 0, to: count-1)
         removeAllCalls += 1
     }
     

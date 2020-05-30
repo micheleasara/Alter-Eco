@@ -110,7 +110,7 @@ class ActivityEstimatorTest: XCTestCase {
             list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
             date = Date(timeInterval: 10, since: date)
         }
-        for _ in 1...CHANGE_ACTIVITY_THRESHOLD {
+        for _ in 1..<NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY-1 {
             list.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
         }
         
@@ -120,7 +120,7 @@ class ActivityEstimatorTest: XCTestCase {
         estimator.processLocation(previousLocation)
         estimator.processLocation(currentLocation)
         
-        let numElements = 2*CHANGE_ACTIVITY_THRESHOLD + 1
+        let numElements = CHANGE_ACTIVITY_THRESHOLD + NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY - 1
         XCTAssert(list.addCalls == numElements, "Expected \(numElements), but got \(list.addCalls)")
         XCTAssert(DBMS.appendArgs.count == 1, "Expected one call, but got \(DBMS.appendArgs.count)")
     }
@@ -306,10 +306,9 @@ class ActivityEstimatorTest: XCTestCase {
         let coord2 = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
         
         var date = Date(timeIntervalSince1970: 0)
-        for _ in 1...5 {
-            list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
-            date = Date(timeInterval: 10, since: date)
-        }
+        list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+        date = Date(timeInterval: 10, since: date)
+
         // trigger location updates
         let previousLocation = CLLocation(coordinate: coord1, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         let currentLocation = CLLocation(coordinate: coord2, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: previousLocation.timestamp))
@@ -322,6 +321,6 @@ class ActivityEstimatorTest: XCTestCase {
         XCTAssert(timers.startIntervals[0] == ACTIVITY_TIMEOUT, "Got \(timers.startIntervals)")
         timers.startBlocks[0]()
         XCTAssert(DBMS.appendArgs.count == 1, "Expected one call, but got \(DBMS.appendArgs.count)")
-        XCTAssert(list.synthesizeArgs[0] == 0 && list.synthesizeArgs[1] == 5, "Args of call were \(list.synthesizeArgs)")
+        XCTAssert(list.synthesizeArgs[0] == 0 && list.synthesizeArgs[1] == 1, "Args of call were \(list.synthesizeArgs)")
     }
 }

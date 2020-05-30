@@ -49,6 +49,9 @@ public class ActivityEstimator<T:ActivityList> {
     public func processLocation(_ location: CLLocation) {
         if isLocationAccurate(location) && isLocationFarEnough(location) && !isLocationUpdateInstantaneous(location) {
             print("valid location received")
+            print(Date().toLocalTime())
+            // stop countdown for activity list expiration
+            timers.stop("expired")
             
             // determine regions of interest
             let currentStation = getCurrentROI(currentLocation: location, regionsOfInterest: self.stations, gpsThreshold: GPS_UPDATE_CONFIDENCE_THRESHOLD)
@@ -71,29 +74,30 @@ public class ActivityEstimator<T:ActivityList> {
             }
             // not the first location received
             else if previousLoc != nil {
-                // check if there has been a significant change in speed-based activities
                 processSignificantChanges()
+                processMeasurementStreak()
+                // start countdown for activity list expiration
+                timers.start(key: "expired", interval: ACTIVITY_TIMEOUT, block: activityHasExpired)
             }
         
             previousLoc = location
         }
     }
     
-    /// Determines if a location is accurate enough
+    /// Determines if a location is accurate enough.
     private func isLocationAccurate(_ location: CLLocation) -> Bool {
         // accuracy here means phyisical error in meters (the smaller the better)
         return location.horizontalAccuracy <= GPS_UPDATE_CONFIDENCE_THRESHOLD
     }
     
-    /// Ensures update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value)
+    /// Ensures update happened after roughly GPS_UPDATE_THRESHOLD meters (within tolerance value).
     private func isLocationFarEnough(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return true }
         let distance = location.distance(from: previousLoc!)
-        print("moved ", distance, "m")
         return distance + GPS_UPDATE_DISTANCE_TOLERANCE >= GPS_UPDATE_DISTANCE_THRESHOLD
     }
     
-    /// Checks if a location update is approximately instantaneous
+    /// Checks if a location update is approximately instantaneous.
     private func isLocationUpdateInstantaneous(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return false }
         return location.timestamp.timeIntervalSince(previousLoc!.timestamp).rounded() <= 0
@@ -114,7 +118,7 @@ public class ActivityEstimator<T:ActivityList> {
             let speed = distance / time
             let motionType = MeasuredActivity.speedToMotionType(speed: speed)
             
-            measurements.add(MeasuredActivity(motionType: motionType, distance: distance, start: previousLoc.timestamp, end: location.timestamp))
+            measurements.add(MeasuredActivity(motionType: motionType, distance: distance, start: previousLoc.timestamp.toLocalTime(), end: location.timestamp.toLocalTime()))
         }
     }
     
@@ -144,9 +148,24 @@ public class ActivityEstimator<T:ActivityList> {
         if activityStart > 0 {
             measurements.remove(from: 0, to: activityStart - 1)
         }
-        
-        // start countdown for activity list expiration
-        timers.start(key: "expired", interval: ACTIVITY_TIMEOUT, block: activityHasExpired)
+    }
+    
+    /// Writes an activity synthesis to the database if enough measurements of the same kind in a row have happened.
+    private func processMeasurementStreak() {
+        if !visitedRegionOfInterest(previousAirport) && !visitedRegionOfInterest(previousStation) {
+            let start = measurements.count - NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY
+            guard start >= 0 else { return }
+            var counter = 0
+            for measurement in measurements[start..<measurements.count] {
+                if measurement.motionType == measurements[start].motionType {
+                    counter += 1
+                }
+            }
+            if counter >= NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY {
+                print("Enough measurements of type ", MeasuredActivity.motionTypeToString(type: measurements[0].motionType), " recorded to determine activity")
+                dumpListToDB(from: start, to: measurements.count - 1)
+            }
+        }
     }
     
     /// Activity list is not longer valid and it will be dumped to the database.
@@ -197,7 +216,7 @@ public class ActivityEstimator<T:ActivityList> {
         let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
         
         print("Used train/plane to travel distance: ", activityDistance, " m")
-        let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
+        let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp.toLocalTime(), end: currentRegionOfInterest.timestamp.toLocalTime())
         previousRegionOfInterest = currentRegionOfInterest
         writeActivityAndUpdateScore(activity)
         measurements.removeAll()
