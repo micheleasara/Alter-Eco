@@ -28,7 +28,7 @@
 		9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */; };
 		9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941B2429686900B1D0B4 /* SplashScreen.swift */; };
 		9CD594242429686900B1D0B4 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941C2429686900B1D0B4 /* WelcomeView.swift */; };
-		9CD594252429686900B1D0B4 /* ObservableDataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ObservableDataStructures.swift */; };
+		9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */; };
 		9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */; };
 		9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD59429242968DE00B1D0B4 /* BarChart.swift */; };
 		9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
@@ -53,6 +53,9 @@
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
+		DE74ECF52482E3EA0099F944 /* ScreenMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */; };
+		DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
+		DE74ECF82482E4EB0099F944 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
 		DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* Launch Screen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
@@ -126,7 +129,7 @@
 		9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SKToVictoria_car_30kmh.gpx; sourceTree = "<group>"; };
 		9CD5941B2429686900B1D0B4 /* SplashScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		9CD5941C2429686900B1D0B4 /* WelcomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		9CD5941D2429686900B1D0B4 /* ObservableDataStructures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableDataStructures.swift; sourceTree = "<group>"; };
+		9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMeasurements.swift; sourceTree = "<group>"; };
 		9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToSupermarket.gpx; sourceTree = "<group>"; };
 		9CD59429242968DE00B1D0B4 /* BarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChart.swift; sourceTree = "<group>"; };
 		9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EarlsCourtStation.gpx; sourceTree = "<group>"; };
@@ -155,6 +158,7 @@
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
 		DEA51B3324816F71008FB8E3 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
@@ -317,7 +321,8 @@
 				218C419E243E89690036A2FE /* Awards.swift */,
 				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
 				218C4194243DCC910036A2FE /* ProfilePic.swift */,
-				9CD5941D2429686900B1D0B4 /* ObservableDataStructures.swift */,
+				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
+				DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
 			);
 			path = Frontend;
@@ -538,10 +543,11 @@
 				573693832438F85F00992BB0 /* GraphModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */,
 				DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */,
+				DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */,
 				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
 				55C85C5B243CB879006AD075 /* PrivacyInfoView.swift in Sources */,
 				218C4196243DCC910036A2FE /* ProfilePic.swift in Sources */,
-				9CD594252429686900B1D0B4 /* ObservableDataStructures.swift in Sources */,
+				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
@@ -562,6 +568,8 @@
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
+				DE74ECF82482E4EB0099F944 /* ObservableWrapper.swift in Sources */,
+				DE74ECF52482E3EA0099F944 /* ScreenMeasurements.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */,

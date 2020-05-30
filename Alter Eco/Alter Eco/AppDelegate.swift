@@ -8,7 +8,7 @@ let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
-    /// Requests gps updates.
+    /// Request s gps updates.
     internal let manager = CLLocationManager()
     /// Interfaces with the database.
     public var DBMS: DBManager!
@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     /// UUID for repeating notifications.
     internal let notificationUUID = UUID().uuidString
     /// Observable state of location tracking.
-    internal var isTrackingPaused = Observable<Bool>(rawValue: false)
+    internal var isTrackingPaused: Observable<Bool> = Observable(rawValue: false)
     /// Observable representation of whether this is the first time the app is launched.
     internal var isFirstLaunch: Observable<Bool>!
     
@@ -212,3 +212,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.saveContext()
     }
 }
+

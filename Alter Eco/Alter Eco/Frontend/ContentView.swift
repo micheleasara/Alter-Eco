@@ -3,7 +3,7 @@ import CoreLocation
 
 struct ContentView: View {
     @State var showSplash = true
-    @ObservedObject var isFirstLaunch: Observable<Bool> = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
+    @ObservedObject var isFirstLaunch = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
     
     var body: some View {
         ZStack {
