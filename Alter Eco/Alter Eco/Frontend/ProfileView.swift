@@ -6,11 +6,11 @@ struct ProfileView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     
     var body: some View {
-        //NavigationView() {
         ScrollView {
             VStack(spacing: 0) {
                     ProfileImage()
                         .frame(height: 0.5*screenMeasurements.trasversal)
+                        .padding(.bottom)
                 NameView().padding(.bottom)
                     ScorePoints().frame(height: screenMeasurements.trasversal/7)
                     Divider()
@@ -19,12 +19,8 @@ struct ProfileView: View {
                         .font(.title)
                         .fontWeight(.semibold)
                     AwardView()
-                }.padding()
-            }
-//        }.navigationBarTitle("Profile", displayMode: .inline)
-//        .navigationBarItems(trailing: NavigationLink(destination: PrivacyInfoView())
-//        { Text("Info") })
-
+            }.padding(.horizontal)
+        }
     }
 }
 
@@ -40,17 +36,18 @@ struct ProfileImage: View {
     
     var body: some View {
         GeometryReader { geo in
-            if self.savings.count > 0 {
-                self.loadStoredImage(height: geo.size.height)
-                .sheet(isPresented: self.$showingImagePicker, onDismiss: self.loadSelectedImage) {
-                    ImagePicker(image: self.$inputImage) }
-                .onTapGesture { self.showingImagePicker = true }
-                .clipShape(Circle())
-                .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-            } else {
-                self.loadDefaultAvatar(height: 0.65*geo.size.height)
-                    .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+            Group {
+                if self.savings.count > 0 {
+                    self.loadStoredImage(height: geo.size.height)
+                        .clipShape(Circle())
+                } else {
+                    self.loadDefaultAvatar(height: 0.65*geo.size.height)
+                }
             }
+            .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+            .sheet(isPresented: self.$showingImagePicker, onDismiss: self.loadSelectedImage) {
+                ImagePicker(image: self.$inputImage) }
+            .onTapGesture { self.showingImagePicker = true }
         }
     }
     
