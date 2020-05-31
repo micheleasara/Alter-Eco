@@ -38,7 +38,7 @@ struct ProgressBarView: View {
     func retrieveLabel() -> String {
         let latestScore = try! DBMS.retrieveLatestScore()
         if latestScore.league != "🌳" {
-            return "Grow your forest! You have planted \(latestScore.counter ?? 0) 🌳\nKeep earning points to grow a new one."
+            return "You have planted \(latestScore.counter ?? 0) 🌳\nKeep earning points to grow your forest!"
         } else {
            return "Your forest is thriving! You just planted another 🌳, for a total of \(latestScore.counter!)! Congratulations! You're now growing a new sapling."
         }
