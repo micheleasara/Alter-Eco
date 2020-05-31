@@ -25,7 +25,7 @@ public struct SplashScreen: View {
                      alignment: .center)
             }
             
-            Text("Alter Eco").font(.largeTitle)
+            Text("Alter Eco").font(.system(.largeTitle, design: .rounded))
         }
     }
       
