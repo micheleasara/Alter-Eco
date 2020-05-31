@@ -55,7 +55,7 @@
 		DE74ECF52482E3EA0099F944 /* ScreenMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */; };
 		DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
 		DE74ECF82482E4EB0099F944 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
-		DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* Launch Screen.storyboard */; };
+		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
 		DE994B882483E03200D3788B /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE994B872483E03200D3788B /* Title.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
@@ -158,7 +158,7 @@
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
-		DE77727824523BAD002D28A6 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
 		DE994B872483E03200D3788B /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
 		DEA51B3324816F71008FB8E3 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
@@ -303,7 +303,7 @@
 		DE1B266D24433DBC007D9B54 /* Frontend */ = {
 			isa = PBXGroup;
 			children = (
-				DE77727824523BAD002D28A6 /* Launch Screen.storyboard */,
+				DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */,
 				9CD5943E2429691C00B1D0B4 /* SceneDelegate.swift */,
 				9CD594402429691E00B1D0B4 /* ContentView.swift */,
 				9CD5941B2429686900B1D0B4 /* SplashScreen.swift */,
@@ -471,7 +471,7 @@
 				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
 				9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */,
 				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
-				DE77727924523BAD002D28A6 /* Launch Screen.storyboard in Resources */,
+				DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */,
 				9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */,
 				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
@@ -805,14 +805,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEco;
+				PRODUCT_BUNDLE_IDENTIFIER = com.altereco.altereco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG NO_BACKEND_TESTING";
 				SWIFT_VERSION = 5.0;
@@ -827,14 +828,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AlterEco;
+				PRODUCT_BUNDLE_IDENTIFIER = com.altereco.altereco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = NO_BACKEND_TESTING;
 				SWIFT_VERSION = 5.0;

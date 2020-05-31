@@ -47,7 +47,10 @@ struct ProfileImage: View {
             .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
             .sheet(isPresented: self.$showingImagePicker, onDismiss: self.loadSelectedImage) {
                 ImagePicker(image: self.$inputImage) }
-            .onTapGesture { self.showingImagePicker = true }
+            .onTapGesture {
+                self.showingImagePicker = true
+                self.loadSelectedImage()
+            }
         }
     }
     
