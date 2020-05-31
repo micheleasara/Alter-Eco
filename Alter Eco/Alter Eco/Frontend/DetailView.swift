@@ -3,52 +3,45 @@ import SwiftUI
  struct DetailView: View {
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
     @ObservedObject var isTrackingPaused = (UIApplication.shared.delegate as! AppDelegate).isTrackingPaused
-//    public var body: some View {
-//
-//        NavigationView {
-//            VStack(spacing: 0) {
-//                HStack {
-//                Text("My Alter Eco")
-//                .foregroundColor(Color("title_colour"))
-//                .font(.largeTitle)
-//
-//                NavigationLink(destination: PrivacyInfoView()) {
-//                        Image(systemName: "info.circle")
-//                    }
-//                }
-//                test
-//            }
-//        }.navigationBarTitle("Profile", displayMode: .inline)
-//        .navigationBarItems(trailing: NavigationLink(destination: PrivacyInfoView())
-//        {
-//            Text("Info")
-//        })
-//
-//    }
+    @State var showInfo: Bool = false
     
      var body: some View {
-        NavigationView() {
-            stats
-            .navigationBarTitle("", displayMode: .inline)
-            .navigationBarItems(leading: NavigationLink(destination: PrivacyInfoView())
-            {
-                HStack(alignment:.center) {
-                        Text("My Alter Eco")
-                            .font(.title)
-                            .bold()
-                            .foregroundColor(Color.primary)
-                        Image(systemName: "info.circle")
-                }.frame(width: measurementsOnLaunch.longitudinal, alignment: .center)
-            })
+        VStack {
+            if showInfo {
+                titleAndBackButton.padding(.top)
+                PrivacyInfoView()
+            }
+            else {
+                titleAndInfoButton.padding(.top)
+                stats
+            }
         }
-
     }
 
+    var titleAndInfoButton: some View {
+        HStack() {
+            Title()
+            Button(action: {
+                self.showInfo.toggle()
+            }) {
+                Image(systemName: "info.circle")}
+        }
+    }
+    
+    var titleAndBackButton: some View {
+        ZStack(alignment: .leading) {
+            Button(action: {
+                self.showInfo.toggle()
+            }) { Text("Back").padding(.leading) }
+                Title().frame(maxWidth: .infinity,
+                       alignment: .center)
+        }
+    }
     
     var stats: some View {
         ScrollView {
             VStack(alignment: .center) {
-                ChartView().frame(height: measurementsOnLaunch.longitudinal / 2).padding(.top)
+                ChartView().frame(height: measurementsOnLaunch.longitudinal / 2)
 
                 Button(action: {
                     self.toggleTracking()
