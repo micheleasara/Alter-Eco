@@ -9,24 +9,20 @@ public struct SplashScreen: View {
     public static let ANIMATION_LENGTH: Double = 1.8 // in seconds
 
     public var body: some View {
-        VStack {
-            ZStack {
-                Image("earth")
-                .resizable()
-                .frame(width: screenMeasurements.trasversal*0.25,
-                       height:screenMeasurements.trasversal*0.25,
-                       alignment: .center)
-                
-              RotatingCircumference(percent: percent)
-                .stroke(Color("app_background"), lineWidth: screenMeasurements.trasversal)
-                .onAppear() { self.handleAnimations() }
-                .frame(width: screenMeasurements.trasversal*0.15,
-                     height: screenMeasurements.trasversal*0.15,
-                     alignment: .center)
-            }
+        ZStack (alignment: .center) {
+            Image("earth")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 240,
+                   height: 128)
             
-            Text("Alter Eco").font(.system(.largeTitle, design: .rounded))
-        }
+          RotatingCircumference(percent: percent)
+            .stroke(Color("app_background"), lineWidth: screenMeasurements.trasversal)
+            .onAppear() { self.handleAnimations() }
+            .frame(width: 120,
+                 height: 128)
+        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        .edgesIgnoringSafeArea(.all)
     }
       
     private func handleAnimations() {
