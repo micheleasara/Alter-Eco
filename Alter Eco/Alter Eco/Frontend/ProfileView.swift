@@ -10,7 +10,7 @@ struct ProfileView: View {
             VStack(spacing: 0) {
                     ProfileImage()
                         .frame(height: 0.5*screenMeasurements.trasversal)
-                        .padding(.bottom)
+                        .padding(.bottom).padding(.top)
                 NameView().padding(.bottom)
                     ScorePoints().frame(height: screenMeasurements.trasversal/7)
                     Divider()

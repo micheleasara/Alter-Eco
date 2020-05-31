@@ -3,16 +3,14 @@ import SwiftUI
 struct ChartView: View {
     @State private var timespanSelection = ChartDataModel.Timespan.day
     @State private var transportSelection = MeasuredActivity.MotionType.unknown
+    @State private var showingInfo = false
     @EnvironmentObject var chartData : ChartDataModel
 
     var body: some View {
         VStack () {
             self.timePicker.padding(.horizontal)
 
-            Text("Total carbon " + self.savedOrEmittedLabel + ": " +
-                self.kgToReadableLabel(valueInKg: self.totalCarbonInKg()))
-                .font(.headline)
-                .fontWeight(.semibold)
+            savedOrEmittedLabel
             
             BarChart(values: self.getValues(), xLabels: self.getLabels(), infoOnBarTap: self.getInfoOnBarTap(), colour: self.barColour, yAxisTicksCount: 4).padding(.horizontal)
 
@@ -65,8 +63,20 @@ struct ChartView: View {
     }
     
     /// Returns whether the carbon shown was saved or emitted.
-    public var savedOrEmittedLabel : String {
-        return transportSelection == .walking ? "saved" : "emitted"
+    public var savedOrEmittedLabel: some View {
+        let keyword = (transportSelection == .walking) ? "saved" : "emitted"
+        let txt = "Total carbon " +  keyword + ": " +
+        self.kgToReadableLabel(valueInKg: self.totalCarbonInKg())
+        
+        return HStack {
+            Text(txt).font(.headline).fontWeight(.semibold)
+            Button(action: {self.showingInfo = true}) {
+                Image(systemName: "info.circle")
+            }.alert(isPresented: self.$showingInfo) {
+                Alert(title: Text("Your Eco Chart"), message: Text("The Alter Eco chart displays your CO2 emissions automatically!\n\n") + Text("If you walk, the chart displays how much carbon you saved instead of driving.\n\n") + Text("Green bars mean you're emitting less than the average Londoner does in a day, and red means you are doing worse."),
+                dismissButton: .default(Text("OK")))
+            }
+        }
     }
     
     private func totalCarbonInKg() -> Double {
