@@ -259,6 +259,22 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         try managedContext.save()
     }
     
+    /// Checks user progress and updates league if enough points have been accumulated.
+    public func updateLeagueIfEnoughPoints() throws -> Void {
+        let userScore = try retrieveLatestScore()
+        
+        if userScore.totalPoints > POINTS_REQUIRED_FOR_NEXT_LEAGUE {
+            let league = UserScore.getNewLeague(userLeague: userScore.league)
+            try updateLeague(newLeague: league)
+            
+            if league == "🌳" {
+                try updateTreeCounter()
+            }
+            
+            try resetScore()
+        }
+    }
+    
     /// Updates league attribute of the Score entity with the given string.
     public func updateLeague(newLeague: String) throws {
        let managedContext = try getManagedContext()
@@ -290,17 +306,14 @@ public class CoreDataManager : DBManager, CarbonCalculator {
             userScore.league = queryResult[0].value(forKey: "league") as? String
             userScore.counter = queryResult[0].value(forKey: "counter") as? Int
         } else {
-            let managedContext = try getManagedContext()
-            let entity = NSEntityDescription.entity(forEntityName: "Score", in: managedContext)!
-            let eventDB = NSManagedObject(entity: entity, insertInto: managedContext)
-            eventDB.setValuesForKeys(["dateStr": userScore.date!, "score": userScore.totalPoints!, "league": userScore.league!, "counter": userScore.counter!])
+            try setValuesForKeys(entity: "Score", keyedValues: ["dateStr": userScore.date!, "score": userScore.totalPoints!, "league": userScore.league!, "counter": userScore.counter!])
         }
         
         return userScore
     }
     
     /// Sets the user's score to 0.
-    public func resetScore() throws -> Void {
+    private func resetScore() throws -> Void {
         let managedContext = try getManagedContext()
         let dateToday = Date().toLocalTime()
         let dateTodayStr = Date.toInternationalString(dateToday)
@@ -314,22 +327,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         
         try managedContext.save()
-    }
-    
-    /// Checks user progress and updates league if enough points have been accumulated.
-    public func updateLeagueIfEnoughPoints() throws -> Void {
-        let userScore = try! retrieveLatestScore()
-        
-        if userScore.totalPoints >= (POINTS_REQUIRED_FOR_NEXT_LEAGUE+1) {
-            try updateLeague(newLeague: UserScore.getNewLeague(userLeague: userScore.league))
-            
-            let newUserScore = try retrieveLatestScore()
-            if newUserScore.league == "🌳" {
-                try updateTreeCounter()
-            }
-            
-            try resetScore()
-        }
     }
     
     /// Returns the earliest start date within the Event entity. If no date is found, the date of today is returned.

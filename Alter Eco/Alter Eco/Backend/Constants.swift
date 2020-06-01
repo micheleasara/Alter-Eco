@@ -48,9 +48,9 @@ public let NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY = CHANGE_ACTIVITY_THRESHOLD + 
 /// Defines weights in computing average of speed-based activities.
 public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Double] = [.car: 1.1, .walking: 1]
 /// Defines how many seconds must pass for an activity to expire in the absence of ROI flags.
-public let ACTIVITY_TIMEOUT: Double = 2//60 * 5
+public let ACTIVITY_TIMEOUT: Double = 60 * 5
 /// Defines the maximum speed allowed for a speed-based measurement to be considered valid in m/s.
-public let MAX_SPEED: Double = 0.8*AVERAGE_PLANE_SPEED
+public let MAX_SPEED: Double = .infinity//0.8*AVERAGE_PLANE_SPEED
 
 // MARK: - Carbon conversion constants
 /// Carbon output for a car in Kg/Km.

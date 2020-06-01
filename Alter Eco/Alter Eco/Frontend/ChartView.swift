@@ -50,8 +50,9 @@ struct ChartView: View {
         var todayTotal = 0.0
         for motion in MeasuredActivity.MotionType.allCases {
             if let labelledValue = carbonByTransport[motion]?.last {
-                if motion != .walking {
+                if motion.isPolluting() {
                     todayTotal += labelledValue.data
+                    print(todayTotal)
                 }
             }
         }

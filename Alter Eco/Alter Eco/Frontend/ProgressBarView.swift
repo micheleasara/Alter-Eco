@@ -2,13 +2,12 @@ import Foundation
 import SwiftUI
 
 struct ProgressBarView: View {
-    @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    
-    let proportion = try! DBMS.retrieveLatestScore().totalPoints / POINTS_REQUIRED_FOR_NEXT_LEAGUE
+    // needed to refresh points when new activity is written
+    @EnvironmentObject var chartData : ChartDataModel
     
     var body: some View {
-        try! DBMS.updateLeagueIfEnoughPoints()
+        try? DBMS.updateLeagueIfEnoughPoints()
         
         return VStack {
             Text("Your League")
@@ -40,12 +39,13 @@ struct ProgressBarView: View {
         if latestScore.league != "🌳" {
             return "You have planted \(latestScore.counter ?? 0) 🌳\nKeep earning points to grow your forest!"
         } else {
-           return "Your forest is thriving! You just planted another 🌳, for a total of \(latestScore.counter!)! Congratulations! You're now growing a new sapling."
+           return "Your forest is thriving! You just planted another 🌳, for a total of \(latestScore.counter ?? 1)! Congratulations! You're now growing a new sapling."
         }
     }
     
     var progressBar : some View {
-        HStack{
+        let proportion = getProportion()
+        return HStack{
             Text("\((try! DBMS.retrieveLatestScore()).league)")
             .font(.largeTitle)
             
@@ -56,7 +56,9 @@ struct ProgressBarView: View {
                     .foregroundColor(Color("fill_colour"))
           
                 Rectangle()
-                       .frame(width: screenMeasurements.trasversal*CGFloat(0.7*proportion), height: screenMeasurements.longitudinal/45)
+                    .frame(width:
+                        screenMeasurements.trasversal * 0.7 * proportion,
+                           height: screenMeasurements.longitudinal/45)
                         .foregroundColor(Color("graphBars"))
                         .animation(.linear)
                 }.cornerRadius(25.0)
@@ -65,11 +67,22 @@ struct ProgressBarView: View {
             .font(.largeTitle)
         }
     }
+    
+    func getProportion() -> CGFloat {
+        let score = try? DBMS.retrieveLatestScore().totalPoints
+        let proportion = (score ?? 0.0) / POINTS_REQUIRED_FOR_NEXT_LEAGUE
+        return CGFloat(proportion)
+    }
 }
 
 struct ProgressBarView_Previews: PreviewProvider {
     static var previews: some View {
-        ProgressBarView().environmentObject(ScreenMeasurements())
+        let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+        let DBMS = CoreDataManager(persistentContainer: container)
+        
+        return ProgressBarView()
+            .environmentObject(ScreenMeasurements())
+            .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }
 

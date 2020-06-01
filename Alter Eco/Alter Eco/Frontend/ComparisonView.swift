@@ -2,9 +2,9 @@ import Foundation
 import SwiftUI
 
 public struct ComparisonView: View {
-    @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-
+    @EnvironmentObject var chartData: ChartDataModel
+    
     public var body: some View {
           VStack {
               Text("Your Emissions")
@@ -38,7 +38,11 @@ public struct ComparisonView: View {
 
 struct ComparisonView_Previews: PreviewProvider {
     static var previews: some View {
-        ComparisonView().environmentObject(ScreenMeasurements())
+        let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+        let DBMS = CoreDataManager(persistentContainer: container)
+        return ComparisonView()
+            .environmentObject(ScreenMeasurements())
+            .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }
 
