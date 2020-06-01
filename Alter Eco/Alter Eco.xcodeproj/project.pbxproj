@@ -153,6 +153,7 @@
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DE03E587248549B700CBFBB6 /* ShepherdsBush.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ShepherdsBush.gpx; sourceTree = "<group>"; };
 		DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataModelTest.swift; sourceTree = "<group>"; };
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
@@ -279,6 +280,7 @@
 				9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */,
 				9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */,
 				9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */,
+				DE03E587248549B700CBFBB6 /* ShepherdsBush.gpx */,
 				9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */,
 			);
 			path = GPX;

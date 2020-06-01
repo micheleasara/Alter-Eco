@@ -18,7 +18,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
 
     func testValidMovementIsAppendedToMeasurements() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let previousLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date())
 
         let currentLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4954, longitude: -0.17863), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 20, since: previousLocation.timestamp))
@@ -31,7 +31,7 @@ class ActivityEstimatorTest: XCTestCase {
 
     func testInaccurateActivityIsNotAppendedToMeasurements() {
         // ensure activity is not accurate
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD + GPS_UPDATE_DISTANCE_TOLERANCE + 1
+        let accuracy = GPS_CONFIDENCE_THRESHOLD + GPS_DISTANCE_TOLERANCE + 1
         
         let previousLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         let currentLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4954, longitude: -0.17863), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 20, since: previousLocation.timestamp))
@@ -43,7 +43,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testInstantaneousLocationUpdatesAreNotConsidered() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         
         // 0s between updates
         let previousLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
@@ -56,7 +56,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
 
     func testLocationUpdatesAreNotConsideredIfTooCloseInSpace() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         
         // 0m between updates
         let previousLocation = CLLocation(coordinate: CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439), altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
@@ -69,12 +69,13 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testGoingFromAStationToAnotherAddsTrain() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let coordStationA = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let coordStationB = CLLocationCoordinate2D(latitude: 30, longitude: 30)
 
         let previousLocation = CLLocation(coordinate: coordStationA, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
-        let currentLocation = CLLocation(coordinate: coordStationB, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1000, since: previousLocation.timestamp))
+        let currentLocation = CLLocation(coordinate: coordStationB, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp:
+            Date(timeInterval: 999999, since: previousLocation.timestamp))
         // set stations to given coordinates and simulate location updates
         estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: coordStationA)), MKMapItem(placemark: MKPlacemark(coordinate: coordStationB))]
         estimator.processLocation(previousLocation)
@@ -86,12 +87,13 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testGoingFromAnAirportToAnotherWritesPlane() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let coordAirportA = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let coordAirportB = CLLocationCoordinate2D(latitude: 30, longitude: 30)
 
         let previousLocation = CLLocation(coordinate: coordAirportA, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
-        let currentLocation = CLLocation(coordinate: coordAirportB, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1000, since: previousLocation.timestamp))
+        let currentLocation = CLLocation(coordinate: coordAirportB, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0,
+                                         timestamp: Date(timeInterval: 999999999, since: previousLocation.timestamp))
         // set stations to given coordinates and simulate location updates
         estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: coordAirportA)), MKMapItem(placemark: MKPlacemark(coordinate: coordAirportB))]
         estimator.processLocation(previousLocation)
@@ -104,7 +106,7 @@ class ActivityEstimatorTest: XCTestCase {
     
     func testEstimatorDumpsToDatabaseIfActivityChangesSignificantly() {
         var date = Date(timeIntervalSince1970: 0)
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         
         for _ in 1...CHANGE_ACTIVITY_THRESHOLD {
             list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
@@ -126,17 +128,17 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testStationToNonStationByCarIsTreatedAsSpeedBasedActivity() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let station = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let nonStation = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
         var date = Date(timeIntervalSince1970: 0)
         for _ in 1...10 {
             list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
-            date = Date(timeInterval: 10, since: date)
+            date = Date(timeInterval: 1000, since: date)
         }
         
         let previousLocation = CLLocation(coordinate: station, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
-        let currentLocation = CLLocation(coordinate: nonStation, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: previousLocation.timestamp))
+        let currentLocation = CLLocation(coordinate: nonStation, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1000, since: previousLocation.timestamp))
         // set stations to given coordinates and simulate location updates
         estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: station))]
         estimator.processLocation(previousLocation)
@@ -147,7 +149,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testAirportToNonAirportByFootIsTreatedAsSpeedBasedActivity() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let airport = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         // need to go really far away not to be considered within airport
         let nonAirport = CLLocationCoordinate2D(latitude: 48, longitude: -0.1943419)
@@ -171,25 +173,25 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testAirportFlagIsOffAfterEnoughCars() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let airport = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         // need to go really far away not to be considered within airport
-        let nonAirport = CLLocationCoordinate2D(latitude: 48, longitude: -0.1943419)
+        let nonAirport = CLLocationCoordinate2D(latitude: 50, longitude: -0.1943419)
         var date = Date(timeIntervalSince1970: 0)
         for _ in 1...CAR_NUM_FOR_PLANE_FLAG_OFF {
             list.add(MeasuredActivity(motionType: .car, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
-            date = Date(timeInterval: 10, since: date)
+            date = Date(timeInterval: 100, since: date)
         }
         
         var airportLoc = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         // small time interval to simulate final car event
-        let nonAirportLoc = CLLocation(coordinate: nonAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: airportLoc.timestamp))
+        let nonAirportLoc = CLLocation(coordinate: nonAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1000, since: airportLoc.timestamp))
         // set stations to given coordinates and simulate location updates
         estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: airport))]
         estimator.processLocation(airportLoc)
         estimator.processLocation(nonAirportLoc)
         // back in airport
-        airportLoc = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: nonAirportLoc.timestamp.addingTimeInterval(1))
+        airportLoc = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: nonAirportLoc.timestamp.addingTimeInterval(9999))
         estimator.processLocation(airportLoc)
         XCTAssert(list.addCalls == CAR_NUM_FOR_PLANE_FLAG_OFF + 2, "Got \(list.addCalls)")
         XCTAssert(DBMS.appendArgs.count == 0, "Got \(DBMS.appendArgs.count)")
@@ -197,7 +199,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testStationFlagIsOffAfterEnoughWalking() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let stationCoord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let nonStationCoord = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
 
@@ -224,7 +226,7 @@ class ActivityEstimatorTest: XCTestCase {
     
     func testAirportCountdownStartsAfterAirportVisit() {
         XCTAssert(timers.startCalls == 0)
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let coordAirport = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let loc = CLLocation(coordinate: coordAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: coordAirport))]
@@ -236,7 +238,7 @@ class ActivityEstimatorTest: XCTestCase {
     
     func testStationCountdownStartsAfterAirportVisit() {
         XCTAssert(timers.startCalls == 0)
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: coord))]
@@ -247,7 +249,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testStationCountdownEndMakesEstimatorProcessSpeedActivitiesChangesAndDumpsLeftovers() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         estimator.stations = [MKMapItem(placemark: MKPlacemark(coordinate: coord))]
@@ -274,7 +276,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
     
     func testAirportCountdownEndMakesEstimatorProcessSpeedActivitiesChangesAndDumpsLeftovers() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let coord = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let loc = CLLocation(coordinate: coord, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: coord))]
@@ -301,7 +303,7 @@ class ActivityEstimatorTest: XCTestCase {
     }
 
     func testActivityWillExpireIfNoROIFlags() {
-        let accuracy = GPS_UPDATE_CONFIDENCE_THRESHOLD
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
         let coord1 = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
         let coord2 = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
         
@@ -311,7 +313,7 @@ class ActivityEstimatorTest: XCTestCase {
 
         // trigger location updates
         let previousLocation = CLLocation(coordinate: coord1, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
-        let currentLocation = CLLocation(coordinate: coord2, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1, since: previousLocation.timestamp))
+        let currentLocation = CLLocation(coordinate: coord2, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 100, since: previousLocation.timestamp))
         estimator.processLocation(previousLocation)
         estimator.processLocation(currentLocation)
         

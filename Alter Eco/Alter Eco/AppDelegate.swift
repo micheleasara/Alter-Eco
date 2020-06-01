@@ -14,14 +14,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     public var DBMS: DBManager!
     /// Estimates activities based on given information (such as location updates).
     internal var activityEstimator: ActivityEstimator<WeightedActivityList>!
-    /// Location of last request for stations nearby, to be used with station request radius.
-    internal var locationUponRequest: CLLocation? = nil
+    /// Location of last request for stations nearby. Used to avoid too many requests.
+    internal var locationLastStationRequest: CLLocation? = nil
+    /// Location of last request for airports nearby. Used to avoid too many requests.
+    internal var locationLastAirportRequest: CLLocation? = nil
     /// UUID for repeating notifications.
     internal let notificationUUID = UUID().uuidString
     /// Observable state of location tracking.
     internal var isTrackingPaused: Observable<Bool> = Observable(rawValue: false)
     /// Observable representation of whether this is the first time the app is launched.
     internal var isFirstLaunch: Observable<Bool>!
+    /// Defines radius of search for airports in meters.
+    internal var airportRequestRadius: Double = MAX_AIRPORT_REQUEST_RADIUS
     
     #if NO_BACKEND_TESTING
     // called when something is written to the database, used to update the graph
@@ -48,6 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
+        activityEstimator.setInAirportCallback(callback: userIsInAnAirport(airport:))
         
         isFirstLaunch = Observable<Bool>(rawValue: queryDBForFirstLaunch())
     }
@@ -67,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.requestWhenInUseAuthorization()
         manager.allowsBackgroundLocationUpdates = true
         manager.delegate = self
-        manager.distanceFilter = GPS_UPDATE_DISTANCE_THRESHOLD
+        manager.distanceFilter = GPS_DISTANCE_THRESHOLD
         manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         manager.pausesLocationUpdatesAutomatically = true
         manager.activityType = .automotiveNavigation
@@ -89,40 +94,65 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager,  didUpdateLocations locations: [CLLocation]) {
         let location = locations.last!
         
-        if (locationUponRequest == nil || locationUponRequest!.distance(from: location).rounded() >= STATION_REQUEST_RADIUS) {
-               
-               let requestStations = MKLocalSearch.Request()
-               requestStations.naturalLanguageQuery = QUERY_TRAIN_STATIONS
-               requestStations.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: STATION_REQUEST_RADIUS, longitudinalMeters: STATION_REQUEST_RADIUS)
-               requestStations.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
-            
-               // inception: closure at the end of first query executes a second query
-               MKLocalSearch(request: requestStations).start { (response, error) in
-                   if let response = response {
-                       self.activityEstimator.stations = response.mapItems
-                       self.activityEstimator.processLocation(location)
-                   }
-                    
-                    // second query for airports
-                    let requestAirports = MKLocalSearch.Request()
-                    requestAirports.naturalLanguageQuery = QUERY_AIRPORTS
-                    requestAirports.region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: AIRPORTS_REQUEST_RADIUS, longitudinalMeters: AIRPORTS_REQUEST_RADIUS)
-                    requestAirports.pointOfInterestFilter = MKPointOfInterestFilter(including: [.airport])
-
-                    MKLocalSearch(request: requestAirports).start { (response, error) in
-                        if let response = response {
-                            self.activityEstimator.airports = response.mapItems
-                            self.activityEstimator.processLocation(location)
-                        }
-                    }
-               }
-               
-               locationUponRequest = location
-           }
-           else {
-               activityEstimator.processLocation(location)
-           }
+        if locationLastStationRequest == nil ||
+            locationLastStationRequest!.distance(from: location).rounded() >= STATION_REQUEST_RADIUS {
+            requestStationsAround(location)
+        } else {
+            activityEstimator.processLocation(location)
         }
+    }
+    
+    func requestStationsAround(_ location: CLLocation) {
+        let requestStations = MKLocalSearch.Request()
+        requestStations.naturalLanguageQuery = QUERY_TRAIN_STATIONS
+        requestStations.region = MKCoordinateRegion(center: location.coordinate,
+                                                    latitudinalMeters: STATION_REQUEST_RADIUS,
+                                                    longitudinalMeters: STATION_REQUEST_RADIUS)
+        requestStations.pointOfInterestFilter = MKPointOfInterestFilter(including: [.publicTransport])
+        
+        locationLastStationRequest = location
+        MKLocalSearch(request: requestStations).start(completionHandler: onTrainRequestCompletion(response:error:))
+    }
+    
+    func onTrainRequestCompletion(response: MKLocalSearch.Response?, error: Error?) {
+        if let location = locationLastStationRequest {
+            print("stations requested and received")
+            if let response = response {
+                activityEstimator.stations = ActivityEstimator.ROIs(response.mapItems)
+            }
+            
+            if (locationLastAirportRequest == nil ||
+                locationLastAirportRequest!.distance(from: location).rounded() >= airportRequestRadius) {
+                locationLastAirportRequest = location
+                requestAirportsAround(location)
+            } else {
+                activityEstimator.processLocation(location)
+            }
+        }
+    }
+    
+    func requestAirportsAround(_ location: CLLocation) {
+        let requestAirports = MKLocalSearch.Request()
+        requestAirports.naturalLanguageQuery = QUERY_AIRPORTS
+        requestAirports.region = MKCoordinateRegion(center: location.coordinate,
+                                                    latitudinalMeters: airportRequestRadius,
+                                                    longitudinalMeters: airportRequestRadius)
+        requestAirports.pointOfInterestFilter = MKPointOfInterestFilter(including: [.airport])
+
+        MKLocalSearch(request: requestAirports).start { (response, error) in
+            print("airports requested and received")
+            if let response = response {
+                self.activityEstimator.airports = ActivityEstimator.ROIs(response.mapItems)
+            }
+           // once all requests are completed, process the current location
+           self.activityEstimator.processLocation(location)
+        }
+    }
+    
+    func userIsInAnAirport(airport: CLLocation) {
+        print("User is in an airport")
+        airportRequestRadius = MIN_AIRPORT_REQUEST_RADIUS
+    }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error while retrieving location: ", error.localizedDescription)
@@ -131,7 +161,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager,
                          didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .denied || status == .restricted {
-            print("not authorised")
+            print("Location tracking not authorised")
         }
     }
     
