@@ -52,7 +52,6 @@ struct ChartView: View {
             if let labelledValue = carbonByTransport[motion]?.last {
                 if motion.isPolluting() {
                     todayTotal += labelledValue.data
-                    print(todayTotal)
                 }
             }
         }
