@@ -3,8 +3,8 @@ import Foundation
 /// Represents a list of activities that can use its item to synthesize an overall activity.
 public protocol ActivityList : AnyObject, MutableCollection
 where Index == Int, Element == Array<MeasuredActivity>.Element {
-    /// Uses the activities in the given range to synthesize one overall activity.
-    func synthesize(from:Int, to:Int) -> MeasuredActivity
+    /// Uses the activities in the given range to synthesize one overall activity. Returns nil in case of failure.
+    func synthesize(from:Int, to:Int) -> MeasuredActivity?
     /// Adds the given activity to the list.
     func add(_ activity:MeasuredActivity)
     /// Removes the element at the given index.
@@ -40,8 +40,8 @@ public class WeightedActivityList: ActivityList {
         measurements.removeSubrange(from...to)
     }
     
-    /// Uses the activities in the given range to synthesize one overall activity via weighted average.
-    public func synthesize(from: Index, to: Index) -> MeasuredActivity {
+    /// Uses the activities in the given range to synthesize one overall activity via weighted average.  Returns nil in case of failure.
+    public func synthesize(from: Index, to: Index) -> MeasuredActivity? {
         let averaged = getAverage(from: from, to: to)
         return averaged
     }
@@ -73,11 +73,13 @@ public class WeightedActivityList: ActivityList {
     }
     
     /// Returns the weighted average of the activities between the given indexes.
-    public func getAverage(from:Int, to:Int) -> MeasuredActivity {
-        let activity = MeasuredActivity(motionType: getAverageMotionType(from:from, to:to),
+    public func getAverage(from:Int, to:Int) -> MeasuredActivity? {
+        if from <= to && from >= 0 {
+            return MeasuredActivity(motionType: getAverageMotionType(from:from, to:to),
                                         distance: getCumulativeDistance(from:from, to:to),
                                         start: measurements.first!.start, end: measurements.last!.end)
-        return activity
+        }
+        return nil
     }
 
     /// Returns the cumulative distance contained in the activities in the range provided.

@@ -49,7 +49,7 @@ class ActivityListMock : ActivityList {
     public var removeCalls: Int = 0
     public var removeAllCalls: Int = 0
     
-    func synthesize(from: Int, to: Int) -> MeasuredActivity {
+    func synthesize(from: Int, to: Int) -> MeasuredActivity? {
         synthesizeArgs.append(from)
         synthesizeArgs.append(to)
         synthesizeCalls += 1

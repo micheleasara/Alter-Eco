@@ -300,18 +300,22 @@ public class ActivityEstimator<T:ActivityList> {
     
     /// Writes a synthesis of the activities to the database and removes the elements from the measurements.
     private func dumpListToDB(from: Int, to: Int) {
-        writeListToDB(from: from, to: to)
-        measurements.remove(from: from, to: to)
+        if from <= to && from >= 0 {
+            writeListToDB(from: from, to: to)
+            measurements.remove(from: from, to: to)
+        }
     }
     
     /// Writes a synthesis of the activities to the database.
     private func writeListToDB(from:Int, to:Int) {
         let synthesis = measurements.synthesize(from: from, to: to)
-        writeActivityAndUpdateScore(synthesis)
+        if let synthesis = synthesis {
+            writeActivityAndUpdateScore(synthesis)
+        }
     }
     
     private func writeActivityAndUpdateScore(_ activity: MeasuredActivity) {
-        try! DBMS.append(activity: activity)
-        try! DBMS.updateScore(activity: activity)
+        try? DBMS.append(activity: activity)
+        try? DBMS.updateScore(activity: activity)
     }
 }

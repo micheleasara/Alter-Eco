@@ -52,7 +52,6 @@
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
-		DE74ECF52482E3EA0099F944 /* ScreenMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */; };
 		DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
 		DE74ECF82482E4EB0099F944 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
@@ -571,7 +570,6 @@
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
 				DE74ECF82482E4EB0099F944 /* ObservableWrapper.swift in Sources */,
-				DE74ECF52482E3EA0099F944 /* ScreenMeasurements.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */,

@@ -30,8 +30,8 @@
             filePath = "Alter Eco/Backend/ActivityList.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
             landmarkName = "getCumulativeDistance(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -97,6 +97,22 @@
             startingLineNumber = "98"
             endingLineNumber = "98"
             landmarkName = "processLocation(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C517E0F7-5D3E-4093-9324-F3E4B9CFD684"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Alter Eco/Backend/ActivityEstimator.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "311"
+            endingLineNumber = "311"
+            landmarkName = "writeListToDB(from:to:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
