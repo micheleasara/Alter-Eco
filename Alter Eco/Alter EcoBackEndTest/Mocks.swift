@@ -4,8 +4,6 @@ import AlterEcoBackend
 // Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
 class DBWriterMock: DBWriter {
-    func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {}
-    
     var appendArgs: [MeasuredActivity] = []
     var updateScoreArgs: [MeasuredActivity] = []
     
@@ -16,6 +14,14 @@ class DBWriterMock: DBWriter {
     func updateScore(activity: MeasuredActivity) throws {
         updateScoreArgs.append(activity)
     }
+    
+    func delete(entity: String, rowNumber: Int) throws {
+    }
+    
+    func deleteAll(entity: String) throws {
+    }
+    
+    func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {}
 }
 
 class MultiTimerMock: CountdownHandler {
@@ -122,4 +128,8 @@ class DBManagerMock: DBManager {
     func append(activity: MeasuredActivity) throws {}
     func updateScore(activity: MeasuredActivity) throws {}
     func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {}
+    func delete(entity: String, rowNumber: Int) throws {
+    }
+    func deleteAll(entity: String) throws {
+    }
 }

@@ -4,6 +4,7 @@ import SwiftUI
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
     @ObservedObject var isTrackingPaused = (UIApplication.shared.delegate as! AppDelegate).isTrackingPaused
     @State var showInfo: Bool = false
+    @State var showSettings: Bool = false
     
      var body: some View {
         VStack {
@@ -11,8 +12,14 @@ import SwiftUI
                 titleAndBackButton.padding(.top)
                 PrivacyInfoView()
             }
+            else if showSettings {
+                titleAndBackButton.padding(.top)
+                SettingsView()
+            }
             else {
-                titleAndInfoButton.padding(.top)
+                titleAndInfoButton
+                    //.frame(maxWidth: .infinity)
+                    .padding(.top)
                 stats
             }
         }
@@ -20,18 +27,27 @@ import SwiftUI
 
     var titleAndInfoButton: some View {
         HStack() {
+            Spacer()
             Title()
             Button(action: {
                 self.showInfo.toggle()
             }) {
-                Image(systemName: "info.circle")}
+                Image(systemName: "info.circle") }
+            
+            Spacer()
+            Button(action: {
+                self.showSettings.toggle()
+                }) {
+                    Image(systemName: "gear")
+            }.padding(.trailing)
         }
     }
     
     var titleAndBackButton: some View {
         ZStack(alignment: .leading) {
             Button(action: {
-                self.showInfo.toggle()
+                self.showInfo = false
+                self.showSettings = false
             }) { Text("Back").padding(.leading) }
                 Title().frame(maxWidth: .infinity,
                        alignment: .center)

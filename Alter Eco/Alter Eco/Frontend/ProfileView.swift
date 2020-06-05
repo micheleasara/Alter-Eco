@@ -126,13 +126,14 @@ struct NameView: View {
             self.changingNickname = false
         }
             .font(.callout)
-            .foregroundColor(Color("title_colour"))
+            .foregroundColor(Color.secondary)
             .textFieldStyle(RoundedBorderTextFieldStyle())
     }
     
     var greetingWithChangeButton: some View {
         VStack {
             Text("Hello \(nickname)!")
+                .foregroundColor(Color.primary)
             Button(action: {
                 self.changingNickname = true
             }) { Text("Change nickname").font(.body)}
@@ -149,7 +150,7 @@ struct NameView: View {
 struct AwardView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
 
-    var originalDate = try! DBMS.getFirstDate()
+    var originalDate = (try? DBMS.getFirstDate()) ?? Date().toLocalTime()
     var timeInterval = 0.0
     
     var awardsList = [

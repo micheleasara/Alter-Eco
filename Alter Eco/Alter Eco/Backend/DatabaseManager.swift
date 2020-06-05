@@ -34,6 +34,8 @@ public protocol DBWriter {
     func append(activity: MeasuredActivity) throws
     /// Updates score by adding score computed from a given activity.
     func updateScore(activity: MeasuredActivity) throws
+    func delete(entity: String, rowNumber: Int) throws
+    func deleteAll(entity: String) throws
 }
 
 /// Represents an interface to an object able to read, write and perform sophisticated queries on AlterEco's databases.
@@ -96,6 +98,22 @@ public protocol CarbonCalculator {
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework. Also provides carbon conversion utilities.
 public class CoreDataManager : DBManager, CarbonCalculator {
+    public func deleteAll(entity: String) throws {
+        let results = try executeQuery(entity: entity) as! [NSManagedObject]
+        for result in results {
+            try delete(result)
+        }
+    }
+    
+    public func delete(entity: String, rowNumber: Int) throws {
+        let results = try executeQuery(entity: entity) as! [NSManagedObject]
+        try delete(results[rowNumber])
+    }
+    
+    private func delete(_ obj: NSManagedObject) throws {
+        let context = try getManagedContext()
+        context.delete(obj)
+    }
     // contains Core Data's stack
     private let persistentContainer : NSPersistentContainer
     // contains the function called when an activity has been written to the database

@@ -57,6 +57,7 @@
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
 		DE994B882483E03200D3788B /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE994B872483E03200D3788B /* Title.swift */; };
+		DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA1E867248A7988003EF0F5 /* SettingsView.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
 		DECD0956247DD36F0099747D /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
@@ -161,6 +162,7 @@
 		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
 		DE994B872483E03200D3788B /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
+		DEA1E867248A7988003EF0F5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DEA51B3324816F71008FB8E3 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
 		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
@@ -318,6 +320,7 @@
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
 				552BB1D324448D2A0010EF6B /* ComparisonView.swift */,
 				55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */,
+				DEA1E867248A7988003EF0F5 /* SettingsView.swift */,
 				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
 				218C419E243E89690036A2FE /* Awards.swift */,
 				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
@@ -557,6 +560,7 @@
 				5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */,
 				218C419F243E89690036A2FE /* Awards.swift in Sources */,
 				9C87AE292442408F00490481 /* ActivityList.swift in Sources */,
+				DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */,
 				9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -813,6 +817,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.altereco.altereco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG NO_BACKEND_TESTING";
@@ -836,6 +841,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.altereco.altereco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = NO_BACKEND_TESTING;

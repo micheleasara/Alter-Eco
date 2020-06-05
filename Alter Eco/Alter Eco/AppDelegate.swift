@@ -26,6 +26,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal var isFirstLaunch: Observable<Bool>!
     /// Defines radius of search for airports in meters.
     internal var airportRequestRadius: Double = MAX_AIRPORT_REQUEST_RADIUS
+    /// Defines whether the system account for cycling.
+    internal var cycleEnabled: Observable<Bool>!
+    /// The cycling speed inputted by the user.
+    internal var cycleSpeed: Observable<Double>!
+    /// Defines whether location tracking can be paused by iOS.
+    internal var autoPauseEnabled: Observable<Bool>!
     
     #if NO_BACKEND_TESTING
     // called when something is written to the database, used to update the graph
@@ -54,7 +60,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
         activityEstimator.setInAirportCallback(callback: userIsInAnAirport(airport:))
         
-        isFirstLaunch = Observable<Bool>(rawValue: queryDBForFirstLaunch())
+        loadUserSettings()
+        autoPauseEnabled.setValueChangeCallback {(newValue) in
+            self.manager.pausesLocationUpdatesAutomatically = newValue}
+    }
+    
+    func loadUserSettings() {
+        let query = try? DBMS.executeQuery(entity: "UserPreference",
+                                      predicate: nil, args: nil) as? [NSManagedObject]
+        if query != nil && query!.count > 0 {
+            isFirstLaunch = Observable(rawValue: (query![0].value(forKey: "firstLaunch") as? Bool) ?? true)
+            cycleEnabled = Observable(rawValue: (query![0].value(forKey: "cycleEnabled") as? Bool) ?? false)
+            cycleSpeed = Observable(rawValue: (query![0].value(forKey: "cycleRelaxation") as? Double) ?? DEFAULT_CYCLE_SPEED)
+            autoPauseEnabled = Observable(rawValue: (query![0].value(forKey: "autoPauseEnabled") as? Bool) ?? true)
+            // needed for backward compatibility
+            if cycleSpeed.rawValue < AUTOMOTIVE_SPEED_THRESHOLD {
+                cycleSpeed.rawValue = DEFAULT_CYCLE_SPEED
+            }
+        } else {
+            // if nothing is in the database, this is the first launch
+            isFirstLaunch = Observable(rawValue: true)
+            cycleEnabled = Observable(rawValue: false)
+            cycleSpeed = Observable(rawValue: DEFAULT_CYCLE_SPEED)
+            autoPauseEnabled = Observable(rawValue: true)
+        }
     }
     
     func queryDBForFirstLaunch() -> Bool {
@@ -75,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.delegate = self
         manager.distanceFilter = GPS_DISTANCE_THRESHOLD
         manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        manager.pausesLocationUpdatesAutomatically = true
+        manager.pausesLocationUpdatesAutomatically = autoPauseEnabled.rawValue
         manager.activityType = .automotiveNavigation
         manager.startUpdatingLocation()
     }

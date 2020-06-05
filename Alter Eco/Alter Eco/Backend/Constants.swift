@@ -34,7 +34,7 @@ public let AIRPORT_TIMEOUT: Double = 20 * HOUR_IN_SECONDS
 /// Determines how many measurements of type car the activity estimator needs in a row before resetting airport flag.
 public let CAR_NUM_FOR_PLANE_FLAG_OFF: Int = 15
 /// Determines how many measurements of type walking the activity estimator needs in a row before resetting train flag.
-public let WALK_NUM_FOR_TRAIN_FLAG_OFF: Int = 3
+public let WALK_NUM_FOR_TRAIN_FLAG_OFF: Int = 4
 /// Defines the average speed of the tube in London as 33 kmph converted to 9.17 m/s
 public let AVERAGE_TUBE_SPEED:Double = 9.17
 /// Defines the average plane speed as (740 - 930) kmph, converted to 222 m/s.
@@ -50,7 +50,11 @@ public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Double] = [.car:
 /// Defines how many seconds must pass for an activity to expire in the absence of ROI flags.
 public let ACTIVITY_TIMEOUT: Double = 60 * 5
 /// Defines the maximum speed allowed for a speed-based measurement to be considered valid in m/s.
-public let MAX_SPEED: Double = .infinity//0.8*AVERAGE_PLANE_SPEED
+public let MAX_SPEED: Double = 0.8*AVERAGE_PLANE_SPEED
+/// Defines the default cycling speed in m/s if the user enabled cycling.
+public let DEFAULT_CYCLE_SPEED: Double = 6
+/// Defines threshold to identify an automotive type of motion in m/s.
+public let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4
 
 // MARK: - Carbon conversion constants
 /// Carbon output for a car in Kg/Km.

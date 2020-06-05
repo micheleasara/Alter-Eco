@@ -1,10 +1,9 @@
 import Foundation
+import SwiftUI
 import CoreLocation
 
 /// Represents the different activities a user can perform.
 public class MeasuredActivity : Equatable {
-    /// Defines threshold to identify an automotive type of motion in m/s.
-    private static let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4
     /// Sets precision for date equality in seconds.
     private static let DATE_TIME_PRECISION: Double = 1
     /// Sets precision for distance equality in meters.
@@ -84,6 +83,12 @@ public class MeasuredActivity : Equatable {
     
     /// Converts a speed value to a motion type for an activity.
     public static func speedToMotionType(speed:Double) -> MotionType {
-        return (speed >= AUTOMOTIVE_SPEED_THRESHOLD) ? .car : .walking
+        var speedThreshold = AUTOMOTIVE_SPEED_THRESHOLD
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            if appDelegate.cycleEnabled.rawValue {
+                speedThreshold = appDelegate.cycleSpeed.rawValue
+            }
+        }
+        return (speed > speedThreshold) ? .car : .walking
     }
 }
