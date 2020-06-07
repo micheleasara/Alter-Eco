@@ -44,14 +44,14 @@ struct ContentView: View {
     
     var tabView : some View {
         TabView() {
-            DetailView().tabItem {
+            DetailView().padding(.bottom).tabItem {
                 VStack {
                     Image(systemName: "chart.bar.fill")
                     Text("Stats").font(.title)
                 }
             }
 
-            ProfileView().tabItem {
+            ProfileView().padding(.bottom).tabItem {
                 VStack {
                     Image(systemName: "person.circle")
                     Text("Profile").font(.title)
