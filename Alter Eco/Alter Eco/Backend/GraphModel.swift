@@ -57,7 +57,7 @@ public class ChartDataModel : ObservableObject {
     
     /// Retrieves the carbon breakdown for the day given starting from midnight and with a fixed hourly granularity.
     public func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
-        var dates = [Date.setToSpecificHour(date: last, hour: "00:00:00")!]
+        var dates = [last.setToSpecificHour(hour: "00:00:00")!]
         for i in 0..<24/HOUR_GRANULARITY {
             let interval = TimeInterval(Double(HOUR_GRANULARITY) * HOUR_IN_SECONDS)
             dates.append(dates[i].addingTimeInterval(interval))
@@ -75,33 +75,32 @@ public class ChartDataModel : ObservableObject {
     public func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first day shown at midnight
         let numDaysAgo = Double((WEEKDAYS_SHOWN - 1))
-        var dates = [Date.setToSpecificHour(date:
-                     last.addingTimeInterval(-numDaysAgo * DAY_IN_SECONDS), hour: "00:00:00")!]
-        var labels = [String(Date.getDayName(dates[0]).prefix(3))]
+        var dates = [last.addingTimeInterval(-numDaysAgo * DAY_IN_SECONDS).setToSpecificHour(hour: "00:00:00")!]
+        var labels = [String(dates[0].getDayName().prefix(3))]
         
         for i in stride(from: 0, to: WEEKDAYS_SHOWN-1, by: 1) {
             dates.append(dates[i].addingTimeInterval(DAY_IN_SECONDS))
-            labels.append(String(Date.getDayName(dates[i+1]).prefix(3)))
+            labels.append(String(dates[i+1].getDayName().prefix(3)))
         }
         dates.append(last)
-        labels.append(String(Date.getDayName(last).prefix(3)))
+        labels.append(String(last.getDayName().prefix(3)))
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
 
     /// Retrieves the carbon breakdown up until the day given and for a fixed number of months.
     public func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first month shown at midnight
-        let monthStart = Date.getStartOfMonth(fromDate: last)
-        let start = Date.addMonths(date: monthStart, numMonthsToAdd: -(MONTHS_SHOWN - 1))
+        let monthStart = last.getStartOfMonth()
+        let start = monthStart.addMonths(numMonthsToAdd: -(MONTHS_SHOWN - 1))
         
         var dates = [start]
-        var labels = [String(Date.getMonthName(dates[0]).prefix(3))]
+        var labels = [String(dates[0].getMonthName().prefix(3))]
         for i in stride(from: 0, to: MONTHS_SHOWN-1, by: 1) {
-            dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 1))
-            labels.append(String(Date.getMonthName(dates[i+1]).prefix(3)))
+            dates.append(dates[i].addMonths(numMonthsToAdd: 1))
+            labels.append(String(dates[i+1].getMonthName().prefix(3)))
         }
         dates.append(last)
-        labels.append(String(Date.getMonthName(last).prefix(3)))
+        labels.append(String(last.getMonthName().prefix(3)))
         
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }
@@ -109,18 +108,18 @@ public class ChartDataModel : ObservableObject {
     /// Retrieves the carbon breakdown up until the day given and for a fixed number of years.
     public func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
         // start from the first year shown on the 1st of Jan at midnight
-        let monthStart = Date.getStartOfMonth(fromDate: last)
-        let firstOfJan = Date.setToSpecificMonth(date: monthStart, month: 1)!
-        let start = Date.addMonths(date: firstOfJan, numMonthsToAdd: -(YEARS_SHOWN - 1) * 12)
+        let monthStart = last.getStartOfMonth()
+        let firstOfJan = monthStart.setToSpecificMonth(month: 1)!
+        let start = firstOfJan.addMonths(numMonthsToAdd: -(YEARS_SHOWN - 1) * 12)
         
         var dates = [start]
-        var labels = [Date.getYearAsString(dates[0])]
+        var labels = [dates[0].getYearAsString()]
         for i in stride(from: 0, to: YEARS_SHOWN-1, by: 1) {
-            dates.append(Date.addMonths(date: dates[i], numMonthsToAdd: 12))
-            labels.append(Date.getYearAsString(dates[i+1]))
+            dates.append(dates[i].addMonths(numMonthsToAdd: 12))
+            labels.append(dates[i+1].getYearAsString())
         }
         dates.append(last)
-        labels.append(String(Date.getYearAsString(last).prefix(3)))
+        labels.append(String(last.getYearAsString().prefix(3)))
         
         return breakdownFromDateRanges(rangesBoundaries: dates, withLabels: labels)
     }

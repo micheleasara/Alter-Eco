@@ -5,11 +5,14 @@ class ChartDataModelTest: XCTestCase {
     var DBMS: DBManagerMock!
     var model: ChartDataModel!
     let limit = Date(timeIntervalSince1970: 0)
+    let dateFormatter = DateFormatter()
     
     override func setUp() {
         super.setUp()
         DBMS = DBManagerMock()
         model = ChartDataModel(limit: limit, DBMS: DBMS)
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .medium
     }
     
     func testRetrievesDailyDataWithSpecifiedGranularity() {
@@ -26,9 +29,8 @@ class ChartDataModelTest: XCTestCase {
         }
         
         let expectedInterval = Double(model.HOUR_GRANULARITY) * HOUR_IN_SECONDS
-        var expectedFrom = Date.setToSpecificHour(date: limit, hour: "00:00:00")!
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .medium
+        var expectedFrom = limit.setToSpecificHour(hour: "00:00:00")!
+
         for i in 0..<entriesInADay {
             let interval = DBMS.carbonWithinIntervalIntervals[offset+i]
             XCTAssert(interval == expectedInterval,
@@ -55,11 +57,10 @@ class ChartDataModelTest: XCTestCase {
         }
         
         var expectedInterval = DAY_IN_SECONDS
-        var expectedFrom = Date.setToSpecificHour(date: limit, hour: "00:00:00")!
+        var expectedFrom = limit.setToSpecificHour(hour: "00:00:00")!
         expectedFrom = expectedFrom.addingTimeInterval(
             -Double(model.WEEKDAYS_SHOWN-1) * DAY_IN_SECONDS)
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .medium
+
         for i in 0..<entriesCount {
             // last interval should be 0 as the given date is set to midnight
             if (i == entriesCount - 1) {
@@ -89,12 +90,10 @@ class ChartDataModelTest: XCTestCase {
                       MeasuredActivity.motionTypeToString(type: motion) + " entries do not match")
         }
         
-        var expectedFrom = Date.setToSpecificHour(date: limit, hour: "00:00:00")!
-        expectedFrom = Date.addMonths(date: expectedFrom, numMonthsToAdd: -(model.MONTHS_SHOWN - 1))
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .medium
+        var expectedFrom = limit.setToSpecificHour(hour: "00:00:00")!
+        expectedFrom = expectedFrom.addMonths(numMonthsToAdd: -(model.MONTHS_SHOWN - 1))
         for i in 0..<entriesCount {
-            let monthAfter = Date.addMonths(date: expectedFrom, numMonthsToAdd: 1)
+            let monthAfter = expectedFrom.addMonths(numMonthsToAdd: 1)
             // last interval should be 0 as the given date is set to midnight
             let expectedInterval = (i == entriesCount - 1) ? 0 : monthAfter.timeIntervalSince(expectedFrom)
             
@@ -122,12 +121,11 @@ class ChartDataModelTest: XCTestCase {
                       MeasuredActivity.motionTypeToString(type: motion) + " entries do not match")
         }
         
-        var expectedFrom = Date.setToSpecificHour(date: limit, hour: "00:00:00")!
-        expectedFrom = Date.addMonths(date: expectedFrom, numMonthsToAdd: -12 * (model.YEARS_SHOWN - 1))
-        dateFormatter.dateStyle = .short
-        dateFormatter.timeStyle = .medium
+        var expectedFrom = limit.setToSpecificHour(hour: "00:00:00")!
+        expectedFrom = expectedFrom.addMonths(numMonthsToAdd: -12 * (model.YEARS_SHOWN - 1))
+
         for i in 0..<entriesCount {
-            let yearAfter = Date.addMonths(date: expectedFrom, numMonthsToAdd: 12)
+            let yearAfter = expectedFrom.addMonths(numMonthsToAdd: 12)
             // last interval should be 0 as the given date is set to midnight
             let expectedInterval = (i == entriesCount - 1) ? 0 : yearAfter.timeIntervalSince(expectedFrom)
             

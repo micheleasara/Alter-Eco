@@ -86,17 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
     }
     
-    func queryDBForFirstLaunch() -> Bool {
-        let query = try? DBMS.executeQuery(entity: "UserPreference",
-                                      predicate: nil, args: nil) as? [NSManagedObject]
-        guard query != nil else { return true }
-        if query!.count > 0 {
-            return (query![0].value(forKey: "firstLaunch") as! Bool)
-        }
-        // if nothing is in the database, this is the first launch
-        return true
-    }
-    
     // MARK:- Location tracking and MapKit requests
     func startLocationTracking() {
         manager.requestWhenInUseAuthorization()

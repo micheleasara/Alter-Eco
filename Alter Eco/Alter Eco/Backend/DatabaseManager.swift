@@ -268,7 +268,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         // retrieve current score
         let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
         if queryResult.count != 0 {
-            let activityScore = UserScore(activity: activity, league: "", date: Date.toInternationalString(Date().toLocalTime()), counter: 0)
+            let activityScore = UserScore(activity: activity, league: "", date: Date().toLocalTime().toInternationalString(), counter: 0)
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
             queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
             queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
@@ -297,7 +297,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func updateLeague(newLeague: String) throws {
        let managedContext = try getManagedContext()
        let dateToday = Date().toLocalTime()
-       let dateTodayStr = Date.toInternationalString(dateToday)
+       let dateTodayStr = dateToday.toInternationalString()
     
        // retrieve current user's score
         let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
@@ -334,7 +334,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     private func resetScore() throws -> Void {
         let managedContext = try getManagedContext()
         let dateToday = Date().toLocalTime()
-        let dateTodayStr = Date.toInternationalString(dateToday)
+        let dateTodayStr = dateToday.toInternationalString()
         
         let newScore = 0.0
         
@@ -386,7 +386,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     private func updateTreeCounter() throws -> Void {
            let managedContext = try getManagedContext()
            let dateToday = Date().toLocalTime()
-           let dateTodayStr = Date.toInternationalString(dateToday)
+           let dateTodayStr = dateToday.toInternationalString()
            
            let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
            if queryResult.count != 0 {
