@@ -50,7 +50,7 @@ public let ACTIVITY_WEIGHTS_DICT: [MeasuredActivity.MotionType: Double] = [.car:
 /// Defines how many seconds must pass for an activity to expire in the absence of ROI flags.
 public let ACTIVITY_TIMEOUT: Double = 60 * 5
 /// Defines the maximum speed allowed for a speed-based measurement to be considered valid in m/s.
-public let MAX_SPEED: Double = 0.8*AVERAGE_PLANE_SPEED
+public let MAX_SPEED: Double = 0.4*AVERAGE_PLANE_SPEED
 /// Defines the default cycling speed in m/s if the user enabled cycling.
 public let DEFAULT_CYCLE_SPEED: Double = 6
 /// Defines threshold to identify an automotive type of motion in m/s.
@@ -78,7 +78,7 @@ public let TRAIN_PTS: Double = 7
 /// Points for flights.
 public let PLANE_PTS: Double = 0
 /// Number of points needed to pass to the next league.
-public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 3000
+public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 1000
 
 // MARK: - Other
 /// Average carbon output for a day in the UK in kg/km.

@@ -91,14 +91,12 @@ public class ActivityEstimator<T:ActivityList> {
             else if visitedRegionOfInterest(previousStation) && !visitedRegionOfInterest(currentStation) {
                 checkROIFlagStillValid(activityNumToOff: WALK_NUM_FOR_TRAIN_FLAG_OFF,
                                        motionType: .walking,
-                                       prevROI: &previousStation,
-                                       currentLoc: location)
+                                       prevROI: &previousStation)
             }
             else if visitedRegionOfInterest(previousAirport) && !visitedRegionOfInterest(currentAirport) {
                 checkROIFlagStillValid(activityNumToOff: CAR_NUM_FOR_PLANE_FLAG_OFF,
                                        motionType: .car,
-                                       prevROI: &previousAirport,
-                                       currentLoc: location)
+                                       prevROI: &previousAirport)
             }
             // not the first location received
             else if previousLoc != nil {
@@ -129,7 +127,7 @@ public class ActivityEstimator<T:ActivityList> {
     private func isUpdateInstantaneous(_ location: CLLocation) -> Bool {
         guard previousLoc != nil else { return false }
         let elapsedTime = location.timestamp.timeIntervalSince(previousLoc!.timestamp)
-        return  elapsedTime.rounded() <= 0
+        return  elapsedTime.rounded(.down) <= 0
     }
     
     /// Returns if the given ROI has been visited recently.
@@ -216,7 +214,7 @@ public class ActivityEstimator<T:ActivityList> {
             let regionLocation = CLLocation(latitude: regionOfInterest.placemark.coordinate.latitude, longitude: regionOfInterest.placemark.coordinate.longitude)
 
             if regionLocation.distance(from: currentLocation) <= gpsThreshold {
-                print("In ROI: \(String(describing: regionOfInterest.name))")
+                print("In ROI: \(regionOfInterest.name ?? "NIL")")
                 return regionOfInterest.placemark.location
             }
         }
@@ -268,34 +266,39 @@ public class ActivityEstimator<T:ActivityList> {
     
     /// Determines if the ROI flag is invalid due to sufficient subsequent activities of the right kind.
     /// If invalid, flag is deactivated and list is examined for significant changes.
-    private func checkROIFlagStillValid(activityNumToOff: Int, motionType: MeasuredActivity.MotionType, prevROI: inout CLLocation?, currentLoc: CLLocation) {
-        guard previousLoc != nil else { return }
+    private func checkROIFlagStillValid(activityNumToOff: Int, motionType: MeasuredActivity.MotionType, prevROI: inout CLLocation?) {
+        guard prevROI != nil else { return }
         guard measurements.count >= activityNumToOff else { return }
         
         let newActivityIndex = measurements.count - activityNumToOff
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {
-            // flag is still valid
-            if measurements[i].motionType != motionType {
+            // flag is not valid anymore if there is a streak of specific measurements after ROI flag was set
+            if measurements[i].motionType != motionType || measurements[i].start < prevROI!.timestamp {
                 return
             }
         }
         // flag is invalid
         prevROI = nil
+        print("ROI flag deactivated due to sufficient speed measurements")
+        ROIDeactivatedListCleanup()
+    }
+    
+    /// Performs actions on the measurement list to be done when the ROI flag is deactivated.
+    private func ROIDeactivatedListCleanup() {
         processSignificantChanges()
+        dumpListToDB(from: 0, to: measurements.count - 1)
     }
     
     /// Called when the ROI countdown for the station expires.
     private func stationTimedOut() {
         self.previousStation = nil
-        processSignificantChanges()
-        dumpListToDB(from: 0, to: measurements.count - 1)
+        ROIDeactivatedListCleanup()
     }
     
     /// Called when the ROI countdown for the airport expires.
     private func airportTimedOut() {
         self.previousAirport = nil
-        processSignificantChanges()
-        dumpListToDB(from: 0, to: measurements.count - 1)
+        ROIDeactivatedListCleanup()
     }
     
     /// Writes a synthesis of the activities to the database and removes the elements from the measurements.

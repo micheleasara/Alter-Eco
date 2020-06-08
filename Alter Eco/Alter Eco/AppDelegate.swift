@@ -169,7 +169,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func userIsInAnAirport(airport: CLLocation) {
-        print("User is in an airport")
+        // make airport requests happen more often since user has visited airport
         airportRequestRadius = MIN_AIRPORT_REQUEST_RADIUS
     }
     
@@ -224,6 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         return managedObjectModel
     }()
 
+    // the following function is for integrations tests
     func mockPersistentContainer() -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "Database2.0", managedObjectModel: self.managedObjectModel)
         let description = NSPersistentStoreDescription()

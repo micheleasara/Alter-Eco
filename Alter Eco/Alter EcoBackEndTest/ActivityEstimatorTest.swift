@@ -127,6 +127,30 @@ class ActivityEstimatorTest: XCTestCase {
         XCTAssert(DBMS.appendArgs.count == 1, "Expected one call, but got \(DBMS.appendArgs.count)")
     }
     
+    func testEnoughMeasurementsInARowSynthesizeAnActivityAndWritesToDB() {
+        var date = Date(timeIntervalSince1970: 0)
+        let accuracy = GPS_CONFIDENCE_THRESHOLD
+        
+        for _ in 1...NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY-1 {
+            list.add(MeasuredActivity(motionType: .walking, distance: 100, start: date, end: Date(timeInterval: 10, since: date)))
+            date = Date(timeInterval: 10, since: date)
+        }
+        
+        // simulate final walking event
+        let coord1 = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
+        let coord2 = CLLocationCoordinate2D(latitude: 51.4813213, longitude: -0.1943419)
+        let previousLocation = CLLocation(coordinate: coord1, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
+        let currentLocation = CLLocation(coordinate: coord2, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 999999, since: previousLocation.timestamp))
+        estimator.processLocation(previousLocation)
+        estimator.processLocation(currentLocation)
+        
+        // check if the right activity was synthesized
+        XCTAssert(list.synthesizeArgs[0] == 0, "Got \(list.synthesizeArgs[0])")
+        XCTAssert(list.synthesizeArgs[1] == NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY - 1, "Got \(list.synthesizeArgs[1])")
+        // check if something was written to the database
+        XCTAssert(DBMS.appendArgs.count == 1, "Expected one call, but got \(DBMS.appendArgs.count)")
+    }
+    
     func testStationToNonStationByCarIsTreatedAsSpeedBasedActivity() {
         let accuracy = GPS_CONFIDENCE_THRESHOLD
         let station = CLLocationCoordinate2D(latitude: 51.4913283, longitude: -0.1943439)
@@ -185,7 +209,7 @@ class ActivityEstimatorTest: XCTestCase {
         
         var airportLoc = CLLocation(coordinate: airport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeIntervalSince1970: 0))
         // small time interval to simulate final car event
-        let nonAirportLoc = CLLocation(coordinate: nonAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 1000, since: airportLoc.timestamp))
+        let nonAirportLoc = CLLocation(coordinate: nonAirport, altitude: 0, horizontalAccuracy: accuracy, verticalAccuracy: 0, timestamp: Date(timeInterval: 10000, since: airportLoc.timestamp))
         // set stations to given coordinates and simulate location updates
         estimator.airports = [MKMapItem(placemark: MKPlacemark(coordinate: airport))]
         estimator.processLocation(airportLoc)
