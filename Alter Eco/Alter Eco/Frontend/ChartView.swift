@@ -33,8 +33,8 @@ struct ChartView: View {
     public var transportPicker : some View {
         Picker(selection: $transportSelection.animation(), label: Image("")) {
             Text("All").tag(MeasuredActivity.MotionType.unknown)
-            Image(systemName: "car").tag(MeasuredActivity.MotionType.car)
             Image(systemName: "person").tag(MeasuredActivity.MotionType.walking)
+            Image(systemName: "car").tag(MeasuredActivity.MotionType.car)
             Image(systemName: "tram.fill").tag(MeasuredActivity.MotionType.train)
             Image(systemName: "airplane").tag(MeasuredActivity.MotionType.plane)
         }
@@ -43,10 +43,12 @@ struct ChartView: View {
     
     /// Returns the colour of the bars in the chart, which change according to daily carbon footprint.
     public var barColour : Color {
-        var colour: String = "graphBars"
-        let carbonByTransport = chartData.carbonBreakdown[.week]!
-        
+        if transportSelection == .walking {
+            return Title.colour // same shade of green as the title
+        }
         // chart changes colour depending on users's daily carbon footprint
+        var colour = Color.blue
+        let carbonByTransport = chartData.carbonBreakdown[.week]!
         var todayTotal = 0.0
         for motion in MeasuredActivity.MotionType.allCases {
             if let labelledValue = carbonByTransport[motion]?.last {
@@ -57,9 +59,9 @@ struct ChartView: View {
         }
 
         if todayTotal > AVERAGE_UK_DAILY_CARBON {
-            colour = "redGraphBar"
+            colour = Color.red
         }
-        return Color(colour)
+        return colour
     }
     
     /// Returns whether the carbon shown was saved or emitted.
@@ -73,7 +75,7 @@ struct ChartView: View {
             Button(action: {self.showingInfo = true}) {
                 Image(systemName: "info.circle")
             }.alert(isPresented: self.$showingInfo) {
-                Alert(title: Text("Your Eco Chart"), message: Text("The Alter Eco chart displays your CO2 emissions automatically!\n\n") + Text("If you walk, the chart displays how much carbon you saved instead of driving.\n\n") + Text("Green bars mean you're emitting less than the average Londoner does in a day, and red means you are doing worse."),
+                Alert(title: Text("Your Eco Chart"), message: Text("The Alter Eco chart displays your CO2 emissions automatically!\n\n") + Text("If you walk, the chart displays how much carbon you saved instead of driving.\n\n") + Text("Blue bars mean you're emitting less than the average Londoner does in a day, and red means you are doing worse."),
                 dismissButton: .default(Text("OK")))
             }
         }
