@@ -167,18 +167,23 @@ public class ActivityEstimator<T:ActivityList> {
         
         // for each change, check if it is a significant change or noise
         var activityStart = 0
+        var activityEnd = -1
+        print("Before change processing, measurements were:")
+        _ = measurements.map { print(MeasuredActivity.motionTypeToString(type: $0.motionType))}
         for j in stride(from: 1, to: changes.count, by: 1) {
             if changes[j] - changes[j-1] >= numChangeActivity {
-                let activityEnd = changes[j] - numChangeActivity
+                activityEnd = changes[j] - numChangeActivity
                 writeListToDB(from: activityStart, to: activityEnd)
+                print(measurements[activityEnd].end)
                 activityStart = changes[j-1] + 1
             }
         }
-        
         // remove activities which have been synthesized
-        if activityStart > 0 {
-            measurements.remove(from: 0, to: activityStart - 1)
+        if activityEnd >= 0 {
+            measurements.remove(from: 0, to: activityEnd)
         }
+        print("After change processing, measurements were:")
+        _ = measurements.map { print(MeasuredActivity.motionTypeToString(type: $0.motionType)) }
     }
     
     /// Writes an activity synthesis to the database if enough measurements of the same kind in a row have happened.
@@ -249,7 +254,9 @@ public class ActivityEstimator<T:ActivityList> {
     
     /// Restarts the countdown for the appropriate ROI to expire.
     private func resetROITimer(_ motionType: MeasuredActivity.MotionType) {
-        motionType == .train ? timers.start(key: "station", interval: STATION_TIMEOUT, block: stationTimedOut) : timers.start(key: "airport", interval: AIRPORT_TIMEOUT, block: airportTimedOut)
+        motionType == .train ?
+            timers.start(key: "station", interval: STATION_TIMEOUT, block: stationTimedOut) :
+            timers.start(key: "airport", interval: AIRPORT_TIMEOUT, block: airportTimedOut)
     }
     
     /// Computes and stores ROI-based activity.

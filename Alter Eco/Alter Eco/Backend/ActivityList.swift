@@ -74,10 +74,10 @@ public class WeightedActivityList: ActivityList {
     
     /// Returns the weighted average of the activities between the given indexes.
     public func getAverage(from:Int, to:Int) -> MeasuredActivity? {
-        if from <= to && from >= 0 {
+        if from <= to && from >= 0 && measurements.count > to {
             return MeasuredActivity(motionType: getAverageMotionType(from:from, to:to),
                                         distance: getCumulativeDistance(from:from, to:to),
-                                        start: measurements.first!.start, end: measurements.last!.end)
+                                        start: measurements[from].start, end: measurements[to].end)
         }
         return nil
     }
