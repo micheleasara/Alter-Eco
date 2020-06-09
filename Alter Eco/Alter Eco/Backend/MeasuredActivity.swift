@@ -84,11 +84,13 @@ public class MeasuredActivity : Equatable {
     /// Converts a speed value to a motion type for an activity.
     public static func speedToMotionType(speed:Double) -> MotionType {
         var speedThreshold = AUTOMOTIVE_SPEED_THRESHOLD
+        #if NO_BACKEND_TESTING
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             if appDelegate.cycleEnabled.rawValue {
                 speedThreshold = appDelegate.cycleSpeed.rawValue
             }
         }
+        #endif
         return (speed > speedThreshold) ? .car : .walking
     }
 }

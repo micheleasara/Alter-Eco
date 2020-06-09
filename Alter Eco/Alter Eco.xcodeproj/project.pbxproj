@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E158242FB3EC00FD9B5F /* ProfileView.swift */; };
 		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
-		218C4196243DCC910036A2FE /* ProfilePic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218C4194243DCC910036A2FE /* ProfilePic.swift */; };
 		218C419F243E89690036A2FE /* Awards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218C419E243E89690036A2FE /* Awards.swift */; };
 		552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552BB1D324448D2A0010EF6B /* ComparisonView.swift */; };
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
@@ -21,7 +20,6 @@
 		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
 		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
 		9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5D59C4243B102C00238275 /* ProgressBarView.swift */; };
-		9C8601332449884100033B55 /* UserScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C8601322449884100033B55 /* UserScoreTest.swift */; };
 		9C87AE27244215FB00490481 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* DatabaseManager.swift */; };
 		9C87AE292442408F00490481 /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
 		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
@@ -39,14 +37,14 @@
 		9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594402429691E00B1D0B4 /* ContentView.swift */; };
 		9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594422429692000B1D0B4 /* AppDelegate.swift */; };
 		9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */; };
-		9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */; };
 		9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */; };
 		9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */; };
 		9CD5948424296E2700B1D0B4 /* Alter_EcoFullUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */; };
-		9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */; };
+		9CFAF4BC242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */; };
 		9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
-		DE054C81248EF4EE001B8EB1 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
+		DE054C86248EFE3B001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
+		DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
 		DE2B027F247EC1D900926935 /* ChartDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */; };
 		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
 		DE3C10A42447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
@@ -69,7 +67,6 @@
 		DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* DatabaseManager.swift */; };
 		DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
-		DEDE54A824467B4E003FE0DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594422429692000B1D0B4 /* AppDelegate.swift */; };
 		DEDE54AC24467B4E003FE0DE /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
 		DEDE54AD24467B4E003FE0DE /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
 		DEDE54AE24467B4E003FE0DE /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
@@ -110,7 +107,6 @@
 /* Begin PBXFileReference section */
 		2186E158242FB3EC00FD9B5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		218C4194243DCC910036A2FE /* ProfilePic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePic.swift; sourceTree = "<group>"; };
 		218C419E243E89690036A2FE /* Awards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Awards.swift; sourceTree = "<group>"; };
 		552BB1D324448D2A0010EF6B /* ComparisonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparisonView.swift; sourceTree = "<group>"; };
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
@@ -122,7 +118,6 @@
 		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
 		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C5D59C4243B102C00238275 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
-		9C8601322449884100033B55 /* UserScoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScoreTest.swift; sourceTree = "<group>"; };
 		9C87AE26244215FB00490481 /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		9C87AE282442408F00490481 /* ActivityList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityList.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
@@ -142,18 +137,18 @@
 		9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasuredActivity.swift; sourceTree = "<group>"; };
 		9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasuredActivityTest.swift; sourceTree = "<group>"; };
 		9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimatorTest.swift; sourceTree = "<group>"; };
-		9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegateTest.swift; sourceTree = "<group>"; };
 		9CD5945A24296BD100B1D0B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Alter EcoBackEndTests/Info.plist"; sourceTree = "<group>"; };
 		9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoBackEndTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoFullUITest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoFullUITest.swift; sourceTree = "<group>"; };
 		9CD5948524296E2700B1D0B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatabaseTest.swift; path = "Alter EcoBackEndTest/DatabaseTest.swift"; sourceTree = SOURCE_ROOT; };
+		9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatabaseAndUserScoreTest.swift; path = "Alter EcoBackEndTest/DatabaseAndUserScoreTest.swift"; sourceTree = SOURCE_ROOT; };
 		9CFAF4C4242E2077000B75A7 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DE03E587248549B700CBFBB6 /* ShepherdsBush.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ShepherdsBush.gpx; sourceTree = "<group>"; };
+		DE054C85248EFE3B001B8EB1 /* TestMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMain.swift; sourceTree = "<group>"; };
 		DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataModelTest.swift; sourceTree = "<group>"; };
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
@@ -205,15 +200,14 @@
 		9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */ = {
 			isa = PBXGroup;
 			children = (
+				DE054C85248EFE3B001B8EB1 /* TestMain.swift */,
 				DE2B0280247ED28C00926935 /* Mocks.swift */,
-				9C8601322449884100033B55 /* UserScoreTest.swift */,
-				9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */,
+				9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */,
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
 				DEFEEC502448987C009BE765 /* MultiTimerTest.swift */,
 				DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */,
 				9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */,
 				DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */,
-				9CD5945924296BD100B1D0B4 /* AppDelegateTest.swift */,
 				9CD5945A24296BD100B1D0B4 /* Info.plist */,
 			);
 			path = "Alter EcoBackEndTest";
@@ -324,7 +318,6 @@
 				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
 				218C419E243E89690036A2FE /* Awards.swift */,
 				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
-				218C4194243DCC910036A2FE /* ProfilePic.swift */,
 				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
 				DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
@@ -509,12 +502,11 @@
 			files = (
 				DE2B027F247EC1D900926935 /* ChartDataModelTest.swift in Sources */,
 				DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */,
-				9C8601332449884100033B55 /* UserScoreTest.swift in Sources */,
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
 				DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */,
 				DE2B0281247ED28C00926935 /* Mocks.swift in Sources */,
-				9CD5947A24296DA800B1D0B4 /* AppDelegateTest.swift in Sources */,
-				9CFAF4BC242CE9E7000B75A7 /* DatabaseTest.swift in Sources */,
+				DE054C86248EFE3B001B8EB1 /* TestMain.swift in Sources */,
+				9CFAF4BC242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift in Sources */,
 				9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -551,7 +543,6 @@
 				DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */,
 				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
 				55C85C5B243CB879006AD075 /* PrivacyInfoView.swift in Sources */,
-				218C4196243DCC910036A2FE /* ProfilePic.swift in Sources */,
 				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
@@ -573,13 +564,12 @@
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
-				DE054C81248EF4EE001B8EB1 /* ObservableWrapper.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */,
+				DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */,
 				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
-				DEDE54A824467B4E003FE0DE /* AppDelegate.swift in Sources */,
 				DECD0956247DD36F0099747D /* GraphModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

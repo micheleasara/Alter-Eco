@@ -32,29 +32,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal var cycleSpeed: Observable<Double>!
     /// Defines whether location tracking can be paused by iOS.
     internal var autoPauseEnabled: Observable<Bool>!
-    
-    #if NO_BACKEND_TESTING
-    // called when something is written to the database, used to update the graph
-    func activityWasWrittenToDB(activity: MeasuredActivity) {
-        print("activity \(activity.motionType) of distance \(activity.distance)m",
-            " was written with start \(activity.start) and end \(activity.end)")
-        chartModel.updateUpTo(Date().toLocalTime())
-    }
-    
     /// Contains data for the chart of ChartView.
     internal var chartModel : ChartDataModel!
     
     var scene = SceneDelegate()
-    #endif
     
     override init() {
         super.init()
-        self.DBMS = CoreDataManager(persistentContainer: persistentContainer)
+        self.DBMS = CoreDataManager()
         
-        #if NO_BACKEND_TESTING
         self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
         chartModel = ChartDataModel(limit: Date().toLocalTime(), DBMS: self.DBMS)
-        #endif
                 
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
@@ -63,6 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         loadUserSettings()
         autoPauseEnabled.setValueChangeCallback {(newValue) in
             self.manager.pausesLocationUpdatesAutomatically = newValue}
+    }
+    
+    // called when something is written to the database, used to update the graph
+    func activityWasWrittenToDB(activity: MeasuredActivity) {
+        print("activity \(activity.motionType) of distance \(activity.distance)m",
+            " was written with start \(activity.start) and end \(activity.end)")
+        chartModel.updateUpTo(Date().toLocalTime())
     }
     
     func loadUserSettings() {
@@ -207,59 +202,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         
       }
-    
-    // MARK: - Core Data
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "Database2.0")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                print("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-
-    lazy var managedObjectModel: NSManagedObjectModel = {
-        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: type(of: self))] )!
-        return managedObjectModel
-    }()
-
-    // the following function is for integrations tests
-    func mockPersistentContainer() -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: "Database2.0", managedObjectModel: self.managedObjectModel)
-        let description = NSPersistentStoreDescription()
-        description.type = NSInMemoryStoreType
-        description.shouldAddStoreAsynchronously = false
-        
-        container.persistentStoreDescriptions = [description]
-        container.loadPersistentStores { (description, error) in
-            // Check if the data store is in memory
-            precondition( description.type == NSInMemoryStoreType )
-                                        
-            // Check if creating container wrong
-            if let error = error {
-                print("An error occurred: \(error)")
-            }
-        }
-        return container
-    }
-    
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                let nserror = error as NSError
-                print("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-    
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
-        self.saveContext()
-    }
 }
 

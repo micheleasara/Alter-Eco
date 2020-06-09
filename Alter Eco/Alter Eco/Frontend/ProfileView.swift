@@ -25,42 +25,44 @@ struct ProfileView: View {
 }
 
 struct ProfileImage: View {
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var showingImagePicker = false
-    @State private var inputImage: UIImage?
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(entity: ProfilePic.entity(), sortDescriptors: [
-        NSSortDescriptor(keyPath: \ProfilePic.imageP, ascending: true)
-        ]
-    ) var savings : FetchedResults<ProfilePic>
+    @State private var inputImage: UIImage? = ProfileImage.loadStoredImage()
+    
+    static func loadStoredImage() -> UIImage? {
+        let results = try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]
+        if let results = results {
+            if results.count > 0 {
+                return UIImage(data: results[0].value(forKey: "imageP")! as! Data)
+            }
+        }
+        
+        // if not found
+        return nil
+    }
     
     var body: some View {
         GeometryReader { geo in
             Group {
-                if self.savings.count > 0 {
-                    self.loadStoredImage(height: geo.size.height)
-                        .clipShape(Circle())
+                if self.inputImage != nil {
+                    self.resizeImageToFitHeight(image: self.inputImage!, height: geo.size.height).clipShape(Circle())
                 } else {
-                    self.loadDefaultAvatar(height: 0.65*geo.size.height)
+                    self.resizeImageToFitHeight(image: UIImage(named: "add_profile_pic")!, height: 0.65*geo.size.height)
                 }
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-            .sheet(isPresented: self.$showingImagePicker, onDismiss: self.loadSelectedImage) {
-                ImagePicker(image: self.$inputImage) }
+            .sheet(isPresented: self.$showingImagePicker) {
+                ImagePicker(onCompletionCallback: self.imageSelectionCompleted(image:)) }
             .onTapGesture {
                 self.showingImagePicker = true
-                self.loadSelectedImage()
             }
         }
     }
     
-    func loadStoredImage(height: CGFloat) -> some View {
-        let img = UIImage(data: savings[0].imageP!)!
-        return resizeImageToFitHeight(image: img, height: height)
-    }
-    
-    func loadDefaultAvatar(height: CGFloat) -> some View {
-        return resizeImageToFitHeight(image: UIImage(named: "add_profile_pic")!, height: height)
+    func imageSelectionCompleted(image: UIImage?) {
+        if let img = image {
+            clearDBAndStoreImage(inputImage: img)
+            inputImage = img
+        }
     }
     
     func resizeImageToFitHeight(image: UIImage, height: CGFloat) -> some View {
@@ -70,13 +72,11 @@ struct ProfileImage: View {
         return fit.frame(width: width, height: height)
     }
     
-    func loadSelectedImage() {
-        guard let inputImage = inputImage else { return }
-        if savings.count != 0 {
-            self.moc.delete(savings[0])
+    func clearDBAndStoreImage(inputImage: UIImage) {
+        try? DBMS.deleteAll(entity: "ProfilePic")
+        if let newPic = inputImage.jpegData(compressionQuality: CGFloat(1.0)) {
+            try? DBMS.setValuesForKeys(entity: "ProfilePic", keyedValues: ["imageP":newPic])
         }
-        let newPic = ProfilePic(context: self.moc)
-        newPic.imageP = inputImage.jpegData(compressionQuality: CGFloat(1.0))
     }
 }
 
@@ -257,7 +257,6 @@ struct AwardView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         return Group {
             ProfileView()
             ProfileImage()
@@ -266,7 +265,6 @@ struct ProfileView_Previews: PreviewProvider {
             VStack {
                 AwardView()
             }
-        }.environment(\.managedObjectContext, context)
-        .environmentObject(ScreenMeasurements())
+        }.environmentObject(ScreenMeasurements())
     }
 }

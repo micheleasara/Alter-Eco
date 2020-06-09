@@ -140,8 +140,7 @@ struct ChartView: View {
 
 struct ChartView_Previews: PreviewProvider {
     static var previews: some View {
-        let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
-        let DBMS = CoreDataManager(persistentContainer: container)
+        let DBMS = CoreDataManager()
         return ChartView()
             .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }

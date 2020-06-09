@@ -65,11 +65,11 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
+        let DBMS = CoreDataManager()
         return ContentView()
            .environmentObject(ScreenMeasurements())
             .environmentObject(ChartDataModel(limit: Date().toLocalTime(),
-                                              DBMS: CoreDataManager(persistentContainer: container)))
-            .environment(\.managedObjectContext, container.viewContext)
+                                              DBMS: CoreDataManager()))
+            .environment(\.managedObjectContext, DBMS.persistentContainer.viewContext)
     }
 }

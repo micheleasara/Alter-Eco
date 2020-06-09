@@ -14,8 +14,8 @@
             filePath = "Alter Eco/Backend/DatabaseManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "distanceWithinInterval(motionType:from:interval:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -130,22 +130,6 @@
             endingLineNumber = "59"
             landmarkName = "barColour"
             landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EE2A3D62-32F9-4C7A-AE47-C5BF60AFCEFA"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Alter Eco/AppDelegate.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "loadUserSettings()"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

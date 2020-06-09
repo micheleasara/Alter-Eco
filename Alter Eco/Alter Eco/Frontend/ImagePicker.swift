@@ -1,11 +1,18 @@
 import SwiftUI
 
 public struct ImagePicker: UIViewControllerRepresentable{
-    @Binding var image: UIImage?
     @Environment(\.presentationMode) var presentationMode
+    private var callback: ((UIImage?) -> Void)!
+    
+    public init(onCompletionCallback: @escaping (UIImage?) -> Void) {
+        callback = onCompletionCallback
+    }
     
     public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(callback: { image in
+            self.presentationMode.wrappedValue.dismiss()
+            self.callback(image)
+        })
     }
     
     public func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
@@ -18,18 +25,17 @@ public struct ImagePicker: UIViewControllerRepresentable{
     }
 
     public class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        var parent: ImagePicker
+        private var callback: ((UIImage?) -> Void)!
         
-        init(_ parent: ImagePicker) {
-            self.parent = parent
+        init(callback: @escaping (UIImage?) -> Void) {
+            self.callback = callback
         }
         
         public func imagePickerController(_ picker: UIImagePickerController,
             didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
+                callback(uiImage)
             }
-            parent.presentationMode.wrappedValue.dismiss()
         }
     }
 }

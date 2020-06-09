@@ -98,34 +98,8 @@ public protocol CarbonCalculator {
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework. Also provides carbon conversion utilities.
 public class CoreDataManager : DBManager, CarbonCalculator {
-    public func deleteAll(entity: String) throws {
-        let results = try executeQuery(entity: entity) as! [NSManagedObject]
-        for result in results {
-            try delete(result)
-        }
-    }
-    
-    public func delete(entity: String, rowNumber: Int) throws {
-        let results = try executeQuery(entity: entity) as! [NSManagedObject]
-        try delete(results[rowNumber])
-    }
-    
-    private func delete(_ obj: NSManagedObject) throws {
-        let context = try getManagedContext()
-        context.delete(obj)
-    }
-    // contains Core Data's stack
-    private let persistentContainer : NSPersistentContainer
     // contains the function called when an activity has been written to the database
     private var activityWrittenCallback : (MeasuredActivity) -> Void = {_ in }
-    
-    /**
-    Initializes a new database manager that interacts with the Core Data framework.
-    - Parameter persistentContainer: A container that encapsulates the Core Data stack.
-    */
-    public init(persistentContainer : NSPersistentContainer) {
-        self.persistentContainer = persistentContainer
-    }
     
     /// Sets a callback function which is called whenever an activity is added.
     public func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
@@ -187,6 +161,20 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         // call registered observer with the activity just written
         activityWrittenCallback(activity)
+    }
+    
+    /// Deletes all entries in the entity identified by the string given.
+    public func deleteAll(entity: String) throws {
+        let results = try executeQuery(entity: entity) as! [NSManagedObject]
+        for result in results {
+            try delete(result)
+        }
+    }
+    
+    /// Deletes the row at the index given and corresponding to the entity provided.
+    public func delete(entity: String, rowNumber: Int) throws {
+        let results = try executeQuery(entity: entity) as! [NSManagedObject]
+        try delete(results[rowNumber])
     }
     
     /**
@@ -330,23 +318,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return userScore
     }
     
-    /// Sets the user's score to 0.
-    private func resetScore() throws -> Void {
-        let managedContext = try getManagedContext()
-        let dateToday = Date().toLocalTime()
-        let dateTodayStr = dateToday.toInternationalString()
-        
-        let newScore = 0.0
-        
-        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
-        if queryResult.count != 0 {
-            queryResult[0].setValue(newScore, forKey: "score")
-            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
-        }
-        
-        try managedContext.save()
-    }
-    
     /// Returns the earliest start date within the Event entity. If no date is found, the date of today is returned.
     public func getFirstDate() throws -> Date {
         var oldDate = Date().toLocalTime()
@@ -381,6 +352,46 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         
         return distance * carbonUnit * KM_CONVERSION
+    }
+    
+    /// Returns a container that encapsulates the Core Data stack.
+    public lazy var persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Database2.0")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                print("Unresolved error \(error), \(error.userInfo)")
+            }
+        })
+        return container
+    }()
+
+    /// Returns a programmatic representation of the .xcdatamodeld file.
+    public lazy var managedObjectModel: NSManagedObjectModel = {
+        let managedObjectModel = NSManagedObjectModel.mergedModel(from: [Bundle(for: type(of: self))] )!
+        return managedObjectModel
+    }()
+    
+    /// Deletes the object given.
+    private func delete(_ obj: NSManagedObject) throws {
+        let context = try getManagedContext()
+        context.delete(obj)
+    }
+    
+    /// Sets the user's score to 0.
+    private func resetScore() throws -> Void {
+        let managedContext = try getManagedContext()
+        let dateToday = Date().toLocalTime()
+        let dateTodayStr = dateToday.toInternationalString()
+        
+        let newScore = 0.0
+        
+        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
+        if queryResult.count != 0 {
+            queryResult[0].setValue(newScore, forKey: "score")
+            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
+        }
+        
+        try managedContext.save()
     }
     
     private func updateTreeCounter() throws -> Void {

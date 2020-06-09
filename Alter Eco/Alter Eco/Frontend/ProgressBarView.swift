@@ -77,8 +77,7 @@ struct ProgressBarView: View {
 
 struct ProgressBarView_Previews: PreviewProvider {
     static var previews: some View {
-        let container = (UIApplication.shared.delegate as! AppDelegate).persistentContainer
-        let DBMS = CoreDataManager(persistentContainer: container)
+        let DBMS = CoreDataManager()
         
         return ProgressBarView()
             .environmentObject(ScreenMeasurements())
