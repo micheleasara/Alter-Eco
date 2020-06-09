@@ -135,7 +135,7 @@ public class ActivityEstimator<T:ActivityList> {
         return regionOfInterest != nil
     }
     
-    /// Stores a speed-based activity to the measurements list.
+    /// Computes and stores a speed-based activity in the measurements list, unless the activity is invalid (e.g. speed too high).
     private func addSpeedBasedActivity(location: CLLocation) {
         // cannot compute if this is the first location we receive
         if let previousLoc = previousLoc {
@@ -149,6 +149,8 @@ public class ActivityEstimator<T:ActivityList> {
                                                   distance: distance,
                                                   start: previousLoc.timestamp.toLocalTime(),
                                                   end: location.timestamp.toLocalTime()))
+            } else {
+                print("Speed based activity NOT added as too fast")
             }
         }
     }
