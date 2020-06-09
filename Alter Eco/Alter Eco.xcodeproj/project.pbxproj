@@ -807,7 +807,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.altereco.altereco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG NO_BACKEND_TESTING";
@@ -831,7 +831,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.altereco.altereco;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = NO_BACKEND_TESTING;
@@ -847,7 +847,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -870,7 +870,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
