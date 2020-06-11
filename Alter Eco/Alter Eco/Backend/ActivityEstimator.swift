@@ -201,7 +201,7 @@ public class ActivityEstimator<T:ActivityList> {
             }
             if counter >= NUM_MEASUREMENTS_TO_DETERMINE_ACTIVITY {
                 print("Enough measurements of type ", MeasuredActivity.motionTypeToString(type: measurements[0].motionType), " recorded to determine activity")
-                dumpListToDB(from: start, to: measurements.count - 1)
+                dumpListToDB(from: 0, to: measurements.count - 1)
             }
         }
     }
