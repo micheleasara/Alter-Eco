@@ -212,6 +212,7 @@ public class ActivityEstimator<T:ActivityList> {
         if !visitedRegionOfInterest(previousAirport) && !visitedRegionOfInterest(previousStation) {
             print("speed-based activity has expired, now writing to db...")
             dumpListToDB(from: 0, to: measurements.count - 1)
+            previousLoc = nil // start a new session by forgetting the last location
         }
     }
     
@@ -246,12 +247,11 @@ public class ActivityEstimator<T:ActivityList> {
                                 previousRegionOfInterest: &prevROI,
                                 speed: averageSpeed,
                                 motionType: motionType)
-            resetROITimer(motionType)
         } else {
             // first time visiting this ROI or moving inside the same ROI as before
             prevROI = currentROI
-            resetROITimer(motionType)
         }
+        resetROITimer(motionType)
     }
     
     /// Restarts the countdown for the appropriate ROI to expire.
@@ -296,6 +296,7 @@ public class ActivityEstimator<T:ActivityList> {
     private func ROIDeactivatedListCleanup() {
         processSignificantChanges()
         dumpListToDB(from: 0, to: measurements.count - 1)
+        previousLoc = nil // ready for a new session by forgetting last location
     }
     
     /// Called when the ROI countdown for the station expires.
