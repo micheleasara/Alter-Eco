@@ -281,10 +281,8 @@ public class ActivityEstimator<T:ActivityList> {
         
         let newActivityIndex = measurements.count - activityNumToOff
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {
-            print(measurements[i].start, " ", prevROI!.timestamp.toLocalTime())
             // flag is not valid anymore if there is a streak of specific measurements after ROI flag was set
             if measurements[i].motionType != motionType || measurements[i].start < prevROI!.timestamp.toLocalTime() {
-                print(measurements[i].start < prevROI!.timestamp)
                 return
             }
         }
