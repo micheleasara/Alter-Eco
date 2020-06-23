@@ -2,7 +2,7 @@ import SwiftUI
 import CoreLocation
 
 struct ContentView: View {
-    @State var showSplash = true
+    @State var showSplash = false
     @ObservedObject var isFirstLaunch = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
     
     var body: some View {
@@ -18,11 +18,12 @@ struct ContentView: View {
             }
             
             if !self.showSplash {
-                if isFirstLaunch.rawValue {
-                    introductionViewWithButton
-                } else {
-                    tabView
-                }
+                MainView()
+//                if isFirstLaunch.rawValue {
+//                    introductionViewWithButton
+//                } else {
+//                    tabView
+//                }
             }
         }
     }
@@ -40,28 +41,89 @@ struct ContentView: View {
                 .padding(.bottom)
         }
     }
-    
-    
-    var tabView : some View {
-        TabView() {
-            DetailView().padding(.bottom).tabItem {
-                VStack {
-                    Image(systemName: "chart.bar.fill")
-                    Text("Stats").font(.title)
-                }
-            }
+}
 
+struct MainView: View {
+    @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
+    @State var showInfo: Bool = false
+    @State var showSettings: Bool = false
+    
+     var body: some View {
+        VStack {
+            if showInfo {
+                titleAndBackButton.padding(.top)
+                PrivacyInfoView()
+            }
+            else if showSettings {
+                titleAndBackButton.padding(.top)
+                SettingsView()
+            }
+            else {
+                titleAndInfoButton.padding(.top)
+                Divider()
+                TabPanel()
+            }
+        }
+    }
+
+    var titleAndInfoButton: some View {
+        HStack() {
+            Spacer()
+            Title()
+            Button(action: {
+                self.showInfo.toggle()
+            }) {
+                Image(systemName: "info.circle") }
+            
+            Spacer()
+            Button(action: {
+                self.showSettings.toggle()
+                }) {
+                    Image(systemName: "gear")
+            }.padding(.trailing)
+        }
+    }
+    
+    var titleAndBackButton: some View {
+        ZStack(alignment: .leading) {
+            Button(action: {
+                self.showInfo = false
+                self.showSettings = false
+            }) { Text("Back").padding(.leading) }
+                Title().frame(maxWidth: .infinity,
+                       alignment: .center)
+        }
+    }
+}
+
+struct TabPanel: View {
+    var body: some View {
+        TabView() {
             ProfileView().padding(.bottom).tabItem {
                 VStack {
                     Image(systemName: "person.circle")
-                    Text("Profile").font(.title)
+                    Text("Profile")
                 }
+            }
+            
+            TransportView().padding(.bottom).tabItem {
+                VStack {
+                    Image(systemName: "car")
+                    Text("Transport")
+                }
+            }
+            
+            FoodView().padding(.bottom).tabItem {
+                Image(systemName: "cart")
+                Text("Groceries")
             }
         }.onAppear() {
             (UIApplication.shared.delegate as? AppDelegate)?.requestNotificationsPermission()
         }
     }
+    
 }
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

@@ -5,14 +5,13 @@ struct ProgressBarView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     // needed to refresh points when new activity is written
     @EnvironmentObject var chartData : ChartDataModel
+    @State private var showingInfo = false
     
     var body: some View {
         try? DBMS.updateLeagueIfEnoughPoints()
         
         return VStack {
-            Text("Your League")
-           .font(.headline)
-           .fontWeight(.semibold)
+            scoreLabelWithInfo
             
             textBoxLeagueInformation
             VStack (spacing: 0) {
@@ -23,10 +22,26 @@ struct ProgressBarView: View {
         }
     }
     
-    var textBoxLeagueInformation : some View {
+    var scoreLabelWithInfo: some View {
+        HStack(alignment: .center) {
+            Text("Score: ").font(.headline)
+            + Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
+                .font(.headline)
+
+        
+        Button(action: {self.showingInfo = true}) {
+            Image(systemName: "info.circle")
+        }
+            .alert(isPresented: $showingInfo) {
+                Alert(title: Text("Your Eco Score"), message: Text("We estimate your modes of transport throughout the day. The more eco-friendly your commute is, the more points you earn!"), dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+    
+    var textBoxLeagueInformation: some View {
          RoundedRectangle(cornerRadius: 25, style: .continuous)
+            .fill(Color("fill_colour"))
              .frame(width: screenMeasurements.trasversal * 0.9, height: screenMeasurements.longitudinal / 7)
-             .foregroundColor(Color("fill_colour"))
             .overlay(
                 Text(retrieveLabel())
                 .minimumScaleFactor(0.01)

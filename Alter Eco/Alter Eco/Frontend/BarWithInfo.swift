@@ -8,7 +8,8 @@ public struct BarWithInfo: View {
     
     public var body: some View {
         ZStack {
-            Rectangle().fill(colour)
+            Rectangle()
+                .fill(colour)
                 .frame(width: size.width, height: size.height)
                 .onTapGesture { if !self.information.isEmpty {
                     self.showingAlert.toggle()

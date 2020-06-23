@@ -13,7 +13,7 @@ public struct ComparisonView: View {
               
               ZStack {
                   RoundedRectangle(cornerRadius: 25, style: .continuous)
-                      .fill(Color("fill_colour"))
+                    .fill(Color("fill_colour"))
                       .frame(width: screenMeasurements.trasversal*0.9, height: screenMeasurements.longitudinal/7)
                     .overlay(
                       Text(generateProportion())

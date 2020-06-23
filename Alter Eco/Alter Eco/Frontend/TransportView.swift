@@ -1,6 +1,52 @@
 import SwiftUI
 
-struct ChartView: View {
+ struct TransportView: View {
+    @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
+    @ObservedObject var isTrackingPaused = (UIApplication.shared.delegate as! AppDelegate).isTrackingPaused
+    @EnvironmentObject var awards: TransportAwardsManager
+    
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .center) {
+                TransportChart().frame(height: measurementsOnLaunch.longitudinal / 2)
+
+                Button(action: {
+                    self.toggleTracking()
+                }) {
+                    if isTrackingPaused.rawValue {
+                        HStack {
+                            Text("Resume tracking")
+                            Image(systemName: "play.circle.fill")
+                        }
+                    } else {
+                       HStack {
+                            Text("Pause tracking")
+                            Image(systemName: "pause.circle.fill")
+                        }
+                    }
+                }.padding(.bottom)
+                
+                Text("Achievements")
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                AwardView(awardsManager: awards)
+            }
+        }
+    }
+    
+    func toggleTracking() {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.isTrackingPaused.rawValue.toggle()
+            if appDelegate.isTrackingPaused.rawValue {
+                appDelegate.manager.stopUpdatingLocation()
+            } else {
+                appDelegate.startLocationTracking()
+            }
+        }
+    }
+}
+
+struct TransportChart: View {
     @State private var timespanSelection = ChartDataModel.Timespan.day
     @State private var transportSelection = MeasuredActivity.MotionType.unknown
     @State private var showingInfo = false
@@ -29,6 +75,7 @@ struct ChartView: View {
           .pickerStyle(SegmentedPickerStyle())
     }
     
+
     /// Represents the picker for transport selection.
     public var transportPicker : some View {
         Picker(selection: $transportSelection.animation(), label: Image("")) {
@@ -140,10 +187,12 @@ struct ChartView: View {
     }
 }
 
-struct ChartView_Previews: PreviewProvider {
+struct DetailView_Previews: PreviewProvider {
     static var previews: some View {
         let DBMS = CoreDataManager()
-        return ChartView()
+        return TransportView()
+           .environmentObject(ScreenMeasurements())
             .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
+        .environmentObject(TransportAwardsManager(DBMS: DBMS))
     }
 }
