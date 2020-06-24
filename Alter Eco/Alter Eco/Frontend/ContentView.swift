@@ -6,6 +6,7 @@ struct ContentView: View {
     @ObservedObject var isFirstLaunch = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
     
     var body: some View {
+        return PieChart(model: FoodPieChartModel())
         ZStack {
             SplashScreen()
                 .opacity(showSplash ? 1 : 0)
