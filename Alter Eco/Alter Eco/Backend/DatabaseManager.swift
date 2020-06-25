@@ -318,7 +318,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return userScore
     }
     
-    /// Returns the earliest start date within the Event entity. If no date is found, the date of today is returned.
+    /// Returns the earliest start date within the Event entity. If no date is found, the current date is returned.
     public func getFirstDate() throws -> Date {
         var oldDate = Date().toLocalTime()
         let managedContext = try getManagedContext()

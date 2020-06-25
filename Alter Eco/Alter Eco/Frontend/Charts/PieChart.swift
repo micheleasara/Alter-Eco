@@ -5,6 +5,21 @@ public struct PieChart: View {
     private let MAX_ANGLE: Double = 360
     private(set) var model: PieChartModel
     
+    public static func empty() -> some View {
+        GeometryReader { geo in
+            Circle()
+            .fill(Color.green)
+            .frame(width: min(geo.size.height, geo.size.width), height: min(geo.size.height, geo.size.width), alignment: .center)
+            .overlay(
+                (Text("No data available... ") + Text("yet!").italic())
+                    .foregroundColor(Color.white)
+                    .bold()
+                    .allowsTightening(true)
+                    .font(.system(size: 13))
+                    .minimumScaleFactor(0.01))
+        }
+    }
+    
     public var body: some View {
         let slices = makeSlices()
         let legendNames = model.legendNames
@@ -15,9 +30,9 @@ public struct PieChart: View {
                     ForEach(0..<slices.count, id: \.self) { i in
                         slices[i]
                     }
-                }.frame(height: 0.8*geo.size.height)
+                }.frame(height: 0.7*min(geo.size.height, geo.size.width))
                 
-                VStack(spacing: 3) {
+                VStack(spacing: 0) {
                     ForEach(0..<slices.count, id: \.self) { i in
                         HStack {
                             self.legendSquare(parentSize: geo.size, colour: slices[i].colour)
@@ -26,26 +41,23 @@ public struct PieChart: View {
                             self.legendText(String(format: "%.1f%%", slices[i].percentage))
                         }
                     }
-                }
-                .frame(height: 0.2*geo.size.height)
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.primary, lineWidth: 1)
-                )
+                }.frame(height: 0.2*min(geo.size.height, geo.size.width))
             }
         }
     }
     
     private func legendSquare(parentSize: CGSize, colour: Color) -> some View {
-        let side = min(parentSize.height, parentSize.width)/20
+        let side = 0.03 * min(parentSize.height, parentSize.width)
         return Rectangle()
             .fill(colour)
             .frame(width: side, height: side)
     }
     
     private func makeSlices() -> [PieChartSlice] {
-        let total = model.values.reduce(0.0, +)
+        var total = model.values.reduce(0.0, +)
+        if total == 0 {
+            total = 1
+        }
         var currentAngle: Double = STARTING_ANGLE
         var slices: [PieChartSlice] = []
         
@@ -74,7 +86,6 @@ public struct PieChart: View {
 }
 
 public struct PieChartSlice: View {
-    //private(set) var radius: CGFloat
     private(set) var colour: Color
     private(set) var start: Angle
     private(set) var end: Angle
@@ -82,7 +93,6 @@ public struct PieChartSlice: View {
     private(set) var imageName: String
     @State private var shakeTaps: Int = 0
     @State private var showImage: Bool = true
-    @State private var workItem: DispatchWorkItem?
     
     public var body: some View {
         GeometryReader { geo in
@@ -95,10 +105,11 @@ public struct PieChartSlice: View {
         let offset = customOffset(radius: getRadius(size: rect.size))
         
         let angle = (end - start)
-        let scale = CGFloat(0.5 * min(0.6, angle.degrees/360))
+        let scale = CGFloat(min(0.35, angle.degrees/360))
         let minDim = min(rect.width, rect.height)
         let imgSize = scale * minDim
-        let img = isSmallAngle() ? UIImage(ciImage: CIImage.empty()) : UIImage(named: imageName)!
+        let empty = UIImage(ciImage: CIImage.empty())
+        let img = isSmallAngle() ? empty : (UIImage(named: imageName) ?? empty)
         return path.fill(colour)
             .overlay(
                 Image(uiImage: img).resizable()
@@ -135,8 +146,8 @@ public struct PieChartSlice: View {
         let origin = CGPoint(x: 0, y: 0)
         let midAngle = start + Angle(degrees: abs(((start - end)/2).degrees))
         let mid = polarToCartesian(radius: radius, angle: midAngle)
-        let x = (origin.x + 1.3*mid.x) / 2
-        let y = (origin.y + 1.3*mid.y) / 2
+        let x = (origin.x + mid.x) / 2
+        let y = (origin.y + mid.y) / 2
         return CGPoint(x: x, y: y)
     }
     
@@ -148,52 +159,12 @@ public struct PieChartSlice: View {
     }
 }
 
-struct Shake: GeometryEffect {
-    var amount: CGFloat = 10
-    var shakesPerUnit = 3
-    var animatableData: CGFloat
-
-    func effectValue(size: CGSize) -> ProjectionTransform {
-        ProjectionTransform(CGAffineTransform(translationX:
-            0,
-            y: amount * sin(animatableData * .pi * CGFloat(shakesPerUnit))))
-    }
-}
-
-public class PieChartModel: ObservableObject {
-    @Published private(set) public var values: [Double]
-    @Published private(set) public var imageNames: [String]
-    @Published private(set) public var colours: [Color]
-    @Published private(set) public var legendNames: [String]
-    
-    internal init(values: [Double], imageNames: [String],
-                  colours: [Color], legendNames: [String]) {
-        self.values = values
-        self.imageNames = imageNames
-        self.colours = colours
-        self.legendNames = legendNames
-    }
-}
-
-public class FoodPieChartModel: PieChartModel {
-
-    public init() {
-        super.init(values: [90, 45, 20, 35],
-                   imageNames: ["meat", "dairies", "vegetable", "fast-food"],
-                   colours: [.red, .yellow, .green, .blue],
-                   legendNames: ["Meat and fish",
-                                 "Dairies and eggs",
-                                 "Veggies, fruits and legumes",
-                                 "Snacks, soft drinks and others"])
-    }
-}
-
 struct PieChart_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PieChart(model: FoodPieChartModel())
-                .frame(width: 300, height: 300)
-            PieChartSlice(colour: .red, start: .degrees(0), end: .degrees(180), percentage: 42, imageName: "meat")
+            PieChart(model: FoodPieChartModel()).previewLayout(PreviewLayout.sizeThatFits)
+            PieChartSlice(colour: .red, start: .degrees(0), end: .degrees(180), percentage: 42, imageName: "meat").previewLayout(PreviewLayout.fixed(width: 300, height: 200))
+            PieChart.empty().previewLayout(PreviewLayout.fixed(width: 300, height: 200))
         }
     }
 }

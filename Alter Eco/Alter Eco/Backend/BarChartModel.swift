@@ -14,7 +14,7 @@ public struct LabelledDataPoint : Hashable {
 public typealias LabelledDataPoints = [LabelledDataPoint]
 
 /// A container for carbon values divided by motion type and associated to a label.
-public typealias CarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
+public typealias TransportCarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
 
 /// Represents the data shown in the chart and can be observed by views wishing to be notified of data changes.
 public class ChartDataModel : ObservableObject {
@@ -29,7 +29,7 @@ public class ChartDataModel : ObservableObject {
     
     /// Carbon breakdown by timespans (daily, weekly, monthly, yearly) and means of transport.
     /// Contains labelled data points, where each value is associated with the corresponding time value appropriately formatted.
-    @Published public var carbonBreakdown = Dictionary<Timespan, CarbonBreakdown>()
+    @Published public var carbonBreakdown = Dictionary<Timespan, TransportCarbonBreakdown>()
     
     private let DBMS: DBManager!
     
@@ -56,7 +56,7 @@ public class ChartDataModel : ObservableObject {
     }
     
     /// Retrieves the carbon breakdown for the day given starting from midnight and with a fixed hourly granularity.
-    public func dailyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func dailyDataUpTo(_ last: Date) -> TransportCarbonBreakdown {
         var dates = [last.setToSpecificHour(hour: "00:00:00")!]
         for i in 0..<24/HOUR_GRANULARITY {
             let interval = TimeInterval(Double(HOUR_GRANULARITY) * HOUR_IN_SECONDS)
@@ -72,7 +72,7 @@ public class ChartDataModel : ObservableObject {
     }
 
     /// Retrieves the carbon breakdown up until the day given and for a fixed number of days.
-    public func weeklyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func weeklyDataUpTo(_ last: Date) -> TransportCarbonBreakdown {
         // start from the first day shown at midnight
         let numDaysAgo = Double((WEEKDAYS_SHOWN - 1))
         var dates = [last.addingTimeInterval(-numDaysAgo * DAY_IN_SECONDS).setToSpecificHour(hour: "00:00:00")!]
@@ -88,7 +88,7 @@ public class ChartDataModel : ObservableObject {
     }
 
     /// Retrieves the carbon breakdown up until the day given and for a fixed number of months.
-    public func monthlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func monthlyDataUpTo(_ last: Date) -> TransportCarbonBreakdown {
         // start from the first month shown at midnight
         let monthStart = last.getStartOfMonth()
         let start = monthStart.addMonths(numMonthsToAdd: -(MONTHS_SHOWN - 1))
@@ -106,7 +106,7 @@ public class ChartDataModel : ObservableObject {
     }
 
     /// Retrieves the carbon breakdown up until the day given and for a fixed number of years.
-    public func yearlyDataUpTo(_ last: Date) -> CarbonBreakdown {
+    public func yearlyDataUpTo(_ last: Date) -> TransportCarbonBreakdown {
         // start from the first year shown on the 1st of Jan at midnight
         let monthStart = last.getStartOfMonth()
         let firstOfJan = monthStart.setToSpecificMonth(month: 1)!
@@ -125,11 +125,11 @@ public class ChartDataModel : ObservableObject {
     }
     
     private func breakdownFromDateRanges(rangesBoundaries: [Date],
-                                               withLabels: [String]) -> CarbonBreakdown {
+                                               withLabels: [String]) -> TransportCarbonBreakdown {
         let dates = rangesBoundaries.sorted()
         let intervals = intervalsFromDateRanges(boundaries: rangesBoundaries)
         
-        var carbonBreakdown = CarbonBreakdown()
+        var carbonBreakdown = TransportCarbonBreakdown()
         var dataTotal = LabelledDataPoints() // carbon for all motions combined
         for motion in MeasuredActivity.MotionType.allCases {
             var dataMotion = LabelledDataPoints()

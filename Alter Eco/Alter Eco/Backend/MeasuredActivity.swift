@@ -19,7 +19,7 @@ public class MeasuredActivity : Equatable {
         
         /// Returns whether the current motion is considered polluting.
         public func isPolluting() -> Bool {
-            return self != .walking
+            return self != .walking && self != .unknown
         }
     }
     

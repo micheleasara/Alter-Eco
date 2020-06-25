@@ -23,7 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(screenMeasurements)
                 .environmentObject(appDelegate.chartModel)
                 .environmentObject(TransportAwardsManager(DBMS: DBMS))
-                .environmentObject(FoodAwardsManager(DBMS: DBMS)))
+                .environmentObject(FoodAwardsManager(DBMS: DBMS))
+                .environmentObject(TransportPieChartModel(DBMS: DBMS)))
             
             window.makeKeyAndVisible()
         }

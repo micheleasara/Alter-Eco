@@ -13,7 +13,7 @@
 		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55C85C5B243CB879006AD075 /* PrivacyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
-		573693832438F85F00992BB0 /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
+		573693832438F85F00992BB0 /* BarChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* BarChartModel.swift */; };
 		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
 		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
 		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
@@ -45,6 +45,8 @@
 		DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
 		DE2B027F247EC1D900926935 /* ChartDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */; };
 		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
+		DE2D583A24A4FD0E00BB14F0 /* PieChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartModel.swift */; };
+		DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */; };
 		DE3C10A42447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
@@ -60,7 +62,7 @@
 		DE994B882483E03200D3788B /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE994B872483E03200D3788B /* Title.swift */; };
 		DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA1E867248A7988003EF0F5 /* SettingsView.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
-		DECD0956247DD36F0099747D /* GraphModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* GraphModel.swift */; };
+		DECD0956247DD36F0099747D /* BarChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* BarChartModel.swift */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
 		DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
@@ -114,7 +116,7 @@
 		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyInfoView.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Frontend/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
-		573693822438F85F00992BB0 /* GraphModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModel.swift; sourceTree = "<group>"; };
+		573693822438F85F00992BB0 /* BarChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartModel.swift; sourceTree = "<group>"; };
 		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
 		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
@@ -152,6 +154,8 @@
 		DE054C85248EFE3B001B8EB1 /* TestMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMain.swift; sourceTree = "<group>"; };
 		DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataModelTest.swift; sourceTree = "<group>"; };
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
+		DE2D583924A4FD0E00BB14F0 /* PieChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartModel.swift; sourceTree = "<group>"; };
+		DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChart.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
@@ -298,7 +302,8 @@
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
 				9C87AE282442408F00490481 /* ActivityList.swift */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
-				573693822438F85F00992BB0 /* GraphModel.swift */,
+				573693822438F85F00992BB0 /* BarChartModel.swift */,
+				DE2D583924A4FD0E00BB14F0 /* PieChartModel.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -314,24 +319,33 @@
 				DE994B872483E03200D3788B /* Title.swift */,
 				DE8F937B24A0D0C8002D85E6 /* ScannedFoodListView.swift */,
 				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
-				DE8F9379249FEF52002D85E6 /* MainBarChart.swift */,
 				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
-				DE8F9377249FEAB8002D85E6 /* FoodView.swift */,
 				9CD5942E242968DE00B1D0B4 /* TransportView.swift */,
+				DE8F9377249FEAB8002D85E6 /* FoodView.swift */,
 				DE8F9375249FE8AB002D85E6 /* AwardView.swift */,
-				9CD59429242968DE00B1D0B4 /* BarChart.swift */,
-				DE847297247B0D0C00420F9E /* BarWithInfo.swift */,
 				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
 				552BB1D324448D2A0010EF6B /* ComparisonView.swift */,
-				DE8F937D24A21639002D85E6 /* PieChart.swift */,
 				55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */,
 				DEA1E867248A7988003EF0F5 /* SettingsView.swift */,
 				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
 				DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */,
+				DE2D583E24A517DB00BB14F0 /* Charts */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
 			);
 			path = Frontend;
+			sourceTree = "<group>";
+		};
+		DE2D583E24A517DB00BB14F0 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				9CD59429242968DE00B1D0B4 /* BarChart.swift */,
+				DE847297247B0D0C00420F9E /* BarWithInfo.swift */,
+				DE8F937D24A21639002D85E6 /* PieChart.swift */,
+				DE8F9379249FEF52002D85E6 /* MainBarChart.swift */,
+				DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */,
+			);
+			path = Charts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -532,6 +546,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */,
 				9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */,
 				DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */,
 				DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */,
@@ -539,6 +554,7 @@
 				9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */,
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
+				DE2D583A24A4FD0E00BB14F0 /* PieChartModel.swift in Sources */,
 				DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */,
 				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
 				9CD5943A242968DF00B1D0B4 /* TransportView.swift in Sources */,
@@ -546,7 +562,7 @@
 				DE994B882483E03200D3788B /* Title.swift in Sources */,
 				9C87AE27244215FB00490481 /* DatabaseManager.swift in Sources */,
 				9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */,
-				573693832438F85F00992BB0 /* GraphModel.swift in Sources */,
+				573693832438F85F00992BB0 /* BarChartModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */,
 				DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */,
 				DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */,
@@ -582,7 +598,7 @@
 				DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */,
 				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
-				DECD0956247DD36F0099747D /* GraphModel.swift in Sources */,
+				DECD0956247DD36F0099747D /* BarChartModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

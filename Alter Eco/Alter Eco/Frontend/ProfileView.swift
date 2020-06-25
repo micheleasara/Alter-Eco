@@ -10,7 +10,7 @@ struct ProfileView: View {
             VStack(spacing: 0) {
                 ProfileImage()
                     .frame(height: 0.4*screenMeasurements.trasversal)
-                    .padding(.bottom).padding(.top)
+                    .padding(.bottom)
                 NameView().padding(.bottom)
                 
                 MainBarChart().frame(height: screenMeasurements.longitudinal / 4).padding(.bottom)
@@ -47,7 +47,7 @@ struct ProfileImage: View {
                 if self.inputImage != nil {
                     self.resizeImageToFitHeight(image: self.inputImage!, height: geo.size.height).clipShape(Circle())
                 } else {
-                    self.resizeImageToFitHeight(image: UIImage(named: "add_profile_pic")!, height: 0.65*geo.size.height)
+                    self.resizeImageToFitHeight(image: UIImage(named: "add_profile_pic")!, height: 0.9*geo.size.height)
                 }
             }
             .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
