@@ -7,6 +7,8 @@ struct ContentView: View {
     
     var body: some View {
         return PieChart(model: FoodPieChartModel())
+            .padding()
+            .frame(width: 400, height: 400)
         ZStack {
             SplashScreen()
                 .opacity(showSplash ? 1 : 0)
