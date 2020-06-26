@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct TransportBarChart: View {
-    @State private var timespanSelection = ChartDataModel.Timespan.day
+    @State private var timespanSelection = TransportBarChartModel.Timespan.day
     @State private var transportSelection = MeasuredActivity.MotionType.unknown
     @State private var showingInfo = false
-    @EnvironmentObject var chartData: ChartDataModel
+    @EnvironmentObject var chartData: TransportBarChartModel
 
     var body: some View {
         VStack () {
@@ -21,10 +21,10 @@ struct TransportBarChart: View {
     /// Represents the picker for the timespan the user's wishes to see.
     public var timePicker : some View {
         Picker(selection: $timespanSelection.animation(), label: Text("")) {
-            Text("Daily").tag(ChartDataModel.Timespan.day)
-            Text("Weekly").tag(ChartDataModel.Timespan.week)
-            Text("Monthly").tag(ChartDataModel.Timespan.month)
-            Text("Yearly").tag(ChartDataModel.Timespan.year)
+            Text("Daily").tag(TransportBarChartModel.Timespan.day)
+            Text("Weekly").tag(TransportBarChartModel.Timespan.week)
+            Text("Monthly").tag(TransportBarChartModel.Timespan.month)
+            Text("Yearly").tag(TransportBarChartModel.Timespan.year)
         }
           .pickerStyle(SegmentedPickerStyle())
     }
@@ -143,6 +143,6 @@ struct TransportBarChart: View {
 
 struct TransportBarChart_Previews: PreviewProvider {
     static var previews: some View {
-        TransportBarChart().environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: CoreDataManager()))
+        TransportBarChart().environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: CoreDataManager()))
     }
 }

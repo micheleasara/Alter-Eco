@@ -132,7 +132,7 @@ struct ContentView_Previews: PreviewProvider {
         let DBMS = CoreDataManager()
         return ContentView()
            .environmentObject(ScreenMeasurements())
-            .environmentObject(ChartDataModel(limit: Date().toLocalTime(),
+            .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(),
                                               DBMS: CoreDataManager()))
             .environment(\.managedObjectContext, DBMS.persistentContainer.viewContext)
     }

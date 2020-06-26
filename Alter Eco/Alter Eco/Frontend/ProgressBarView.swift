@@ -4,7 +4,7 @@ import SwiftUI
 struct ProgressBarView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     // needed to refresh points when new activity is written
-    @EnvironmentObject var chartData : ChartDataModel
+    @EnvironmentObject var chartData : TransportBarChartModel
     @State private var showingInfo = false
     
     var body: some View {
@@ -96,7 +96,7 @@ struct ProgressBarView_Previews: PreviewProvider {
         
         return ProgressBarView()
             .environmentObject(ScreenMeasurements())
-            .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
+            .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }
 

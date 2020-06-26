@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct ComparisonView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    @EnvironmentObject var chartData: ChartDataModel
+    @EnvironmentObject var chartData: TransportBarChartModel
     
     public var body: some View {
           VStack {
@@ -39,7 +39,7 @@ struct ComparisonView_Previews: PreviewProvider {
         let DBMS = CoreDataManager()
         return ComparisonView()
             .environmentObject(ScreenMeasurements())
-            .environmentObject(ChartDataModel(limit: Date().toLocalTime(), DBMS: DBMS))
+            .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
 }
 

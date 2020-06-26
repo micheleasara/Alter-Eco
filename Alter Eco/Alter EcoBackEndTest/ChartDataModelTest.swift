@@ -3,14 +3,14 @@ import XCTest
 
 class ChartDataModelTest: XCTestCase {
     var DBMS: DBManagerMock!
-    var model: ChartDataModel!
+    var model: TransportBarChartModel!
     let limit = Date(timeIntervalSince1970: 0)
     let dateFormatter = DateFormatter()
     
     override func setUp() {
         super.setUp()
         DBMS = DBManagerMock()
-        model = ChartDataModel(limit: limit, DBMS: DBMS)
+        model = TransportBarChartModel(limit: limit, DBMS: DBMS)
         dateFormatter.dateStyle = .short
         dateFormatter.timeStyle = .medium
     }
