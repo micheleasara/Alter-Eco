@@ -20,15 +20,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             
+            let transportBarChartModel = TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS)
+            let transportPieChartModel = TransportPieChartModel(DBMS: DBMS)
+            let foodPieChartModel = FoodPieChartModel()
+            DBMS.addActivityWrittenCallback { activity in
+                let now = Date().toLocalTime()
+                transportBarChartModel.updateUpTo(now)
+                transportPieChartModel.updateUpTo(now)
+                foodPieChartModel.updateUpTo(now)
+            }
+            
             window.rootViewController = UIHostingController(rootView: contentView
                 .environmentObject(screenMeasurements)
-                .environmentObject(appDelegate.transportBarChartModel)
+                .environmentObject(transportBarChartModel)
                 .environmentObject(TransportAwardsManager(DBMS: DBMS))
                 .environmentObject(FoodAwardsManager(DBMS: DBMS))
-                .environmentObject(TransportPieChartModel(DBMS: DBMS)))
+                .environmentObject(transportPieChartModel)
+                .environmentObject(foodPieChartModel))
             
             window.makeKeyAndVisible()
         }
+    }
+    
+    // called when something is written to the database, used to update the graph
+    func activityWasWrittenToDB(activity: MeasuredActivity) {
+        print("activity \(activity.motionType) of distance \(activity.distance)m",
+            " was written with start \(activity.start) and end \(activity.end)")
+        
     }
     
     func sceneDidBecomeActive(_ scene: UIScene) {

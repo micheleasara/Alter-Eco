@@ -27,7 +27,7 @@ import SwiftUI
                     }
                 }
                 
-                if isModelValid() {
+                if pieChartModel.values.reduce(0, +) > 0 {
                     PieChart(model: pieChartModel)
                         .padding()
                         .frame(width: 0.8*measurementsOnLaunch.trasversal,
@@ -46,14 +46,6 @@ import SwiftUI
                 AwardView(awardsManager: awards)
             }
         }
-    }
-    
-    func isModelValid() -> Bool {
-        return pieChartModel.colours.count > 0 &&
-        pieChartModel.colours.count == pieChartModel.legendNames.count &&
-        pieChartModel.colours.count == pieChartModel.values.count  &&
-        pieChartModel.colours.count == pieChartModel.imageNames.count &&
-        pieChartModel.values.first! > 0
     }
     
     func toggleTracking() {

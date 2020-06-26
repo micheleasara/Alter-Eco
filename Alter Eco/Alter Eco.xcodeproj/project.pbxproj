@@ -45,7 +45,7 @@
 		DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
 		DE2B027F247EC1D900926935 /* ChartDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */; };
 		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
-		DE2D583A24A4FD0E00BB14F0 /* PieChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartModel.swift */; };
+		DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
 		DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */; };
 		DE3C10A42447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
@@ -82,6 +82,7 @@
 		DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
 		DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
+		DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
 		DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFEEC502448987C009BE765 /* MultiTimerTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -154,7 +155,7 @@
 		DE054C85248EFE3B001B8EB1 /* TestMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMain.swift; sourceTree = "<group>"; };
 		DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataModelTest.swift; sourceTree = "<group>"; };
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
-		DE2D583924A4FD0E00BB14F0 /* PieChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartModel.swift; sourceTree = "<group>"; };
+		DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewModel.swift; sourceTree = "<group>"; };
 		DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChart.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -303,7 +304,7 @@
 				9C87AE282442408F00490481 /* ActivityList.swift */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
 				573693822438F85F00992BB0 /* BarChartModel.swift */,
-				DE2D583924A4FD0E00BB14F0 /* PieChartModel.swift */,
+				DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -554,7 +555,7 @@
 				9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */,
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
-				DE2D583A24A4FD0E00BB14F0 /* PieChartModel.swift in Sources */,
+				DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */,
 				DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */,
 				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
 				9CD5943A242968DF00B1D0B4 /* TransportView.swift in Sources */,
@@ -590,6 +591,7 @@
 			files = (
 				DE3C10A52447B48000107AF4 /* Timers.swift in Sources */,
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
+				DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,

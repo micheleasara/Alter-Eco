@@ -19,12 +19,11 @@ struct ContentView: View {
             }
             
             if !self.showSplash {
-                MainView(DBMS: DBMS)
-//                if isFirstLaunch.rawValue {
-//                    introductionViewWithButton
-//                } else {
-//                    tabView
-//                }
+                if isFirstLaunch.rawValue {
+                    introductionViewWithButton
+                } else {
+                    MainView(DBMS: DBMS)
+                }
             }
         }
     }

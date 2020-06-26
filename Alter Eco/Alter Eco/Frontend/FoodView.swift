@@ -4,6 +4,7 @@ struct FoodView: View {
     @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
     @State private var showScanner: Bool = false
     @EnvironmentObject var foodAwards: FoodAwardsManager
+    @EnvironmentObject var pieChartModel: FoodPieChartModel
     
     var body: some View {
         ScrollView {
@@ -18,6 +19,19 @@ struct FoodView: View {
                         Image(systemName: "camera.fill")
                     }
                 }.padding(.bottom)
+                
+                if pieChartModel.values.reduce(0, +) > 0 {
+                    PieChart(model: pieChartModel)
+                        .padding()
+                        .frame(width: 0.8*measurementsOnLaunch.trasversal,
+                               height: 0.8*measurementsOnLaunch.trasversal)
+                        .padding(.horizontal)
+                } else {
+                    PieChart.empty()
+                        .frame(width: 0.45*measurementsOnLaunch.trasversal,
+                               height: 0.45*measurementsOnLaunch.trasversal,
+                               alignment: .center)
+                }
                 
                 Text("Achievements")
                     .font(.headline)

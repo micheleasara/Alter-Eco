@@ -17,7 +17,7 @@ public typealias LabelledDataPoints = [LabelledDataPoint]
 public typealias TransportCarbonBreakdown = Dictionary<MeasuredActivity.MotionType, LabelledDataPoints>
 
 /// Represents the data shown in the chart and can be observed by views wishing to be notified of data changes.
-public class TransportBarChartModel : ObservableObject {
+public class TransportBarChartModel : ObservableObject, ChartModel {
     /// Hour granularity for the daily data.
     public let HOUR_GRANULARITY = 2
     /// Number of weekdays to include in the weekly data.

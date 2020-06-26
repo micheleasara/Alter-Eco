@@ -3,7 +3,7 @@ import SwiftUI
 public struct PieChart: View {
     private let STARTING_ANGLE: Double = -90
     private let MAX_ANGLE: Double = 360
-    private(set) var model: PieChartModel
+    @ObservedObject var model: PieChartViewModel
     
     public static func empty() -> some View {
         GeometryReader { geo in
