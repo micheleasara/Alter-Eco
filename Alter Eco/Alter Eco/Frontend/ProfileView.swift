@@ -8,12 +8,14 @@ struct ProfileView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                ProfileImage()
-                    .frame(height: 0.4*screenMeasurements.trasversal)
-                    .padding(.bottom)
-                NameView().padding(.bottom)
+                VStack(alignment: .center) {
+                    ProfileImage()
+                    NameView()
+                }
+                .frame(height: 0.4*screenMeasurements.trasversal)
+                .padding(.bottom)
                 
-                MainBarChart().frame(height: screenMeasurements.longitudinal / 4).padding(.bottom)
+                MainBarChart().frame(height: 0.5*screenMeasurements.trasversal).padding(.bottom)
                 
                 ProgressBarView().padding(.bottom)
 
@@ -50,7 +52,7 @@ struct ProfileImage: View {
                     self.resizeImageToFitHeight(image: UIImage(named: "add_profile_pic")!, height: 0.9*geo.size.height)
                 }
             }
-            .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
+            .frame(maxWidth: .infinity, alignment: .center)
             .sheet(isPresented: self.$showingImagePicker) {
                 ImagePicker(onCompletionCallback: self.imageSelectionCompleted(image:)) }
             .onTapGesture {
@@ -82,13 +84,12 @@ struct ProfileImage: View {
 }
 
 struct NameView: View {
-    @State var name: String = ""
-    @State var nickname: String = UserDefaults.standard.string(forKey: "Nickname") ?? ""
+    @State private var name: String = ""
     @State private var changingNickname = false
-
+    
     var body: some View {
         VStack {
-            if(nickname == "" || changingNickname) {
+            if(retrieveNickname() == "" || changingNickname) {
                 enterNicknameTextField
             }
             else {
@@ -99,7 +100,7 @@ struct NameView: View {
     
     var enterNicknameTextField: some View {
         TextField(" Enter Your Nickname", text: $name) {
-            self.addNickname()
+            UserDefaults.standard.set(self.name, forKey: "Nickname")
             self.changingNickname = false
         }
             .font(.callout)
@@ -109,18 +110,16 @@ struct NameView: View {
     
     var greetingWithChangeButton: some View {
         HStack {
-            Text("Hello, \(nickname)!")
-                .foregroundColor(Color.primary)
+            (Text("Hello, ") + Text("\(retrieveNickname())").italic())
             Button(action: {
                 self.changingNickname = true
             }) { Image(systemName: "pencil")}
-        }
+        }.offset(x: 10)
     }
     
-    func addNickname() {
-        self.nickname = name
-        UserDefaults.standard.set(self.nickname, forKey: "Nickname")
-    }
+    func retrieveNickname() -> String {
+         return UserDefaults.standard.string(forKey: "Nickname") ?? ""
+     }
 }
 
 struct ProfileView_Previews: PreviewProvider {

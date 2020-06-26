@@ -69,11 +69,13 @@ struct MainView: View {
     var titleAndInfoButton: some View {
         HStack() {
             Spacer()
-            Title()
-            Button(action: {
-                self.showInfo.toggle()
-            }) {
-                Image(systemName: "info.circle") }
+            HStack {
+                Title()
+                Button(action: {
+                    self.showInfo.toggle()
+                }) {
+                    Image(systemName: "info.circle") }
+            }.offset(x: 10)
             
             Spacer()
             Button(action: {

@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         super.init()
         self.DBMS = CoreDataManager()
         
-        self.DBMS.setActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
+        self.DBMS.addActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
         chartModel = ChartDataModel(limit: Date().toLocalTime(), DBMS: self.DBMS)
                 
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)

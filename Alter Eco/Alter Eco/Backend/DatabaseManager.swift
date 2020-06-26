@@ -41,7 +41,7 @@ public protocol DBWriter {
 /// Represents an interface to an object able to read, write and perform sophisticated queries on AlterEco's databases.
 public protocol DBManager : AnyObject, DBReader, DBWriter {
     /// Adds a function to be called whenever something is written to the database.
-    func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) 
+    func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) 
 
     /**
     Returns the cumulative distance for the given motion type and in the specified timeframe.
@@ -99,11 +99,11 @@ public protocol CarbonCalculator {
 /// Represents a database manager that provides an I/O interface with the CoreData framework. Also provides carbon conversion utilities.
 public class CoreDataManager : DBManager, CarbonCalculator {
     // contains the function called when an activity has been written to the database
-    private var activityWrittenCallback : (MeasuredActivity) -> Void = {_ in }
+    private var activityWrittenCallbacks: [(MeasuredActivity) -> Void] = []
     
     /// Sets a callback function which is called whenever an activity is added.
-    public func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
-        self.activityWrittenCallback = callback
+    public func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
+        self.activityWrittenCallbacks.append(callback)
     }
     
     /**
@@ -159,8 +159,10 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func append(activity: MeasuredActivity) throws {
         try setValuesForKeys(entity: "Event", keyedValues: ["motionType" : MeasuredActivity.motionTypeToString(type: activity.motionType), "distance":activity.distance, "start":activity.start, "end":activity.end])
         
-        // call registered observer with the activity just written
-        activityWrittenCallback(activity)
+        // call registered observers with the activity just written
+        for callback in activityWrittenCallbacks {
+            callback(activity)
+        }
     }
     
     /// Deletes all entries in the entity identified by the string given.
