@@ -3,8 +3,6 @@ import CoreLocation
 import MapKit
 import CoreData
 
-/// Database handler shared across the application
-let DBMS : DBManager = (UIApplication.shared.delegate as! AppDelegate).DBMS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {

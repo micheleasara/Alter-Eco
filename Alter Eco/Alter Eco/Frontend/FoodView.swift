@@ -23,7 +23,7 @@ struct FoodView: View {
                     .font(.headline)
                     .fontWeight(.semibold)
                 AwardView(awardsManager: foodAwards)
-            }.sheet(isPresented: $showScanner) {ScannedFoodListView(isVisible: self.$showScanner)}
+            }.sheet(isPresented: $showScanner) { ScannedFoodListView(isVisible: self.$showScanner) }
         }
     }
     

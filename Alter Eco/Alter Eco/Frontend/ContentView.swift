@@ -4,6 +4,7 @@ import CoreLocation
 struct ContentView: View {
     @State var showSplash = false
     @ObservedObject var isFirstLaunch = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
+    private(set) var DBMS: DBManager
     
     var body: some View {
         ZStack {
@@ -18,7 +19,7 @@ struct ContentView: View {
             }
             
             if !self.showSplash {
-                MainView()
+                MainView(DBMS: DBMS)
 //                if isFirstLaunch.rawValue {
 //                    introductionViewWithButton
 //                } else {
@@ -32,7 +33,7 @@ struct ContentView: View {
         VStack {
             IntroductionView()
             Button(action: {
-                try? DBMS.setValuesForKeys(entity: "UserPreference", keyedValues: ["firstLaunch":false])
+                try? self.DBMS.setValuesForKeys(entity: "UserPreference", keyedValues: ["firstLaunch":false])
                 // refresh UI and display tabView
                 let delegate = (UIApplication.shared.delegate as! AppDelegate)
                 delegate.isFirstLaunch.rawValue = false
@@ -47,6 +48,7 @@ struct MainView: View {
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
     @State var showInfo: Bool = false
     @State var showSettings: Bool = false
+    private(set) var DBMS: DBManager
     
      var body: some View {
         VStack {
@@ -56,12 +58,12 @@ struct MainView: View {
             }
             else if showSettings {
                 titleAndBackButton.padding(.top)
-                SettingsView()
+                SettingsView(DBMS: DBMS)
             }
             else {
                 titleAndInfoButton.padding(.top)
                 Divider()
-                TabPanel()
+                TabPanel(DBMS: DBMS)
             }
         }
     }
@@ -99,9 +101,11 @@ struct MainView: View {
 }
 
 struct TabPanel: View {
+    private(set) var DBMS: DBManager
+    
     var body: some View {
         TabView() {
-            ProfileView().padding(.bottom).tabItem {
+            ProfileView(DBMS: DBMS).padding(.bottom).tabItem {
                 VStack {
                     Image(systemName: "person.circle")
                     Text("Profile")
@@ -130,7 +134,7 @@ struct TabPanel: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let DBMS = CoreDataManager()
-        return ContentView()
+        return ContentView(DBMS: DBMS)
            .environmentObject(ScreenMeasurements())
             .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(),
                                               DBMS: CoreDataManager()))

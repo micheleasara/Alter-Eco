@@ -4,12 +4,15 @@ import CoreData
 
 struct ProfileView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
+    @EnvironmentObject var chartModel: TransportBarChartModel
+    private(set) var DBMS: DBManager
     
     var body: some View {
-        ScrollView {
+        let dailyCarbon = getDailyCarbon()
+        return ScrollView {
             VStack(spacing: 0) {
                 VStack(alignment: .center) {
-                    ProfileImage()
+                    ProfileImage(inputImage: loadStoredImage(), DBMS: DBMS)
                     NameView()
                 }
                 .frame(height: 0.4*screenMeasurements.trasversal)
@@ -17,31 +20,47 @@ struct ProfileView: View {
                 
                 MainBarChart().frame(height: 0.5*screenMeasurements.trasversal).padding(.bottom)
                 
-                ProgressBarView().padding(.bottom)
+                ProgressBarView(latestScore: getCurrentScore(), DBMS: DBMS).padding(.bottom)
 
-                ComparisonView().padding(.bottom)
-
-                HighlightView()
+                ComparisonView(dailyCarbon: dailyCarbon).padding(.bottom)
+                
+                HighlightView(dailyCarbon: dailyCarbon)
             }.padding(.horizontal)
         }
     }
-}
-
-struct ProfileImage: View {
-    @State private var showingImagePicker = false
-    @State private var inputImage: UIImage? = ProfileImage.loadStoredImage()
     
-    static func loadStoredImage() -> UIImage? {
-        let results = try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]
-        if let results = results {
-            if results.count > 0 {
-                return UIImage(data: results[0].value(forKey: "imageP")! as! Data)
-            }
+    func loadStoredImage() -> UIImage? {
+        let results = (try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]) ?? []
+        if results.count > 0 {
+            return UIImage(data: results[0].value(forKey: "imageP")! as! Data)
         }
         
         // if not found
         return nil
     }
+    
+    func getCurrentScore() -> UserScore {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            return (try? appDelegate.DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore()
+        }
+        return UserScore.getInitialScore()
+    }
+    
+    func getDailyCarbon() -> Double {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            var now = Date().toLocalTime()
+            now = now.setToSpecificHour(hour: "00:00:00") ?? now
+            return (try? appDelegate.DBMS.carbonFromPollutingMotions(from: now, interval: DAY_IN_SECONDS)) ?? 0
+        }
+        return 0
+    }
+    
+}
+
+struct ProfileImage: View {
+    @State private var showingImagePicker = false
+    @State private(set) var inputImage: UIImage?
+    private(set) var DBMS: DBManager
     
     var body: some View {
         GeometryReader { geo in
@@ -125,7 +144,7 @@ struct NameView: View {
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         return Group {
-            ProfileView()
+            ProfileView(DBMS: CoreDataManager())
         }.environmentObject(ScreenMeasurements())
     }
 }

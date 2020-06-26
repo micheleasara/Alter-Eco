@@ -9,9 +9,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let context = (DBMS as! CoreDataManager).persistentContainer.viewContext
+        let DBMS = appDelegate.DBMS as! CoreDataManager
+        let context = DBMS.persistentContainer.viewContext
             //appDelegate.persistentContainer.viewContext
-        let contentView = ContentView().environment(\.managedObjectContext, context)
+        let contentView = ContentView(DBMS: DBMS).environment(\.managedObjectContext, context)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

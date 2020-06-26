@@ -7,9 +7,9 @@ import SwiftUI
 //https://www.eea.europa.eu/articles/forests-health-and-climate-change/key-facts/trees-help-tackle-climate-change
 
 public struct HighlightView: View {
-    @State private var rect: CGRect = CGRect()
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-
+    @State private(set) var dailyCarbon: Double
+    
     public var body: some View {
         VStack {
             Text("Highlights & Tips")
@@ -34,9 +34,7 @@ public struct HighlightView: View {
     }
     
     private func getGreenSentences() -> [String] {
-        let value = try! DBMS.carbonFromPollutingMotions(from: Date().toLocalTime().setToSpecificHour(hour: "00:00:00")!, interval: DAY_IN_SECONDS)
-        
-        switch value {
+        switch dailyCarbon {
         case AVERAGE_UK_DAILY_CARBON..<Double.infinity:
             return ["Be careful! You're consuming more than the UK average! ⚠️",
             "To make up for your transport emissions why don't you try buying local products? 🍰",
@@ -70,7 +68,8 @@ public struct HighlightView: View {
 
 struct HighlightView_Previews: PreviewProvider {
     static var previews: some View {
-        HighlightView().environmentObject(ScreenMeasurements())
+        HighlightView(dailyCarbon: 0)
+            .environmentObject(ScreenMeasurements())
     }
 }
 

@@ -3,9 +3,9 @@ import SwiftUI
 
 struct ProgressBarView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    // needed to refresh points when new activity is written
-    @EnvironmentObject var chartData : TransportBarChartModel
     @State private var showingInfo = false
+    @State private(set) var latestScore: UserScore
+    private(set) var DBMS: DBManager
     
     var body: some View {
         try? DBMS.updateLeagueIfEnoughPoints()
@@ -16,7 +16,7 @@ struct ProgressBarView: View {
             textBoxLeagueInformation
             VStack (spacing: 0) {
                 progressBar
-                Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f") / \(POINTS_REQUIRED_FOR_NEXT_LEAGUE, specifier: "%.0f")")
+                Text("\(latestScore.totalPoints, specifier: "%.0f") / \(POINTS_REQUIRED_FOR_NEXT_LEAGUE, specifier: "%.0f")")
                         .font(.body)
             }
         }
@@ -25,7 +25,7 @@ struct ProgressBarView: View {
     var scoreLabelWithInfo: some View {
         HStack(alignment: .center) {
             Text("Score: ").font(.headline)
-            + Text("\((try! DBMS.retrieveLatestScore()).totalPoints, specifier: "%.0f")")
+            + Text("\(latestScore.totalPoints, specifier: "%.0f")")
                 .font(.headline)
 
         
@@ -50,7 +50,6 @@ struct ProgressBarView: View {
     }
     
     func retrieveLabel() -> String {
-        let latestScore = try! DBMS.retrieveLatestScore()
         if latestScore.league != "🌳" {
             return "You have planted \(latestScore.counter ?? 0) 🌳\nKeep earning points to grow your forest!"
         } else {
@@ -61,7 +60,7 @@ struct ProgressBarView: View {
     var progressBar : some View {
         let proportion = getProportion()
         return HStack{
-            Text("\((try! DBMS.retrieveLatestScore()).league)")
+            Text("\(latestScore.league)")
             .font(.largeTitle)
             
             ZStack(alignment: .bottomLeading) {
@@ -94,7 +93,7 @@ struct ProgressBarView_Previews: PreviewProvider {
     static var previews: some View {
         let DBMS = CoreDataManager()
         
-        return ProgressBarView()
+        return ProgressBarView(latestScore: (try? DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore(), DBMS: DBMS)
             .environmentObject(ScreenMeasurements())
             .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }
