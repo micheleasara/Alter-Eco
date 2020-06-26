@@ -22,9 +22,9 @@
         <attribute name="firstLaunch" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
     </entity>
     <elements>
-        <element name="Event" positionX="18" positionY="81" width="128" height="103"/>
-        <element name="ProfilePic" positionX="0" positionY="81" width="128" height="58"/>
-        <element name="Score" positionX="-27" positionY="18" width="128" height="103"/>
-        <element name="UserPreference" positionX="0" positionY="81" width="128" height="103"/>
+        <element name="Event" positionX="54.734375" positionY="78.3515625" width="128" height="103"/>
+        <element name="ProfilePic" positionX="-150.0546875" positionY="101.6171875" width="128" height="58"/>
+        <element name="Score" positionX="-94.38671875" positionY="-72.8359375" width="128" height="103"/>
+        <element name="UserPreference" positionX="114.65625" positionY="-70.7578125" width="128" height="103"/>
     </elements>
 </model>

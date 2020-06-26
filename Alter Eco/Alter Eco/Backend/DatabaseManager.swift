@@ -115,13 +115,13 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     - Remark: See .xcdatamodeld file for information about valid entities.
     */
     public func executeQuery(entity: String, predicate: String? = nil, args: [Any]? = nil) throws -> [Any] {
+        
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
         if predicate != nil && args != nil {
             fetchRequest.predicate = NSPredicate(format: predicate!, argumentArray: args!)
         }
         let queryResult = try managedContext.fetch(fetchRequest)
-        
         return queryResult
     }
     
@@ -133,7 +133,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     */
     public func queryActivities(predicate: String? = nil, args: [Any]? = nil) throws -> [MeasuredActivity] {
         var measuredActivities = [MeasuredActivity]()
-        let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args)) as! [NSManagedObject]
+        let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args)) as? [NSManagedObject] ?? []
 
         for result in queryResult {
             let motionType = MeasuredActivity.stringToMotionType(type: result.value(forKey: "motionType") as! String)
@@ -167,7 +167,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     
     /// Deletes all entries in the entity identified by the string given.
     public func deleteAll(entity: String) throws {
-        let results = try executeQuery(entity: entity) as! [NSManagedObject]
+        let results = try executeQuery(entity: entity) as? [NSManagedObject] ?? []
         for result in results {
             try delete(result)
         }
@@ -175,8 +175,10 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     
     /// Deletes the row at the index given and corresponding to the entity provided.
     public func delete(entity: String, rowNumber: Int) throws {
-        let results = try executeQuery(entity: entity) as! [NSManagedObject]
-        try delete(results[rowNumber])
+        let results = try executeQuery(entity: entity) as? [NSManagedObject] ?? []
+        if results.count > rowNumber {
+            try delete(results[rowNumber])
+        }
     }
     
     /**
@@ -256,7 +258,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         let managedContext = try getManagedContext()
 
         // retrieve current score
-        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
+        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
         if queryResult.count != 0 {
             let activityScore = UserScore(activity: activity, league: "", date: Date().toLocalTime().toInternationalString(), counter: 0)
             let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
@@ -290,7 +292,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
        let dateTodayStr = dateToday.toInternationalString()
     
        // retrieve current user's score
-        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
+        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
         if queryResult.count != 0 {
            queryResult[0].setValue(newLeague, forKey: "league")
            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
@@ -307,7 +309,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     public func retrieveLatestScore() throws -> UserScore {
         let userScore = UserScore.getInitialScore()
 
-        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
+        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
         if queryResult.count != 0 {
             userScore.totalPoints = queryResult[0].value(forKey: "score") as? Double
             userScore.date = queryResult[0].value(forKey: "dateStr") as? String
@@ -328,7 +330,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "start", ascending: true)]
         let queryResult = try managedContext.fetch(fetchRequest)
         if queryResult.count != 0 {
-            oldDate = queryResult[0].value(forKey: "start") as! Date
+            oldDate = queryResult[0].value(forKey: "start") as? Date ?? oldDate
         }
         return oldDate
     }
@@ -387,7 +389,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         
         let newScore = 0.0
         
-        let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
+        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
         if queryResult.count != 0 {
             queryResult[0].setValue(newScore, forKey: "score")
             queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
@@ -401,7 +403,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
            let dateToday = Date().toLocalTime()
            let dateTodayStr = dateToday.toInternationalString()
            
-           let queryResult = try executeQuery(entity: "Score") as! [NSManagedObject]
+           let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
            if queryResult.count != 0 {
                let oldCounter = queryResult[0].value(forKey: "counter") as! Int
                queryResult[0].setValue(oldCounter + 1, forKey: "counter")
@@ -413,4 +415,13 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     private func getManagedContext() throws -> NSManagedObjectContext {
         return persistentContainer.viewContext
     }
+}
+
+@objc(ProfilePic)
+public class ProfilePic: NSManagedObject {
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<ProfilePic> {
+        return NSFetchRequest<ProfilePic>(entityName: "ProfilePic")
+    }
+
+    @NSManaged public var imageP: Data?
 }
