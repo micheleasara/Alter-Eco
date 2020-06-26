@@ -417,6 +417,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     }
 }
 
+// needed to avoid default NSManagedObject warning
 @objc(ProfilePic)
 public class ProfilePic: NSManagedObject {
     @nonobjc public class func fetchRequest() -> NSFetchRequest<ProfilePic> {

@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             
             window.rootViewController = UIHostingController(rootView: contentView
                 .environmentObject(screenMeasurements)
-                .environmentObject(appDelegate.chartModel)
+                .environmentObject(appDelegate.transportBarChartModel)
                 .environmentObject(TransportAwardsManager(DBMS: DBMS))
                 .environmentObject(FoodAwardsManager(DBMS: DBMS))
                 .environmentObject(TransportPieChartModel(DBMS: DBMS)))

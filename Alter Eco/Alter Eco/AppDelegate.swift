@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     /// Defines whether location tracking can be paused by iOS.
     internal var autoPauseEnabled: Observable<Bool>!
     /// Contains data for the chart of ChartView.
-    internal var chartModel : ChartDataModel!
+    internal var transportBarChartModel : ChartDataModel!
     
     var scene = SceneDelegate()
     
@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         self.DBMS = CoreDataManager()
         
         self.DBMS.addActivityWrittenCallback(callback: activityWasWrittenToDB(activity:))
-        chartModel = ChartDataModel(limit: Date().toLocalTime(), DBMS: self.DBMS)
+        transportBarChartModel = ChartDataModel(limit: Date().toLocalTime(), DBMS: self.DBMS)
                 
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func activityWasWrittenToDB(activity: MeasuredActivity) {
         print("activity \(activity.motionType) of distance \(activity.distance)m",
             " was written with start \(activity.start) and end \(activity.end)")
-        chartModel.updateUpTo(Date().toLocalTime())
+        transportBarChartModel.updateUpTo(Date().toLocalTime())
     }
     
     func loadUserSettings() {

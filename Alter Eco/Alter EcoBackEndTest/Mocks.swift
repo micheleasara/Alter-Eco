@@ -104,6 +104,8 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBManager {
+    func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {}
+    
     var carbonWithinIntervalMotionTypes = [MeasuredActivity.MotionType]()
     var carbonWithinIntervalFroms = [Date]()
     var carbonWithinIntervalIntervals = [TimeInterval]()
