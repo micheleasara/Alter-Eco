@@ -17,8 +17,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
-            self.window = window
             
             let transportBarChartModel = TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS)
             let transportPieChartModel = TransportPieChartModel(DBMS: DBMS)
@@ -38,6 +36,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(transportPieChartModel)
                 .environmentObject(foodPieChartModel))
             
+            self.window = window
             window.makeKeyAndVisible()
         }
     }
