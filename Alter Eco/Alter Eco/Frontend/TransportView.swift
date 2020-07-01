@@ -9,7 +9,7 @@ import SwiftUI
     var body: some View {
         ScrollView {
             VStack(alignment: .center) {
-                TransportBarChart().frame(height: measurementsOnLaunch.longitudinal / 2)
+                TransportBarChart().frame(height: measurementsOnLaunch.longitudinal / 2.5)
 
                 Button(action: {
                     self.toggleTracking()

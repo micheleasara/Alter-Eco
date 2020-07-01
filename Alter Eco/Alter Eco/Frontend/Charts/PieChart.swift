@@ -30,7 +30,7 @@ public struct PieChart: View {
                     ForEach(0..<slices.count, id: \.self) { i in
                         slices[i]
                     }
-                }.frame(height: 0.7*min(geo.size.height, geo.size.width))
+                }.frame(height: 0.7*min(geo.size.height, geo.size.width)).padding(.bottom)
                 
                 VStack(spacing: 0) {
                     ForEach(0..<slices.count, id: \.self) { i in
@@ -82,6 +82,7 @@ public struct PieChart: View {
         .font(.system(size: 15))
         .minimumScaleFactor(0.01)
         .lineLimit(1)
+        .foregroundColor(Color.primary)
     }
 }
 

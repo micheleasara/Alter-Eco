@@ -2,14 +2,16 @@ import SwiftUI
 
 struct FoodView: View {
     @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
-    @State private var showScanner: Bool = false
     @EnvironmentObject var foodAwards: FoodAwardsManager
     @EnvironmentObject var pieChartModel: FoodPieChartModel
+    @State private var showFoodList: Bool = false
+    @State private var showScanner: Bool = false
+    @State private var foodListModel = FoodListViewModel()
     
     var body: some View {
         ScrollView {
             VStack(alignment: .center) {
-                FoodChart().frame(height: measurementsOnLaunch.longitudinal / 2)
+                FoodChart().frame(height: measurementsOnLaunch.longitudinal / 2.5)
 
                 Button(action: {
                     self.showScanner.toggle()
@@ -18,7 +20,7 @@ struct FoodView: View {
                         Text("Scan barcode")
                         Image(systemName: "camera.fill")
                     }
-                }.padding(.bottom)
+                }
                 
                 if pieChartModel.values.reduce(0, +) > 0 {
                     PieChart(model: pieChartModel)
@@ -37,17 +39,6 @@ struct FoodView: View {
                     .font(.headline)
                     .fontWeight(.semibold)
                 AwardView(awardsManager: foodAwards)
-            }.sheet(isPresented: $showScanner) { ScannedFoodListView(isVisible: self.$showScanner) }
-        }
-    }
-    
-    func toggleTracking() {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            appDelegate.isTrackingPaused.rawValue.toggle()
-            if appDelegate.isTrackingPaused.rawValue {
-                appDelegate.manager.stopUpdatingLocation()
-            } else {
-                appDelegate.startLocationTracking()
             }
         }
     }
@@ -81,10 +72,11 @@ struct FoodChart: View {
     /// Represents the picker for the food type the user's wishes to see.
     public var foodPicker : some View {
         Picker(selection: $timespanSelection.animation(), label: Text("")) {
-            Text("Animals").tag("")
-            Text("Dairies").tag("")
-            Text("Plants").tag("")
-            Text("Other").tag("")
+            Text("All").tag("a")
+            Text("Meat").tag("1")
+            Text("Dairies").tag("2")
+            Text("Veggies").tag("3")
+            Text("Other").tag("4")
         }
           .pickerStyle(SegmentedPickerStyle())
     }

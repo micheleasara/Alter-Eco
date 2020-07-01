@@ -24,7 +24,6 @@
 		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
 		9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */; };
 		9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941B2429686900B1D0B4 /* SplashScreen.swift */; };
-		9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */; };
 		9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */; };
 		9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD59429242968DE00B1D0B4 /* BarChart.swift */; };
 		9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
@@ -47,17 +46,26 @@
 		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
 		DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
 		DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */; };
+		DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
+		DE3AC73124ACD73F00D32E54 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
+		DE3AC73324ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */; };
+		DE3AC73424ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */; };
+		DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
+		DE3AC73724ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
+		DE3AC73924ACD82700D32E54 /* FoodListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */; };
+		DE3AC73B24ACE0E700D32E54 /* BarcodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */; };
+		DE3AC73D24ACE15A00D32E54 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */; };
 		DE3C10A42447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
-		DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */; };
+		DE74ECF72482E4D10099F944 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* Utils.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
 		DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9375249FE8AB002D85E6 /* AwardView.swift */; };
 		DE8F9378249FEAB8002D85E6 /* FoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9377249FEAB8002D85E6 /* FoodView.swift */; };
 		DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9379249FEF52002D85E6 /* MainBarChart.swift */; };
-		DE8F937C24A0D0C8002D85E6 /* ScannedFoodListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F937B24A0D0C8002D85E6 /* ScannedFoodListView.swift */; };
+		DE8F937C24A0D0C8002D85E6 /* FoodListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */; };
 		DE8F937E24A21639002D85E6 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F937D24A21639002D85E6 /* PieChart.swift */; };
 		DE994B882483E03200D3788B /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE994B872483E03200D3788B /* Title.swift */; };
 		DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA1E867248A7988003EF0F5 /* SettingsView.swift */; };
@@ -128,7 +136,6 @@
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
 		9CD5941A2429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SKToVictoria_car_30kmh.gpx; sourceTree = "<group>"; };
 		9CD5941B2429686900B1D0B4 /* SplashScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
-		9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenMeasurements.swift; sourceTree = "<group>"; };
 		9CD5941E2429686900B1D0B4 /* WalkToSupermarket.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToSupermarket.gpx; sourceTree = "<group>"; };
 		9CD59429242968DE00B1D0B4 /* BarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChart.swift; sourceTree = "<group>"; };
 		9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = EarlsCourtStation.gpx; sourceTree = "<group>"; };
@@ -157,15 +164,21 @@
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewModel.swift; sourceTree = "<group>"; };
 		DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChart.swift; sourceTree = "<group>"; };
+		DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRetrieval.swift; sourceTree = "<group>"; };
+		DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodToCarbonConverter.swift; sourceTree = "<group>"; };
+		DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodGHGConversion.swift; sourceTree = "<group>"; };
+		DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodListViewModel.swift; sourceTree = "<group>"; };
+		DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScanner.swift; sourceTree = "<group>"; };
+		DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservableWrapper.swift; sourceTree = "<group>"; };
+		DE74ECF62482E4D10099F944 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
 		DE8F9375249FE8AB002D85E6 /* AwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardView.swift; sourceTree = "<group>"; };
 		DE8F9377249FEAB8002D85E6 /* FoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodView.swift; sourceTree = "<group>"; };
 		DE8F9379249FEF52002D85E6 /* MainBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBarChart.swift; sourceTree = "<group>"; };
-		DE8F937B24A0D0C8002D85E6 /* ScannedFoodListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannedFoodListView.swift; sourceTree = "<group>"; };
+		DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodListView.swift; sourceTree = "<group>"; };
 		DE8F937D24A21639002D85E6 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		DE994B872483E03200D3788B /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
 		DEA1E867248A7988003EF0F5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -296,15 +309,20 @@
 			isa = PBXGroup;
 			children = (
 				9C87AE26244215FB00490481 /* DatabaseManager.swift */,
-				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
 				DE3C10A32447B48000107AF4 /* Timers.swift */,
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
 				5591901D242C0FA400A80ED7 /* UserScore.swift */,
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
+				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
 				9C87AE282442408F00490481 /* ActivityList.swift */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
+				DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */,
+				DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */,
+				DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */,
 				573693822438F85F00992BB0 /* BarChartModel.swift */,
 				DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */,
+				DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */,
+				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -318,19 +336,19 @@
 				9CD5941B2429686900B1D0B4 /* SplashScreen.swift */,
 				DEA51B3324816F71008FB8E3 /* IntroductionView.swift */,
 				DE994B872483E03200D3788B /* Title.swift */,
-				DE8F937B24A0D0C8002D85E6 /* ScannedFoodListView.swift */,
 				2186E158242FB3EC00FD9B5F /* ProfileView.swift */,
 				2186E15A242FB41000FD9B5F /* ImagePicker.swift */,
 				9CD5942E242968DE00B1D0B4 /* TransportView.swift */,
 				DE8F9377249FEAB8002D85E6 /* FoodView.swift */,
+				DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */,
 				DE8F9375249FE8AB002D85E6 /* AwardView.swift */,
 				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
 				552BB1D324448D2A0010EF6B /* ComparisonView.swift */,
 				55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */,
 				DEA1E867248A7988003EF0F5 /* SettingsView.swift */,
-				9CD5941D2429686900B1D0B4 /* ScreenMeasurements.swift */,
-				DE74ECF62482E4D10099F944 /* ObservableWrapper.swift */,
+				DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */,
+				DE74ECF62482E4D10099F944 /* Utils.swift */,
 				DE2D583E24A517DB00BB14F0 /* Charts */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
 			);
@@ -551,11 +569,15 @@
 				9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */,
 				DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */,
 				DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */,
+				DE3AC73324ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */,
 				DE8F9378249FEAB8002D85E6 /* FoodView.swift in Sources */,
 				9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */,
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
+				DE3AC73924ACD82700D32E54 /* FoodListViewModel.swift in Sources */,
+				DE3AC73B24ACE0E700D32E54 /* BarcodeScanner.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
 				DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */,
+				DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */,
 				DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */,
 				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
 				9CD5943A242968DF00B1D0B4 /* TransportView.swift in Sources */,
@@ -566,19 +588,20 @@
 				573693832438F85F00992BB0 /* BarChartModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */,
 				DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */,
-				DE74ECF72482E4D10099F944 /* ObservableWrapper.swift in Sources */,
+				DE74ECF72482E4D10099F944 /* Utils.swift in Sources */,
 				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
+				DE3AC73D24ACE15A00D32E54 /* ScannerView.swift in Sources */,
 				55C85C5B243CB879006AD075 /* PrivacyInfoView.swift in Sources */,
 				DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */,
-				9CD594252429686900B1D0B4 /* ScreenMeasurements.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
 				DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */,
 				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,
 				DE8F937E24A21639002D85E6 /* PieChart.swift in Sources */,
-				DE8F937C24A0D0C8002D85E6 /* ScannedFoodListView.swift in Sources */,
+				DE8F937C24A0D0C8002D85E6 /* FoodListView.swift in Sources */,
 				5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */,
+				DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */,
 				9C87AE292442408F00490481 /* ActivityList.swift in Sources */,
 				DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */,
 				9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */,
@@ -594,12 +617,15 @@
 				DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
+				DE3AC73124ACD73F00D32E54 /* FoodRetrieval.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
+				DE3AC73424ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* DatabaseManager.swift in Sources */,
 				DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */,
 				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
+				DE3AC73724ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */,
 				DECD0956247DD36F0099747D /* BarChartModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

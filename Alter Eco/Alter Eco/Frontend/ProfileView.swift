@@ -10,13 +10,13 @@ struct ProfileView: View {
     var body: some View {
         let dailyCarbon = getDailyCarbon()
         return ScrollView {
-            VStack(spacing: 0) {
+            VStack() {
                 VStack(alignment: .center) {
-                    ProfileImage(inputImage: loadStoredImage(), DBMS: DBMS)
+                    ProfileImage(DBMS: DBMS)
                     NameView()
                 }
                 .frame(height: 0.4*screenMeasurements.trasversal)
-                .padding(.bottom)
+                .padding()
                 
                 MainBarChart().frame(height: 0.5*screenMeasurements.trasversal).padding(.bottom)
                 
@@ -29,7 +29,7 @@ struct ProfileView: View {
         }
     }
     
-    func loadStoredImage() -> UIImage? {
+    private func loadStoredImage() -> UIImage? {
         let results = (try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]) ?? []
         if results.count > 0 {
             return UIImage(data: results[0].value(forKey: "imageP")! as! Data)
@@ -39,14 +39,14 @@ struct ProfileView: View {
         return nil
     }
     
-    func getCurrentScore() -> UserScore {
+    private func getCurrentScore() -> UserScore {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             return (try? appDelegate.DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore()
         }
         return UserScore.getInitialScore()
     }
     
-    func getDailyCarbon() -> Double {
+    private func getDailyCarbon() -> Double {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             var now = Date().toLocalTime()
             now = now.setToSpecificHour(hour: "00:00:00") ?? now
@@ -59,14 +59,21 @@ struct ProfileView: View {
 
 struct ProfileImage: View {
     @State private var showingImagePicker = false
-    @State private(set) var inputImage: UIImage?
+    @State private var inputImage: UIImage?
     private(set) var DBMS: DBManager
+    
+    init(DBMS: DBManager) {
+        self.DBMS = DBMS
+        _inputImage = State(initialValue: loadStoredImage())
+    }
     
     var body: some View {
         GeometryReader { geo in
             Group {
                 if self.inputImage != nil {
-                    self.resizeImageToFitHeight(image: self.inputImage!, height: geo.size.height).clipShape(Circle())
+                    self.resizeImageToFitHeight(image: self.inputImage!, height: geo.size.height)
+                        .clipShape(Circle())
+                        .shadow(radius: 10)
                 } else {
                     self.resizeImageToFitHeight(image: UIImage(named: "add_profile_pic")!, height: 0.9*geo.size.height)
                 }
@@ -77,24 +84,39 @@ struct ProfileImage: View {
             .onTapGesture {
                 self.showingImagePicker = true
             }
+        }.onAppear() {
+            let currentImg = self.loadStoredImage()
+            if self.inputImage != currentImg {
+                self.inputImage = currentImg
+            }
         }
     }
     
-    func imageSelectionCompleted(image: UIImage?) {
+    private func loadStoredImage() -> UIImage? {
+        let results = (try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]) ?? []
+        if results.count > 0 {
+            return UIImage(data: results[0].value(forKey: "imageP")! as! Data)
+        }
+        
+        // if not found
+        return nil
+    }
+    
+    private func imageSelectionCompleted(image: UIImage?) {
         if let img = image {
             clearDBAndStoreImage(inputImage: img)
             inputImage = img
         }
     }
     
-    func resizeImageToFitHeight(image: UIImage, height: CGFloat) -> some View {
+    private func resizeImageToFitHeight(image: UIImage, height: CGFloat) -> some View {
         let widthToHeight = image.size.width / image.size.height
         let width = widthToHeight * height
-        let fit = Image(uiImage: image).resizable()
+        let fit = Image(uiImage: image).resizable().clipped()
         return fit.frame(width: width, height: height)
     }
     
-    func clearDBAndStoreImage(inputImage: UIImage) {
+    private func clearDBAndStoreImage(inputImage: UIImage) {
         try? DBMS.deleteAll(entity: "ProfilePic")
         if let newPic = inputImage.jpegData(compressionQuality: CGFloat(1.0)) {
             try? DBMS.setValuesForKeys(entity: "ProfilePic", keyedValues: ["imageP":newPic])
@@ -117,7 +139,7 @@ struct NameView: View {
         }
     }
     
-    var enterNicknameTextField: some View {
+    private var enterNicknameTextField: some View {
         TextField(" Enter Your Nickname", text: $name) {
             UserDefaults.standard.set(self.name, forKey: "Nickname")
             self.changingNickname = false
@@ -127,7 +149,7 @@ struct NameView: View {
             .textFieldStyle(RoundedBorderTextFieldStyle())
     }
     
-    var greetingWithChangeButton: some View {
+    private var greetingWithChangeButton: some View {
         HStack {
             (Text("Hello, ") + Text("\(retrieveNickname())").italic())
             Button(action: {
@@ -136,7 +158,7 @@ struct NameView: View {
         }.offset(x: 10)
     }
     
-    func retrieveNickname() -> String {
+    private func retrieveNickname() -> String {
          return UserDefaults.standard.string(forKey: "Nickname") ?? ""
      }
 }
