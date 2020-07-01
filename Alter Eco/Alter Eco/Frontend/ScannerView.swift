@@ -124,29 +124,6 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
         displayErrorAndDismiss(error: IdentifiableError(localizedDescription: error.localizedDescription))
     }
     
-    // Errors are displayed through UIKit, rather than SwiftUI, to avoid presentation warnings
-    public func displayErrorAndDismiss(error: LocalizedError) {
-        DispatchQueue.main.sync {
-            if let alert = errorAlert {
-                // do not attempt displaying a second alert if one is already being shown
-                guard !alert.isBeingPresented else { return }
-            }
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .default) { _ in self.dismiss(animated: true, completion: nil) }
-            errorAlert = UIAlertController(title: "Error",
-                                          message: error.localizedDescription,
-                                          preferredStyle: .alert)
-            errorAlert!.addAction(defaultAction)
-            
-            // remove spinner if visible
-            if let spinner = spinner {
-                spinner.isHidden = true
-            }
-            
-            self.present(errorAlert!, animated: true)
-        }
-    }
-        
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         // update layout once the screen has finished rotating
@@ -159,10 +136,42 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
                 self.itemReadLabel.removeFromSuperview()
                 self.addControls()
                 self.continueButton.isHidden = buttonVisible
-            } else {
-                self.displayWaitingSpinner() // adjust spinner
+            } else { // adjust spinner
+                self.displayWaitingSpinner()
             }
         }
+    }
+    
+    /// Displays an error alert and dismisses the view in a thread-safe way.
+    public func displayErrorAndDismiss(error: LocalizedError) {
+        // Errors are displayed through UIKit, rather than SwiftUI, to avoid presentation warnings
+        if Thread.isMainThread {
+            unsafeDisplayErrorAndDismiss(error: error)
+        } else { // run gui code on main thread
+            DispatchQueue.main.sync {
+                unsafeDisplayErrorAndDismiss(error: error)
+            }
+        }
+    }
+    
+    private func unsafeDisplayErrorAndDismiss(error: LocalizedError) {
+        if let alert = errorAlert {
+            // do not attempt displaying a second alert if one is already being shown
+            guard !alert.isBeingPresented else { return }
+        }
+        
+        let defaultAction = UIAlertAction(title: "OK", style: .default) { _ in self.dismiss(animated: true, completion: nil) }
+        errorAlert = UIAlertController(title: "Error",
+                                      message: error.localizedDescription,
+                                      preferredStyle: .alert)
+        errorAlert!.addAction(defaultAction)
+        
+        // remove spinner if visible
+        if let spinner = spinner {
+            spinner.isHidden = true
+        }
+        
+        self.present(errorAlert!, animated: true)
     }
     
     private func addControls() {
