@@ -9,14 +9,24 @@ public struct PieChart: View {
         GeometryReader { geo in
             Circle()
             .fill(Color.green)
+            .opacity(0.5)
             .frame(width: min(geo.size.height, geo.size.width), height: min(geo.size.height, geo.size.width), alignment: .center)
             .overlay(
-                (Text("No data available... ") + Text("yet!").italic())
+                VStack {
+                    Text("No data available... ")
                     .foregroundColor(Color.white)
                     .bold()
+                    .font(.body)
                     .allowsTightening(true)
-                    .font(.system(size: 13))
-                    .minimumScaleFactor(0.01))
+                    .minimumScaleFactor(0.8)
+                    Text("yet!")
+                    .foregroundColor(Color.white)
+                    .italic()
+                    .font(.subheadline)
+                    .allowsTightening(true)
+                    .minimumScaleFactor(0.8)
+                }
+            )
         }
     }
     
@@ -79,10 +89,8 @@ public struct PieChart: View {
     func legendText(_ text: String) -> some View {
         return Text(text)
         .allowsTightening(true)
-        .font(.system(size: 15))
-        .minimumScaleFactor(0.01)
-        .lineLimit(1)
-        .foregroundColor(Color.primary)
+        .font(.body)
+        .minimumScaleFactor(0.8)
     }
 }
 
