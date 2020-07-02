@@ -63,8 +63,7 @@ public class FoodToCarbonConverter {
         } else {
             return nil
         }
-        print("Executed unit conversion for \(food.name ?? "nil")")
-        print("Converted \(food.quantity?.value ?? -1) \(food.quantity?.unit.symbol ?? "nil") to \(inKg) kg")
+        
         return Food.Quantity(value: inKg, unit: "kg")
     }
     

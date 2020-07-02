@@ -159,13 +159,17 @@ public class OpenFoodFacts: RemoteFoodRetriever {
             let matchingCategories = foodCarbonConverter.keywordsToCategories(keywords)
             
             if let imageLocation = product.imageFrontSmallUrl, let URL = URL(string: imageLocation) {
-                let task = URLSession.shared.dataTask(with: URL) { data, response, error in
+                var request = URLRequest(url: URL)
+                request.setValue(USER_AGENT, forHTTPHeaderField: "Authorization")
+                request.setValue("close", forHTTPHeaderField: "Connection")
+                let task = URLSession.shared.dataTask(with: request) { data, response, error in
                     guard let data = data, error == nil else { return }
                     let food = Food(barcode: barcode, name: product.productName,
                                     quantity: self.parseQuantity(product.quantity), categories: matchingCategories,
                                     image: data)
                     self.completionHandler(food, nil)
                 }
+                
                 task.resume()
             } else {
                 let food = Food(barcode: barcode, name: product.productName,
