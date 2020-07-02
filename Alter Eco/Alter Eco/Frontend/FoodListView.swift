@@ -3,40 +3,37 @@ import SwiftUI
 struct FoodListView: View {
     @Binding var isVisible: Bool
     @ObservedObject var model: FoodListViewModel
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var continuePressed = false
     
     var body: some View {
-        NavigationView() {
-            if continuePressed {
+        return Group {
+            if continuePressed && isVisible {
                 endScreen
-            } else {
-                VStack {
-                    itemsList
-                    
-                    HStack {
-                        Button(action: {
-                            self.isVisible = false
-                        }, label: {
-                            Text("Cancel")
-                        }).padding(.horizontal)
+            } else if isVisible {
+                NavigationView() {
+                    VStack {
+                        itemsList
                         
-                        Spacer()
-                        
-                        if model.count > 0 {
+                        HStack {
                             Button(action: {
-                                self.continuePressed = true
+                                self.isVisible = false
                             }, label: {
-                                Text("Continue")
+                                Text("Cancel")
                             }).padding(.horizontal)
+                            
+                            Spacer()
+                            
+                            if model.count > 0 {
+                                Button(action: {
+                                    self.continuePressed = true
+                                }, label: {
+                                    Text("Continue")
+                                }).padding(.horizontal)
+                            }
                         }
-                    }
-                }.navigationBarTitle(Text("My groceries"), displayMode: .inline)
+                    }.navigationBarTitle(Text("My groceries"), displayMode: .inline)
+                }
             }
-        }
-        .onDisappear() {
-            // clean up model
-            self.model.update(foods: [], notFound: [])
         }
     }
     
@@ -49,13 +46,17 @@ struct FoodListView: View {
         if carbonUnit == UnitMass.kilograms {
             var carEquivalent = model.totalCarbon.value / CARBON_UNIT_CAR
             var carUnit = UnitLength.kilometers
+            
             // show up to 1 decimal place (only if needed!)
             carEquivalent = (carEquivalent / 0.1).rounded() * 0.1
-            if carEquivalent < 1  && carEquivalent > 0 {
+            if carEquivalent < 1 {
                 carUnit = .meters
                 carEquivalent = Measurement(value: carEquivalent, unit: UnitLength.kilometers).converted(to: .meters).value
             }
-            carEquivalentStr = String(format: "%g %@", carEquivalent, carUnit.symbol)
+            // do not display an equivalence for 0 m
+            if carEquivalent > 0 {
+                carEquivalentStr = String(format: "%g %@", carEquivalent, carUnit.symbol)
+            }
             
             if carbonValue < 1 {
                 carbonUnit = .grams
@@ -70,16 +71,18 @@ struct FoodListView: View {
     
     private func getEndScreen(emission: String, carEquivalent: String) -> some View {
         VStack() {
-            Spacer()
-            Text("Today you").font(.title)
-            Text("have emitted").font(.title)
-            
-            Text("\(emission)")
-                .font(.largeTitle).bold().padding()
-                .overlay(RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.yellow, lineWidth: 5)).padding()
-            
-            Text("with your groceries").font(.title)
+            VStack {
+                Text("Today you").font(.title)
+                Text("have emitted").font(.title)
+                
+                Text("\(emission)")
+                    .font(.largeTitle).bold()
+                    .padding()
+                    .overlay(RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.blue, lineWidth: 5)).padding()
+                
+                Text("with your groceries").font(.title)
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
             if carEquivalent != "" {
                 Spacer()
@@ -186,6 +189,6 @@ struct FoodListView_Previews: PreviewProvider {
         
         let notFound = [Food(barcode: "8456743")]
         
-        return FoodListView(isVisible: .constant(true), model: FoodListViewModel(foods: foods, notFound: notFound )).environmentObject(ScreenMeasurements())
+        return FoodListView(isVisible: .constant(true), model: FoodListViewModel(foods: foods, notFound: notFound ))
     }
 }
