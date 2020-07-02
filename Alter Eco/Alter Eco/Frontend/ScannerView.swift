@@ -33,9 +33,6 @@ public struct ScannerView: UIViewControllerRepresentable {
     
     private func onFoodRetrieval(food: Food?, error: RemoteFoodRetrievalError?) {
         if let food = food {
-            print(food.name ?? "" )
-            print(food.quantity ?? "")
-            print(food.categories ?? "")
             retrievedFoods.append(food)
         } else if let error = error {
             switch error {

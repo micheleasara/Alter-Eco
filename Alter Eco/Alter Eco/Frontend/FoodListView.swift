@@ -3,68 +3,143 @@ import SwiftUI
 struct FoodListView: View {
     @Binding var isVisible: Bool
     @ObservedObject var model: FoodListViewModel
-    private let carbonConverter = FoodToCarbonConverter()
+    @EnvironmentObject var screenMeasurements: ScreenMeasurements
+    @State private var continuePressed = false
     
     var body: some View {
         NavigationView() {
-            VStack {
-                List {
-                    if !model.categorised.isEmpty {
-                        sectionForFoodsInDB(header: "Retrieved items: tap to edit", foods: model.categorised)
-                    }
+            if continuePressed {
+                endScreen
+            } else {
+                VStack {
+                    itemsList
                     
-                    if !model.uncategorised.isEmpty {
-                        sectionForFoodsInDB(header: "Incomplete information: tap to complete", foods: model.uncategorised)
-                    }
-                    
-                    if !model.notInDatabase.isEmpty {
-                        Section(header: Text("Items not found: tap to add").bold()) {
-                            ForEach(model.notInDatabase, id: \.self) { food in
-                                NavigationLink(destination: Text("hello")) {
-                                    Text(food.barcode)
-                                }
-                            }.onDelete(perform: delete)
+                    HStack {
+                        Button(action: {
+                            self.isVisible = false
+                        }, label: {
+                            Text("Cancel")
+                        }).padding(.horizontal)
+                        
+                        Spacer()
+                        
+                        if model.count > 0 {
+                            Button(action: {
+                                self.continuePressed = true
+                            }, label: {
+                                Text("Continue")
+                            }).padding(.horizontal)
                         }
                     }
-                }.listStyle(GroupedListStyle())
-
-                HStack {
-                    Button(action: {
-                        self.isVisible = false
-                    }, label: {
-                        Text("Cancel")
-                    }).padding(.horizontal)
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        self.isVisible = false
-                    }, label: {
-                        Text("Continue")
-                    }).padding(.horizontal)
-                }
-            }.navigationBarTitle(Text("My groceries"), displayMode: .inline)
-        }.onDisappear() {
+                }.navigationBarTitle(Text("My groceries"), displayMode: .inline)
+            }
+        }
+        .onDisappear() {
             // clean up model
             self.model.update(foods: [], notFound: [])
         }
     }
     
-    private func sectionForFoodsInDB(header: String, foods: [Food]) -> some View {
+    private var endScreen: some View {
+        // determine emission format to display and a car equivalent
+        var carbonValue = model.totalCarbon.value
+        var carbonUnit = model.totalCarbon.unit
+        var carEquivalentStr = ""
+        
+        if carbonUnit == UnitMass.kilograms {
+            var carEquivalent = model.totalCarbon.value / CARBON_UNIT_CAR
+            var carUnit = UnitLength.kilometers
+            // show up to 1 decimal place (only if needed!)
+            carEquivalent = (carEquivalent / 0.1).rounded() * 0.1
+            if carEquivalent < 1  && carEquivalent > 0 {
+                carUnit = .meters
+                carEquivalent = Measurement(value: carEquivalent, unit: UnitLength.kilometers).converted(to: .meters).value
+            }
+            carEquivalentStr = String(format: "%g %@", carEquivalent, carUnit.symbol)
+            
+            if carbonValue < 1 {
+                carbonUnit = .grams
+                carbonValue = model.totalCarbon.converted(to: .grams).value
+            }
+        }
+        carbonValue = (carbonValue / 0.01).rounded() * 0.01
+        let carbonStr = String(format: "%g %@", carbonValue, carbonUnit.symbol)
+        
+        return getEndScreen(emission: carbonStr, carEquivalent: carEquivalentStr)
+    }
+    
+    private func getEndScreen(emission: String, carEquivalent: String) -> some View {
+        VStack() {
+            Spacer()
+            Text("Today you").font(.title)
+            Text("have emitted").font(.title)
+            
+            Text("\(emission)")
+                .font(.largeTitle).bold().padding()
+                .overlay(RoundedRectangle(cornerRadius: 20)
+                .stroke(Color.yellow, lineWidth: 5)).padding()
+            
+            Text("with your groceries").font(.title)
+            
+            if carEquivalent != "" {
+                Spacer()
+                Text("The equivalent of " + carEquivalent + " with a car 🚗").italic()
+            }
+            Spacer()
+            
+            HStack {
+                Spacer()
+                Button(action: {
+                    self.isVisible = false
+                }, label: {
+                    Text("Ok")
+                }).padding(.horizontal)
+            }
+        }
+    }
+    
+    private var itemsList: some View {
+        List {
+            if !model.categorised.isEmpty {
+                sectionForFoodsInDB(header: "Retrieved items: tap to edit", foods: model.categorised, remover: model.removeFromCategorised(at:))
+            }
+            
+            if !model.uncategorised.isEmpty {
+                sectionForFoodsInDB(header: "Incomplete information: tap to complete", foods: model.uncategorised, remover: model.removeFromUncategorised(at:))
+            }
+            
+            if !model.notInDatabase.isEmpty {
+                Section(header: Text("Items not found: tap to add").bold()) {
+                    ForEach(model.notInDatabase, id: \.self) { food in
+                        NavigationLink(destination: Text("hello")) {
+                            Text(food.barcode)
+                        }
+                    }.onDelete(perform: {
+                        $0.forEach { i in
+                            self.model.removeFromNotInDatabase(at: i) }
+                    })
+                }
+            }
+        }.listStyle(GroupedListStyle())
+    }
+    
+    private func sectionForFoodsInDB(header: String,
+                                     foods: [Food],
+                                     remover: @escaping (Int) -> Void) -> some View {
         Section(header: Text(header).bold()) {
             ForEach(foods, id: \.self) { food in
                 NavigationLink(destination: Text(self.getCarbonLabel(food: food))) {
                     self.boxWithInfo(fromFood: food)
                 }
-            }.onDelete(perform: delete)
+            }.onDelete(perform: { $0.forEach { i in remover(i) } })
         }
     }
     
     private func getCarbonLabel(food: Food) -> String {
-        guard let carbon = carbonConverter.getCarbon(fromFood: food) else {
-            return "Could not determine carbon"
+        guard let measure = model.getCarbon(forFood: food) else {
+            return "Could not determine carbon value"
         }
-        return "Carbon: \(carbon) kg"
+        return "Carbon: \(measure.value) \(measure.unit.symbol)"
     }
     
     private func boxWithInfo(fromFood food: Food) -> some View {
@@ -99,10 +174,6 @@ struct FoodListView: View {
             }
         }.frame(height: 100)
     }
-    
-    private func delete(at offsets: IndexSet) {
-        print(offsets)
-    }
 }
 
 struct FoodListView_Previews: PreviewProvider {
@@ -115,6 +186,6 @@ struct FoodListView_Previews: PreviewProvider {
         
         let notFound = [Food(barcode: "8456743")]
         
-        return FoodListView(isVisible: .constant(true), model: FoodListViewModel(foods: foods, notFound: notFound ))
+        return FoodListView(isVisible: .constant(true), model: FoodListViewModel(foods: foods, notFound: notFound )).environmentObject(ScreenMeasurements())
     }
 }

@@ -36,12 +36,11 @@ public class FoodToCarbonConverter {
     }
     
     /// Returns the carbon equivalent value associated with a food product. If not enough information is available, nil is returned instead.
-    public func getCarbon(fromFood food: Food) -> Double? {
+    public func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
         guard let category = food.categories?.first else { return nil }
         guard let quantityInKg = toKg(food: food) else { return nil }
         guard let carbonDensity = FoodToCarbonConverter.categoryToCarbonDensity[category] else { return nil }
-        return carbonDensity * quantityInKg.value
-        
+        return Measurement<UnitMass>(value: carbonDensity * quantityInKg.value, unit: .kilograms)
     }
     
     /// Returns a food quantity converted to kg. If the food quantity provided is a liquid, the mass is calculated by estimating the density. Can return nil in case of failure.

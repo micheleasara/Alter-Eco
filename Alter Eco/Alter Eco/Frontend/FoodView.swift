@@ -112,6 +112,7 @@ struct FoodView_Previews: PreviewProvider {
     static var previews: some View {
         FoodView()
             .environmentObject(ScreenMeasurements())
+        .environmentObject(FoodPieChartModel())
         .environmentObject(FoodAwardsManager(DBMS: CoreDataManager()))
     }
 }

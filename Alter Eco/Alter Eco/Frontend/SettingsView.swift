@@ -32,11 +32,11 @@ struct SettingsView: View {
         }
     }
     
-    func MPSToKMPH(_ speedInMPS: Double) -> Double {
+    private func MPSToKMPH(_ speedInMPS: Double) -> Double {
         return speedInMPS * KM_CONVERSION * HOUR_IN_SECONDS
     }
     
-    var pauseTrackingToggle: some View {
+    private var pauseTrackingToggle: some View {
         Toggle(isOn: $pauseTrackingEnabled.rawValue) {
             HStack {
                 Text("Pause tracking if idle")
@@ -51,7 +51,7 @@ struct SettingsView: View {
         }
     }
     
-    var cycleToggle: some View {
+    private var cycleToggle: some View {
         Toggle(isOn: $cycleEnabled.rawValue) {
             HStack {
                 Text("I cycle very often")
@@ -66,7 +66,7 @@ struct SettingsView: View {
         }
     }
     
-    func saveSettings() {
+    private func saveSettings() {
         try? DBMS.deleteAll(entity: "UserPreference")
         
         try? DBMS.setValuesForKeys(entity: "UserPreference",

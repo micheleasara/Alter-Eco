@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct PrivacyInfoView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    public let MAIL_ADDRESS = "alterecodeveloper@gmail.com"
+    private let MAIL_ADDRESS = "alterecodeveloper@gmail.com"
     
     public var body: some View {
         ScrollView {
