@@ -5,8 +5,8 @@ struct ProgressBarView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @State private var showingInfo = false
     @State private(set) var latestScore: UserScore
-    private(set) var DBMS: DBManager
-    
+    @Environment(\.DBMS) var DBMS
+
     var body: some View {
         try? DBMS.updateLeagueIfEnoughPoints()
         
@@ -93,7 +93,7 @@ struct ProgressBarView_Previews: PreviewProvider {
     static var previews: some View {
         let DBMS = CoreDataManager()
         
-        return ProgressBarView(latestScore: (try? DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore(), DBMS: DBMS)
+        return ProgressBarView(latestScore: (try? DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore())
             .environmentObject(ScreenMeasurements())
             .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS))
     }

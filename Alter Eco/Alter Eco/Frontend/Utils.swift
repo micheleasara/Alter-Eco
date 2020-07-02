@@ -51,3 +51,16 @@ public class ScreenMeasurements: ObservableObject {
         }
     }
 }
+
+public struct DBManagerKey: EnvironmentKey {
+    public typealias Value = DBManager
+    public static var defaultValue: DBManager = (UIApplication.shared.delegate as? AppDelegate)?.DBMS ?? CoreDataManager()
+}
+
+public extension EnvironmentValues {
+    var DBMS: DBManager {
+        get {
+            return self[DBManagerKey.self]
+        }
+    }
+}

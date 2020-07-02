@@ -6,8 +6,8 @@ struct SettingsView: View {
     @ObservedObject private var speed = (UIApplication.shared.delegate as! AppDelegate).cycleSpeed
     @State private var showingCycleInfo = false
     @State private var showingPauseInfo = false
-    private(set) var DBMS: DBManager
-    
+    @Environment(\.DBMS) var DBMS
+
     var body: some View {
         VStack(alignment: .leading) {
             pauseTrackingToggle
@@ -80,6 +80,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(DBMS: CoreDataManager())
+        SettingsView()
     }
 }

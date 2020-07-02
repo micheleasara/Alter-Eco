@@ -28,12 +28,25 @@ struct FoodListView: View {
                     }
                 }.listStyle(GroupedListStyle())
 
-                Button(action: {
-                    self.isVisible = false
-                }, label: {
-                    Text("Continue")
-                })
-            }.navigationBarTitle(Text("My groceries"))
+                HStack {
+                    Button(action: {
+                        self.isVisible = false
+                    }, label: {
+                        Text("Cancel")
+                    }).padding(.horizontal)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        self.isVisible = false
+                    }, label: {
+                        Text("Continue")
+                    }).padding(.horizontal)
+                }
+            }.navigationBarTitle(Text("My groceries"), displayMode: .inline)
+        }.onDisappear() {
+            // clean up model
+            self.model.update(foods: [], notFound: [])
         }
     }
     

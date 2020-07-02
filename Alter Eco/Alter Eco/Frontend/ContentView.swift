@@ -4,7 +4,7 @@ import CoreLocation
 struct ContentView: View {
     @State var showSplash = false
     @ObservedObject var isFirstLaunch = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
-    private(set) var DBMS: DBManager
+    @Environment(\.DBMS) var DBMS
     
     var body: some View {
         ZStack {
@@ -22,7 +22,7 @@ struct ContentView: View {
                 if isFirstLaunch.rawValue {
                     introductionViewWithButton
                 } else {
-                    MainView(DBMS: DBMS)
+                    MainView()
                 }
             }
         }
@@ -47,7 +47,6 @@ struct MainView: View {
     @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
     @State var showInfo: Bool = false
     @State var showSettings: Bool = false
-    private(set) var DBMS: DBManager
     
      var body: some View {
         VStack {
@@ -57,12 +56,12 @@ struct MainView: View {
             }
             else if showSettings {
                 titleAndBackButton.padding(.top)
-                SettingsView(DBMS: DBMS)
+                SettingsView()
             }
             else {
                 titleAndInfoButton.padding(.top)
                 Divider()
-                TabPanel(DBMS: DBMS)
+                TabPanel()
             }
         }
     }
@@ -100,11 +99,10 @@ struct MainView: View {
 }
 
 struct TabPanel: View {
-    private(set) var DBMS: DBManager
-    
+
     var body: some View {
         TabView() {
-            ProfileView(DBMS: DBMS).padding(.bottom).tabItem {
+            ProfileView().padding(.bottom).tabItem {
                 VStack {
                     Image(systemName: "person.circle")
                     Text("Profile")
@@ -133,7 +131,7 @@ struct TabPanel: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let DBMS = CoreDataManager()
-        return ContentView(DBMS: DBMS)
+        return ContentView()
            .environmentObject(ScreenMeasurements())
             .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(),
                                               DBMS: CoreDataManager()))

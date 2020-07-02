@@ -11,8 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let DBMS = appDelegate.DBMS as! CoreDataManager
         let context = DBMS.persistentContainer.viewContext
-            //appDelegate.persistentContainer.viewContext
-        let contentView = ContentView(DBMS: DBMS).environment(\.managedObjectContext, context)
+        let contentView = ContentView().environment(\.managedObjectContext, context)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {

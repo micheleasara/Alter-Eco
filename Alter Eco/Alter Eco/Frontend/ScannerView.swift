@@ -13,7 +13,7 @@ public struct ScannerView: UIViewControllerRepresentable {
     private let controller = ScannerDelegate()
 
     public func makeUIViewController(context: Context) -> ScannerDelegate {
-        controller.setMetadataOutputCallback(onCodesRetrieval)
+        controller.setCodesRetrievalCallback(onCodesRetrieval)
         return controller
     }
     
@@ -70,7 +70,8 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
     
     private var scannedCodes = Set<String>()
     
-    public func setMetadataOutputCallback(_ callback: @escaping (Set<String>) -> Void) {
+    /// Sets the function to be called when all barcodes have been scanned.
+    public func setCodesRetrievalCallback(_ callback: @escaping (Set<String>) -> Void) {
         self.callback = callback
     }
     

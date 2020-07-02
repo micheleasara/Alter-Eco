@@ -5,14 +5,14 @@ import CoreData
 struct ProfileView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @EnvironmentObject var chartModel: TransportBarChartModel
-    private(set) var DBMS: DBManager
-    
+    @Environment(\.DBMS) var DBMS
+
     var body: some View {
         let dailyCarbon = getDailyCarbon()
         return ScrollView {
             VStack() {
                 VStack(alignment: .center) {
-                    ProfileImage(DBMS: DBMS)
+                    ProfileImage()
                     NameView()
                 }
                 .frame(height: 0.4*screenMeasurements.trasversal)
@@ -20,7 +20,7 @@ struct ProfileView: View {
                 
                 MainBarChart().frame(height: 0.5*screenMeasurements.trasversal).padding(.bottom)
                 
-                ProgressBarView(latestScore: getCurrentScore(), DBMS: DBMS).padding(.bottom)
+                ProgressBarView(latestScore: getCurrentScore()).padding(.bottom)
 
                 ComparisonView(dailyCarbon: dailyCarbon).padding(.bottom)
                 
@@ -60,10 +60,9 @@ struct ProfileView: View {
 struct ProfileImage: View {
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
-    private(set) var DBMS: DBManager
-    
-    init(DBMS: DBManager) {
-        self.DBMS = DBMS
+    @Environment(\.DBMS) var DBMS
+
+    init() {
         _inputImage = State(initialValue: loadStoredImage())
     }
     
@@ -165,8 +164,6 @@ struct NameView: View {
 
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        return Group {
-            ProfileView(DBMS: CoreDataManager())
-        }.environmentObject(ScreenMeasurements())
+        ProfileView().environmentObject(ScreenMeasurements())
     }
 }

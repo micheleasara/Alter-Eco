@@ -104,7 +104,7 @@ public class OpenFoodFacts: RemoteFoodRetriever {
         let url = URL(string: API_BASE_ADDRESS + barcode + API_EXTENSION_AND_FIELDS)!
         var request = URLRequest(url: url)
         request.setValue(USER_AGENT, forHTTPHeaderField: "Authorization")
-
+        request.setValue("close", forHTTPHeaderField: "Connection")
         let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
             self.onHTTPRequestCompleted(barcode: barcode, data: data, response: response, error: error) })
         task.resume()

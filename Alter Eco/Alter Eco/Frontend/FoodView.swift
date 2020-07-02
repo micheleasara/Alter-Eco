@@ -9,19 +9,21 @@ struct FoodView: View {
     @State private var foodListModel = FoodListViewModel()
     
     var body: some View {
-        ScrollView {
+        VStack {
             if showFoodList {
                 FoodListView(isVisible: $showFoodList, model: foodListModel)
             }
             else {
-                chartsAndAchievements
+                ScrollView {
+                    chartsAndAchievements
+                }
             }
         }
     }
     
     private var chartsAndAchievements: some View {
         VStack(alignment: .center) {
-            FoodChart().frame(height: measurementsOnLaunch.longitudinal / 2.5)
+            //FoodChart().frame(height: measurementsOnLaunch.longitudinal / 2.5)
 
             Button(action: {
                 self.showScanner.toggle()
@@ -30,7 +32,9 @@ struct FoodView: View {
                     Text("Scan barcode")
                     Image(systemName: "camera.fill")
                 }
-            }.sheet(isPresented: $showScanner, onDismiss: { self.showFoodList = self.foodListModel.count > 0 }) { ScannerView(foodListModel: self.$foodListModel) }
+            }.sheet(isPresented: $showScanner, onDismiss: {
+                self.showFoodList = self.foodListModel.count > 0
+            }) { ScannerView(foodListModel: self.$foodListModel) }
             
             // show pie chart only if we have data
             if pieChartModel.values.reduce(0, +) > 0 {

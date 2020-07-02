@@ -23,6 +23,7 @@ public class BarcodeScanner: NSObject {
                                                object: captureSession)
     }
     
+    /// Starts scanning asynchronously.
     public func startScanning() {
         // starting and stopping operations are asynchronous as recommended in the official apple docs
         if let captureSession = self.captureSession, !captureSession.isRunning {
@@ -32,6 +33,7 @@ public class BarcodeScanner: NSObject {
         }
     }
     
+    /// Requests for the scanner to stop asynchronously.
     public func stopScanning() {
         if let captureSession = self.captureSession, captureSession.isRunning {
             sessionQueue.async {
@@ -40,6 +42,7 @@ public class BarcodeScanner: NSObject {
         }
     }
     
+    /// Updates the video layout according to the current interface layout of the device.
     public func updateVideoLayout() {
         if let previewLayer = previewLayer {
             let cameraView = delegate.view!
