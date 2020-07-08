@@ -25,7 +25,7 @@ public class FoodListViewModel: ObservableObject {
         var categorised: [Food] = []
         var uncategorised: [Food] = []
         for food in foods {
-            if food.categories?.isEmpty ?? true {
+            if food.types?.isEmpty ?? true {
                 uncategorised.append(food)
            } else {
                 categorised.append(food)

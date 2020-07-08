@@ -6,6 +6,12 @@
         <attribute name="motionType" optional="YES" attributeType="String"/>
         <attribute name="start" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
     </entity>
+    <entity name="FoodProduct" representedClassName="FoodProduct" syncable="YES" codeGenerationType="class">
+        <attribute name="barcode" optional="YES" attributeType="String"/>
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="ProfilePic" representedClassName="ProfilePic" syncable="YES">
         <attribute name="imageP" optional="YES" attributeType="Binary"/>
     </entity>
@@ -23,6 +29,7 @@
     </entity>
     <elements>
         <element name="Event" positionX="54.734375" positionY="78.3515625" width="128" height="103"/>
+        <element name="FoodProduct" positionX="-18" positionY="36" width="128" height="103"/>
         <element name="ProfilePic" positionX="-150.0546875" positionY="101.6171875" width="128" height="58"/>
         <element name="Score" positionX="-94.38671875" positionY="-72.8359375" width="128" height="103"/>
         <element name="UserPreference" positionX="114.65625" positionY="-70.7578125" width="128" height="103"/>

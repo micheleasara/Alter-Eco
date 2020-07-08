@@ -57,16 +57,20 @@ public let DEFAULT_CYCLE_SPEED: Double = 6
 public let AUTOMOTIVE_SPEED_THRESHOLD:Double = 4
 
 // MARK: - Carbon conversion constants
-/// Carbon output for a car in Kg/Km.
+/// Carbon output for a car in kg/km.
 public let CARBON_UNIT_CAR: Double = 0.175
-/// Carbon output for a train in Kg/Km.
+/// Carbon output for a train in kg/km.
 public let CARBON_UNIT_TRAIN: Double = 0.030
-/// Carbon output for a plane in Kg/Km.
+/// Carbon output for a plane in kg/km.
 public let CARBON_UNIT_PLANE: Double = 0.200
-/// Carbon output saved by walking as compared to a car in Kg/Km.
+/// Carbon output saved by walking as compared to a car in kg/km.
 public let CARBON_UNIT_WALKING: Double = 0.175
 /// Conversion unit for meters into km.
 public let KM_CONVERSION: Double = 0.001
+
+// all the constants for carbon conversions come from:
+// https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
+// all units have been converted to kilogram/kilometer
 
 // MARK: - League constants
 /// Points for walking.

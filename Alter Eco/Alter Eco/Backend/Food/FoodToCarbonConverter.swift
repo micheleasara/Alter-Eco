@@ -5,10 +5,10 @@ public class FoodToCarbonConverter {
     /// Mapping of lowercase words identifying a liquid type to a density in kg/l.
     private let liquidsDensities: Dictionary<String, Double> = ["oil":0.9, "water":1, "liquor":0.94]
     
-    /// Returns a list of food categories matching the given english keywords.
+    /// Returns a list of food types matching the given english keywords.
     /// The list is given in descending order according to how strong the match is.
     /// Can return nil if the device does not support english word embeddings or if no keywords are given.
-    public func keywordsToCategories(_ keywords: [String]) -> [String]? {
+    public func keywordsToTypes(_ keywords: [String]) -> [String]? {
         guard let embedding = embedding, keywords.count > 0 else { return nil }
         
         // lemmatize words and get a vector representation of the whole list
@@ -17,7 +17,7 @@ public class FoodToCarbonConverter {
         
         // compute cosine similarity between vector and all the foods within the carbon-conversion database
         var results = Dictionary<String, Double>()
-        for food in FoodToCarbonConverter.categoryToCarbonDensity.keys {
+        for food in FoodToCarbonConverter.foodTypesInfo.keys {
             var foodVec = [Double]()
             if !embedding.contains(food) {
                 // some entries in the carbon conversion database have spaces
@@ -31,15 +31,15 @@ public class FoodToCarbonConverter {
             results[food] = dist
         }
         
-        // sort by similarity and return the associated food categories from the carbon conversion db
+        // sort by similarity and return the associated food types from the carbon conversion db
         return results.sorted{$0.value < $1.value}.map{$0.key}
     }
     
     /// Returns the carbon equivalent value associated with a food product. If not enough information is available, nil is returned instead.
     public func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
-        guard let category = food.categories?.first else { return nil }
+        guard let type = food.types?.first else { return nil }
         guard let quantityInKg = toKg(food: food) else { return nil }
-        guard let carbonDensity = FoodToCarbonConverter.categoryToCarbonDensity[category] else { return nil }
+        guard let carbonDensity = FoodToCarbonConverter.foodTypesInfo[type]?.carbonDensity else { return nil }
         return Measurement<UnitMass>(value: carbonDensity * quantityInKg.value, unit: .kilograms)
     }
     
@@ -57,23 +57,23 @@ public class FoodToCarbonConverter {
             var measurement = Measurement(value: quantity.value, unit: volumeUnit)
             measurement.convert(to: .liters)
             // estimate density with word embeddings
-            guard let category = food.categories?.first,
-                let density = getDensityLiquid(category: category) else { return nil }
+            guard let type = food.types?.first,
+                let density = getDensityLiquid(type: type) else { return nil }
             inKg = density * measurement.value
         } else {
             return nil
         }
         
-        return Food.Quantity(value: inKg, unit: "kg")
+        return Food.Quantity(value: inKg, unit: UnitMass.kilograms)
     }
     
-    /// Returns the density of the liquid which most closely matches the liquid cateogory given. Returns nil in case of failure.
-    private func getDensityLiquid(category: String) -> Double? {
+    /// Returns the density of the liquid which most closely matches the liquid type given. Returns nil in case of failure.
+    private func getDensityLiquid(type: String) -> Double? {
          guard let embedding = embedding else { return nil }
          
          var density = liquidsDensities["water"]
          var bestMatch = -1.0
-         let vectorFood = getMultiWordVector(words: category.components(separatedBy: " "), embedding: embedding)
+         let vectorFood = getMultiWordVector(words: type.components(separatedBy: " "), embedding: embedding)
          for liquid in liquidsDensities {
              if let vectorLiquid = embedding.vector(for: liquid.key),
                  let sim = cosineSim(vectorFood, vectorLiquid), sim > bestMatch {
@@ -81,7 +81,7 @@ public class FoodToCarbonConverter {
                  density = liquid.value
              }
          }
-         print("density of \(category): \(density ?? -1) kg/l")
+         print("density of \(type): \(density ?? -1) kg/l")
          return density
      }
     

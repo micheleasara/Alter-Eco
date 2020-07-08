@@ -146,7 +146,7 @@ struct FoodListView: View {
     }
     
     private func boxWithInfo(fromFood food: Food) -> some View {
-        let category = food.categories?.first ?? ""
+        let type = food.types?.first ?? ""
         var image: UIImage? = nil
         if let data = food.image {
             image = UIImage(data: data)
@@ -170,8 +170,8 @@ struct FoodListView: View {
                         .padding(.top)
                 }
                 
-                if !category.isEmpty {
-                    Text(category).padding(.top)
+                if !type.isEmpty {
+                    Text(type).padding(.top)
 
                 }
             }
@@ -181,10 +181,10 @@ struct FoodListView: View {
 
 struct FoodListView_Previews: PreviewProvider {
     static var previews: some View {
-        let foods = [Food(barcode: "1234567", name: "Chocolate brownies TESCO", quantity: Food.Quantity(value: 200, unit: "g"), categories: ["sweet snack"]),
-                     Food(barcode: "4342347", name: "WR Premium Chicken", quantity: Food.Quantity(value: 250, unit: "g"), categories: ["chicken"]),
-            Food(barcode: "98238237", name: "Frozen Chickpeas TESCO", quantity: Food.Quantity(value: 500, unit: "g"), categories: []),
-            Food(barcode: "98238237", name: "LoveChoc Doughnuts Special Edition", categories: ["sweet snack"])
+        let foods = [Food(barcode: "1234567", name: "Chocolate brownies TESCO", quantity: Food.Quantity(value: 200, unit: "g"), types: ["sweet snack"]),
+                     Food(barcode: "4342347", name: "WR Premium Chicken", quantity: Food.Quantity(value: 250, unit: "g"), types: ["chicken"]),
+            Food(barcode: "98238237", name: "Frozen Chickpeas TESCO", quantity: Food.Quantity(value: 500, unit: "g"), types: []),
+            Food(barcode: "98238237", name: "LoveChoc Doughnuts Special Edition", types: ["sweet snack"])
         ]
         
         let notFound = [Food(barcode: "8456743")]

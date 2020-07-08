@@ -1,81 +1,6 @@
 import Foundation
 import NaturalLanguage
 
-/// Represents a food product.
-public struct Food: Hashable {
-    /// The name of this food product.
-    public var name: String?
-    /// The quantity associated to this food product.
-    public var quantity: Quantity?
-    /// A list of categories to which this food product may belong. The categories are sorted in ascending order proportionally the likelihood of the food belonging to a given category.
-    public var categories: [String]?
-    /// A small image representing this food product.
-    public var image: Data?
-    /// A barcode identifying this product.
-    public var barcode: String
-    
-    public init(barcode: String, name: String? = nil,
-                quantity: Quantity? = nil, categories: [String]? = nil, image: Data? = nil) {
-        self.barcode = barcode
-        self.name = name
-        self.quantity = quantity
-        self.categories = categories
-        self.image = image
-    }
-    
-    /// Represents a numerical quantity with an associated unit, specifically for food. Units can be either mass or volume units.
-    public struct Quantity: Hashable {
-        /// A mapping of lowercase symbols to their units.
-        public static let SUPPORTED_UNITS: Dictionary<String, Unit> = ["g": UnitMass.grams,
-                                                                       "kg": UnitMass.kilograms,
-                                                                       "lb": UnitMass.pounds,
-                                                                       "oz": UnitMass.ounces,
-                                                                       "l": UnitVolume.liters,
-                                                                       "dl": UnitVolume.deciliters,
-                                                                       "cl": UnitVolume.centiliters,
-                                                                       "ml": UnitVolume.milliliters]
-        /// The numeric value of the quantity.
-        public private(set) var value: Double
-        /// The mass or volume unit of this food quantity.
-        public private(set) var unit: Unit
-        
-        /// Initializes a food quantity from a numeric value and a unit. If the unit is not supported, nil is returned.
-        public init?(value: Double, unit: String) {
-            let unitLow = unit.lowercased()
-            guard let unitFinal = Quantity.SUPPORTED_UNITS[unitLow] else { return nil }
-            self.value = value
-            self.unit = unitFinal
-        }
-        
-        /// Initializes a food quantity from a numeric value and a unit.
-        public init(value: Double, unit: Unit) {
-            self.value = value
-            self.unit = unit
-        }
-    }
-}
-
-/// Enumeration of possible errors which can occur when retrieving food from a remote database.
-public enum RemoteFoodRetrievalError: LocalizedError {
-    /// A generic network error with a description.
-    case network(localizedDescription: String)
-    /// An error related specifically to a failed HTTP request, with a description.
-    case httpFailure(localizedDescription: String)
-    /// An error signifying the food item requested was not found in the database.
-    case foodNotFound(barcode: String)
-    
-    public var errorDescription: String? {
-        switch self {
-        case .network(localizedDescription: let description):
-            return description
-        case .httpFailure(localizedDescription: let description):
-            return description
-        case .foodNotFound(barcode: let barcode):
-            return barcode
-        }
-    }
-}
-
 /// Represents an entity to retrieve food information from a remote server.
 public protocol RemoteFoodRetriever {
     /// Asynchronously retrieves food information given a barcode. When finished, the results are passed to a callback function.
@@ -155,8 +80,8 @@ public class OpenFoodFacts: RemoteFoodRetriever {
         if let product = product {
             // preprocess OpenFoodFacts categories to extract the most important keywords
             let keywords = getKeywords(categories: product.categoriesTags ?? [])
-            // convert keywords into matching food categories for which a carbon value is available
-            let matchingCategories = foodCarbonConverter.keywordsToCategories(keywords)
+            // convert keywords into matching food types for which a carbon value is available
+            let matchingTypes = foodCarbonConverter.keywordsToTypes(keywords)
             
             if let imageLocation = product.imageFrontSmallUrl, let URL = URL(string: imageLocation) {
                 var request = URLRequest(url: URL)
@@ -165,7 +90,7 @@ public class OpenFoodFacts: RemoteFoodRetriever {
                 let task = URLSession.shared.dataTask(with: request) { data, response, error in
                     guard let data = data, error == nil else { return }
                     let food = Food(barcode: barcode, name: product.productName,
-                                    quantity: self.parseQuantity(product.quantity), categories: matchingCategories,
+                                    quantity: self.parseQuantity(product.quantity), types: matchingTypes,
                                     image: data)
                     self.completionHandler(food, nil)
                 }
@@ -173,7 +98,7 @@ public class OpenFoodFacts: RemoteFoodRetriever {
                 task.resume()
             } else {
                 let food = Food(barcode: barcode, name: product.productName,
-                                quantity: self.parseQuantity(product.quantity), categories: matchingCategories)
+                                quantity: self.parseQuantity(product.quantity), types: matchingTypes)
                 self.completionHandler(food, nil)
             }
             
@@ -216,5 +141,26 @@ public class OpenFoodFacts: RemoteFoodRetriever {
         guard let valueNum = Double(value) else { return nil }
         // unsupported units are taken care of by the Food.Quantity initializer
         return Food.Quantity(value: valueNum, unit: unit)
+    }
+}
+
+/// Enumeration of possible errors which can occur when retrieving food from a remote database.
+public enum RemoteFoodRetrievalError: LocalizedError {
+    /// A generic network error with a description.
+    case network(localizedDescription: String)
+    /// An error related specifically to a failed HTTP request, with a description.
+    case httpFailure(localizedDescription: String)
+    /// An error signifying the food item requested was not found in the database.
+    case foodNotFound(barcode: String)
+    
+    public var errorDescription: String? {
+        switch self {
+        case .network(localizedDescription: let description):
+            return description
+        case .httpFailure(localizedDescription: let description):
+            return description
+        case .foodNotFound(barcode: let barcode):
+            return barcode
+        }
     }
 }
