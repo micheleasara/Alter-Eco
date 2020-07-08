@@ -11,6 +11,15 @@ public protocol DBReader {
     - Returns: List of activities that satisfy the predicate.
     */
     func queryActivities(predicate: String?, args: [Any]?) throws -> [MeasuredActivity]
+    
+    /**
+    Queries the FoodProduct entity with a predicate.
+    - Parameter predicate: Predicate used to select rows.
+    - Parameter args: List of arguments to include in the predicate.
+    - Returns: List of activities that satisfy the predicate.
+    */
+    func queryFoods(predicate: String?, args: [Any]?) throws -> [Food]
+    
     /**
     Queries the given entity with a predicate.
     - Parameter entity: entity name as a string.
@@ -27,13 +36,17 @@ public protocol DBWriter {
     func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws
     /// Appends an activity to the Event entity.
     func append(activity: MeasuredActivity) throws
+    /// Appends a food product to the FoodProduct entity.
+    func append(food: Food) throws
     /// Updates score by adding score computed from a given activity.
     func updateScore(activity: MeasuredActivity) throws
+    /// Deletes an entry from the given entity identified by a rows number.
     func delete(entity: String, rowNumber: Int) throws
+    /// Deletes all entries in the given entity.
     func deleteAll(entity: String) throws
 }
 
-/// Represents an interface to an object able to read, write and perform sophisticated queries on AlterEco's databases.
+/// Represents an interface to an object able to read, write and perform sophisticated queries on Alter Eco's databases.
 public protocol DBManager : AnyObject, DBReader, DBWriter {
     /// Adds a function to be called whenever something is written to the database.
     func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void)
@@ -70,15 +83,15 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
     
     /// Updates the league attribute of the Score entity with the given string.
     func updateLeague(newLeague: String) throws
+    
     /**
     Retrieves the latest UserScore in the Score entity. If no score if present, it is initialized with a default value.
     - Remark: Initial value is described in UserScore.getInitialScore()
     - Returns: A UserScore object having its properties set to the values in the database.
      */
     func retrieveLatestScore() throws -> UserScore
-    /**
-    Checks user progress and updates league if enough points have been accumulated.
-     */
+    
+    ///Checks user progress and updates league if enough points have been accumulated.
     func updateLeagueIfEnoughPoints() throws -> Void
     
     /// Returns the earliest start date within the Event entity.

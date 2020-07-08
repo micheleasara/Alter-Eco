@@ -4,6 +4,8 @@ import AlterEcoBackend
 // Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
 class DBWriterMock: DBWriter {
+    func append(food: Food) throws {}
+    
     var appendArgs: [MeasuredActivity] = []
     var updateScoreArgs: [MeasuredActivity] = []
     
@@ -104,6 +106,10 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBManager {
+    func queryFoods(predicate: String?, args: [Any]?) throws -> [Food] { return [] }
+    
+    func append(food: Food) throws {}
+    
     func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {}
     
     var carbonWithinIntervalMotionTypes = [MeasuredActivity.MotionType]()

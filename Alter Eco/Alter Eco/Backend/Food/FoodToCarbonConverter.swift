@@ -35,7 +35,7 @@ public class FoodToCarbonConverter {
         return results.sorted{$0.value < $1.value}.map{$0.key}
     }
     
-    /// Returns the carbon equivalent value associated with a food product. If not enough information is available, nil is returned instead.
+    /// Returns the carbon emissions in kg associated with a food product. If not enough information is available, nil is returned instead.
     public func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
         guard let type = food.types?.first else { return nil }
         guard let quantityInKg = toKg(food: food) else { return nil }

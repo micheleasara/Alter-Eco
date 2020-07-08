@@ -39,7 +39,7 @@ class DatabaseAndUserScoreTest: XCTestCase {
         XCTAssert(results.isEmpty)
     }
     
-    func testDatabaseIOIsConsistent() {
+    func testActivityIOIsConsistent() {
         let someTimeAgo = Date.init(timeIntervalSince1970: 100)
         let longTimeAgo = Date.init(timeIntervalSince1970: 1)
         let activity = MeasuredActivity(motionType: .plane, distance: 10000, start: longTimeAgo, end: someTimeAgo)
@@ -47,6 +47,14 @@ class DatabaseAndUserScoreTest: XCTestCase {
         let retrieved = try! DBMS.queryActivities(predicate: "start == %@ AND end == %@", args: [longTimeAgo as NSDate, someTimeAgo as NSDate])
         XCTAssert(retrieved.count == 1)
         XCTAssert(activity == retrieved[0])
+    }
+    
+    func testFoodIOIsConsistent() {
+        let food = Food(barcode: "12345678")
+        try! DBMS.append(food: food)
+        let retrieved = try! DBMS.queryFoods(predicate: "barcode == %@", args: ["12345678"])
+        XCTAssert(retrieved.count == 1)
+        XCTAssert(food == retrieved[0])
     }
     
     func testDatabaseCannotFindNonExistantData() {

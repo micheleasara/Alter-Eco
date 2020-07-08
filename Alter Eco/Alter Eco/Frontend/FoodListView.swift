@@ -3,12 +3,15 @@ import SwiftUI
 struct FoodListView: View {
     @Binding var isVisible: Bool
     @ObservedObject var model: FoodListViewModel
+    @Environment(\.DBMS) var DBMS
     @State private var continuePressed = false
     
     var body: some View {
         return Group {
             if continuePressed && isVisible {
-                endScreen
+                endScreen.onAppear() {
+                    self.model.categorised.forEach{ try? self.DBMS.append(food: $0) }
+                }
             } else if isVisible {
                 NavigationView() {
                     VStack {

@@ -83,6 +83,8 @@ public class OpenFoodFacts: RemoteFoodRetriever {
             // convert keywords into matching food types for which a carbon value is available
             let matchingTypes = foodCarbonConverter.keywordsToTypes(keywords)
             
+            // TODO: - change Food contructor's category with categories or join types and categories
+            
             if let imageLocation = product.imageFrontSmallUrl, let URL = URL(string: imageLocation) {
                 var request = URLRequest(url: URL)
                 request.setValue(USER_AGENT, forHTTPHeaderField: "Authorization")
@@ -91,14 +93,14 @@ public class OpenFoodFacts: RemoteFoodRetriever {
                     guard let data = data, error == nil else { return }
                     let food = Food(barcode: barcode, name: product.productName,
                                     quantity: self.parseQuantity(product.quantity), types: matchingTypes,
-                                    image: data)
+                                    image: data, category: FoodToCarbonConverter.foodTypesInfo[matchingTypes?.first ?? ""]?.category)
                     self.completionHandler(food, nil)
                 }
                 
                 task.resume()
             } else {
                 let food = Food(barcode: barcode, name: product.productName,
-                                quantity: self.parseQuantity(product.quantity), types: matchingTypes)
+                                quantity: self.parseQuantity(product.quantity), types: matchingTypes, category: FoodToCarbonConverter.foodTypesInfo[matchingTypes?.first ?? ""]?.category)
                 self.completionHandler(food, nil)
             }
             

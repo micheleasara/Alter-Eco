@@ -171,7 +171,7 @@ public struct PieChartSlice: View {
 struct PieChart_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            PieChart(model: FoodPieChartModel()).previewLayout(PreviewLayout.sizeThatFits)
+            PieChart(model: FoodPieChartModel(DBMS: CoreDataManager())).previewLayout(PreviewLayout.sizeThatFits)
             PieChartSlice(colour: .red, start: .degrees(0), end: .degrees(180), percentage: 42, imageName: "meat").previewLayout(PreviewLayout.fixed(width: 300, height: 200))
             PieChart.empty().previewLayout(PreviewLayout.fixed(width: 300, height: 200))
         }

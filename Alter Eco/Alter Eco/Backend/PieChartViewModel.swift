@@ -43,7 +43,6 @@ public class TransportPieChartModel: PieChartModel {
     }
     
     public func updateUpTo(_ date: Date) {
-        print("updating transport")
         let now = date
         var values: [Double] = []
         var imageNames: [String] = []
@@ -67,8 +66,23 @@ public class TransportPieChartModel: PieChartModel {
 }
 
 public class FoodPieChartModel: PieChartModel {
+    private var DBMS: DBManager!
+    
+    public init(DBMS: DBManager) {
+        self.DBMS = DBMS
+        super.init()
+        updateUpTo(Date().toLocalTime())
+    }
+    
     public func updateUpTo(_ date: Date) {
-        update(values: [90, 100, 20, 35],
+        var carbonVals = [0.0, 0.0, 0.0, 0.0]
+        
+        let converter = FoodToCarbonConverter()
+        carbonVals[0] = getMeatsAndSeafood(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
+        carbonVals[1] = getDairiesAndEggs(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
+        carbonVals[2] = getVeganProduce(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
+        carbonVals[3] = getCarbsBeveragesAndOthers(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
+        update(values: carbonVals,
         imageNames: ["meat", "dairies", "vegetable", "fast-food"],
         colours: [.red, .yellow, .green, .blue],
         legendNames: ["Meat and seafood",
@@ -77,8 +91,37 @@ public class FoodPieChartModel: PieChartModel {
                       "Snacks, soft drinks and others"])
     }
     
-    override init() {
-        super.init()
-        updateUpTo(Date().toLocalTime())
+    private func getVeganProduce(date: Date) -> [Food] {
+        let veggies = Food.Category.vegetablesAndDerived.rawValue
+        let fruits = Food.Category.fruits.rawValue
+        let legumes = Food.Category.legumes.rawValue
+        let foods = try? DBMS.queryFoods(predicate: "date <= %@ AND (category == %@ OR category == %@ OR category == %@)",
+                                         args: [date, veggies, fruits, legumes])
+        return (foods ?? [])
+    }
+    
+    private func getDairiesAndEggs(date: Date) -> [Food] {
+        let foods = try? DBMS.queryFoods(predicate: "date <= %@ AND category == %@",
+                                         args: [date, Food.Category.dairiesAndEggs.rawValue])
+        return (foods ?? [])
+    }
+    
+    private func getMeatsAndSeafood(date: Date) -> [Food] {
+        let meats = Food.Category.meats.rawValue
+        let seafood = Food.Category.seafood.rawValue
+        let foods = try? DBMS.queryFoods(predicate: "date <= %@ AND (category == %@ OR category == %@)",
+                                         args: [date, meats, seafood])
+        return (foods ?? [])
+    }
+    
+    private func getCarbsBeveragesAndOthers(date: Date) -> [Food] {
+        let others = Food.Category.others.rawValue
+        let carbs = Food.Category.carbohydrates.rawValue
+        let beverages = Food.Category.beverages.rawValue
+        let foods = try? DBMS.queryFoods(predicate: "category == %@",
+                                         args: [beverages])
+        print(foods)
+        print(try! DBMS.queryFoods(predicate: nil, args: nil))
+        return (foods ?? [])
     }
 }

@@ -12,14 +12,18 @@ public struct Food: Hashable {
     public var image: Data?
     /// A barcode identifying this product.
     public var barcode: String
+    /// The broad category of this product (e.g. meats, diaries etc.).
+    public var category: Category?
     
     public init(barcode: String, name: String? = nil,
-                quantity: Quantity? = nil, types: [String]? = nil, image: Data? = nil) {
+                quantity: Quantity? = nil, types: [String]? = nil,
+                image: Data? = nil, category: Category? = nil) {
         self.barcode = barcode
         self.name = name
         self.quantity = quantity
         self.types = types
         self.image = image
+        self.category = category
     }
 }
 

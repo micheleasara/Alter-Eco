@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             
             let transportBarChartModel = TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS)
             let transportPieChartModel = TransportPieChartModel(DBMS: DBMS)
-            let foodPieChartModel = FoodPieChartModel()
+            let foodPieChartModel = FoodPieChartModel(DBMS: DBMS)
             DBMS.addActivityWrittenCallback { activity in
                 let now = Date().toLocalTime()
                 transportBarChartModel.updateUpTo(now)

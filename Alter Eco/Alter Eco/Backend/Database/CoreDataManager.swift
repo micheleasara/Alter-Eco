@@ -7,52 +7,36 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     // contains the function called when an activity has been written to the database
     private var activityWrittenCallbacks: [(MeasuredActivity) -> Void] = []
     
-    /// Sets a callback function which is called whenever an activity is added.
     public func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
         self.activityWrittenCallbacks.append(callback)
     }
     
-    /**
-    Queries the given entity with a predicate.
-    - Parameter entity: entity name as string.
-    - Parameter predicate: Predicate used to select rows.
-    - Parameter args: List of arguments to include in the predicate.
-    - Returns: List of objects that satisfy the predicate.
-    - Remark: See .xcdatamodeld file for information about valid entities.
-    */
-    public func executeQuery(entity: String, predicate: String? = nil, args: [Any]? = nil) throws -> [Any] {
-        
-        let managedContext = try getManagedContext()
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
-        if predicate != nil && args != nil {
-            fetchRequest.predicate = NSPredicate(format: predicate!, argumentArray: args!)
-        }
-        let queryResult = try managedContext.fetch(fetchRequest)
-        return queryResult
+    public func append(food: Food) throws {
+        try setValuesForKeys(entity: "FoodProduct",
+                             keyedValues:
+            ["barcode" : food.barcode,
+             "name": food.name as Any,
+             "type": food.types?.first as Any,
+             "date": Date().toLocalTime(),
+             "quantityValue": food.quantity?.value as Any,
+             "quantityUnit": food.quantity?.unit.symbol as Any,
+             "category": food.category?.rawValue as Any])
     }
     
-    /**
-    Queries the Event entity with a predicate.
-    - Parameter predicate: Predicate used to select rows.
-    - Parameter args: List of arguments to include in the predicate.
-    - Returns: List of activities that satisfy the predicate.
-    */
-    public func queryActivities(predicate: String? = nil, args: [Any]? = nil) throws -> [MeasuredActivity] {
-        var measuredActivities = [MeasuredActivity]()
-        let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args)) as? [NSManagedObject] ?? []
-
-        for result in queryResult {
-            let motionType = MeasuredActivity.stringToMotionType(type: result.value(forKey: "motionType") as! String)
-            let distance = result.value(forKey: "distance") as! Double
-            let start = result.value(forKey: "start") as! Date
-            let end = result.value(forKey: "end") as! Date
-            measuredActivities.append(MeasuredActivity(motionType: motionType, distance: distance, start: start, end: end))
-        }
+    public func append(activity: MeasuredActivity) throws {
+        try setValuesForKeys(entity: "Event",
+                             keyedValues:
+            ["motionType" : MeasuredActivity.motionTypeToString(type: activity.motionType),
+             "distance": activity.distance,
+             "start": activity.start,
+             "end": activity.end])
         
-        return measuredActivities
+        // call registered observers with the activity just written
+        for callback in activityWrittenCallbacks {
+            callback(activity)
+        }
     }
     
-    /// Sets properties of the receiver entity with values from a given dictionary, using its keys to identify the properties.
     public func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {
         let managedContext = try getManagedContext()
         let entity = NSEntityDescription.entity(forEntityName: entity, in: managedContext)!
@@ -61,17 +45,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         try managedContext.save()
     }
     
-    /// Appends an activity to the Event entity.
-    public func append(activity: MeasuredActivity) throws {
-        try setValuesForKeys(entity: "Event", keyedValues: ["motionType" : MeasuredActivity.motionTypeToString(type: activity.motionType), "distance":activity.distance, "start":activity.start, "end":activity.end])
-        
-        // call registered observers with the activity just written
-        for callback in activityWrittenCallbacks {
-            callback(activity)
-        }
-    }
-    
-    /// Deletes all entries in the entity identified by the string given.
     public func deleteAll(entity: String) throws {
         let results = try executeQuery(entity: entity) as? [NSManagedObject] ?? []
         for result in results {
@@ -79,7 +52,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
     }
     
-    /// Deletes the row at the index given and corresponding to the entity provided.
     public func delete(entity: String, rowNumber: Int) throws {
         let results = try executeQuery(entity: entity) as? [NSManagedObject] ?? []
         if results.count > rowNumber {
@@ -87,12 +59,32 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
     }
     
-    /**
-    Returns the cumulative distance in meters for the given motion type and in the specified timeframe.
-     - Parameter motionType: the only motion type to consider.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     */
+    public func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double {
+        var carbonTotal : Double = 0
+        for motion in MeasuredActivity.MotionType.allCases {
+            if motion.isPolluting() {
+                carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
+            }
+        }
+        
+        return carbonTotal
+    }
+    
+    public func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {
+        let distance = try distanceWithinInterval(motionType: motionType, from: from, interval: interval)
+        let carbonValue = computeCarbonUsage(distance: distance, type: motionType)
+
+        return carbonValue
+    }
+    
+    public func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
+        var total = 0.0
+        for motion in MeasuredActivity.MotionType.allCases {
+            total += try distanceWithinInterval(motionType: motion, from: from, interval: interval)
+        }
+        return total
+    }
+    
     public func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {
         let motionString = MeasuredActivity.motionTypeToString(type: motionType)
         let endDate = Date(timeInterval: interval, since: from)
@@ -115,51 +107,40 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return distance
     }
     
-    /**
-    Returns the cumulative distance in meters for all motion types and in the specified timeframe.
-     - Parameter motionType: the only motion type to consider.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     */
-    public func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {
-        var total = 0.0
-        for motion in MeasuredActivity.MotionType.allCases {
-            total += try distanceWithinInterval(motionType: motion, from: from, interval: interval)
-        }
-        return total
-    }
-    
-    /**
-    Returns the cumulative carbon output in kg for the given motion type and in the specified timeframe.
-     - Parameter motionType: the only motion type to consider.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     */
-    public func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {
-        let distance = try distanceWithinInterval(motionType: motionType, from: from, interval: interval)
-        let carbonValue = computeCarbonUsage(distance: distance, type: motionType)
+    public func queryActivities(predicate: String? = nil, args: [Any]? = nil) throws -> [MeasuredActivity] {
+        var measuredActivities = [MeasuredActivity]()
+        let queryResult = (try executeQuery(entity: "Event", predicate: predicate, args: args)) as? [NSManagedObject] ?? []
 
-        return carbonValue
-    }
-    
-    /**
-    Returns the cumulative carbon output in kg for all polluting motion types and in the specified timeframe.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     - Remark: walking is considered not polluting and does not contribute to the returned value.
-     */
-    public func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double {
-        var carbonTotal : Double = 0
-        for motion in MeasuredActivity.MotionType.allCases {
-            if motion.isPolluting() {
-                carbonTotal += try carbonWithinInterval(motionType: motion, from: from, interval: interval)
-            }
+        for result in queryResult {
+            let motionType = MeasuredActivity.stringToMotionType(type: result.value(forKey: "motionType") as! String)
+            let distance = result.value(forKey: "distance") as! Double
+            let start = result.value(forKey: "start") as! Date
+            let end = result.value(forKey: "end") as! Date
+            measuredActivities.append(MeasuredActivity(motionType: motionType, distance: distance, start: start, end: end))
         }
         
-        return carbonTotal
+        return measuredActivities
     }
     
-    /// Updates score by adding score computed from a given activity.
+    public func queryFoods(predicate: String?, args: [Any]?) throws -> [Food] {
+        var foods = [Food]()
+        let queryResult = (try executeQuery(entity: "FoodProduct", predicate: predicate, args: args)) as? [NSManagedObject] ?? []
+
+        for result in queryResult {
+            let barcode = result.value(forKey: "barcode") as! String
+            let name = result.value(forKey: "name") as! String?
+            let type = result.value(forKey: "type") as! String?
+            let types: [String]? = (type == nil) ? nil : [type!]
+            let quantityValue = result.value(forKey: "quantityValue") as? Double ?? 0
+            let quantityUnit = result.value(forKey: "quantityUnit") as? String ?? ""
+            let quantity = Food.Quantity(value: quantityValue, unit: quantityUnit)
+            let category = Food.Category(rawValue: (result.value(forKey: "category") as! String?) ?? "")
+            foods.append(Food(barcode: barcode, name: name, quantity: quantity, types: types, image: nil, category: category))
+        }
+        
+        return foods
+    }
+    
     public func updateScore(activity: MeasuredActivity) throws {
         let managedContext = try getManagedContext()
 
@@ -175,7 +156,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         try managedContext.save()
     }
     
-    /// Checks user progress and updates league if enough points have been accumulated.
     public func updateLeagueIfEnoughPoints() throws -> Void {
         let userScore = try retrieveLatestScore()
         
@@ -191,7 +171,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
     }
     
-    /// Updates league attribute of the Score entity with the given string.
     public func updateLeague(newLeague: String) throws {
        let managedContext = try getManagedContext()
        let dateToday = Date().toLocalTime()
@@ -207,11 +186,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         try managedContext.save()
     }
     
-    /**
-    Retrieves the latest UserScore in the Score entity. If no score if present, it is initialized with a default value.
-    - Remark: Initial value is described in UserScore.getInitialScore()
-    - Returns: A UserScore object having its properties set to the values in the database.
-     */
     public func retrieveLatestScore() throws -> UserScore {
         let userScore = UserScore.getInitialScore()
 
@@ -240,12 +214,18 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         }
         return oldDate
     }
-        
-    /**
-     Returns the carbon output in kg produced for the given distance and for the given motion type.
-     - Parameter distance: distance in meters.
-     - Parameter type: the only motion type to consider.
-     */
+    
+    public func executeQuery(entity: String, predicate: String? = nil, args: [Any]? = nil) throws -> [Any] {
+        let managedContext = try getManagedContext()
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entity)
+        if predicate != nil && args != nil {
+            fetchRequest.predicate = NSPredicate(format: predicate!, argumentArray: args!)
+        }
+        let queryResult = try managedContext.fetch(fetchRequest)
+
+        return queryResult
+    }
+    
     public func computeCarbonUsage(distance:Double, type: MeasuredActivity.MotionType) -> Double {
         var carbonUnit = 0.0
         switch (type) {

@@ -110,9 +110,10 @@ struct FoodChart: View {
 
 struct FoodView_Previews: PreviewProvider {
     static var previews: some View {
-        FoodView()
+        let DBMS = CoreDataManager()
+        return FoodView()
             .environmentObject(ScreenMeasurements())
-        .environmentObject(FoodPieChartModel())
-        .environmentObject(FoodAwardsManager(DBMS: CoreDataManager()))
+            .environmentObject(FoodPieChartModel(DBMS: DBMS))
+        .environmentObject(FoodAwardsManager(DBMS: DBMS))
     }
 }

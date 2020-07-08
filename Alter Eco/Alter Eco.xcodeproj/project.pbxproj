@@ -68,6 +68,10 @@
 		DEA0D1D124B5D81C00FFDB00 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D024B5D81C00FFDB00 /* Food.swift */; };
 		DEA0D1D624B5E02900FFDB00 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D524B5E02900FFDB00 /* Protocols.swift */; };
 		DEA0D1D724B5E15200FFDB00 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D524B5E02900FFDB00 /* Protocols.swift */; };
+		DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D024B5D81C00FFDB00 /* Food.swift */; };
+		DEA0D1DC24B60A8100FFDB00 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
+		DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */; };
+		DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
 		DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA1E867248A7988003EF0F5 /* SettingsView.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
 		DECD0956247DD36F0099747D /* BarChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* BarChartModel.swift */; };
@@ -649,11 +653,15 @@
 				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
+				DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */,
+				DEA0D1DC24B60A8100FFDB00 /* FoodRetrieval.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* CoreDataManager.swift in Sources */,
 				DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */,
 				DEA0D1D724B5E15200FFDB00 /* Protocols.swift in Sources */,
+				DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */,
 				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
+				DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConverter.swift in Sources */,
 				DECD0956247DD36F0099747D /* BarChartModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
