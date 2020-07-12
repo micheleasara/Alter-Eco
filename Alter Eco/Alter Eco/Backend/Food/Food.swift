@@ -3,27 +3,28 @@ import Foundation
 /// Represents a food product.
 public struct Food: Hashable {
     /// The name of this food product.
-    public var name: String?
+    public let name: String?
     /// The quantity associated to this food product.
-    public var quantity: Quantity?
+    public let quantity: Quantity?
     /// A list of food types to which this product may belong. The list is sorted in ascending order proportionally to the likelihood of the food belonging to a given type.
     public var types: [String]?
     /// A small image representing this food product.
-    public var image: Data?
+    public let image: Data?
     /// A barcode identifying this product.
-    public var barcode: String
-    /// The broad category of this product (e.g. meats, diaries etc.).
-    public var category: Category?
+    public let barcode: String
+    /// The broad category (e.g. meats, diaries etc.) calculated from the first type in the list of possible types.
+    public var category: Category? {
+        return FoodToCarbonConverter.foodTypesInfo[types?.first ?? ""]?.category
+    }
     
     public init(barcode: String, name: String? = nil,
                 quantity: Quantity? = nil, types: [String]? = nil,
-                image: Data? = nil, category: Category? = nil) {
+                image: Data? = nil) {
         self.barcode = barcode
         self.name = name
         self.quantity = quantity
         self.types = types
         self.image = image
-        self.category = category
     }
 }
 

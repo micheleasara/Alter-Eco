@@ -93,14 +93,14 @@ public class OpenFoodFacts: RemoteFoodRetriever {
                     guard let data = data, error == nil else { return }
                     let food = Food(barcode: barcode, name: product.productName,
                                     quantity: self.parseQuantity(product.quantity), types: matchingTypes,
-                                    image: data, category: FoodToCarbonConverter.foodTypesInfo[matchingTypes?.first ?? ""]?.category)
+                                    image: data)
                     self.completionHandler(food, nil)
                 }
                 
                 task.resume()
             } else {
                 let food = Food(barcode: barcode, name: product.productName,
-                                quantity: self.parseQuantity(product.quantity), types: matchingTypes, category: FoodToCarbonConverter.foodTypesInfo[matchingTypes?.first ?? ""]?.category)
+                                quantity: self.parseQuantity(product.quantity), types: matchingTypes)
                 self.completionHandler(food, nil)
             }
             

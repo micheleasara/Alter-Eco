@@ -118,10 +118,9 @@ public class FoodPieChartModel: PieChartModel {
         let others = Food.Category.others.rawValue
         let carbs = Food.Category.carbohydrates.rawValue
         let beverages = Food.Category.beverages.rawValue
-        let foods = try? DBMS.queryFoods(predicate: "category == %@",
-                                         args: [beverages])
-        print(foods)
-        print(try! DBMS.queryFoods(predicate: nil, args: nil))
+        let foods = try? DBMS.queryFoods(predicate: "category == %@ OR category == %@ OR category == %@",
+                                         args: [carbs, beverages, others])
+
         return (foods ?? [])
     }
 }

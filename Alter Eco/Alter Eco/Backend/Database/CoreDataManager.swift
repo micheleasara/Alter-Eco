@@ -134,8 +134,7 @@ public class CoreDataManager : DBManager, CarbonCalculator {
             let quantityValue = result.value(forKey: "quantityValue") as? Double ?? 0
             let quantityUnit = result.value(forKey: "quantityUnit") as? String ?? ""
             let quantity = Food.Quantity(value: quantityValue, unit: quantityUnit)
-            let category = Food.Category(rawValue: (result.value(forKey: "category") as! String?) ?? "")
-            foods.append(Food(barcode: barcode, name: name, quantity: quantity, types: types, image: nil, category: category))
+            foods.append(Food(barcode: barcode, name: name, quantity: quantity, types: types, image: nil))
         }
         
         return foods
