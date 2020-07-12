@@ -30,7 +30,7 @@ public struct Food: Hashable {
 
 extension Food {
     /// Represents a numerical quantity with an associated unit, specifically for food. Units can be either mass or volume units.
-    public struct Quantity: Hashable {
+    public struct Quantity: Hashable, CustomStringConvertible {
         /// A mapping of lowercase symbols to their units.
         public static let SUPPORTED_UNITS: Dictionary<String, Unit> = ["g": UnitMass.grams,
                                                                        "kg": UnitMass.kilograms,
@@ -39,7 +39,12 @@ extension Food {
                                                                        "l": UnitVolume.liters,
                                                                        "dl": UnitVolume.deciliters,
                                                                        "cl": UnitVolume.centiliters,
-                                                                       "ml": UnitVolume.milliliters]
+                                                                    "ml": UnitVolume.milliliters]
+        /// String representation in the format "value unit-symbol". The value is printed up to two decimal places and only if needed.
+        public var description: String {
+            return String(format: "%g %@", (value / 0.01).rounded() * 0.01, unit.symbol)
+        }
+        
         /// The numeric value of the quantity.
         public private(set) var value: Double
         /// The mass or volume unit of this food quantity.

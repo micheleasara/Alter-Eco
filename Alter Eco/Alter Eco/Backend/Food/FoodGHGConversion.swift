@@ -190,6 +190,7 @@ extension FoodToCarbonConverter {
         "hazelnut spread": (1.53, .carbohydrates),
         "candy": (2.5, .carbohydrates),
         "rice pudding": (0.85, .carbohydrates),
-        "ice cream": (2, .dairiesAndEggs)
+        "ice cream": (2, .dairiesAndEggs),
+        "breakfast cereal": (2.64, .carbohydrates)
     ]
 }

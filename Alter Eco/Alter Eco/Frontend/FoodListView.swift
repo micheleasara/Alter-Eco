@@ -134,18 +134,51 @@ struct FoodListView: View {
                                      remover: @escaping (Int) -> Void) -> some View {
         Section(header: Text(header).bold()) {
             ForEach(foods, id: \.self) { food in
-                NavigationLink(destination: Text(self.getCarbonLabel(food: food))) {
+                NavigationLink(destination: self.infoDisplay(food: food)) {
                     self.boxWithInfo(fromFood: food)
                 }
             }.onDelete(perform: { $0.forEach { i in remover(i) } })
         }
     }
     
+    private func infoDisplay(food: Food) -> some View {
+        ScrollView {
+            HStack(alignment: .top) {
+                if food.image != nil {
+                    Image(uiImage: UIImage(data: food.image!)!)
+                        .resizable().scaledToFit().frame(width: 150, height: 150)
+                }
+                
+                VStack(alignment: .leading) {
+                    Text("Barcode")
+                        .bold()
+                        .padding(.top)
+                    Text(food.barcode + "\n")
+                    Text("Name").bold()
+                    Text((food.name ?? "") + "\n")
+                    Text("Type").bold()
+                    Text((food.types?.first ?? "Unknown") + "\n")
+                    Text("Quantity").bold()
+                    Text((food.quantity?.description ?? "100 g") + "\n")
+                    Text("Carbon equivalent").bold()
+                    Text(self.getCarbonLabel(food: food))
+                }.padding(.trailing)
+            }
+        }
+    }
+    
     private func getCarbonLabel(food: Food) -> String {
-        guard let measure = model.getCarbon(forFood: food) else {
+        var product = food
+        if food.quantity == nil {
+            let quantity = Food.Quantity(value: 100, unit: UnitMass.grams)
+            product = Food(barcode: food.barcode, name: food.name, quantity: quantity, types: food.types, image: food.image)
+        }
+        
+        guard let measure = model.getCarbon(forFood: product) else {
             return "Could not determine carbon value"
         }
-        return "Carbon: \(measure.value) \(measure.unit.symbol)"
+        
+        return String(format: "%.1f %@", measure.value, measure.unit.symbol)
     }
     
     private func boxWithInfo(fromFood food: Food) -> some View {
@@ -168,8 +201,7 @@ struct FoodListView: View {
                         .foregroundColor(Color.orange)
                         .padding(.top)
                 } else {
-                    // display value to 1 decimal place and only if needed
-                    Text(String(format: "%g %@", (food.quantity!.value / 0.1).rounded() * 0.1, food.quantity!.unit.symbol))
+                    Text(food.quantity!.description)
                         .padding(.top)
                 }
                 

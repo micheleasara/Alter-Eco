@@ -88,7 +88,7 @@ public class FoodPieChartModel: PieChartModel {
         legendNames: ["Meat and seafood",
                       "Dairies and eggs",
                       "Veggies, fruits and legumes",
-                      "Snacks, soft drinks and others"])
+                      "Carbs and beverages"])
     }
     
     private func getVeganProduce(date: Date) -> [Food] {
