@@ -46,6 +46,7 @@
 		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
 		DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
 		DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */; };
+		DE36CC2C24BC80B200825FAE /* SearchableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36CC2B24BC80B200825FAE /* SearchableList.swift */; };
 		DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
 		DE3AC73324ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */; };
 		DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
@@ -168,6 +169,7 @@
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
 		DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewModel.swift; sourceTree = "<group>"; };
 		DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChart.swift; sourceTree = "<group>"; };
+		DE36CC2B24BC80B200825FAE /* SearchableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableList.swift; sourceTree = "<group>"; };
 		DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRetrieval.swift; sourceTree = "<group>"; };
 		DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodToCarbonConverter.swift; sourceTree = "<group>"; };
 		DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodGHGConversion.swift; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 				9CD5942E242968DE00B1D0B4 /* TransportView.swift */,
 				DE8F9377249FEAB8002D85E6 /* FoodView.swift */,
 				DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */,
+				DE36CC2B24BC80B200825FAE /* SearchableList.swift */,
 				DE8F9375249FE8AB002D85E6 /* AwardView.swift */,
 				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
@@ -636,6 +639,7 @@
 				DE8F937C24A0D0C8002D85E6 /* FoodListView.swift in Sources */,
 				5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */,
 				DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */,
+				DE36CC2C24BC80B200825FAE /* SearchableList.swift in Sources */,
 				9C87AE292442408F00490481 /* ActivityList.swift in Sources */,
 				DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */,
 				9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */,

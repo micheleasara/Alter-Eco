@@ -129,7 +129,7 @@ struct NameView: View {
     
     var body: some View {
         VStack {
-            if(retrieveNickname() == "" || changingNickname) {
+            if retrieveNickname() == "" || changingNickname {
                 enterNicknameTextField
             }
             else {

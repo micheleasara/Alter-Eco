@@ -1,13 +1,13 @@
 import Foundation
 
 /// Represents a food product.
-public struct Food: Hashable {
+public class Food: Hashable, ObservableObject {
     /// The name of this food product.
     public let name: String?
     /// The quantity associated to this food product.
-    public let quantity: Quantity?
+    public var quantity: Quantity?
     /// A list of food types to which this product may belong. The list is sorted in ascending order proportionally to the likelihood of the food belonging to a given type.
-    public var types: [String]?
+    public private(set) var types: [String]?
     /// A small image representing this food product.
     public let image: Data?
     /// A barcode identifying this product.
@@ -25,6 +25,25 @@ public struct Food: Hashable {
         self.quantity = quantity
         self.types = types
         self.image = image
+    }
+    
+    public func setAsMostLikelyType(_ type: String) {
+        if types?.contains(type) ?? false {
+            types = types?.filter{ $0 != type }
+            types?.insert(type, at: 0)
+        }
+    }
+    
+    public static func == (lhs: Food, rhs: Food) -> Bool {
+        return lhs.name == rhs.name &&
+            lhs.quantity == rhs.quantity &&
+            lhs.types == rhs.types &&
+            lhs.barcode == rhs.barcode &&
+            lhs.image == rhs.image
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+         hasher.combine(ObjectIdentifier(self).hashValue)
     }
 }
 
