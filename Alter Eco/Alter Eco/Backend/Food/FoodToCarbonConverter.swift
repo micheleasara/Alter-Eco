@@ -35,11 +35,24 @@ public class FoodToCarbonConverter {
         return results.sorted{$0.value < $1.value}.map{$0.key}
     }
     
+    /// Returns the carbon emissions in kg associated with the group of food products provided.
+    /// If not enough information is available to determine a carbon emission, the resulting value for that product is considered 0.
+    public func getCarbon(fromFoods foods: [Food]) -> Measurement<UnitMass> {
+        let zeroKg = Measurement<UnitMass>(value: 0, unit: UnitMass.kilograms)
+        var total = zeroKg
+        for food in foods {
+            total = total + (getCarbon(fromFood: food) ?? zeroKg)
+        }
+        
+        return total
+    }
+    
     /// Returns the carbon emissions in kg associated with a food product. If not enough information is available, nil is returned instead.
     public func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
         guard let type = food.types?.first else { return nil }
         guard let quantityInKg = toKg(food: food) else { return nil }
         guard let carbonDensity = FoodToCarbonConverter.foodTypesInfo[type]?.carbonDensity else { return nil }
+        
         return Measurement<UnitMass>(value: carbonDensity * quantityInKg.value, unit: .kilograms)
     }
     

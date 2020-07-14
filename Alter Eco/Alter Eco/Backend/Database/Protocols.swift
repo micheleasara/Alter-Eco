@@ -36,8 +36,8 @@ public protocol DBWriter {
     func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws
     /// Appends an activity to the Event entity.
     func append(activity: MeasuredActivity) throws
-    /// Appends a food product to the FoodProduct entity.
-    func append(food: Food) throws
+    /// Appends a list of food products to the FoodProduct entity.
+    func append(foods: [Food]) throws
     /// Updates score by adding score computed from a given activity.
     func updateScore(activity: MeasuredActivity) throws
     /// Deletes an entry from the given entity identified by a rows number.

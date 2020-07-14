@@ -2,7 +2,7 @@ import SwiftUI
 import CoreLocation
 
 struct ContentView: View {
-    @State var showSplash = false
+    @State var showSplash = true
     @ObservedObject var isFirstLaunch = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
     @Environment(\.DBMS) var DBMS
     
@@ -44,7 +44,7 @@ struct ContentView: View {
 }
 
 struct MainView: View {
-    @EnvironmentObject var measurementsOnLaunch : ScreenMeasurements
+    @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
     @State var showInfo: Bool = false
     @State var showSettings: Bool = false
     

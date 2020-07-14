@@ -52,6 +52,29 @@ public class ScreenMeasurements: ObservableObject {
     }
 }
 
+/// An observable object which only allows a fixed amount of numeric values.
+public class NumbersFilter: ObservableObject {
+    private let maxDigits: Int
+    
+    public init(maxDigits: Int) {
+        self.maxDigits = maxDigits
+    }
+    
+    @Published public var value = "" {
+        didSet {
+            var filtered = value.filter { $0.isNumber }
+            
+            if filtered.count >= maxDigits {
+                filtered = String(filtered[..<filtered.index(filtered.startIndex, offsetBy: maxDigits)])
+            }
+            
+            if value != filtered {
+                value = filtered
+            }
+        }
+    }
+}
+
 public struct DBManagerKey: EnvironmentKey {
     public typealias Value = DBManager
     public static var defaultValue: DBManager = (UIApplication.shared.delegate as? AppDelegate)?.DBMS ?? CoreDataManager()

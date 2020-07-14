@@ -51,7 +51,7 @@ class DatabaseAndUserScoreTest: XCTestCase {
     
     func testFoodIOIsConsistent() {
         let food = Food(barcode: "12345678")
-        try! DBMS.append(food: food)
+        try! DBMS.append(foods: [food])
         let retrieved = try! DBMS.queryFoods(predicate: "barcode == %@", args: ["12345678"])
         XCTAssert(retrieved.count == 1)
         XCTAssert(food == retrieved[0])

@@ -5,9 +5,9 @@ public class Food: Hashable, ObservableObject {
     /// The name of this food product.
     public let name: String?
     /// The quantity associated to this food product.
-    public var quantity: Quantity?
+    @Published public var quantity: Quantity?
     /// A list of food types to which this product may belong. The list is sorted in ascending order proportionally to the likelihood of the food belonging to a given type.
-    public private(set) var types: [String]?
+    @Published public private(set) var types: [String]?
     /// A small image representing this food product.
     public let image: Data?
     /// A barcode identifying this product.
@@ -27,11 +27,10 @@ public class Food: Hashable, ObservableObject {
         self.image = image
     }
     
+    /// Sets the given type as the most likely for this food product. If the type does not already exist, it is inserted in the list.
     public func setAsMostLikelyType(_ type: String) {
-        if types?.contains(type) ?? false {
-            types = types?.filter{ $0 != type }
-            types?.insert(type, at: 0)
-        }
+        types = types?.filter{ $0 != type }
+        types?.insert(type, at: 0)
     }
     
     public static func == (lhs: Food, rhs: Food) -> Bool {

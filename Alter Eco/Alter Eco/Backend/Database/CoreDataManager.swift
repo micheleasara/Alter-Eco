@@ -6,21 +6,32 @@ import CoreData
 public class CoreDataManager : DBManager, CarbonCalculator {
     // contains the function called when an activity has been written to the database
     private var activityWrittenCallbacks: [(MeasuredActivity) -> Void] = []
+    // contains the function called when a list of foods has been written to the database
+    private var foodsWrittenCallbacks: [([Food]) -> Void] = []
     
     public func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
         self.activityWrittenCallbacks.append(callback)
     }
     
-    public func append(food: Food) throws {
-        try setValuesForKeys(entity: "FoodProduct",
-                             keyedValues:
-            ["barcode" : food.barcode,
-             "name": food.name as Any,
-             "type": food.types?.first as Any,
-             "date": Date().toLocalTime(),
-             "quantityValue": food.quantity?.value as Any,
-             "quantityUnit": food.quantity?.unit.symbol as Any,
-             "category": food.category?.rawValue as Any])
+    public func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void) {
+        self.foodsWrittenCallbacks.append(callback)
+    }
+    
+    public func append(foods: [Food]) throws {
+        for food in foods {
+            try setValuesForKeys(entity: "FoodProduct",
+                                 keyedValues:
+                ["barcode" : food.barcode,
+                 "name": food.name as Any,
+                 "type": food.types?.first as Any,
+                 "date": Date().toLocalTime(),
+                 "quantityValue": food.quantity?.value as Any,
+                 "quantityUnit": food.quantity?.unit.symbol as Any,
+                 "category": food.category?.rawValue as Any])
+        }
+        for callback in foodsWrittenCallbacks {
+            callback(foods)
+        }
     }
     
     public func append(activity: MeasuredActivity) throws {

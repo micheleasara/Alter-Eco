@@ -78,10 +78,10 @@ public class FoodPieChartModel: PieChartModel {
         var carbonVals = [0.0, 0.0, 0.0, 0.0]
         
         let converter = FoodToCarbonConverter()
-        carbonVals[0] = getMeatsAndSeafood(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
-        carbonVals[1] = getDairiesAndEggs(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
-        carbonVals[2] = getVeganProduce(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
-        carbonVals[3] = getCarbsBeveragesAndOthers(date: date).reduce(0) { $0 + (converter.getCarbon(fromFood: $1)?.value ?? 0)}
+        carbonVals[0] = converter.getCarbon(fromFoods: getMeatsAndSeafood(date: date)).value
+        carbonVals[1] = converter.getCarbon(fromFoods: getDairiesAndEggs(date: date)).value
+        carbonVals[2] = converter.getCarbon(fromFoods: getVeganProduce(date: date)).value
+        carbonVals[3] = converter.getCarbon(fromFoods: getCarbsBeveragesAndOthers(date: date)).value
         update(values: carbonVals,
         imageNames: ["meat", "dairies", "vegetable", "fast-food"],
         colours: [.red, .yellow, .green, .blue],

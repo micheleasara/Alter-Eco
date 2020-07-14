@@ -18,7 +18,7 @@ struct ProfileView: View {
                 .frame(height: 0.4*screenMeasurements.trasversal)
                 .padding()
                 
-                MainBarChart().frame(height: 0.5*screenMeasurements.trasversal).padding(.bottom)
+//                MainBarChart().frame(height: 0.5*screenMeasurements.trasversal).padding(.bottom)
                 
                 ProgressBarView(latestScore: getCurrentScore()).padding(.bottom)
 
@@ -128,12 +128,16 @@ struct NameView: View {
     @State private var changingNickname = false
     
     var body: some View {
-        VStack {
-            if retrieveNickname() == "" || changingNickname {
+        return VStack {
+            if changingNickname {
                 enterNicknameTextField
             }
             else {
                 greetingWithChangeButton
+            }
+        }.onAppear() {
+            if self.retrieveNickname() == "" {
+                self.changingNickname = true
             }
         }
     }

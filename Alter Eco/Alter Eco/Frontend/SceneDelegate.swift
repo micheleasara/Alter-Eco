@@ -20,11 +20,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             let transportBarChartModel = TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS)
             let transportPieChartModel = TransportPieChartModel(DBMS: DBMS)
             let foodPieChartModel = FoodPieChartModel(DBMS: DBMS)
-            DBMS.addActivityWrittenCallback { activity in
+            DBMS.addActivityWrittenCallback { _ in
                 let now = Date().toLocalTime()
                 transportBarChartModel.updateUpTo(now)
                 transportPieChartModel.updateUpTo(now)
-                foodPieChartModel.updateUpTo(now)
+            }
+            DBMS.addFoodsWrittenCallback { _ in
+                print("Added foods to the database")
+                foodPieChartModel.updateUpTo(Date().toLocalTime())
             }
             
             window.rootViewController = UIHostingController(rootView: contentView
@@ -33,7 +36,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(TransportAwardsManager(DBMS: DBMS))
                 .environmentObject(FoodAwardsManager(DBMS: DBMS))
                 .environmentObject(transportPieChartModel)
-                .environmentObject(foodPieChartModel))
+                .environmentObject(foodPieChartModel)
+                .environmentObject(FoodListViewModel(DBMS: DBMS)))
             
             self.window = window
             window.makeKeyAndVisible()

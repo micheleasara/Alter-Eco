@@ -5,7 +5,7 @@ import AVFoundation
 public struct ScannerView: UIViewControllerRepresentable {
     public typealias UIViewControllerType = ScannerDelegate
     @Environment(\.presentationMode) var presentationMode
-    @Binding var foodListModel: FoodListViewModel
+    @EnvironmentObject var foodListModel: FoodListViewModel
     @State private var retrievedFoods: [Food] = []
     @State private var numFoodsToRetrieve = 0
     @State private var foodsNotFound: [Food] = []
@@ -47,7 +47,9 @@ public struct ScannerView: UIViewControllerRepresentable {
         
         let retrieved = retrievedFoods.count + foodsNotFound.count
         if retrieved >= numFoodsToRetrieve {
-            foodListModel.update(foods: retrievedFoods, notFound: foodsNotFound)
+            DispatchQueue.main.sync {
+                foodListModel.update(foods: retrievedFoods, notFound: foodsNotFound)
+            }
             presentationMode.wrappedValue.dismiss()
         }
     }
