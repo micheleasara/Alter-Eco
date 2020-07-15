@@ -5,9 +5,11 @@ public class FoodToCarbonConverter {
     /// Mapping of lowercase words identifying a liquid type to a density in kg/l.
     private let liquidsDensities: Dictionary<String, Double> = ["oil":0.9, "water":1, "liquor":0.94]
     
-    /// Returns a list of food types matching the given english keywords.
-    /// The list is given in descending order according to how strong the match is.
-    /// Can return nil if the device does not support english word embeddings or if no keywords are given.
+    /**
+     Returns a list of food types matching the given english keywords.
+     - Parameter keywords: a list of english keywords described a food product to be used to determine possible food types.
+     - Returns: A list of food types matching the given english keywords and in descending order according to how strong the match is. Nil is returned if the device does not support english word embeddings or if no keywords are given.
+     */
     public func keywordsToTypes(_ keywords: [String]) -> [String]? {
         guard let embedding = embedding, keywords.count > 0 else { return nil }
         
@@ -34,9 +36,12 @@ public class FoodToCarbonConverter {
         // sort by similarity and return the associated food types from the carbon conversion db
         return results.sorted{$0.value < $1.value}.map{$0.key}
     }
-    
-    /// Returns the carbon emissions in kg associated with the group of food products provided.
-    /// If not enough information is available to determine a carbon emission, the resulting value for that product is considered 0.
+
+    /**
+     Returns the carbon emissions in kg associated with the group of food products provided.
+     - Parameter fromFoods: the list of food products which is used to compute the carbon equivalent value.
+     - Returns: The carbon emissions in kg. If not enough information is available to determine a carbon emission, the resulting value for that product is considered 0.
+     */
     public func getCarbon(fromFoods foods: [Food]) -> Measurement<UnitMass> {
         let zeroKg = Measurement<UnitMass>(value: 0, unit: UnitMass.kilograms)
         var total = zeroKg
@@ -47,7 +52,11 @@ public class FoodToCarbonConverter {
         return total
     }
     
-    /// Returns the carbon emissions in kg associated with a food product. If not enough information is available, nil is returned instead.
+    /**
+     Returns the carbon emissions in kg associated with a food product.
+     - Parameter fromFood: the food product which is used to compute a carbon equivalent value.
+     - Returns: The carbon equivalent in kilograms, or nil if not enough information is available.
+     */
     public func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
         guard let type = food.types?.first else { return nil }
         guard let quantityInKg = toKg(food: food) else { return nil }
@@ -55,6 +64,7 @@ public class FoodToCarbonConverter {
         
         return Measurement<UnitMass>(value: carbonDensity * quantityInKg.value, unit: .kilograms)
     }
+    
     
     /// Returns a food quantity converted to kg. If the food quantity provided is a liquid, the mass is calculated by estimating the density. Can return nil in case of failure.
     private func toKg(food: Food) -> Food.Quantity? {

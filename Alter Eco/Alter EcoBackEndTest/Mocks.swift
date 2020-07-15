@@ -1,7 +1,7 @@
 import Foundation
 import AlterEcoBackend
 
-// Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
+// MARK: Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
 class DBWriterMock: DBWriter {
     func append(foods: [Food]) throws {
@@ -109,6 +109,9 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBManager {
+    func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void) {
+    }
+    
     func append(foods: [Food]) throws {
     }
     

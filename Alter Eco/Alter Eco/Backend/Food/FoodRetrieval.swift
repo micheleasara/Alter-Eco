@@ -3,8 +3,14 @@ import NaturalLanguage
 
 /// Represents an entity to retrieve food information from a remote server.
 public protocol RemoteFoodRetriever {
-    /// Asynchronously retrieves food information given a barcode. When finished, the results are passed to a callback function.
-    func fetchFood(barcode: String, completionHandler: @escaping (Food?, RemoteFoodRetrievalError?) -> Void)
+    /**
+     Asynchronously retrieves food information given a barcode.  When finished, the results are passed to a callback function.
+     - Parameter barcode: the barcode identifying a food product.
+     - Parameter completionHandler: the function which is called when the retrieval has ended.
+     - Parameter food: the food item retrieved. It will be nil in case of failure.
+     - Parameter error: in case of failure, RemoteFoodRetrievalError will contain information about the error. Otherwise it is nil.
+     */
+    func fetchFood(barcode: String, completionHandler: @escaping (_ food: Food?, _ error: RemoteFoodRetrievalError?) -> Void)
 }
 
 public class OpenFoodFacts: RemoteFoodRetriever {
@@ -82,9 +88,7 @@ public class OpenFoodFacts: RemoteFoodRetriever {
             let keywords = getKeywords(categories: product.categoriesTags ?? [])
             // convert keywords into matching food types for which a carbon value is available
             let matchingTypes = foodCarbonConverter.keywordsToTypes(keywords)
-            
-            // TODO: - change Food contructor's category with categories or join types and categories
-            
+                        
             if let imageLocation = product.imageFrontSmallUrl, let URL = URL(string: imageLocation) {
                 var request = URLRequest(url: URL)
                 request.setValue(USER_AGENT, forHTTPHeaderField: "Authorization")
@@ -155,6 +159,7 @@ public enum RemoteFoodRetrievalError: LocalizedError {
     /// An error signifying the food item requested was not found in the database.
     case foodNotFound(barcode: String)
     
+    /// A string description associated with this error.
     public var errorDescription: String? {
         switch self {
         case .network(localizedDescription: let description):

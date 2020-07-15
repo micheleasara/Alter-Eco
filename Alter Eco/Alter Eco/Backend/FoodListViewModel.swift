@@ -26,7 +26,10 @@ public class FoodListViewModel: ObservableObject {
         update(foods: foods, notFound: notFound)
     }
     
-    /// Returns the carbon equivalent for the given food, or nil if not enough information is available.
+    /**
+     Returns the carbon equivalent for the given food, or nil if not enough information is available.
+     - Parameter forFood: food product to use to calculate a carbon equivalent value in kilograms.
+     */
     public func getCarbon(forFood food: Food) -> Measurement<UnitMass>? {
         return converter.getCarbon(fromFood: food)
     }
@@ -38,7 +41,11 @@ public class FoodListViewModel: ObservableObject {
             productsNotInDB.isEmpty
     }
     
-    /// Updates the model with the given products.
+    /**
+     Updates the model with the given products and automatically assigns each food item to its corresponding list.
+     - Parameter foods: products which were found in the database.
+     - Parameter notFound: products which were not found in the database.
+     */
     public func update(foods: [Food], notFound: [Food]) {
         var withTypes: [Food] = []
         var typeless: [Food] = []
@@ -66,7 +73,10 @@ public class FoodListViewModel: ObservableObject {
         }
     }
     
-    /// Removes all instances of food products with the given barcode.
+    /**
+     Removes all instances of food products with the given barcode.
+     - Parameter withBarcode: a barcode identifying the food products to be removed.
+     */
     public func removeFood(withBarcode barcode: String) {
         let closure: (Food) -> Bool = { $0.barcode != barcode }
         productsWithTypes = productsWithTypes.filter(closure)

@@ -6,25 +6,25 @@ import CoreData
 public protocol DBReader {
     /**
     Queries the Event entity with a predicate.
-    - Parameter predicate: Predicate used to select rows.
-    - Parameter args: List of arguments to include in the predicate.
-    - Returns: List of activities that satisfy the predicate.
+    - Parameter predicate: predicate used to select rows.
+    - Parameter args: list of arguments to include in the predicate.
+    - Returns: A list of activities that satisfy the predicate.
     */
     func queryActivities(predicate: String?, args: [Any]?) throws -> [MeasuredActivity]
     
     /**
     Queries the FoodProduct entity with a predicate.
-    - Parameter predicate: Predicate used to select rows.
-    - Parameter args: List of arguments to include in the predicate.
-    - Returns: List of activities that satisfy the predicate.
+    - Parameter predicate: predicate used to select rows.
+    - Parameter args: list of arguments to include in the predicate.
+    - Returns: A list of food products that satisfy the predicate.
     */
     func queryFoods(predicate: String?, args: [Any]?) throws -> [Food]
     
     /**
     Queries the given entity with a predicate.
     - Parameter entity: entity name as a string.
-    - Parameter predicate: Predicate used to select rows.
-    - Parameter args: List of arguments to include in the predicate.
+    - Parameter predicate: predicate used to select rows.
+    - Parameter args: list of arguments to include in the predicate.
     - Returns: List of objects that satisfy the predicate.
     */
     func executeQuery(entity: String, predicate: String?, args:[Any]?) throws -> [Any]
@@ -48,8 +48,11 @@ public protocol DBWriter {
 
 /// Represents an interface to an object able to read, write and perform sophisticated queries on Alter Eco's databases.
 public protocol DBManager : AnyObject, DBReader, DBWriter {
-    /// Adds a function to be called whenever something is written to the database.
+    /// Adds a function to be called whenever an activity is written to the database.
     func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void)
+
+    /// Adds a function to be called whenever foods are written to the database.
+    func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void)
 
     /**
     Returns the cumulative distance for the given motion type and in the specified timeframe.
