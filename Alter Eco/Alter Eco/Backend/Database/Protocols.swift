@@ -25,7 +25,7 @@ public protocol DBReader {
     - Parameter entity: entity name as a string.
     - Parameter predicate: predicate used to select rows.
     - Parameter args: list of arguments to include in the predicate.
-    - Returns: List of objects that satisfy the predicate.
+    - Returns: A list of objects that satisfy the predicate.
     */
     func executeQuery(entity: String, predicate: String?, args:[Any]?) throws -> [Any]
 }
