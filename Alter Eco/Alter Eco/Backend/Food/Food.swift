@@ -29,8 +29,13 @@ public class Food: Hashable, ObservableObject {
     
     /// Sets the given type as the most likely for this food product. If the type does not already exist, it is inserted in the list.
     public func setAsMostLikelyType(_ type: String) {
-        types = types?.filter{ $0 != type }
-        types?.insert(type, at: 0)
+        if var types = types {
+            types = types.filter{ $0 != type }
+            types.insert(type, at: 0)
+            self.types = types
+        } else {
+            types = [type]
+        }
     }
     
     public static func == (lhs: Food, rhs: Food) -> Bool {

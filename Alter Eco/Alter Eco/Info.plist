@@ -24,14 +24,14 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow Alter Eco to open the camera to scan food products.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>For the best experience, allow the app to track your position in the background.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>For the best experience, allow the app to track your position in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>For the best experience, allow the app to track your position in the background.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Allow Alter Eco to open the camera to scan food products.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
