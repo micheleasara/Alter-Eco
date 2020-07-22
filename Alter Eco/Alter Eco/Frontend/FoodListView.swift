@@ -23,7 +23,7 @@ struct FoodListView: View {
                             
                             Spacer()
                             
-                            if !viewModel.isEmpty {
+                            if !viewModel.productsWithTypes.isEmpty {
                                 Button(action: {
                                     self.continuePressed = true
                                 }, label: {
@@ -213,7 +213,6 @@ public struct FoodInfoView: View {
             }
         }
         .sheet(isPresented: $editingType, onDismiss: {
-            print("selectedType.isEmpty \(self.selectedType.isEmpty)")
             if !self.selectedType.isEmpty {
                 self.food.setAsMostLikelyType(self.selectedType)
                 // product has been given a type, so move it in the
@@ -318,7 +317,8 @@ public struct FoodSummaryBox: View {
 
 struct FoodListView_Previews: PreviewProvider {
     static var previews: some View {
-        let foods = [Food(barcode: "1234567", name: "Chocolate brownies TESCO", quantity: Food.Quantity(value: 200, unit: "g"), types: ["sweet snack"]),
+        let foods = [
+            Food(barcode: "1234567", name: "Chocolate brownies TESCO", quantity: Food.Quantity(value: 200, unit: "g"), types: ["sweet snack"]),
                      Food(barcode: "4342347", name: "WR Premium Chicken", quantity: Food.Quantity(value: 250, unit: "g"), types: ["chicken", "egg"]),
             Food(barcode: "98238237", name: "Frozen Chickpeas TESCO", quantity: Food.Quantity(value: 500, unit: "g"), types: nil),
             Food(barcode: "98238237", name: "LoveChoc Doughnuts Special Edition", types: ["sweet snack"])

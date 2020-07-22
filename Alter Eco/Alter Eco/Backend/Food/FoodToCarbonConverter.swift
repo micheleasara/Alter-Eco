@@ -4,7 +4,7 @@ public class FoodToCarbonConverter {
     /// Returns the URL for the word embedding model assuming it is in this class's bundle.
     public class var urlOfModelInThisBundle: URL {
         let bundle = Bundle(for: FoodToCarbonConverter.self)
-        return bundle.url(forResource: "WordEmbedding", withExtension:"mlmodelc")!
+        return bundle.url(forResource: "WordEmbedding", withExtension: "mlmodelc")!
     }
     
     private var embedding = try! NLEmbedding(contentsOf: FoodToCarbonConverter.urlOfModelInThisBundle)
