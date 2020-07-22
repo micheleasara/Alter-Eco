@@ -155,6 +155,61 @@ struct FoodListView: View {
     }
 }
 
+public struct FoodToAddView: View {
+    @ObservedObject var food: Food
+    @ObservedObject var parentModel: FoodListViewModel
+    @State private var name: String = ""
+    @State private var quantity: String = ""
+    @State private var type: String = ""
+    @State private var editingType = false
+    public var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Product name").bold().padding(.bottom, 3)
+            TextField("Name of the product", text: $name).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.bottom)
+            
+            Text("Quantity").bold().padding(.bottom, 3)
+            TextField("e.g. 100 g, 250 ml", text: $quantity).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.bottom)
+            
+            typeLabel
+            
+            Spacer()
+            HStack {
+                Spacer()
+                
+                if areFieldsCompleted() {
+                    Button(action: {
+                        print("product editing button clicked")
+                    }, label: {
+                        Text("Continue")
+                    }).padding(.horizontal)
+                }
+            }
+        }.padding()
+    }
+    
+    private var typeLabel: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text("Type").bold()
+            HStack(alignment: .center) {
+                Text(type.isEmpty ? "Select a type" : type).italic()
+                Button(action: { self.editingType = true }) {
+                    Image(systemName: "pencil") }
+
+            }
+        }
+        .sheet(isPresented: $editingType) {
+            SearchableList(list: Array(FoodToCarbonConverter.foodTypesInfo.keys),
+                           selected: self.$type)
+        }
+    }
+    
+    private func areFieldsCompleted() -> Bool {
+        return !name.isEmpty &&
+            !quantity.isEmpty &&
+            !type.isEmpty
+    }
+}
+
 public struct FoodInfoView: View {
     @ObservedObject var food: Food
     @ObservedObject var parentModel: FoodListViewModel
@@ -240,8 +295,8 @@ public struct FoodInfoView: View {
                     Button(action: {
                         let numericVal = Double(self.quantity.value)
                         self.food.quantity = Food.Quantity(
-                            value: (numericVal ?? self.food.quantity?.value) ?? 100,
-                            unit: self.food.quantity?.unit ?? UnitMass.grams)
+                            value: (numericVal ?? self.food.quantity?.value) ?? self.parentModel.defaultQuantity.value,
+                            unit: self.food.quantity?.unit ?? self.parentModel.defaultQuantity.unit)
                         self.editingQuantity = false
                         // dismiss keyboard
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
@@ -255,7 +310,8 @@ public struct FoodInfoView: View {
                 
             } else {
                 HStack(alignment: .center) {
-                    Text((food.quantity?.description ?? "100 g"))
+                    Text(food.quantity?.description ??
+                        String(format:"%.0f %@",  parentModel.defaultQuantity.value, parentModel.defaultQuantity.unit.symbol))
                     Button(action: { self.editingQuantity = true }) {
                     Image(systemName: "pencil") }
                 }
@@ -325,7 +381,11 @@ struct FoodListView_Previews: PreviewProvider {
         ]
         
         let notFound = [Food(barcode: "8456743")]
-        
-        return FoodListView(isVisible: .constant(true)).environmentObject(FoodListViewModel(foods: foods, notFound: notFound, DBMS: CoreDataManager() ))
+        let model = FoodListViewModel(foods: foods, notFound: notFound, DBMS: CoreDataManager() )
+        return Group {
+            FoodListView(isVisible: .constant(true)).environmentObject(model)
+            FoodToAddView(food: notFound.first!, parentModel: model)
+            
+        }
     }
 }
