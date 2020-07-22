@@ -1,18 +1,23 @@
 import NaturalLanguage
 
 public class FoodToCarbonConverter {
-    private var embedding = NLEmbedding.wordEmbedding(for: .english)
+    /// Returns the URL for the word embedding model assuming it is in this class's bundle.
+    public class var urlOfModelInThisBundle: URL {
+        let bundle = Bundle(for: FoodToCarbonConverter.self)
+        return bundle.url(forResource: "WordEmbedding", withExtension:"mlmodelc")!
+    }
+    
+    private var embedding = try! NLEmbedding(contentsOf: FoodToCarbonConverter.urlOfModelInThisBundle)
+    
     /// Mapping of lowercase words identifying a liquid type to a density in kg/l.
     private let liquidsDensities: Dictionary<String, Double> = ["oil":0.9, "water":1, "liquor":0.94]
     
     /**
      Returns a list of food types matching the given english keywords.
      - Parameter keywords: a list of english keywords described a food product to be used to determine possible food types.
-     - Returns: A list of food types matching the given english keywords and in descending order according to how strong the match is. Nil is returned if the device does not support english word embeddings or if no keywords are given.
+     - Returns: A list of food types matching the given english keywords and in descending order according to how strong the match is.
      */
-    public func keywordsToTypes(_ keywords: [String]) -> [String]? {
-        guard let embedding = embedding, keywords.count > 0 else { return nil }
-        
+    public func keywordsToTypes(_ keywords: [String]) -> [String] {
         // lemmatize words and get a vector representation of the whole list
         let words = lemmatize(words: keywords)
         let vector = getMultiWordVector(words: words, embedding: embedding)
@@ -91,9 +96,7 @@ public class FoodToCarbonConverter {
     }
     
     /// Returns the density of the liquid which most closely matches the liquid type given. Returns nil in case of failure.
-    private func getDensityLiquid(type: String) -> Double? {
-         guard let embedding = embedding else { return nil }
-         
+    private func getDensityLiquid(type: String) -> Double? {         
          var density = liquidsDensities["water"]
          var bestMatch = -1.0
          let vectorFood = getMultiWordVector(words: type.components(separatedBy: " "), embedding: embedding)
@@ -104,8 +107,8 @@ public class FoodToCarbonConverter {
                  density = liquid.value
              }
          }
-         print("density of \(type): \(density ?? -1) kg/l")
-         return density
+
+        return density
      }
     
     /// Returns the lemmatized version of a list of english words .
