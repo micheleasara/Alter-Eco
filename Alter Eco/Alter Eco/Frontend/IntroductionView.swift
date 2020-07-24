@@ -24,7 +24,7 @@ struct IntroductionView: View {
                     .padding(.bottom)
                 
                 Text("How does it work?").bold()
-                Text("By using the GPS, the software tries to determine what kind of transportation you take and computes the carbon associated with it. This process might take a few minutes.")
+                Text("By using the GPS, the software tries to determine what kind of transportation you take and computes the carbon associated with it. Also, you can scan the barcodes of different food items to retrieve information about their carbon footprint.")
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.bottom)
                 
