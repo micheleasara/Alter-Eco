@@ -13,34 +13,59 @@ public protocol RemoteFoodRetriever {
     func fetchFood(barcode: String, completionHandler: @escaping (_ food: Food?, _ error: RemoteFoodRetrievalError?) -> Void)
 }
 
-public class OpenFoodFacts: RemoteFoodRetriever {
+/// Represents an entity to upload food information to a remote server.
+public protocol RemoteFoodUploader {
+    /**
+     Uploads  a food product into the remote server.
+     - Parameter food: the food object containing the information to upload.
+     */
+    func upload(food: Food, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void)
+}
+
+public class OpenFoodFacts: RemoteFoodRetriever, RemoteFoodUploader {
     /// Range of HTTP codes signifying a successful response.
-    private let HTTP_SUCCESS_CODES = 200...299
-    private let USER_AGENT = "User-Agent: Alter Eco - iOS"
-    /// Address of the OpenFoodFacts API. Should be terminated with a string representing a numeric barocode and a json extension.
-    private let API_BASE_ADDRESS = "https://world.openfoodfacts.org/api/v0/product/"
-    /// Termination of the OpenFoodFacts API. Contains a json extension and the fields of interest.
-    private let API_EXTENSION_AND_FIELDS = ".json?fields=product_name,categories_tags,quantity,image_front_small_url"
-    
+    private let HTTPSuccessCodes = 200...299
+    /// String specifying the user agent for an HTTP request.
+    private let userAgent = "User-Agent: Alter Eco - iOS"
+    /// Address of the OpenFoodFacts API for retrieval. Should be terminated with a string representing a numeric barocode and a json extension.
+    private let APIRetrievalBaseAddress = "https://world.openfoodfacts.org/api/v0/product/"
+    /// Termination of the OpenFoodFacts API for retrieval. Contains a json extension and the fields of interest.
+    private let APIRetrievalExtensionAndFields = ".json?fields=product_name,categories_tags,quantity,image_front_small_url"
+    /// Address of the OpenFoodFacts API for upload. Should be terminated with a barcode and the fields to upload.
+    private let APIUploadBaseAddress = "https://world.openfoodfacts.org/cgi/product_jqm2.pl?code="
+
     private let foodCarbonConverter = FoodToCarbonConverter()
     /// Contains words which are filtered out during preprocessing.
     private let STOPWORDS = Set(["a", "the", "and", "or", "nor", "neither", "product", "products", "food", "foods",
     "tree", "based", "their", "beverage", "beverages", "grocery", "groceries", "with"])
-    
-    private var completionHandler: (Food?, RemoteFoodRetrievalError?) -> Void = { _,_ in }
-    
-    public func fetchFood(barcode: String, completionHandler: @escaping (Food?, RemoteFoodRetrievalError?) -> Void) {
-        self.completionHandler = completionHandler
-        print("fetching food item " + barcode)
-        let url = URL(string: API_BASE_ADDRESS + barcode + API_EXTENSION_AND_FIELDS)!
+
+    private var foodRetrievedHandler: (Food?, RemoteFoodRetrievalError?) -> Void = { _,_ in }
+
+    public func upload(food: Food, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        let name = food.name?.replacingOccurrences(of: " ", with: "%20") ?? ""
+        let quantity = food.quantity?.description.replacingOccurrences(of: " ", with: "%20") ?? ""
+        let category = food.types?.first?.replacingOccurrences(of: " ", with: "%20") ?? ""
+        let url = URL(string: "https://world.openfoodfacts.org/cgi/product_jqm2.pl?code=" + food.barcode +
+        "&user_id=altereco&password=altereco&product_name=" + name + "&quantity=" + quantity + "&categories=" + category)!
         var request = URLRequest(url: url)
-        request.setValue(USER_AGENT, forHTTPHeaderField: "Authorization")
+        request.setValue(userAgent, forHTTPHeaderField: "Authorization")
         request.setValue("close", forHTTPHeaderField: "Connection")
-        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
-            self.onHTTPRequestCompleted(barcode: barcode, data: data, response: response, error: error) })
+        let task = URLSession.shared.dataTask(with: request, completionHandler: completionHandler)
         task.resume()
     }
-    
+
+    public func fetchFood(barcode: String, completionHandler: @escaping (Food?, RemoteFoodRetrievalError?) -> Void) {
+        self.foodRetrievedHandler = completionHandler
+        print("fetching food item " + barcode)
+        let url = URL(string: APIRetrievalBaseAddress + barcode + APIRetrievalExtensionAndFields)!
+        var request = URLRequest(url: url)
+        request.setValue(userAgent, forHTTPHeaderField: "Authorization")
+        request.setValue("close", forHTTPHeaderField: "Connection")
+        let task = URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            self.onHTTPGETCompleted(barcode: barcode, data: data, response: response, error: error) })
+        task.resume()
+    }
+
     /// Contains OpenFoodFacts information about a product.
     public struct Product: Hashable, Decodable {
         public var productName: String?
@@ -56,20 +81,20 @@ public class OpenFoodFacts: RemoteFoodRetriever {
         public var code: String?
         public var status: Int?
     }
-    
-    private func onHTTPRequestCompleted(barcode: String, data: Data?, response: URLResponse?, error: Error?) {
+
+    private func onHTTPGETCompleted(barcode: String, data: Data?, response: URLResponse?, error: Error?) {
         if let error = error {
-            completionHandler(nil, RemoteFoodRetrievalError.network(localizedDescription: error.localizedDescription))
+            foodRetrievedHandler(nil, RemoteFoodRetrievalError.network(localizedDescription: error.localizedDescription))
             return
         }
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            completionHandler(nil, RemoteFoodRetrievalError.httpFailure(localizedDescription: "Invalid server response."))
+            foodRetrievedHandler(nil, RemoteFoodRetrievalError.httpFailure(localizedDescription: "Invalid server response."))
             return
         }
         
-        guard HTTP_SUCCESS_CODES.contains(httpResponse.statusCode) else {
-            completionHandler(nil, RemoteFoodRetrievalError.httpFailure(localizedDescription:
+        guard HTTPSuccessCodes.contains(httpResponse.statusCode) else {
+            foodRetrievedHandler(nil, RemoteFoodRetrievalError.httpFailure(localizedDescription:
                 "Unexpected server response with code \(httpResponse.statusCode). Try again later."))
                 return
         }
@@ -81,7 +106,7 @@ public class OpenFoodFacts: RemoteFoodRetriever {
             onFoodRetrieval(barcode: barcode, product: foodResponse?.product)
         }
     }
-    
+
     private func onFoodRetrieval(barcode: String, product: OpenFoodFacts.Product?) {
         if let product = product {
             // preprocess OpenFoodFacts categories to extract the most important keywords
@@ -91,28 +116,28 @@ public class OpenFoodFacts: RemoteFoodRetriever {
                         
             if let imageLocation = product.imageFrontSmallUrl, let URL = URL(string: imageLocation) {
                 var request = URLRequest(url: URL)
-                request.setValue(USER_AGENT, forHTTPHeaderField: "Authorization")
+                request.setValue(userAgent, forHTTPHeaderField: "Authorization")
                 request.setValue("close", forHTTPHeaderField: "Connection")
                 let task = URLSession.shared.dataTask(with: request) { data, response, error in
                     guard let data = data, error == nil else { return }
                     let food = Food(barcode: barcode, name: product.productName,
-                                    quantity: self.parseQuantity(product.quantity), types: matchingTypes,
+                                    quantity: Food.Quantity(quantity: product.quantity ?? ""), types: matchingTypes,
                                     image: data)
-                    self.completionHandler(food, nil)
+                    self.foodRetrievedHandler(food, nil)
                 }
                 
                 task.resume()
             } else {
                 let food = Food(barcode: barcode, name: product.productName,
-                                quantity: self.parseQuantity(product.quantity), types: matchingTypes)
-                self.completionHandler(food, nil)
+                                quantity: Food.Quantity(quantity: product.quantity ?? ""), types: matchingTypes)
+                self.foodRetrievedHandler(food, nil)
             }
             
         } else {
-            completionHandler(nil, RemoteFoodRetrievalError.foodNotFound(barcode: barcode))
+            foodRetrievedHandler(nil, RemoteFoodRetrievalError.foodNotFound(barcode: barcode))
         }
     }
-    
+
     /// Returns unique keywords from OpenFoodFacts category tags.
     private func getKeywords(categories: [String]) -> [String] {
         var words: [String] = []
@@ -122,31 +147,6 @@ public class OpenFoodFacts: RemoteFoodRetriever {
         words = Array(Set(words)) // remove duplicates (order not maintained)
         words = words.filter { !STOPWORDS.contains($0) }
         return words
-    }
-    
-    private func parseQuantity(_ quantity: String?) -> Food.Quantity? {
-        guard let quantity = quantity else { return nil }
-        
-        // match a number optionally separated by whitespaces and terminated with a unit of max 3 chars
-        let regex = try! NSRegularExpression(pattern: #"(?<value>[0-9]+(?:[.,,][0-9]+)?)\s*(?<unit>[A-z]{1,3})"#, options: [])
-        let nsrange = NSRange(quantity.startIndex..<quantity.endIndex, in: quantity)
-        guard let match = regex.firstMatch(in: quantity, options: [], range: nsrange) else { return nil }
-        
-        // ensure both named groups are found
-        let nsRangeVal = match.range(withName: "value")
-        let nsRangeUnit = match.range(withName: "unit")
-        guard nsRangeVal.location != NSNotFound && nsRangeUnit.location != NSNotFound,
-            let rangeVal = Range(nsRangeVal, in: quantity),
-            let rangeUnit = Range(nsRangeUnit, in: quantity) else { return nil }
-        
-        // perform a final check for the validity of the parsed strings
-        return filterUnsupportedMeasurements(value: String(quantity[rangeVal]), unit: String(quantity[rangeUnit]))
-    }
-    
-    private func filterUnsupportedMeasurements(value: String, unit: String) -> Food.Quantity? {
-        guard let valueNum = Double(value) else { return nil }
-        // unsupported units are taken care of by the Food.Quantity initializer
-        return Food.Quantity(value: valueNum, unit: unit)
     }
 }
 

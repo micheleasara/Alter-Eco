@@ -105,17 +105,17 @@ struct FoodListView: View {
     private var itemsList: some View {
         List {
             if !viewModel.productsWithTypes.isEmpty {
-                sectionForFoodsInDB(header: "Retrieved items: tap to edit", foods: viewModel.productsWithTypes, remover: viewModel.removeProductWithType(at:))
+                sectionForFoodsInDB(header: "Complete items: tap to edit", foods: viewModel.productsWithTypes, remover: viewModel.removeProductWithType(at:))
             }
             
             if !viewModel.typelessProducts.isEmpty {
-                sectionForFoodsInDB(header: "Incomplete information: tap to complete", foods: viewModel.typelessProducts, remover: viewModel.removeTypeless(at:))
+                sectionForFoodsInDB(header: "Incomplete information: tap to add a type", foods: viewModel.typelessProducts, remover: viewModel.removeTypeless(at:))
             }
                         
             if !viewModel.productsNotInDB.isEmpty {
                 Section(header: Text("Items not found: tap to add").bold()) {
                     ForEach(viewModel.productsNotInDB, id: \.self) { food in
-                        NavigationLink(destination: self.addProduct) {
+                        NavigationLink(destination: FoodToAddView(food: food, parentModel: self.viewModel)) {
                             Text(food.barcode)
                         }
                     }.onDelete(perform: {
@@ -125,21 +125,6 @@ struct FoodListView: View {
                 }
             }
         }.listStyle(GroupedListStyle())
-    }
-    
-    private var addProduct: some View {
-        VStack (alignment: .leading){
-            Text("This feature is not yet supported. In the meantime, please add this product to the database via the official OpenFoodFacts app.").padding()
-            
-            Button(action: {
-                if let url = URL(string: "itms-apps://itunes.apple.com/app/id588797948"),
-                UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                }
-                }) { Text("Open in AppStore")}.padding()
-            
-            Text("Make sure to add the categories, as that is what we use to compute the carbon footprint!").padding()
-        }
     }
     
     private func sectionForFoodsInDB(header: String,
@@ -155,36 +140,93 @@ struct FoodListView: View {
     }
 }
 
+public struct FoodSummaryBox: View {
+    @ObservedObject var food: Food
+    
+    public var body: some View {
+        let type = food.types?.first ?? ""
+        var image: UIImage? = nil
+        if let data = food.image {
+            image = UIImage(data: data)
+        }
+        
+        return HStack {
+            if image != nil {
+                Image(uiImage: image!).resizable().aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+            }
+            
+            VStack(alignment:.leading) {
+                Text(food.name ?? "Product name not available")
+                if food.quantity == nil {
+                    Text("100 g")
+                        .foregroundColor(Color.orange)
+                        .padding(.top)
+                } else {
+                    Text(food.quantity!.description)
+                        .padding(.top)
+                }
+                
+                if !type.isEmpty {
+                    Text(type).padding(.top)
+                }
+            }
+        }.frame(height: 100)
+    }
+}
+
 public struct FoodToAddView: View {
     @ObservedObject var food: Food
     @ObservedObject var parentModel: FoodListViewModel
+    @Environment(\.presentationMode) var presentationMode
     @State private var name: String = ""
     @State private var quantity: String = ""
     @State private var type: String = ""
     @State private var editingType = false
+    @State private var inputError = false
+    
     public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Product name").bold().padding(.bottom, 3)
-            TextField("Name of the product", text: $name).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.bottom)
-            
-            Text("Quantity").bold().padding(.bottom, 3)
-            TextField("e.g. 100 g, 250 ml", text: $quantity).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.bottom)
-            
-            typeLabel
-            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Product name").bold().padding(.bottom, 3)
+                    TextField("Name of the product", text: $name).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.bottom)
+                    
+                    Text("Quantity").bold().padding(.bottom, 3)
+                    TextField("e.g. 100 g, 250 ml", text: $quantity).textFieldStyle(RoundedBorderTextFieldStyle()).padding(.bottom)
+                    
+                    Text("Barcode").bold()
+                    Text(food.barcode).padding(.bottom)
+                    
+                    typeLabel.padding(.bottom)
+                    
+                    openFoodFactsLabel.padding(.top)
+                }
+            }
             Spacer()
             HStack {
                 Spacer()
                 
                 if areFieldsCompleted() {
                     Button(action: {
-                        print("product editing button clicked")
+                        guard let quantity = Food.Quantity(quantity: self.quantity) else {
+                            self.inputError = true
+                            return
+                        }
+                        self.food.name = self.name
+                        self.food.quantity = quantity
+                        self.food.setAsMostLikelyType(self.type)
+                        self.parentModel.uploadProductInfo(food: self.food)
+                        self.parentModel.update()
+                        
+                        self.presentationMode.wrappedValue.dismiss()
                     }, label: {
                         Text("Continue")
-                    }).padding(.horizontal)
+                    })
                 }
             }
-        }.padding()
+        }.alert(isPresented: $inputError) {
+            Alert(title: Text("Invalid input"), message: Text("The quantity you have written is invalid"), dismissButton: .default(Text("OK"))) }.padding()
     }
     
     private var typeLabel: some View {
@@ -207,6 +249,21 @@ public struct FoodToAddView: View {
         return !name.isEmpty &&
             !quantity.isEmpty &&
             !type.isEmpty
+    }
+    
+    private var openFoodFactsLabel: some View {
+        VStack (alignment: .leading){
+            Text("For a more powerful upload, please use the official OpenFoodFacts app.").padding(.bottom)
+            
+            Button(action: {
+                if let url = URL(string: "itms-apps://itunes.apple.com/app/id588797948"),
+                UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+                }) { Text("Open in AppStore")}
+            
+            Text("Make sure to add the categories, as that is what we use to compute the carbon footprint!").padding(.top)
+        }
     }
 }
 
@@ -311,7 +368,7 @@ public struct FoodInfoView: View {
             } else {
                 HStack(alignment: .center) {
                     Text(food.quantity?.description ??
-                        String(format:"%.0f %@",  parentModel.defaultQuantity.value, parentModel.defaultQuantity.unit.symbol))
+                        parentModel.defaultQuantity.description)
                     Button(action: { self.editingQuantity = true }) {
                     Image(systemName: "pencil") }
                 }
@@ -333,41 +390,6 @@ public struct FoodInfoView: View {
             measure.convert(to: UnitMass.grams)
         }
         return String(format: "%.1f %@", measure.value, measure.unit.symbol)
-    }
-}
-
-public struct FoodSummaryBox: View {
-    @ObservedObject var food: Food
-    
-    public var body: some View {
-        let type = food.types?.first ?? ""
-        var image: UIImage? = nil
-        if let data = food.image {
-            image = UIImage(data: data)
-        }
-        
-        return HStack {
-            if image != nil {
-                Image(uiImage: image!).resizable().aspectRatio(contentMode: .fit)
-                    .frame(width: 100, height: 100)
-            }
-            
-            VStack(alignment:.leading) {
-                Text(food.name ?? "Product name not available")
-                if food.quantity == nil {
-                    Text("100 g")
-                        .foregroundColor(Color.orange)
-                        .padding(.top)
-                } else {
-                    Text(food.quantity!.description)
-                        .padding(.top)
-                }
-                
-                if !type.isEmpty {
-                    Text(type).padding(.top)
-                }
-            }
-        }.frame(height: 100)
     }
 }
 

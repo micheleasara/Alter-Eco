@@ -1,5 +1,6 @@
 import NaturalLanguage
 
+/// An entity which contains and offers tools to access the food carbon database.
 public class FoodToCarbonConverter {
     /// Returns the URL for the word embedding model assuming it is in this class's bundle.
     public class var urlOfModelInThisBundle: URL {

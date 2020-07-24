@@ -3,13 +3,13 @@ import Foundation
 /// Represents a food product.
 public class Food: Hashable, ObservableObject {
     /// The name of this food product.
-    public let name: String?
+    public var name: String?
     /// The quantity associated to this food product.
     @Published public var quantity: Quantity?
     /// A list of food types to which this product may belong. The list is sorted in ascending order proportionally to the likelihood of the food belonging to a given type.
     @Published public private(set) var types: [String]?
     /// A small image representing this food product.
-    public let image: Data?
+    public var image: Data?
     /// A barcode identifying this product.
     public let barcode: String
     /// The broad category (e.g. meats, diaries etc.) calculated from the first type in the list of possible types.
@@ -79,6 +79,24 @@ extension Food {
             guard let unitFinal = Quantity.SUPPORTED_UNITS[unitLow] else { return nil }
             self.value = value
             self.unit = unitFinal
+        }
+        
+        public init?(quantity: String) {
+            // match a number optionally separated by whitespaces and terminated with a unit of max 3 chars
+            let regex = try! NSRegularExpression(pattern: #"(?<value>[0-9]+(?:[.,,][0-9]+)?)\s*(?<unit>[A-z]{1,3})"#, options: [])
+            let nsrange = NSRange(quantity.startIndex..<quantity.endIndex, in: quantity)
+            guard let match = regex.firstMatch(in: quantity, options: [], range: nsrange) else { return nil }
+            
+            // ensure both named groups are found
+            let nsRangeVal = match.range(withName: "value")
+            let nsRangeUnit = match.range(withName: "unit")
+            guard nsRangeVal.location != NSNotFound && nsRangeUnit.location != NSNotFound,
+                let rangeVal = Range(nsRangeVal, in: quantity),
+                let rangeUnit = Range(nsRangeUnit, in: quantity) else { return nil }
+            
+            // perform a final check for the validity of the parsed strings
+            guard let valueNum = Double(String(quantity[rangeVal])) else { return nil }
+            self.init(value: valueNum, unit: String(quantity[rangeUnit]))
         }
         
         /// Initializes a food quantity from a numeric value and a unit.

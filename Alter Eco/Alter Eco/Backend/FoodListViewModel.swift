@@ -19,6 +19,7 @@ public class FoodListViewModel: ObservableObject {
     }
     
     private let converter = FoodToCarbonConverter()
+    private let uploader: RemoteFoodUploader = OpenFoodFacts()
     private let DBMS: DBManager
     
     public init(foods: [Food] = [], notFound: [Food] = [], DBMS: DBManager) {
@@ -97,6 +98,11 @@ public class FoodListViewModel: ObservableObject {
     /// Removes a food product not found in the database and corresponding to the given index.
     public func removeProductNotInDB(at index: Int) {
         productsNotInDB.remove(at: index)
+    }
+    
+    /// Starts an asynchronous request to upload the information contained in the given food product.
+    public func uploadProductInfo(food: Food) {
+        uploader.upload(food: food, completionHandler: {_,_,_ in })
     }
     
     /// Saves the products with types in the database. Products with no quantity are given a default specified by defaultQuantity.
