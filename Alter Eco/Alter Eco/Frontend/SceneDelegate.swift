@@ -57,7 +57,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             // resume tracking unless user does not want to or it is first launch
-            if !appDelegate.isFirstLaunch.rawValue && !appDelegate.isTrackingPaused.rawValue {
+            if UserDefaults.standard.bool(forKey: "skipIntroduction") && !appDelegate.isTrackingPaused.rawValue {
                 appDelegate.startLocationTracking()
             }
         }

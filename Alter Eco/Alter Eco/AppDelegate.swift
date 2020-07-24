@@ -20,59 +20,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal let notificationUUID = UUID().uuidString
     /// Observable state of location tracking.
     internal var isTrackingPaused: Observable<Bool> = Observable(rawValue: false)
-    /// Observable representation of whether this is the first time the app is launched.
-    internal var isFirstLaunch: Observable<Bool>!
     /// Defines radius of search for airports in meters.
     internal var airportRequestRadius: Double = MAX_AIRPORT_REQUEST_RADIUS
-    /// Defines whether the system account for cycling.
-    internal var cycleEnabled: Observable<Bool>!
-    /// The cycling speed inputted by the user.
-    internal var cycleSpeed: Observable<Double>!
-    /// Defines whether location tracking can be paused by iOS.
-    internal var autoPauseEnabled: Observable<Bool>!
-    /// Contains data for the chart of ChartView.
-    //internal var transportBarChartModel : TransportBarChartModel!
     
     var scene = SceneDelegate()
     
     override init() {
         super.init()
         self.DBMS = CoreDataManager()
-                
+        
+        // if this is the first launch, make sure settings are initialised correctly
+        if !UserDefaults.standard.bool(forKey: "skipIntroduction") {
+            UserDefaults.standard.set(DEFAULT_CYCLE_SPEED, forKey: "cycleSpeed")
+            UserDefaults.standard.set(true, forKey: "autoPauseEnabled")
+        }
+        
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
         activityEstimator.setInAirportCallback(callback: userIsInAnAirport(airport:))
-        
-        loadUserSettings()
-        autoPauseEnabled.setValueChangeCallback {(newValue) in
-            self.manager.pausesLocationUpdatesAutomatically = newValue}
-    }
-    
-    func loadUserSettings() {
-        let query = try? DBMS.executeQuery(entity: "UserPreference",
-                                      predicate: nil, args: nil) as? [NSManagedObject]
-        if query != nil && query!.count > 0 {
-            isFirstLaunch = Observable(rawValue: (query![0].value(forKey: "firstLaunch") as? Bool) ?? true)
-            cycleEnabled = Observable(rawValue: (query![0].value(forKey: "cycleEnabled") as? Bool) ?? false)
-            cycleSpeed = Observable(rawValue: (query![0].value(forKey: "cycleRelaxation") as? Double) ?? DEFAULT_CYCLE_SPEED)
-            autoPauseEnabled = Observable(rawValue: (query![0].value(forKey: "autoPauseEnabled") as? Bool) ?? true)
-            // needed for backward compatibility
-            if cycleSpeed.rawValue < AUTOMOTIVE_SPEED_THRESHOLD {
-                cycleSpeed.rawValue = DEFAULT_CYCLE_SPEED
-            }
-        } else {
-            // if nothing is in the database, this is the first launch
-            isFirstLaunch = Observable(rawValue: true)
-            cycleEnabled = Observable(rawValue: false)
-            cycleSpeed = Observable(rawValue: DEFAULT_CYCLE_SPEED)
-            autoPauseEnabled = Observable(rawValue: true)
-        }
     }
     
     // MARK:- UISceneSession Lifecycle
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         return true
     }
 
@@ -89,14 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         manager.delegate = self
         manager.distanceFilter = GPS_DISTANCE_THRESHOLD
         manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-        manager.pausesLocationUpdatesAutomatically = autoPauseEnabled.rawValue
+        manager.pausesLocationUpdatesAutomatically = UserDefaults.standard.bool(forKey: "autoPauseEnabled")
         manager.activityType = .automotiveNavigation
         manager.startUpdatingLocation()
     }
     
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
         let content = UNMutableNotificationContent()
-        content.title = "Looks like you have not moved in a while"
+        content.title = "Looks like you have not moved in a while (or there's no signal)"
         content.body = "Tracking paused: we care about your battery life. Open Alter Eco to resume."
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)

@@ -1,12 +1,11 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @ObservedObject private var cycleEnabled = (UIApplication.shared.delegate as! AppDelegate).cycleEnabled
-    @ObservedObject private var pauseTrackingEnabled = (UIApplication.shared.delegate as! AppDelegate).autoPauseEnabled
-    @ObservedObject private var speed = (UIApplication.shared.delegate as! AppDelegate).cycleSpeed
+    @State private var cycleEnabled = UserDefaults.standard.bool(forKey: "cycleEnabled")
+    @State private var autoPauseEnabled = UserDefaults.standard.bool(forKey: "autoPauseEnabled")
+    @State private var speed = UserDefaults.standard.double(forKey: "cycleSpeed")
     @State private var showingCycleInfo = false
     @State private var showingPauseInfo = false
-    @Environment(\.DBMS) var DBMS
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -15,15 +14,13 @@ struct SettingsView: View {
                 .padding(.bottom)
             
             cycleToggle.padding(.horizontal)
-            if cycleEnabled.rawValue {
+            if cycleEnabled {
                 VStack {
-                    Slider(value: $speed.rawValue,
+                    Slider(value: $speed,
                            in: AUTOMOTIVE_SPEED_THRESHOLD...2*DEFAULT_CYCLE_SPEED, step: 0.5)
-                    Text(String(format: "My usual speed is %.1f km/h (or %.1f m/s)", MPSToKMPH(speed.rawValue), speed.rawValue))
+                    Text(String(format: "My usual speed is %.1f km/h (or %.1f m/s)", MPSToKMPH(speed), speed))
                 }.padding(.horizontal)
             }
-            Text("Press 'Back' to save your settings.").italic()
-                .padding().padding(.top)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .padding(.top)
@@ -37,14 +34,14 @@ struct SettingsView: View {
     }
     
     private var pauseTrackingToggle: some View {
-        Toggle(isOn: $pauseTrackingEnabled.rawValue) {
+        Toggle(isOn: $autoPauseEnabled) {
             HStack {
                 Text("Pause tracking if idle")
                 Button(action: { self.showingPauseInfo = true }) {
                     Image(systemName: "info.circle")
                 }.alert(isPresented: $showingPauseInfo) {
                     Alert(title: Text("Info"),
-                          message: Text("Enable this feature if you wish for Alter Eco to stop tracking automatically when you haven't moved in a while."),
+                          message: Text("Enable this feature if you wish for Alter Eco to stop tracking your location when you haven't moved in a while or there is no signal."),
                           dismissButton: .default(Text("Got it!")))
                 }
             }
@@ -52,7 +49,7 @@ struct SettingsView: View {
     }
     
     private var cycleToggle: some View {
-        Toggle(isOn: $cycleEnabled.rawValue) {
+        Toggle(isOn: $cycleEnabled) {
             HStack {
                 Text("I cycle very often")
                 Button(action: { self.showingCycleInfo = true }) {
@@ -67,14 +64,10 @@ struct SettingsView: View {
     }
     
     private func saveSettings() {
-        try? DBMS.deleteAll(entity: "UserPreference")
-        
-        try? DBMS.setValuesForKeys(entity: "UserPreference",
-            keyedValues:
-            ["firstLaunch": false,
-             "cycleEnabled": cycleEnabled.rawValue!,
-             "cycleRelaxation": speed.rawValue!,
-             "autoPauseEnabled": pauseTrackingEnabled.rawValue!])
+        UserDefaults.standard.set(cycleEnabled, forKey: "cycleEnabled")
+        UserDefaults.standard.set(speed, forKey: "cycleSpeed")
+        UserDefaults.standard.set(autoPauseEnabled, forKey: "autoPauseEnabled")
+        (UIApplication.shared.delegate as? AppDelegate)?.manager.pausesLocationUpdatesAutomatically = autoPauseEnabled
     }
 }
 

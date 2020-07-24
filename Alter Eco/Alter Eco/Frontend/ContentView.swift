@@ -3,7 +3,7 @@ import CoreLocation
 
 struct ContentView: View {
     @State var showSplash = true
-    @ObservedObject var isFirstLaunch = (UIApplication.shared.delegate as! AppDelegate).isFirstLaunch
+    @State private var skipIntroduction = UserDefaults.standard.bool(forKey: "skipIntroduction")
     @Environment(\.DBMS) var DBMS
     
     var body: some View {
@@ -19,10 +19,10 @@ struct ContentView: View {
             }
             
             if !self.showSplash {
-                if isFirstLaunch.rawValue {
-                    introductionViewWithButton
-                } else {
+                if skipIntroduction {
                     MainView()
+                } else {
+                    introductionViewWithButton
                 }
             }
         }
@@ -32,11 +32,9 @@ struct ContentView: View {
         VStack {
             IntroductionView()
             Button(action: {
-                try? self.DBMS.setValuesForKeys(entity: "UserPreference", keyedValues: ["firstLaunch":false])
-                // refresh UI and display tabView
-                let delegate = (UIApplication.shared.delegate as! AppDelegate)
-                delegate.isFirstLaunch.rawValue = false
-                delegate.startLocationTracking()
+                UserDefaults.standard.set(true, forKey: "skipIntroduction")
+                self.skipIntroduction = true
+                (UIApplication.shared.delegate as? AppDelegate)?.startLocationTracking()
             }) { Text("Let's go!").underline()}
                 .padding(.bottom)
         }
