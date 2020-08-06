@@ -32,11 +32,11 @@ public struct ComparisonView: View {
 
 struct ComparisonView_Previews: PreviewProvider {
     static var previews: some View {
-        let now = Date().toLocalTime()
+        let now = Date()
         let DBMS = CoreDataManager()
-        return ComparisonView(dailyCarbon: try! DBMS.carbonFromPollutingMotions(from: now.setToSpecificHour(hour: "00:00:00")!, interval: DAY_IN_SECONDS))
+        return ComparisonView(dailyCarbon: try! DBMS.carbonFromPollutingMotions(from: now.setToSpecificHour(hour: "00:00:00")!.toGlobalTime(), interval: DAY_IN_SECONDS))
             .environmentObject(ScreenMeasurements())
-            .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS))
+            .environmentObject(TransportBarChartModel(limit: Date(), DBMS: DBMS))
     }
 }
 

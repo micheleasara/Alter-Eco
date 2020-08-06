@@ -143,6 +143,6 @@ struct TransportBarChart: View {
 
 struct TransportBarChart_Previews: PreviewProvider {
     static var previews: some View {
-        TransportBarChart().environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: CoreDataManager()))
+        TransportBarChart().environmentObject(TransportBarChartModel(limit: Date(), DBMS: CoreDataManager()))
     }
 }

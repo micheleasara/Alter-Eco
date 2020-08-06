@@ -64,8 +64,8 @@ extension Date {
     }
     
     /// Returns the first of the month set to midnight.
-    public func getStartOfMonth() -> Date {
-        return self.setToSpecificDay(day: 1)!.setToSpecificHour(hour: "00:00:00")!
+    public func getStartOfMonth() -> Date? {
+        return self.setToSpecificDay(day: 1)?.setToSpecificHour(hour: "00:00:00")
     }
     
     /// Converts a date to a string in the format yyyy-MM-dd.
@@ -118,6 +118,13 @@ extension Date {
     public func toLocalTime() -> Date {
         let timezone = TimeZone.current
         let seconds = TimeInterval(timezone.secondsFromGMT(for: self))
+        return Date(timeInterval: seconds, since: self)
+    }
+    
+    /// Converts date from local time to GMT.
+    func toGlobalTime() -> Date {
+        let timezone = TimeZone.current
+        let seconds = -TimeInterval(timezone.secondsFromGMT(for: self))
         return Date(timeInterval: seconds, since: self)
     }
 }

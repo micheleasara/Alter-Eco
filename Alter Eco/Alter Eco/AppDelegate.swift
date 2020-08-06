@@ -38,6 +38,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
         activityEstimator.setInAirportCallback(callback: userIsInAnAirport(airport:))
+        let activities = try! DBMS.queryActivities(predicate: "start < %@", args: [Date()])
+        print(activities.first!.start)
     }
     
     // MARK:- UISceneSession Lifecycle

@@ -111,7 +111,7 @@ public class TransportAwardsManager: AwardsManager {
     }
     
     private func setAwardsValidity() {
-        let now = Date().toLocalTime()
+        let now = Date()
         let originalDate = (try? DBMS.getFirstDate()) ?? now
         let timeInterval = now.timeIntervalSince(originalDate)
 

@@ -147,8 +147,8 @@ public class ActivityEstimator<T:ActivityList> {
                 let motionType = MeasuredActivity.speedToMotionType(speed: speed)
                 measurements.add(MeasuredActivity(motionType: motionType,
                                                   distance: distance,
-                                                  start: previousLoc.timestamp.toLocalTime(),
-                                                  end: location.timestamp.toLocalTime()))
+                                                  start: previousLoc.timestamp,
+                                                  end: location.timestamp))
             } else {
                 print("Speed based activity NOT added as too fast")
             }
@@ -267,7 +267,7 @@ public class ActivityEstimator<T:ActivityList> {
         let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
         
         print("Used train/plane to travel distance: ", activityDistance, " m")
-        let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp.toLocalTime(), end: currentRegionOfInterest.timestamp.toLocalTime())
+        let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
         previousRegionOfInterest = currentRegionOfInterest
         writeActivityAndUpdateScore(activity)
         measurements.removeAll()
@@ -282,7 +282,7 @@ public class ActivityEstimator<T:ActivityList> {
         let newActivityIndex = measurements.count - activityNumToOff
         for i in stride(from: newActivityIndex, to: measurements.count, by: 1) {
             // flag is not valid anymore if there is a streak of specific measurements after ROI flag was set
-            if measurements[i].motionType != motionType || measurements[i].start < prevROI!.timestamp.toLocalTime() {
+            if measurements[i].motionType != motionType || measurements[i].start < prevROI!.timestamp {
                 return
             }
         }

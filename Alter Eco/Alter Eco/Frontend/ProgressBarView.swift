@@ -95,7 +95,7 @@ struct ProgressBarView_Previews: PreviewProvider {
         
         return ProgressBarView(latestScore: (try? DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore())
             .environmentObject(ScreenMeasurements())
-            .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS))
+            .environmentObject(TransportBarChartModel(limit: Date(), DBMS: DBMS))
     }
 }
 

@@ -17,17 +17,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
-            let transportBarChartModel = TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS)
+            let transportBarChartModel = TransportBarChartModel(limit: Date(), DBMS: DBMS)
             let transportPieChartModel = TransportPieChartModel(DBMS: DBMS)
             let foodPieChartModel = FoodPieChartModel(DBMS: DBMS)
             DBMS.addActivityWrittenCallback { _ in
-                let now = Date().toLocalTime()
+                let now = Date()
                 transportBarChartModel.updateUpTo(now)
                 transportPieChartModel.updateUpTo(now)
             }
             DBMS.addFoodsWrittenCallback { _ in
                 print("Added foods to the database")
-                foodPieChartModel.updateUpTo(Date().toLocalTime())
+                foodPieChartModel.updateUpTo(Date())
             }
             
             window.rootViewController = UIHostingController(rootView: contentView

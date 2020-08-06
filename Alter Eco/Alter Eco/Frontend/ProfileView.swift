@@ -48,8 +48,8 @@ struct ProfileView: View {
     
     private func getDailyCarbon() -> Double {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            var now = Date().toLocalTime()
-            now = now.setToSpecificHour(hour: "00:00:00") ?? now
+            var now = Date()
+            now = now.setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? now
             return (try? appDelegate.DBMS.carbonFromPollutingMotions(from: now, interval: DAY_IN_SECONDS)) ?? 0
         }
         return 0

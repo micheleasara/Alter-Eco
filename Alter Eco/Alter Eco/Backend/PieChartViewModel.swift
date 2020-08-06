@@ -39,7 +39,7 @@ public class TransportPieChartModel: PieChartModel {
     public init(DBMS: DBManager) {
         self.DBMS = DBMS
         super.init()
-        updateUpTo(Date().toLocalTime())
+        updateUpTo(Date())
     }
     
     public func updateUpTo(_ date: Date) {
@@ -71,7 +71,7 @@ public class FoodPieChartModel: PieChartModel {
     public init(DBMS: DBManager) {
         self.DBMS = DBMS
         super.init()
-        updateUpTo(Date().toLocalTime())
+        updateUpTo(Date())
     }
     
     public func updateUpTo(_ date: Date) {

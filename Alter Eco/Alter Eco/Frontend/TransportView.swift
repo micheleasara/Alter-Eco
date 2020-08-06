@@ -65,7 +65,7 @@ struct DetailView_Previews: PreviewProvider {
         let DBMS = CoreDataManager()
         return TransportView()
            .environmentObject(ScreenMeasurements())
-            .environmentObject(TransportBarChartModel(limit: Date().toLocalTime(), DBMS: DBMS))
+            .environmentObject(TransportBarChartModel(limit: Date(), DBMS: DBMS))
             .environmentObject(TransportAwardsManager(DBMS: DBMS))
             .environmentObject(TransportPieChartModel(DBMS: DBMS))
     }
