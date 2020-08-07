@@ -108,7 +108,7 @@ public class TransportBarChartModel : ObservableObject, ChartModel {
     /// Retrieves the carbon breakdown up until the day given and for a fixed number of years.
     public func yearlyDataUpTo(_ last: Date) -> TransportCarbonBreakdown {
         // start from the first year shown on the 1st of Jan at midnight
-        let monthStart = last.toLocalTime().getStartOfMonth() ?? Date()
+        let monthStart = last.getStartOfMonth() ?? Date()
         let firstOfJan = monthStart.setToSpecificMonth(month: 1) ?? Date()
         let start = firstOfJan.addMonths(numMonthsToAdd: -(YEARS_SHOWN - 1) * 12).toGlobalTime()
         
