@@ -60,12 +60,24 @@
 		DE74ECF72482E4D10099F944 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* Utils.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
+		DE8ECE8124DE0A0100641BA4 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE8024DE0A0100641BA4 /* GameViewController.swift */; };
+		DE8ECE8E24DE0AE000641BA4 /* appleTree.scn in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8424DE0ADF00641BA4 /* appleTree.scn */; };
+		DE8ECE8F24DE0AE000641BA4 /* MainScene.scn in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8524DE0ADF00641BA4 /* MainScene.scn */; };
+		DE8ECE9024DE0AE000641BA4 /* comicSkyBox.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8624DE0ADF00641BA4 /* comicSkyBox.jpg */; };
+		DE8ECE9124DE0AE000641BA4 /* smog.scn in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8724DE0ADF00641BA4 /* smog.scn */; };
+		DE8ECE9224DE0AE000641BA4 /* Stylized_Grass_002_basecolor.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8824DE0ADF00641BA4 /* Stylized_Grass_002_basecolor.jpg */; };
+		DE8ECE9324DE0AE000641BA4 /* Stylized_Grass_002_normal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8924DE0AE000641BA4 /* Stylized_Grass_002_normal.jpg */; };
+		DE8ECE9424DE0AE000641BA4 /* foliage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8A24DE0AE000641BA4 /* foliage.jpg */; };
+		DE8ECE9524DE0AE000641BA4 /* pine.scn in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8B24DE0AE000641BA4 /* pine.scn */; };
+		DE8ECE9624DE0AE000641BA4 /* roundedTree.scn in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8C24DE0AE000641BA4 /* roundedTree.scn */; };
+		DE8ECE9724DE0AE000641BA4 /* stem-texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8D24DE0AE000641BA4 /* stem-texture.jpg */; };
+		DE8ECE9924DE0B5C00641BA4 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE9824DE0B5C00641BA4 /* GameView.swift */; };
+		DE8ECE9D24DE148F00641BA4 /* WordEmbedding.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */; };
 		DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9375249FE8AB002D85E6 /* AwardView.swift */; };
 		DE8F9378249FEAB8002D85E6 /* FoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9377249FEAB8002D85E6 /* FoodView.swift */; };
 		DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9379249FEF52002D85E6 /* MainBarChart.swift */; };
 		DE8F937C24A0D0C8002D85E6 /* FoodListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */; };
 		DE8F937E24A21639002D85E6 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F937D24A21639002D85E6 /* PieChart.swift */; };
-		DE967DCA24C8A32000F12A91 /* WordEmbedding.mlmodel in Resources */ = {isa = PBXBuildFile; fileRef = DE967DC924C8A32000F12A91 /* WordEmbedding.mlmodel */; };
 		DE994B882483E03200D3788B /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE994B872483E03200D3788B /* Title.swift */; };
 		DEA0D1D124B5D81C00FFDB00 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D024B5D81C00FFDB00 /* Food.swift */; };
 		DEA0D1D624B5E02900FFDB00 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D524B5E02900FFDB00 /* Protocols.swift */; };
@@ -182,12 +194,24 @@
 		DE74ECF62482E4D10099F944 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
+		DE8ECE8024DE0A0100641BA4 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		DE8ECE8424DE0ADF00641BA4 /* appleTree.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = appleTree.scn; sourceTree = "<group>"; };
+		DE8ECE8524DE0ADF00641BA4 /* MainScene.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = MainScene.scn; sourceTree = "<group>"; };
+		DE8ECE8624DE0ADF00641BA4 /* comicSkyBox.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = comicSkyBox.jpg; sourceTree = "<group>"; };
+		DE8ECE8724DE0ADF00641BA4 /* smog.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = smog.scn; sourceTree = "<group>"; };
+		DE8ECE8824DE0ADF00641BA4 /* Stylized_Grass_002_basecolor.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Stylized_Grass_002_basecolor.jpg; sourceTree = "<group>"; };
+		DE8ECE8924DE0AE000641BA4 /* Stylized_Grass_002_normal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Stylized_Grass_002_normal.jpg; sourceTree = "<group>"; };
+		DE8ECE8A24DE0AE000641BA4 /* foliage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = foliage.jpg; sourceTree = "<group>"; };
+		DE8ECE8B24DE0AE000641BA4 /* pine.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = pine.scn; sourceTree = "<group>"; };
+		DE8ECE8C24DE0AE000641BA4 /* roundedTree.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = roundedTree.scn; sourceTree = "<group>"; };
+		DE8ECE8D24DE0AE000641BA4 /* stem-texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "stem-texture.jpg"; sourceTree = "<group>"; };
+		DE8ECE9824DE0B5C00641BA4 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = WordEmbedding.mlmodel; sourceTree = "<group>"; };
 		DE8F9375249FE8AB002D85E6 /* AwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardView.swift; sourceTree = "<group>"; };
 		DE8F9377249FEAB8002D85E6 /* FoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodView.swift; sourceTree = "<group>"; };
 		DE8F9379249FEF52002D85E6 /* MainBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBarChart.swift; sourceTree = "<group>"; };
 		DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodListView.swift; sourceTree = "<group>"; };
 		DE8F937D24A21639002D85E6 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
-		DE967DC924C8A32000F12A91 /* WordEmbedding.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = WordEmbedding.mlmodel; sourceTree = "<group>"; };
 		DE994B872483E03200D3788B /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
 		DEA0D1D024B5D81C00FFDB00 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		DEA0D1D524B5E02900FFDB00 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -280,6 +304,7 @@
 		CD200B4123E3885100629E73 /* Alter Eco */ = {
 			isa = PBXGroup;
 			children = (
+				DE8ECE8324DE0AC000641BA4 /* art.scnassets */,
 				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
 				CD200B5023E3885700629E73 /* Info.plist */,
 				DE1B266C24433C9D007D9B54 /* Backend */,
@@ -328,6 +353,7 @@
 				DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */,
 				DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */,
 				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
+				DE8ECE7F24DE094200641BA4 /* Gamification */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -354,6 +380,7 @@
 				55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */,
 				DEA1E867248A7988003EF0F5 /* SettingsView.swift */,
 				DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */,
+				DE8ECE9824DE0B5C00641BA4 /* GameView.swift */,
 				DE74ECF62482E4D10099F944 /* Utils.swift */,
 				DE2D583E24A517DB00BB14F0 /* Charts */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
@@ -373,10 +400,35 @@
 			path = Charts;
 			sourceTree = "<group>";
 		};
+		DE8ECE7F24DE094200641BA4 /* Gamification */ = {
+			isa = PBXGroup;
+			children = (
+				DE8ECE8024DE0A0100641BA4 /* GameViewController.swift */,
+			);
+			path = Gamification;
+			sourceTree = "<group>";
+		};
+		DE8ECE8324DE0AC000641BA4 /* art.scnassets */ = {
+			isa = PBXGroup;
+			children = (
+				DE8ECE8424DE0ADF00641BA4 /* appleTree.scn */,
+				DE8ECE8624DE0ADF00641BA4 /* comicSkyBox.jpg */,
+				DE8ECE8A24DE0AE000641BA4 /* foliage.jpg */,
+				DE8ECE8524DE0ADF00641BA4 /* MainScene.scn */,
+				DE8ECE8B24DE0AE000641BA4 /* pine.scn */,
+				DE8ECE8C24DE0AE000641BA4 /* roundedTree.scn */,
+				DE8ECE8724DE0ADF00641BA4 /* smog.scn */,
+				DE8ECE8D24DE0AE000641BA4 /* stem-texture.jpg */,
+				DE8ECE8824DE0ADF00641BA4 /* Stylized_Grass_002_basecolor.jpg */,
+				DE8ECE8924DE0AE000641BA4 /* Stylized_Grass_002_normal.jpg */,
+			);
+			path = art.scnassets;
+			sourceTree = "<group>";
+		};
 		DEA0D1D224B5DEE800FFDB00 /* Food */ = {
 			isa = PBXGroup;
 			children = (
-				DE967DC924C8A32000F12A91 /* WordEmbedding.mlmodel */,
+				DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */,
 				DEA0D1D024B5D81C00FFDB00 /* Food.swift */,
 				DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */,
 				DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */,
@@ -542,16 +594,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DE967DCA24C8A32000F12A91 /* WordEmbedding.mlmodel in Resources */,
+				DE8ECE9724DE0AE000641BA4 /* stem-texture.jpg in Resources */,
+				DE8ECE9124DE0AE000641BA4 /* smog.scn in Resources */,
 				9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */,
+				DE8ECE8F24DE0AE000641BA4 /* MainScene.scn in Resources */,
+				DE8ECE9324DE0AE000641BA4 /* Stylized_Grass_002_normal.jpg in Resources */,
 				9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */,
 				9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */,
 				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
 				9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */,
 				9CD594222429686900B1D0B4 /* SKToVictoria_car_30kmh.gpx in Resources */,
+				DE8ECE9524DE0AE000641BA4 /* pine.scn in Resources */,
+				DE8ECE9024DE0AE000641BA4 /* comicSkyBox.jpg in Resources */,
+				DE8ECE9224DE0AE000641BA4 /* Stylized_Grass_002_basecolor.jpg in Resources */,
 				DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */,
 				9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */,
+				DE8ECE9624DE0AE000641BA4 /* roundedTree.scn in Resources */,
+				DE8ECE8E24DE0AE000641BA4 /* appleTree.scn in Resources */,
 				55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */,
+				DE8ECE9424DE0AE000641BA4 /* foliage.jpg in Resources */,
 				CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */,
 				9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */,
 			);
@@ -608,6 +669,7 @@
 				DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */,
 				9CD59439242968DF00B1D0B4 /* ActivityEstimator.swift in Sources */,
 				DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */,
+				DE8ECE9924DE0B5C00641BA4 /* GameView.swift in Sources */,
 				DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */,
 				DE3AC73324ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */,
 				DE8F9378249FEAB8002D85E6 /* FoodView.swift in Sources */,
@@ -624,6 +686,7 @@
 				9CD5943A242968DF00B1D0B4 /* TransportView.swift in Sources */,
 				9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */,
 				DE994B882483E03200D3788B /* Title.swift in Sources */,
+				DE8ECE8124DE0A0100641BA4 /* GameViewController.swift in Sources */,
 				9C87AE27244215FB00490481 /* CoreDataManager.swift in Sources */,
 				9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */,
 				573693832438F85F00992BB0 /* BarChartModel.swift in Sources */,
@@ -636,6 +699,7 @@
 				DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
+				DE8ECE9D24DE148F00641BA4 /* WordEmbedding.mlmodel in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
 				DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */,
 				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,
@@ -700,7 +764,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				INFOPLIST_FILE = "Alter EcoBackEndTest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -721,7 +785,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				INFOPLIST_FILE = "Alter EcoBackEndTest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -741,7 +805,7 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -762,7 +826,7 @@
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C52APMS34X;
+				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -37,7 +37,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(FoodAwardsManager(DBMS: DBMS))
                 .environmentObject(transportPieChartModel)
                 .environmentObject(foodPieChartModel)
-                .environmentObject(FoodListViewModel(DBMS: DBMS)))
+                .environmentObject(FoodListViewModel(DBMS: DBMS))
+                .environmentObject(Observable(rawValue: false)))
             
             self.window = window
             window.makeKeyAndVisible()

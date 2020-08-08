@@ -45,18 +45,19 @@ struct MainView: View {
     @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
     @State var showInfo: Bool = false
     @State var showSettings: Bool = false
+    @EnvironmentObject private var isGameOpen: Observable<Bool>
     
-     var body: some View {
+    var body: some View {
         VStack {
             if showInfo {
                 titleAndBackButton.padding(.top)
                 PrivacyInfoView()
-            }
-            else if showSettings {
+            } else if showSettings {
                 titleAndBackButton.padding(.top)
                 SettingsView()
-            }
-            else {
+            } else if isGameOpen.rawValue {
+                GameView()
+            } else {
                 titleAndInfoButton.padding(.top)
                 Divider()
                 TabPanel()

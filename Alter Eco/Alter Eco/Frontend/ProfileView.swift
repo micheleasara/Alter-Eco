@@ -6,9 +6,11 @@ struct ProfileView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
     @EnvironmentObject var chartModel: TransportBarChartModel
     @Environment(\.DBMS) var DBMS
+    @EnvironmentObject var isGameOpen: Observable<Bool>
 
     var body: some View {
         let dailyCarbon = getDailyCarbon()
+        
         return ScrollView {
             VStack() {
                 VStack(alignment: .center) {
@@ -18,16 +20,21 @@ struct ProfileView: View {
                 .frame(height: 0.4*screenMeasurements.trasversal)
                 .padding()
                 
-//                MainBarChart().frame(height: 0.5*screenMeasurements.trasversal).padding(.bottom)
+                Button(action: {
+                    self.isGameOpen.rawValue = true
+                }) {
+                    Text("Tap to enter your virtual forest")
+                }
                 
                 ProgressBarView(latestScore: getCurrentScore()).padding(.bottom)
-
+                
                 ComparisonView(dailyCarbon: dailyCarbon).padding(.bottom)
                 
                 HighlightView(dailyCarbon: dailyCarbon)
             }.padding(.horizontal)
         }
     }
+
     
     private func loadStoredImage() -> UIImage? {
         let results = (try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]) ?? []
