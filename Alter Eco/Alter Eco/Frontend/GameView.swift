@@ -30,11 +30,12 @@ public struct SceneKitView: UIViewControllerRepresentable {
     @Binding var editMode: Bool
     @Binding var selectedObjectName: String?
     @Binding var isSmogOn: Bool
+    @Environment(\.DBMS) var DBMS: DBManager
     
     public typealias UIViewControllerType = GameViewController
 
     public func makeUIViewController(context: Context) -> GameViewController {
-        return GameViewController(mainScenePath: "MainScene.scn")
+        return GameViewController(mainScenePath: "MainScene.scn", DBMS: DBMS)
     }
     
     public func updateUIViewController(_ uiViewController: GameViewController, context: Context) {

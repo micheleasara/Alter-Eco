@@ -3,11 +3,18 @@ import CoreData
 
 /// Represents the controller for the virtual forest.
 public class GameViewController: UIViewController {
+    /// The scene containing the virtual forest.
     private let scene: SCNScene
+    /// The SCNView presented on screen.
     private let scnView = SCNView()
+    /// A node representing the floor.
     private var floor: SCNNode!
+    /// A node representing the smog effect.
     private var smog: SCNNode?
-    private var forestItems: Dictionary<SCNNode, String> = [:]
+    /// Associates a node with a unique identifier which can be used to communicate with the database.
+    private var nodeToUUID: Dictionary<SCNNode, String> = [:]
+    /// Interacts with the database.
+    private let DBMS: DBManager
     
     // state used to move a node in edit mode
     private var movingNode: SCNNode?
@@ -23,7 +30,8 @@ public class GameViewController: UIViewController {
     private var nodePlacedCallback: () -> Void = { }
     
     /// Initializes the game's scene with the scn file provided.
-    public init(mainScenePath: String) {
+    public init(mainScenePath: String, DBMS: DBManager) {
+        self.DBMS = DBMS
         scene = SCNScene(named: mainScenePath)!
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,7 +40,7 @@ public class GameViewController: UIViewController {
     public func isSmogOn(_ val: Bool) {
         if val {
             addGrayFilter()
-            if smog == nil, let url = Bundle.main.url(forResource: "smog", withExtension: "scn", subdirectory: "") {
+            if smog == nil, let url = Bundle.main.url(forResource: "smog", withExtension: "scn") {
                 smog = loadNode(withName: "smog", fromSceneFile: url, worldPosition: SCNVector3(0, 2, 0))
             }
         } else {
@@ -44,6 +52,8 @@ public class GameViewController: UIViewController {
     
     /**
      Allows the user to place a node specified by the given scn filename and directory.
+     - Parameter withName: the name of the node contained within the scn file given.
+     - Parameter fromSceneFile: path to the scn file containing the node to load.
      - Parameter nodePlacedCallback: function to call when the user has finished placing the node.
      - Remark: If the node is not found, nothing happens. Also note that only one node at a time can be placed.
      */
@@ -91,19 +101,28 @@ public class GameViewController: UIViewController {
     
     private func setupNodes() {
         floor = scene.rootNode.childNode(withName: "floor", recursively: false)!
-        loadFromDatabase()
-        // TODO:- load from database
+        
+        guard let items = try? DBMS.getForestItems() else { return }
+        
+        for item in items {
+            if let url = Bundle.main.url(forResource: item.internalName, withExtension: "scn"),
+                let node = loadNode(withName: item.internalName,
+                     fromSceneFile: url,
+                     worldPosition: SCNVector3(item.x, item.y, item.z)) {
+                nodeToUUID[node] = item.id
+            }
+        }
     }
     
     private func loadNode(withName name: String, fromSceneFile url: URL, worldPosition: SCNVector3 = SCNVector3(0,0,0)) -> SCNNode? {
-            if let nodeScene = try? SCNScene(url: url),
-                let node = nodeScene.rootNode.childNode(withName: name, recursively: false) {
-                node.worldPosition = worldPosition
-                scene.rootNode.addChildNode(node)
-                return node
-            }
-            return nil
+        if let nodeScene = try? SCNScene(url: url),
+            let node = nodeScene.rootNode.childNode(withName: name, recursively: false) {
+            node.worldPosition = worldPosition
+            scene.rootNode.addChildNode(node)
+            return node
         }
+        return nil
+    }
     
     
     @objc
@@ -116,7 +135,7 @@ public class GameViewController: UIViewController {
                 // place object with a falling effect by using a y > 0
                 let worldPos = SCNVector3(hitResult.worldCoordinates.x, 1.5, hitResult.worldCoordinates.z)
                 if let node = loadNode(withName: internalName, fromSceneFile: url, worldPosition: worldPos) {
-                    forestItems[node] = UUID().uuidString
+                    nodeToUUID[node] = UUID().uuidString
                     saveToDatabase(node: node)
                 }
                 
@@ -132,13 +151,9 @@ public class GameViewController: UIViewController {
     }
     
     private func saveToDatabase(node: SCNNode) {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let DBMS = appDelegate.DBMS
-            
-            try? DBMS?.saveForestItem(ForestItem(id: forestItems[node] ?? UUID().uuidString,
+        try? DBMS.saveForestItem(ForestItem(id: nodeToUUID[node] ?? UUID().uuidString,
                                             x: node.worldPosition.x, y: node.worldPosition.y, z: node.worldPosition.z,
                                             internalName: node.name ?? ""))
-        }
     }
     
     @objc private func moveNodeByTouch(panGesture: UIPanGestureRecognizer) {
@@ -204,30 +219,18 @@ public class GameViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func loadFromDatabase() {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            let DBMS = appDelegate.DBMS!
-            guard let items = try? DBMS.getForestItems() else { return }
-            
-            for item in items {
-                if let url = Bundle.main.url(forResource: item.internalName, withExtension: "scn"),
-                    let node = loadNode(withName: item.internalName,
-                         fromSceneFile: url,
-                         worldPosition: SCNVector3(item.x, item.y, item.z)) {
-                    forestItems[node] = item.id
-                }
-            }
-        }
-    }
-    
-
 }
 
+/// Contains the data necessary to instantiate an item in the virtual forest.
 public struct ForestItem: Identifiable {
+    /// Unique identifier of this item.
     public var id: String
+    /// The x position within the virtual forest.
     public var x: Float
+    /// The y position within the virtual forest.
     public var y: Float
+    /// The z position within the virtual forest.
     public var z: Float
+    /// The name of the item, which should correspond to a resource file to be loaded.
     public var internalName: String
 }
