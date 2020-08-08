@@ -344,6 +344,7 @@
 				DEA0D1D324B5DF0E00FFDB00 /* Transport */,
 				DEA0D1D224B5DEE800FFDB00 /* Food */,
 				DEA0D1D424B5DFEF00FFDB00 /* Database */,
+				DE8ECE7F24DE094200641BA4 /* Gamification */,
 				DE3C10A32447B48000107AF4 /* Timers.swift */,
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
 				5591901D242C0FA400A80ED7 /* UserScore.swift */,
@@ -352,7 +353,6 @@
 				DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */,
 				DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */,
 				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
-				DE8ECE7F24DE094200641BA4 /* Gamification */,
 			);
 			path = Backend;
 			sourceTree = "<group>";

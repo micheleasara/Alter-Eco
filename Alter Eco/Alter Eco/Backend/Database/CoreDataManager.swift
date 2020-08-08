@@ -166,6 +166,39 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         try managedContext.save()
     }
     
+    public func saveForestItem(_ item: ForestItem) throws {
+        if let fetched = (try executeQuery(entity: "ForestItems",
+                                        predicate: "uuid == %@", args: [item.id]) as? [NSManagedObject])?.first {
+            fetched.setValue(item.x, forKey: "x")
+            fetched.setValue(item.y, forKey: "y")
+            fetched.setValue(item.z, forKey: "z")
+            fetched.setValue(item.internalName, forKey: "internalName")
+            try getManagedContext().save()
+        } else {
+            try setValuesForKeys(entity: "ForestItems",
+                                 keyedValues: ["internalName": item.internalName,
+                                               "x": item.x, "y": item.y, "z": item.y,
+                                               "uuid": item.id])
+        }
+    }
+    
+    public func getForestItems() throws -> [ForestItem] {
+        guard let items = try executeQuery(entity: "ForestItems", predicate: nil, args: nil) as? [NSManagedObject] else { return [] }
+        
+        var validItems: [ForestItem] = []
+        for item in items {
+            if let uuid = item.value(forKey: "uuid") as? String,
+                let internalName = item.value(forKey: "internalName") as? String,
+                let x = item.value(forKey: "x") as? Float,
+                let y = item.value(forKey: "y") as? Float,
+                let z = item.value(forKey: "z") as? Float {
+                validItems.append(ForestItem(id: uuid, x: x, y: y, z: z, internalName: internalName))
+            }
+        }
+        
+        return validItems
+    }
+    
     public func updateLeagueIfEnoughPoints() throws -> Void {
         let userScore = try retrieveLatestScore()
         

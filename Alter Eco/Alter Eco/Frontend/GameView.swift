@@ -39,8 +39,8 @@ public struct SceneKitView: UIViewControllerRepresentable {
     
     public func updateUIViewController(_ uiViewController: GameViewController, context: Context) {
         uiViewController.isEditModeOn(editMode)
-        if let name = selectedObjectName {
-            uiViewController.letUserPlaceNode(withFilename: name, inSubdirectory: "art.scnassets", nodePlacedCallback: { self.selectedObjectName = nil })
+        if let name = selectedObjectName, let url = Bundle.main.url(forResource: name, withExtension: "scn") {
+            uiViewController.letUserPlaceNode(withName: name, fromSceneFile: url, nodePlacedCallback: { self.selectedObjectName = nil })
         }
         uiViewController.isSmogOn(isSmogOn)
     }

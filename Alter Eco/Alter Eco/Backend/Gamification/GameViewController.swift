@@ -1,4 +1,5 @@
 import SceneKit
+import CoreData
 
 /// Represents the controller for the virtual forest.
 public class GameViewController: UIViewController {
@@ -6,6 +7,7 @@ public class GameViewController: UIViewController {
     private let scnView = SCNView()
     private var floor: SCNNode!
     private var smog: SCNNode?
+    private var forestItems: Dictionary<SCNNode, String> = [:]
     
     // state used to move a node in edit mode
     private var movingNode: SCNNode?
@@ -17,6 +19,7 @@ public class GameViewController: UIViewController {
     // state used to add a new node
     private var nodeAddGestureRecognizer: UITapGestureRecognizer?
     private var urlNodeToLoad: URL?
+    private var nameNodeToLoad: String?
     private var nodePlacedCallback: () -> Void = { }
     
     /// Initializes the game's scene with the scn file provided.
@@ -29,12 +32,11 @@ public class GameViewController: UIViewController {
     public func isSmogOn(_ val: Bool) {
         if val {
             addGrayFilter()
-            if smog == nil, let url = Bundle.main.url(forResource: "smog", withExtension: "scn", subdirectory: "art.scnassets") {
-                smog = loadNode(fromFile: url, worldPosition: SCNVector3(0, 2, 0))
+            if smog == nil, let url = Bundle.main.url(forResource: "smog", withExtension: "scn", subdirectory: "") {
+                smog = loadNode(withName: "smog", fromSceneFile: url, worldPosition: SCNVector3(0, 2, 0))
             }
-            smog?.isHidden = false
         } else {
-            scene.rootNode.filters = []
+            scene.rootNode.filters = [] // remove gray filter
             smog?.removeFromParentNode()
             smog = nil
         }
@@ -42,16 +44,14 @@ public class GameViewController: UIViewController {
     
     /**
      Allows the user to place a node specified by the given scn filename and directory.
-     - Parameter withFilename: name of the scn file containing the node.
-     - Parameter inSubdirectory: resource subdirectory containing the file.
      - Parameter nodePlacedCallback: function to call when the user has finished placing the node.
      - Remark: If the node is not found, nothing happens. Also note that only one node at a time can be placed.
      */
-    public func letUserPlaceNode(withFilename filename: String,
-                                 inSubdirectory dir: String,
+    public func letUserPlaceNode(withName name: String, fromSceneFile url: URL,
                                  nodePlacedCallback: @escaping () -> Void = {}) {
-        guard urlNodeToLoad == nil else { return }
-        urlNodeToLoad = Bundle.main.url(forResource: filename, withExtension: "scn", subdirectory: dir)
+        guard urlNodeToLoad == nil && nameNodeToLoad == nil else { return }
+        nameNodeToLoad = name
+        urlNodeToLoad = url
         let nodeAddGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addNewNodeByTouch(_:)))
         nodeAddGestureRecognizer.numberOfTapsRequired = 2
         scnView.addGestureRecognizer(nodeAddGestureRecognizer)
@@ -91,39 +91,53 @@ public class GameViewController: UIViewController {
     
     private func setupNodes() {
         floor = scene.rootNode.childNode(withName: "floor", recursively: false)!
+        loadFromDatabase()
         // TODO:- load from database
     }
     
-    private func loadNode(fromFile url: URL, worldPosition: SCNVector3 = SCNVector3(0,0,0)) -> SCNReferenceNode? {
-        if let referenceNode = SCNReferenceNode(url: url) {
-            referenceNode.worldPosition = worldPosition
-            scene.rootNode.addChildNode(referenceNode)
-            SCNTransaction.begin()
-            referenceNode.load()
-            SCNTransaction.commit()
-            return referenceNode
+    private func loadNode(withName name: String, fromSceneFile url: URL, worldPosition: SCNVector3 = SCNVector3(0,0,0)) -> SCNNode? {
+            if let nodeScene = try? SCNScene(url: url),
+                let node = nodeScene.rootNode.childNode(withName: name, recursively: false) {
+                node.worldPosition = worldPosition
+                scene.rootNode.addChildNode(node)
+                return node
+            }
+            return nil
         }
-        return nil
-    }
+    
     
     @objc
     private func addNewNodeByTouch(_ gesture: UITapGestureRecognizer) {
-        if let url = urlNodeToLoad {
+        if let url = urlNodeToLoad, let internalName = nameNodeToLoad {
             let location = gesture.location(in: self.view)
             
             if let hitResult = scnView.hitTest(location, options: [SCNHitTestOption.ignoreHiddenNodes: true, SCNHitTestOption.firstFoundOnly: true]).first,
                 hitResult.node == floor {
                 // place object with a falling effect by using a y > 0
                 let worldPos = SCNVector3(hitResult.worldCoordinates.x, 1.5, hitResult.worldCoordinates.z)
-                _ = loadNode(fromFile: url, worldPosition: worldPos)
+                if let node = loadNode(withName: internalName, fromSceneFile: url, worldPosition: worldPos) {
+                    forestItems[node] = UUID().uuidString
+                    saveToDatabase(node: node)
+                }
                 
                 // cleanup and callback
                 if let recognizer = nodeMoveGestureRecognizer {
                     scnView.removeGestureRecognizer(recognizer)
                 }
                 urlNodeToLoad = nil
+                nameNodeToLoad = nil
                 nodePlacedCallback()
             }
+        }
+    }
+    
+    private func saveToDatabase(node: SCNNode) {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            let DBMS = appDelegate.DBMS
+            
+            try? DBMS?.saveForestItem(ForestItem(id: forestItems[node] ?? UUID().uuidString,
+                                            x: node.worldPosition.x, y: node.worldPosition.y, z: node.worldPosition.z,
+                                            internalName: node.name ?? ""))
         }
     }
     
@@ -150,6 +164,7 @@ public class GameViewController: UIViewController {
         projectedInitialZ = CGFloat(scnView.projectPoint(movableHitResult.worldCoordinates).z)
         lastPanLocation = movableHitResult.worldCoordinates
         movingNode = getTopNode(fromNode: movableHitResult.node)
+        print("selected node with name " + (movingNode?.name ?? "nil"))
         movingNode?.physicsBody?.isAffectedByGravity = false
         originalPosition = movableHitResult.node.worldPosition
     }
@@ -178,11 +193,41 @@ public class GameViewController: UIViewController {
     }
     
     private func endNodeMoving() {
-        movingNode?.physicsBody?.isAffectedByGravity = true
+        if let node = movingNode {
+            node.physicsBody?.isAffectedByGravity = true
+            saveToDatabase(node: node)
+        }
+
         (projectedInitialZ, movingNode) = (nil, nil)
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    private func loadFromDatabase() {
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            let DBMS = appDelegate.DBMS!
+            guard let items = try? DBMS.getForestItems() else { return }
+            
+            for item in items {
+                if let url = Bundle.main.url(forResource: item.internalName, withExtension: "scn"),
+                    let node = loadNode(withName: item.internalName,
+                         fromSceneFile: url,
+                         worldPosition: SCNVector3(item.x, item.y, item.z)) {
+                    forestItems[node] = item.id
+                }
+            }
+        }
+    }
+    
+
+}
+
+public struct ForestItem: Identifiable {
+    public var id: String
+    public var x: Float
+    public var y: Float
+    public var z: Float
+    public var internalName: String
 }

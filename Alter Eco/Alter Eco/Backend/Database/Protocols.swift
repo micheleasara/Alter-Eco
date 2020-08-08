@@ -20,6 +20,9 @@ public protocol DBReader {
     */
     func queryFoods(predicate: String?, args: [Any]?) throws -> [Food]
     
+    /// Returns all forest items contained in the database. Only items with non-nil attributes are returned.
+    func getForestItems() throws -> [ForestItem]
+    
     /**
     Queries the given entity with a predicate.
     - Parameter entity: entity name as a string.
@@ -38,6 +41,8 @@ public protocol DBWriter {
     func append(activity: MeasuredActivity) throws
     /// Appends a list of food products to the FoodProduct entity.
     func append(foods: [Food]) throws
+    /// Writes updates the entry associated with the id of the given forest item if it exists. Otherwise, a new item is written to the database.
+    func saveForestItem(_ item: ForestItem) throws
     /// Updates score by adding score computed from a given activity.
     func updateScore(activity: MeasuredActivity) throws
     /// Deletes an entry from the given entity identified by a rows number.
