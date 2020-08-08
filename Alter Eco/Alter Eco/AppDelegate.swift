@@ -65,8 +65,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func locationManagerDidPauseLocationUpdates(_ manager: CLLocationManager) {
         let content = UNMutableNotificationContent()
-        content.title = "Looks like you have not moved in a while (or there's no signal)"
-        content.body = "Tracking paused: we care about your battery life. Open Alter Eco to resume."
+        content.title = "Tracking paused: we care about your battery life"
+        content.body = "Looks like you have not moved in a while (or there's no signal). Open Alter Eco to resume."
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)

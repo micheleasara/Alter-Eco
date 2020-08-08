@@ -145,7 +145,7 @@ public struct OptionMenu: View {
                 Spacer()
                 Button(action: { self.showingObjectList = false }) {
                     Image(systemName: "xmark.circle")
-                }.padding()
+                }.foregroundColor(Color.white).padding()
             }
             .background(Color.yellow)
             .cornerRadius(20)
@@ -158,14 +158,14 @@ public struct OptionMenu: View {
         ForEach(0..<availableObjects.count, id: \.self) { i in
             VStack(alignment: .leading, spacing: 1) {
                 HStack() {
-                    Text(self.availableObjects[i].displayedName).bold()
+                    Text(self.availableObjects[i].displayedName).bold().foregroundColor(Color.black)
                     Button(action: {
                         self.selectedObjectIdx = i
                         self.showingConfirmation = true
                     }) { Image(systemName: "plus.square")
-                    }
+                    }.foregroundColor(Color.black)
                 }
-                Text(String(format: "%d points", self.availableObjects[i].points)).italic()
+                Text(String(format: "%d points", self.availableObjects[i].points)).italic().foregroundColor(Color.init(red: 0.3, green: 0.3, blue: 0.3))
             }
         }.alert(isPresented: $showingConfirmation) {
             let objectInfo = self.availableObjects[self.selectedObjectIdx]

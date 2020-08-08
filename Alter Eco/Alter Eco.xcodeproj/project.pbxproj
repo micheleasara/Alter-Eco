@@ -38,7 +38,6 @@
 		9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */; };
 		9CD5948424296E2700B1D0B4 /* Alter_EcoFullUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */; };
 		9CFAF4BC242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */; };
-		9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DE054C86248EFE3B001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
 		DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
@@ -57,6 +56,7 @@
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
+		DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE74ECF72482E4D10099F944 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* Utils.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
@@ -93,7 +93,6 @@
 		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
 		DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
 		DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
-		DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */; };
 		DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */; };
 		DEDE549724467B4E003FE0DE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* CoreDataManager.swift */; };
 		DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
@@ -172,7 +171,6 @@
 		9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoFullUITest.swift; sourceTree = "<group>"; };
 		9CD5948524296E2700B1D0B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatabaseAndUserScoreTest.swift; path = "Alter EcoBackEndTest/DatabaseAndUserScoreTest.swift"; sourceTree = SOURCE_ROOT; };
-		9CFAF4C4242E2077000B75A7 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD200B5023E3885700629E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -191,6 +189,7 @@
 		DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		DE74ECF62482E4D10099F944 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
@@ -450,8 +449,8 @@
 		DEA0D1D424B5DFEF00FFDB00 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */,
 				DEA0D1D524B5E02900FFDB00 /* Protocols.swift */,
+				DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */,
 				9C87AE26244215FB00490481 /* CoreDataManager.swift */,
 			);
 			path = Database;
@@ -682,7 +681,6 @@
 				DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */,
 				DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */,
 				DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */,
-				9CFAF4C5242E2077000B75A7 /* Database2.0.xcdatamodeld in Sources */,
 				9CD5943A242968DF00B1D0B4 /* TransportView.swift in Sources */,
 				9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */,
 				DE994B882483E03200D3788B /* Title.swift in Sources */,
@@ -709,6 +707,7 @@
 				DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */,
 				DE36CC2C24BC80B200825FAE /* SearchableList.swift in Sources */,
 				9C87AE292442408F00490481 /* ActivityList.swift in Sources */,
+				DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */,
 				DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */,
 				9CD594432429692000B1D0B4 /* AppDelegate.swift in Sources */,
 			);
@@ -722,7 +721,6 @@
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
 				DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
-				DEDE549324467B4E003FE0DE /* Database2.0.xcdatamodeld in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
 				DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */,
@@ -1102,12 +1100,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		9CFAF4C3242E2077000B75A7 /* Database2.0.xcdatamodeld */ = {
+		DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				9CFAF4C4242E2077000B75A7 /* Database2.0.xcdatamodel */,
+				DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */,
 			);
-			currentVersion = 9CFAF4C4242E2077000B75A7 /* Database2.0.xcdatamodel */;
+			currentVersion = DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */;
 			path = Database2.0.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
