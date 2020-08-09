@@ -20,6 +20,14 @@ public protocol DBReader {
     */
     func queryFoods(predicate: String?, args: [Any]?) throws -> [Food]
     
+    /**
+     Retrieves the carbon equivalent associated with the foods satisfying the given predicate.
+     - Parameter predicate: predicate used to select rows.
+     - Parameter args: list of arguments to include in the predicate.
+     - Returns: The carbon equivalent value in kg.
+     */
+    func carbonFromFoods(predicate: String?, args: [Any]?) throws -> Measurement<UnitMass>
+    
     /// Returns all forest items contained in the database. Only items with non-nil attributes are returned.
     func getForestItems() throws -> [ForestItem]
     

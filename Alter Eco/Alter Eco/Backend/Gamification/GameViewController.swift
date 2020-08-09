@@ -25,9 +25,8 @@ public class GameViewController: UIViewController {
     
     // state used to add a new node
     private var nodeAddGestureRecognizer: UITapGestureRecognizer?
-    private var urlNodeToLoad: URL?
-    private var nameNodeToLoad: String?
     private var nodePlacedCallback: () -> Void = { }
+    private var itemToPlace: ShopItem?
     
     /// Initializes the game's scene with the scn file provided.
     public init(mainScenePath: String, DBMS: DBManager) {
@@ -57,11 +56,10 @@ public class GameViewController: UIViewController {
      - Parameter nodePlacedCallback: function to call when the user has finished placing the node.
      - Remark: If the node is not found, nothing happens. Also note that only one node at a time can be placed.
      */
-    public func letUserPlaceNode(withName name: String, fromSceneFile url: URL,
+    public func letUserPlaceNode(fromShopItem item: ShopItem,
                                  nodePlacedCallback: @escaping () -> Void = {}) {
-        guard urlNodeToLoad == nil && nameNodeToLoad == nil else { return }
-        nameNodeToLoad = name
-        urlNodeToLoad = url
+        guard itemToPlace == nil else { return }
+        self.itemToPlace = item
         let nodeAddGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(addNewNodeByTouch(_:)))
         nodeAddGestureRecognizer.numberOfTapsRequired = 2
         scnView.addGestureRecognizer(nodeAddGestureRecognizer)
@@ -127,33 +125,59 @@ public class GameViewController: UIViewController {
     
     @objc
     private func addNewNodeByTouch(_ gesture: UITapGestureRecognizer) {
-        if let url = urlNodeToLoad, let internalName = nameNodeToLoad {
+        if let item = itemToPlace {
             let location = gesture.location(in: self.view)
             
             if let hitResult = scnView.hitTest(location, options: [SCNHitTestOption.ignoreHiddenNodes: true, SCNHitTestOption.firstFoundOnly: true]).first,
                 hitResult.node == floor {
+                
                 // place object with a falling effect by using a y > 0
                 let worldPos = SCNVector3(hitResult.worldCoordinates.x, 1.5, hitResult.worldCoordinates.z)
-                if let node = loadNode(withName: internalName, fromSceneFile: url, worldPosition: worldPos) {
+                if let url = Bundle.main.url(forResource: item.internalName, withExtension: "scn"),
+                    let node = loadNode(withName: item.internalName, fromSceneFile: url, worldPosition: worldPos) {
                     nodeToUUID[node] = UUID().uuidString
-                    saveToDatabase(node: node)
+                    if endItemTransaction() {
+                        saveToDatabase(node: node)
+                    } else {
+                        displayErrorAlert()
+                    }
                 }
                 
-                // cleanup and callback
+                // cleanup
                 if let recognizer = nodeMoveGestureRecognizer {
                     scnView.removeGestureRecognizer(recognizer)
                 }
-                urlNodeToLoad = nil
-                nameNodeToLoad = nil
+                itemToPlace = nil
                 nodePlacedCallback()
             }
         }
+    }
+    
+    /// Subtracts the points required for the item.
+    private func endItemTransaction() -> Bool {
+        if let item = itemToPlace,
+            let currentScore = try? DBMS.retrieveLatestScore(),
+            currentScore >= item.cost {
+            do { // ensure score updating did not fail
+                try DBMS.updateScore(toValue: currentScore - item.cost)
+                return true
+            } catch { }
+        }
+        return false
     }
     
     private func saveToDatabase(node: SCNNode) {
         try? DBMS.saveForestItem(ForestItem(id: nodeToUUID[node] ?? UUID().uuidString,
                                             x: node.worldPosition.x, y: node.worldPosition.y, z: node.worldPosition.z,
                                             internalName: node.name ?? ""))
+    }
+    
+    private func displayErrorAlert() {
+        let errorAlert = UIAlertController(title: "Error",
+                                      message: "Ops, something went wrong!",
+                                      preferredStyle: .alert)
+        
+        self.present(errorAlert, animated: true)
     }
     
     @objc

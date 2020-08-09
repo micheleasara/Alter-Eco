@@ -4,8 +4,8 @@ import SwiftUI
 public class GameViewModel: ObservableObject {
     /// Determines whether the user can move forest items.
     @Published public var isEditModeOn: Bool = false
-    /// The name of the item which the user will be allowed to add to the forest. Nil if the user is not in the process of placing a new item.
-    @Published public var nameItemToAdd: String?
+    /// Represents an item which the user is in the process of adding.
+    @Published public var itemToAdd: ShopItem?
     /// Determines if the smog effect is enabled or not.
     @Published public var isSmogOn: Bool = false
     /// Determines if the 3D scene should be shown or not.
@@ -32,5 +32,12 @@ public class GameViewModel: ObservableObject {
     /// Returns a controller which handles 3D rendering and other game-related activities.
     public func getViewController() -> GameViewController {
         return GameViewController(mainScenePath: "MainScene.scn", DBMS: DBMS)
+    }
+    
+    public func endItemTransaction() {
+        if let item = itemToAdd,
+            let currentScore = try? DBMS.retrieveLatestScore() {
+            try? DBMS.updateScore(toValue: currentScore - item.cost)
+        }
     }
 }

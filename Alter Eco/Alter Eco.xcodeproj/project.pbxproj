@@ -34,7 +34,6 @@
 		9CD594472429696D00B1D0B4 /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */; };
 		9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */; };
 		9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */; };
-		9CD5948424296E2700B1D0B4 /* Alter_EcoFullUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */; };
 		9CFAF4BC242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */; };
 		CD200B4C23E3885700629E73 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DE054C86248EFE3B001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
@@ -56,12 +55,13 @@
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7A24E0510100299047 /* GameViewModel.swift */; };
-		DE5E6E7D24E057F400299047 /* ForestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* ForestItem.swift */; };
-		DE5E6E7E24E057F400299047 /* ForestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* ForestItem.swift */; };
+		DE5E6E7D24E057F400299047 /* GameItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* GameItems.swift */; };
+		DE5E6E7E24E057F400299047 /* GameItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* GameItems.swift */; };
 		DE5E6E7F24E0585B00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE5E6E8124E091AB00299047 /* FoodPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */; };
 		DE5E6E8324E092BA00299047 /* TransportPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */; };
 		DE5E6E8424E092BA00299047 /* TransportPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */; };
+		DE5E6E8524E0C30A00299047 /* WordEmbedding.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */; };
 		DE74ECF72482E4D10099F944 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* Utils.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
@@ -170,8 +170,6 @@
 		9CD5945A24296BD100B1D0B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Alter EcoBackEndTests/Info.plist"; sourceTree = "<group>"; };
 		9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoBackEndTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoFullUITest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alter_EcoFullUITest.swift; sourceTree = "<group>"; };
-		9CD5948524296E2700B1D0B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatabaseAndUserScoreTest.swift; path = "Alter EcoBackEndTest/DatabaseAndUserScoreTest.swift"; sourceTree = SOURCE_ROOT; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -193,7 +191,7 @@
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		DE5E6E7A24E0510100299047 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
-		DE5E6E7C24E057F400299047 /* ForestItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForestItem.swift; sourceTree = "<group>"; };
+		DE5E6E7C24E057F400299047 /* GameItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameItems.swift; sourceTree = "<group>"; };
 		DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodPieChartViewModel.swift; sourceTree = "<group>"; };
 		DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportPieChartViewModel.swift; sourceTree = "<group>"; };
 		DE74ECF62482E4D10099F944 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -276,21 +274,11 @@
 			path = "Alter EcoBackEndTest";
 			sourceTree = "<group>";
 		};
-		9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */ = {
-			isa = PBXGroup;
-			children = (
-				9CD5948324296E2700B1D0B4 /* Alter_EcoFullUITest.swift */,
-				9CD5948524296E2700B1D0B4 /* Info.plist */,
-			);
-			path = "Alter EcoFullUITest";
-			sourceTree = "<group>";
-		};
 		CD200B3623E3885100629E73 = {
 			isa = PBXGroup;
 			children = (
 				CD200B4123E3885100629E73 /* Alter Eco */,
 				9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */,
-				9CD5948224296E2700B1D0B4 /* Alter EcoFullUITest */,
 				CD200B4023E3885100629E73 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -309,7 +297,6 @@
 		CD200B4123E3885100629E73 /* Alter Eco */ = {
 			isa = PBXGroup;
 			children = (
-				DE8ECE8324DE0AC000641BA4 /* art.scnassets */,
 				9CD594422429692000B1D0B4 /* AppDelegate.swift */,
 				CD200B5023E3885700629E73 /* Info.plist */,
 				DE1B266C24433C9D007D9B54 /* Backend */,
@@ -385,6 +372,7 @@
 				DE74ECF62482E4D10099F944 /* Utils.swift */,
 				DE2D583E24A517DB00BB14F0 /* Charts */,
 				55DA632A242AC557002CCD07 /* Assets.xcassets */,
+				DE8ECE8324DE0AC000641BA4 /* art.scnassets */,
 			);
 			path = Frontend;
 			sourceTree = "<group>";
@@ -406,7 +394,7 @@
 			children = (
 				DE8ECE8024DE0A0100641BA4 /* GameViewController.swift */,
 				DE5E6E7A24E0510100299047 /* GameViewModel.swift */,
-				DE5E6E7C24E057F400299047 /* ForestItem.swift */,
+				DE5E6E7C24E057F400299047 /* GameItems.swift */,
 			);
 			path = Gamification;
 			sourceTree = "<group>";
@@ -664,7 +652,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CD5948424296E2700B1D0B4 /* Alter_EcoFullUITest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,7 +672,7 @@
 				DEA0D1D624B5E02900FFDB00 /* Protocols.swift in Sources */,
 				DE3AC73924ACD82700D32E54 /* FoodListViewModel.swift in Sources */,
 				DE3AC73B24ACE0E700D32E54 /* BarcodeScanner.swift in Sources */,
-				DE5E6E7D24E057F400299047 /* ForestItem.swift in Sources */,
+				DE5E6E7D24E057F400299047 /* GameItems.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
 				DE2D583A24A4FD0E00BB14F0 /* ChartModel.swift in Sources */,
 				DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */,
@@ -730,10 +717,11 @@
 				DE3C10A52447B48000107AF4 /* Timers.swift in Sources */,
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
 				DEE2B28524A677EB0093181B /* ChartModel.swift in Sources */,
-				DE5E6E7E24E057F400299047 /* ForestItem.swift in Sources */,
+				DE5E6E7E24E057F400299047 /* GameItems.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
+				DE5E6E8524E0C30A00299047 /* WordEmbedding.mlmodel in Sources */,
 				DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */,
 				DEA0D1DC24B60A8100FFDB00 /* FoodRetrieval.swift in Sources */,
 				DE5E6E8424E092BA00299047 /* TransportPieChartViewModel.swift in Sources */,

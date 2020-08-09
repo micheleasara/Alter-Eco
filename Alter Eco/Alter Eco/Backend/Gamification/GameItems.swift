@@ -11,3 +11,13 @@ public struct ForestItem: Identifiable {
     /// The name of the item, which should correspond to a resource file to be loaded.
     public var internalName: String
 }
+
+/// Represents an item which can be bought with points.
+public struct ShopItem {
+    /// Item name to be shown to the user.
+    public let displayedName: String
+    /// Name used to identify the resource corresponding to this item.
+    public let internalName: String
+    /// Amount of points required for this item.
+    public let cost: Double
+}

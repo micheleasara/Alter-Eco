@@ -4,6 +4,9 @@ import CoreData
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework.
 public class CoreDataManager : DBManager {
+    // utility to get carbon from food items
+    private let foodConverter = FoodToCarbonConverter()
+
     // contains the function called when an activity has been written to the database
     private var activityWrittenCallbacks: [(MeasuredActivity) -> Void] = []
     // contains the function called when a list of foods has been written to the database
@@ -149,6 +152,11 @@ public class CoreDataManager : DBManager {
         }
         
         return foods
+    }
+    
+    public func carbonFromFoods(predicate: String?, args: [Any]?) throws -> Measurement<UnitMass> {
+        let foods = try queryFoods(predicate: predicate, args: args)
+        return foodConverter.getCarbon(fromFoods: foods)
     }
     
     public func updateScore(activity: MeasuredActivity) throws {

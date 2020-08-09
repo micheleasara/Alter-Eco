@@ -107,6 +107,10 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBWriterMock, DBManager {
+    func carbonFromFoods(predicate: String?, args: [Any]?) throws -> Measurement<UnitMass> {
+        return Measurement(value: 0, unit: .kilograms)
+    }
+    
     var carbonWithinIntervalMotionTypes = [MeasuredActivity.MotionType]()
     var carbonWithinIntervalFroms = [Date]()
     var carbonWithinIntervalIntervals = [TimeInterval]()

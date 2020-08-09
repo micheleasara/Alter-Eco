@@ -11,7 +11,7 @@ public struct GameView: View {
                 OptionMenu()
             }
             
-            if viewModel.nameItemToAdd != nil {
+            if viewModel.itemToAdd != nil {
                 Text("Double tap where you would like to place the item.").bold()
             }
         }
@@ -30,8 +30,8 @@ public struct SceneKitView: UIViewControllerRepresentable {
     
     public func updateUIViewController(_ uiViewController: GameViewController, context: Context) {
         uiViewController.isEditModeOn(viewModel.isEditModeOn)
-        if let name = viewModel.nameItemToAdd, let url = Bundle.main.url(forResource: name, withExtension: "scn") {
-            uiViewController.letUserPlaceNode(withName: name, fromSceneFile: url, nodePlacedCallback: { self.viewModel.nameItemToAdd = nil })
+        if let item = viewModel.itemToAdd {
+            uiViewController.letUserPlaceNode(fromShopItem: item, nodePlacedCallback: { self.viewModel.itemToAdd = nil })
         }
         uiViewController.isSmogOn(viewModel.isSmogOn)
     }
@@ -44,8 +44,10 @@ public struct OptionMenu: View {
     @State private var showingConfirmation = false
     @State private var selectedItemIdx: Int = 0
     
-    private let availableItems: [(displayedName: String, internalName: String, points: Double)] =
-        [("Apple tree", "appleTree", 500), ("Pine", "pine", 350), ("Rounded tree", "roundedTree", 300)]
+    private let availableItems: [ShopItem] =
+        [ShopItem(displayedName: "Apple tree", internalName: "appleTree", cost: 500),
+         ShopItem(displayedName: "Pine", internalName: "pine", cost: 350),
+         ShopItem(displayedName: "Rounded tree", internalName: "roundedTree", cost: 300)]
     
     public var body: some View {
         HStack(alignment: .top) {
@@ -154,24 +156,22 @@ public struct OptionMenu: View {
                     }) { Image(systemName: "plus.square")
                     }.foregroundColor(Color.black)
                 }
-                Text(String(format: "%.0f points", self.availableItems[i].points)).italic().foregroundColor(Color.init(red: 0.3, green: 0.3, blue: 0.3))
+                Text(String(format: "%.0f points", self.availableItems[i].cost)).italic().foregroundColor(Color.init(red: 0.3, green: 0.3, blue: 0.3))
             }
         }.alert(isPresented: $showingConfirmation) {
-            let objectInfo = self.availableItems[self.selectedItemIdx]
-            if viewModel.hasEnoughPoints(requiredPts: objectInfo.points) {
-                return getConfirmationAlert(displayedName: objectInfo.displayedName.lowercased(),
-                                        points: objectInfo.points,
-                                        internalName: objectInfo.internalName)
+            let shopItem = self.availableItems[self.selectedItemIdx]
+            if viewModel.hasEnoughPoints(requiredPts: shopItem.cost) {
+                return getConfirmationAlert(item: shopItem)
             } else {
                 return notEnoughPointsAlert
             }
         }
     }
     
-    private func getConfirmationAlert(displayedName: String, points: Double, internalName: String) -> Alert {
+    private func getConfirmationAlert(item: ShopItem) -> Alert {
         Alert(title: Text("Confirm"),
-              message: Text(String(format: "Are you sure you want to spend %.0f points for one %@?", points, displayedName)),
-              primaryButton: .default(Text("Yes"), action: { self.viewModel.nameItemToAdd = internalName }),
+              message: Text(String(format: "Are you sure you want to spend %.0f points for one %@?", item.cost, item.displayedName)),
+              primaryButton: .default(Text("Yes"), action: { self.viewModel.itemToAdd = item }),
               secondaryButton: .cancel(Text("No")))
     }
     

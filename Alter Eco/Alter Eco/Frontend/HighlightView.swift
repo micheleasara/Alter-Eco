@@ -8,7 +8,7 @@ import SwiftUI
 
 public struct HighlightView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    @State private(set) var dailyCarbon: Double
+    public let dailyCarbon: Double
     
     public var body: some View {
         VStack {

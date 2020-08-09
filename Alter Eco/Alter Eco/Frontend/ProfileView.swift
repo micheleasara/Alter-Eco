@@ -67,9 +67,11 @@ struct ProfileView: View {
     }
     
     private func getDailyCarbon() -> Double {
-        var now = Date()
-        now = now.setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? now
-        return (try? DBMS.carbonFromPollutingMotions(from: now, interval: DAY_IN_SECONDS)) ?? 0
+        let dayStart = Date().toLocalTime().setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? Date()
+        let dayEnd = dayStart.addingTimeInterval(DAY_IN_SECONDS)
+        let transport = (try? DBMS.carbonFromPollutingMotions(from: dayStart, interval: DAY_IN_SECONDS)) ?? 0
+        let foods = (try? DBMS.carbonFromFoods(predicate: "date >= %@ AND date <= %@", args: [dayStart, dayEnd]))?.value ?? 0
+        return transport + foods
     }
     
 }

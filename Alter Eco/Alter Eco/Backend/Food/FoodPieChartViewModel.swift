@@ -3,7 +3,8 @@ import Foundation
 /// Responsible for retrieving and publishing the data shown in the food pie chart.
 public class FoodPieChartViewModel: PieChartModel {
     private let DBMS: DBManager
-    
+    private let converter = FoodToCarbonConverter()
+
     /// Initializes a new instance of the view model with the database manager provided.
     public init(DBMS: DBManager) {
         self.DBMS = DBMS
@@ -15,11 +16,10 @@ public class FoodPieChartViewModel: PieChartModel {
     public func updateUpTo(_ date: Date) {
         var carbonVals = [0.0, 0.0, 0.0, 0.0]
         
-        let converter = FoodToCarbonConverter()
-        carbonVals[0] = converter.getCarbon(fromFoods: getMeatsAndSeafood(date: date)).value
-        carbonVals[1] = converter.getCarbon(fromFoods: getDairiesAndEggs(date: date)).value
-        carbonVals[2] = converter.getCarbon(fromFoods: getVeganProduce(date: date)).value
-        carbonVals[3] = converter.getCarbon(fromFoods: getCarbsBeveragesAndOthers(date: date)).value
+        carbonVals[0] = carbonMeatsAndSeafood(date: date)
+        carbonVals[1] = carbonDairiesAndEggs(date: date)
+        carbonVals[2] = carbonVeganProduce(date: date)
+        carbonVals[3] = carbonCarbsBeveragesAndOthers(date: date)
         update(values: carbonVals,
         imageNames: ["meat", "dairies", "vegetable", "fast-food"],
         colours: [.red, .yellow, .green, .blue],
@@ -29,36 +29,36 @@ public class FoodPieChartViewModel: PieChartModel {
                       "Carbs and beverages"])
     }
     
-    private func getVeganProduce(date: Date) -> [Food] {
+    private func carbonVeganProduce(date: Date) -> Double {
         let veggies = Food.Category.vegetablesAndDerived.rawValue
         let fruits = Food.Category.fruits.rawValue
         let legumes = Food.Category.legumes.rawValue
         let foods = try? DBMS.queryFoods(predicate: "date <= %@ AND (category == %@ OR category == %@ OR category == %@)",
                                          args: [date, veggies, fruits, legumes])
-        return (foods ?? [])
+        return converter.getCarbon(fromFoods: foods ?? []).value
     }
     
-    private func getDairiesAndEggs(date: Date) -> [Food] {
+    private func carbonDairiesAndEggs(date: Date) -> Double {
         let foods = try? DBMS.queryFoods(predicate: "date <= %@ AND category == %@",
                                          args: [date, Food.Category.dairiesAndEggs.rawValue])
-        return (foods ?? [])
+        return converter.getCarbon(fromFoods: foods ?? []).value
     }
     
-    private func getMeatsAndSeafood(date: Date) -> [Food] {
+    private func carbonMeatsAndSeafood(date: Date) -> Double {
         let meats = Food.Category.meats.rawValue
         let seafood = Food.Category.seafood.rawValue
         let foods = try? DBMS.queryFoods(predicate: "date <= %@ AND (category == %@ OR category == %@)",
                                          args: [date, meats, seafood])
-        return (foods ?? [])
+        return converter.getCarbon(fromFoods: foods ?? []).value
     }
     
-    private func getCarbsBeveragesAndOthers(date: Date) -> [Food] {
+    private func carbonCarbsBeveragesAndOthers(date: Date) -> Double {
         let others = Food.Category.others.rawValue
         let carbs = Food.Category.carbohydrates.rawValue
         let beverages = Food.Category.beverages.rawValue
         let foods = try? DBMS.queryFoods(predicate: "category == %@ OR category == %@ OR category == %@",
                                          args: [carbs, beverages, others])
 
-        return (foods ?? [])
+        return converter.getCarbon(fromFoods: foods ?? []).value
     }
 }
