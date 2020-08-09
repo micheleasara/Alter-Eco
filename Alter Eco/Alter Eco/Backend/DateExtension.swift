@@ -2,30 +2,34 @@ import Foundation
 
 /// Provides thread-safe date formatting according to the invariant "en_US_POSIX" locale and with GMT timezone.
 public class FixedDateFormatting {
+    /// Singleton instance
     private static let dateFormatterManager = FixedDateFormatting()
+    /// Queue used to run formatting requests thread safely.
+    private static let queue = DispatchQueue(label: "com.altereco.fixeddateformatting")
     // cached date formatter as suggested in
     //https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html#//apple_ref/doc/uid/TP40002369-SW10
     private var dateFormatter = DateFormatter()
     
     /// Returns a string representation of the given date according to the format provided.
     public static func string(date: Date, format: String) -> String {
-        // use objective c calls for thread safety
-        objc_sync_enter(self)
-        defer { objc_sync_exit(self) }
-        
-        let formatter = dateFormatterManager.getFormatter()
-        formatter.dateFormat = format
-        return formatter.string(from: date)
+        var formatted: String = ""
+        queue.sync {
+            let formatter = dateFormatterManager.getFormatter()
+            formatter.dateFormat = format
+            formatted = formatter.string(from: date)
+        }
+        return formatted
     }
     
     /// Returns a date representation of the given string according to the format provided. Returns nil in case of failure.
     public static func date(from: String, format: String) -> Date? {
-        objc_sync_enter(self)
-        defer { objc_sync_exit(self) }
-        
-        let formatter = dateFormatterManager.getFormatter()
-        formatter.dateFormat = format
-        return formatter.date(from: from)
+        var date: Date?
+        queue.sync {
+            let formatter = dateFormatterManager.getFormatter()
+            formatter.dateFormat = format
+            date = formatter.date(from: from)
+        }
+        return date
     }
     
     private func getFormatter() -> DateFormatter {
