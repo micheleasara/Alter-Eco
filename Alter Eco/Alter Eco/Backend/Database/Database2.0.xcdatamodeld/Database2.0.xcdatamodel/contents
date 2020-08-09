@@ -26,16 +26,13 @@
         <attribute name="imageP" optional="YES" attributeType="Binary"/>
     </entity>
     <entity name="Score" representedClassName="Score" syncable="YES" codeGenerationType="class">
-        <attribute name="counter" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="dateStr" optional="YES" attributeType="String"/>
-        <attribute name="league" optional="YES" attributeType="String"/>
-        <attribute name="score" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="score" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
     <elements>
         <element name="Event" positionX="54.734375" positionY="78.3515625" width="128" height="103"/>
         <element name="FoodProduct" positionX="-18" positionY="36" width="128" height="148"/>
         <element name="ForestItems" positionX="-45" positionY="36" width="128" height="118"/>
         <element name="ProfilePic" positionX="-150.0546875" positionY="101.6171875" width="128" height="58"/>
-        <element name="Score" positionX="-94.38671875" positionY="-72.8359375" width="128" height="103"/>
+        <element name="Score" positionX="-94.38671875" positionY="-72.8359375" width="128" height="58"/>
     </elements>
 </model>

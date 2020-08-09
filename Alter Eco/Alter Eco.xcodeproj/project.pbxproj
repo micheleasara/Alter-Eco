@@ -18,7 +18,6 @@
 		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
 		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
 		9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */; };
-		9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5D59C4243B102C00238275 /* ProgressBarView.swift */; };
 		9C87AE27244215FB00490481 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* CoreDataManager.swift */; };
 		9C87AE292442408F00490481 /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
 		9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */; };
@@ -151,7 +150,6 @@
 		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
 		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
 		9C17CA8124323D1C00378A67 /* CarTripToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarTripToHeathrowAirport.gpx; sourceTree = "<group>"; };
-		9C5D59C4243B102C00238275 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		9C87AE26244215FB00490481 /* CoreDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		9C87AE282442408F00490481 /* ActivityList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityList.swift; sourceTree = "<group>"; };
 		9CD594182429686900B1D0B4 /* SouthKensingtonStation.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = SouthKensingtonStation.gpx; sourceTree = "<group>"; };
@@ -379,7 +377,6 @@
 				DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */,
 				DE36CC2B24BC80B200825FAE /* SearchableList.swift */,
 				DE8F9375249FE8AB002D85E6 /* AwardView.swift */,
-				9C5D59C4243B102C00238275 /* ProgressBarView.swift */,
 				9CD5942C242968DE00B1D0B4 /* HighlightView.swift */,
 				552BB1D324448D2A0010EF6B /* ComparisonView.swift */,
 				55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */,
@@ -701,7 +698,6 @@
 				DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */,
 				DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */,
 				DE74ECF72482E4D10099F944 /* Utils.swift in Sources */,
-				9C5D59C5243B102C00238275 /* ProgressBarView.swift in Sources */,
 				DE3AC73D24ACE15A00D32E54 /* ScannerView.swift in Sources */,
 				55C85C5B243CB879006AD075 /* PrivacyInfoView.swift in Sources */,
 				DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */,

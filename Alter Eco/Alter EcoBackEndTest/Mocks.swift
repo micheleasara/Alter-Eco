@@ -4,7 +4,7 @@ import AlterEcoBackend
 // MARK: Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
 class DBWriterMock: DBWriter {
-    func saveForestItem(_ item: ForestItem) throws {
+    func updateScore(toValue value: Double) throws {
     }
     
     func append(foods: [Food]) throws {
@@ -13,14 +13,9 @@ class DBWriterMock: DBWriter {
     func append(food: Food) throws {}
     
     var appendArgs: [MeasuredActivity] = []
-    var updateScoreArgs: [MeasuredActivity] = []
     
     func append(activity: MeasuredActivity) throws {
         appendArgs.append(activity)
-    }
-    
-    func updateScore(activity: MeasuredActivity) throws {
-        updateScoreArgs.append(activity)
     }
     
     func delete(entity: String, rowNumber: Int) throws {
@@ -111,30 +106,12 @@ class ActivityListMock : ActivityList {
     }
 }
 
-class DBManagerMock: DBManager {
-    func getForestItems() throws -> [ForestItem] {
-        return []
-    }
-    
-    func saveForestItem(_ item: ForestItem) throws {
-    }
-    
-    func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void) {
-    }
-    
-    func append(foods: [Food]) throws {
-    }
-    
-    func queryFoods(predicate: String?, args: [Any]?) throws -> [Food] { return [] }
-    
-    func append(food: Food) throws {}
-    
-    func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {}
-    
+class DBManagerMock: DBWriterMock, DBManager {
     var carbonWithinIntervalMotionTypes = [MeasuredActivity.MotionType]()
     var carbonWithinIntervalFroms = [Date]()
     var carbonWithinIntervalIntervals = [TimeInterval]()
-    
+    var updateScoreArgs: [MeasuredActivity] = []
+
     func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {
         carbonWithinIntervalMotionTypes.append(motionType)
         carbonWithinIntervalFroms.append(from)
@@ -142,21 +119,24 @@ class DBManagerMock: DBManager {
         return 0
     }
     
+    func updateScore(activity: MeasuredActivity) throws {
+        updateScoreArgs.append(activity)
+    }
+    
     func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double {return 0}
     func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {}
     func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {return 0}
     func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {return 0}
     func updateLeague(newLeague: String) throws {}
-    func retrieveLatestScore() throws -> UserScore {return UserScore(totalPoints: 0, date: "", league: "", counter: 0)}
+    func retrieveLatestScore() throws -> Double { 0 }
     func updateLeagueIfEnoughPoints() throws {}
     func getFirstDate() throws -> Date {return Date(timeIntervalSince1970: 0)}
     func queryActivities(predicate: String?, args: [Any]?) throws -> [MeasuredActivity] {return []}
     func executeQuery(entity: String, predicate: String?, args: [Any]?) throws -> [Any] {return []}
-    func append(activity: MeasuredActivity) throws {}
-    func updateScore(activity: MeasuredActivity) throws {}
-    func setValuesForKeys(entity: String, keyedValues: [String : Any]) throws {}
-    func delete(entity: String, rowNumber: Int) throws {
-    }
-    func deleteAll(entity: String) throws {
-    }
+    func getFirstDate() throws -> Date? { return nil}
+    func getForestItems() throws -> [ForestItem] { return [] }
+    func saveForestItem(_ item: ForestItem) throws {}
+    func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void) {}
+    func queryFoods(predicate: String?, args: [Any]?) throws -> [Food] { return [] }
+    func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {}
 }

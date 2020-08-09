@@ -30,8 +30,8 @@ public class ActivityEstimator<T:ActivityList> {
     private var measurements: T
     /// Defines how many activities' motion types must be different from the previous ones for a new speed-based activity to be computed
     private let numChangeActivity: Int
-    /// Object allowing writing operations to the database.
-    private let DBMS: DBWriter
+    /// Object allowing interactions with the database.
+    private let DBMS: DBManager
     
     /// Callback function for when the user is thought to be in a station.
     private var inStationCallback: (_ station: CLLocation) -> Void = {_  in }
@@ -45,7 +45,7 @@ public class ActivityEstimator<T:ActivityList> {
      - Parameter timer: object to perform delayed actions; used to deactivate ROIs' flags and other time-based actions.
      - Parameter DBMS: object allowing writing operations to the database.
      */
-    public init(activityList: T, numChangeActivity: Int, timers: CountdownHandler, DBMS: DBWriter) {
+    public init(activityList: T, numChangeActivity: Int, timers: CountdownHandler, DBMS: DBManager) {
         self.measurements = activityList
         self.numChangeActivity = numChangeActivity
         self.timers = timers

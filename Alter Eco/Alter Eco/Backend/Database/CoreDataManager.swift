@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 import CoreData
 
-/// Represents a database manager that provides an I/O interface with the CoreData framework. Also provides carbon conversion utilities.
-public class CoreDataManager : DBManager, CarbonCalculator {
+/// Represents a database manager that provides an I/O interface with the CoreData framework.
+public class CoreDataManager : DBManager {
     // contains the function called when an activity has been written to the database
     private var activityWrittenCallbacks: [(MeasuredActivity) -> Void] = []
     // contains the function called when a list of foods has been written to the database
@@ -153,17 +153,20 @@ public class CoreDataManager : DBManager, CarbonCalculator {
     
     public func updateScore(activity: MeasuredActivity) throws {
         let managedContext = try getManagedContext()
-
-        // retrieve current score
-        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
-        if queryResult.count != 0 {
-            let activityScore = UserScore(activity: activity, league: "", date: Date().toInternationalString(), counter: 0)
-            let oldTotalPoints = queryResult[0].value(forKey: "score") as! Double
-            queryResult[0].setValue(oldTotalPoints + activityScore.totalPoints!, forKey: "score")
-            queryResult[0].setValue(activityScore.date!, forKey: "dateStr")
-        }
+        let currentScore = try retrieveLatestScore()
+        try updateScore(toValue: currentScore + activity.equivalentPoints)
 
         try managedContext.save()
+    }
+    
+    public func updateScore(toValue value: Double) throws {
+        // retrieve current score
+        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
+        if let result = queryResult.first {
+            result.setValue(value, forKey: "score")
+        } else { // initialize score
+            try setValuesForKeys(entity: "Score", keyedValues: ["score": value])
+        }
     }
     
     public func saveForestItem(_ item: ForestItem) throws {
@@ -199,63 +202,27 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         return validItems
     }
     
-    public func updateLeagueIfEnoughPoints() throws -> Void {
-        let userScore = try retrieveLatestScore()
-        
-        if userScore.totalPoints > POINTS_REQUIRED_FOR_NEXT_LEAGUE {
-            let league = UserScore.getNewLeague(userLeague: userScore.league)
-            try updateLeague(newLeague: league)
-            
-            if league == "🌳" {
-                try updateTreeCounter()
-            }
-            
-            try resetScore()
-        }
-    }
-    
-    public func updateLeague(newLeague: String) throws {
-       let managedContext = try getManagedContext()
-       let dateToday = Date()
-       let dateTodayStr = dateToday.toInternationalString()
-    
-       // retrieve current user's score
-        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
-        if queryResult.count != 0 {
-           queryResult[0].setValue(newLeague, forKey: "league")
-           queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
-        }
-    
-        try managedContext.save()
-    }
-    
-    public func retrieveLatestScore() throws -> UserScore {
-        let userScore = UserScore.getInitialScore()
+    public func retrieveLatestScore() throws -> Double {
+        var userScore = 0.0
 
         let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
-        if queryResult.count != 0 {
-            userScore.totalPoints = queryResult[0].value(forKey: "score") as? Double
-            userScore.date = queryResult[0].value(forKey: "dateStr") as? String
-            userScore.league = queryResult[0].value(forKey: "league") as? String
-            userScore.counter = queryResult[0].value(forKey: "counter") as? Int
-        } else {
-            try setValuesForKeys(entity: "Score", keyedValues: ["dateStr": userScore.date!, "score": userScore.totalPoints!, "league": userScore.league!, "counter": userScore.counter!])
+        if let result = queryResult.first {
+            userScore = (result.value(forKey: "score") as? Double) ?? 0
         }
         
         return userScore
     }
     
-    /// Returns the earliest start date within the Event entity. If no date is found, the current date is returned.
-    public func getFirstDate() throws -> Date {
-        var oldDate = Date()
+    /// Returns the earliest start date within the Event entity. If no date is found, nil is returned.
+    public func getFirstDate() throws -> Date? {
         let managedContext = try getManagedContext()
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Event")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "start", ascending: true)]
         let queryResult = try managedContext.fetch(fetchRequest)
-        if queryResult.count != 0 {
-            oldDate = queryResult[0].value(forKey: "start") as? Date ?? oldDate
+        if let result = queryResult.first {
+            return result.value(forKey: "start") as? Date ?? nil
         }
-        return oldDate
+        return nil
     }
     
     public func executeQuery(entity: String, predicate: String? = nil, args: [Any]? = nil) throws -> [Any] {
@@ -309,37 +276,6 @@ public class CoreDataManager : DBManager, CarbonCalculator {
         let context = try getManagedContext()
         context.delete(obj)
     }
-    
-    /// Sets the user's score to 0.
-    private func resetScore() throws -> Void {
-        let managedContext = try getManagedContext()
-        let dateToday = Date()
-        let dateTodayStr = dateToday.toInternationalString()
-        
-        let newScore = 0.0
-        
-        let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
-        if queryResult.count != 0 {
-            queryResult[0].setValue(newScore, forKey: "score")
-            queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
-        }
-        
-        try managedContext.save()
-    }
-    
-    private func updateTreeCounter() throws -> Void {
-           let managedContext = try getManagedContext()
-           let dateToday = Date()
-           let dateTodayStr = dateToday.toInternationalString()
-           
-           let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
-           if queryResult.count != 0 {
-               let oldCounter = queryResult[0].value(forKey: "counter") as! Int
-               queryResult[0].setValue(oldCounter + 1, forKey: "counter")
-               queryResult[0].setValue(dateTodayStr, forKey: "dateStr")
-           }
-           try managedContext.save()
-       }
     
     private func getManagedContext() throws -> NSManagedObjectContext {
         return persistentContainer.viewContext

@@ -7,13 +7,13 @@ class ActivityEstimatorTest: XCTestCase {
     var list : ActivityListMock!
     var estimator : ActivityEstimator<ActivityListMock>!
     var timers : MultiTimerMock!
-    var DBMS: DBWriterMock!
+    var DBMS: DBManagerMock!
     
     override func setUp() {
         super.setUp()
         list = ActivityListMock()
         timers = MultiTimerMock()
-        DBMS = DBWriterMock()
+        DBMS = DBManagerMock()
         estimator = ActivityEstimator<ActivityListMock>(activityList: list, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: timers, DBMS: DBMS)
     }
 

@@ -24,7 +24,7 @@ public class GameViewModel: ObservableObject {
      */
     public func hasEnoughPoints(requiredPts: Double) -> Bool {
         if let currentPts = try? DBMS.retrieveLatestScore() {
-            return currentPts.totalPoints >= requiredPts
+            return currentPts >= requiredPts
         }
         return false
     }

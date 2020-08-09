@@ -23,6 +23,12 @@ public protocol DBReader {
     /// Returns all forest items contained in the database. Only items with non-nil attributes are returned.
     func getForestItems() throws -> [ForestItem]
     
+    /// Returns the score attribute in the Score entity.
+    func retrieveLatestScore() throws -> Double
+    
+    /// Returns the earliest start date within the Event entity.
+    func getFirstDate() throws -> Date?
+    
     /**
     Queries the given entity with a predicate.
     - Parameter entity: entity name as a string.
@@ -41,10 +47,8 @@ public protocol DBWriter {
     func append(activity: MeasuredActivity) throws
     /// Appends a list of food products to the FoodProduct entity.
     func append(foods: [Food]) throws
-    /// Writes updates the entry associated with the id of the given forest item if it exists. Otherwise, a new item is written to the database.
-    func saveForestItem(_ item: ForestItem) throws
-    /// Updates score by adding score computed from a given activity.
-    func updateScore(activity: MeasuredActivity) throws
+    /// Updates the score to a given value.
+    func updateScore(toValue value: Double) throws
     /// Deletes an entry from the given entity identified by a rows number.
     func delete(entity: String, rowNumber: Int) throws
     /// Deletes all entries in the given entity.
@@ -89,24 +93,8 @@ public protocol DBManager : AnyObject, DBReader, DBWriter {
      */
     func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double
     
-    /// Updates the league attribute of the Score entity with the given string.
-    func updateLeague(newLeague: String) throws
-    
-    /**
-    Retrieves the latest UserScore in the Score entity. If no score if present, it is initialized with a default value.
-    - Remark: Initial value is described in UserScore.getInitialScore()
-    - Returns: A UserScore object having its properties set to the values in the database.
-     */
-    func retrieveLatestScore() throws -> UserScore
-    
-    ///Checks user progress and updates league if enough points have been accumulated.
-    func updateLeagueIfEnoughPoints() throws -> Void
-    
-    /// Returns the earliest start date within the Event entity.
-    func getFirstDate() throws -> Date
-}
-
-public protocol CarbonCalculator {
-    /// Returns the carbon output produced for the given distance and for the given motion type.
-    func computeCarbonUsage(distance:Double, type: MeasuredActivity.MotionType) -> Double
+    /// Writes updates the entry associated with the id of the given forest item if it exists. Otherwise, a new item is written to the database.
+    func saveForestItem(_ item: ForestItem) throws
+    /// Updates the score by adding the score computed from a given activity.
+    func updateScore(activity: MeasuredActivity) throws
 }

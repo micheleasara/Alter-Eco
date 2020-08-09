@@ -7,7 +7,8 @@ struct ProfileView: View {
     @EnvironmentObject private var chartModel: TransportBarChartModel
     @EnvironmentObject private var gameViewModel: GameViewModel
     @Environment(\.DBMS) private var DBMS
-
+    @State private var showingInfo = false
+    
     var body: some View {
         let dailyCarbon = getDailyCarbon()
         
@@ -18,23 +19,38 @@ struct ProfileView: View {
                     NameView()
                 }
                 .frame(height: 0.4*screenMeasurements.trasversal)
-                .padding()
+                .padding(.horizontal).padding(.top)
+                
+                scoreLabelWithInfo.padding(.top)
                 
                 Button(action: {
                     self.gameViewModel.isGameOn = true
                 }) {
-                    Text("Tap to enter your virtual forest")
-                }
+                    Text("🌳 Tap to enter your virtual forest 🌳").foregroundColor(Color.init(red: 0, green: 0.5, blue: 0))
+                }.padding(.horizontal)
                 
-                ProgressBarView(latestScore: getCurrentScore()).padding(.bottom)
+                ComparisonView(dailyCarbon: dailyCarbon).padding(.top)
                 
-                ComparisonView(dailyCarbon: dailyCarbon).padding(.bottom)
-                
-                HighlightView(dailyCarbon: dailyCarbon)
+                HighlightView(dailyCarbon: dailyCarbon).padding(.top)
             }.padding(.horizontal)
         }
     }
+    
+    private var scoreLabelWithInfo: some View {
+        HStack(alignment: .center) {
+            Text("Score: ").font(.headline)
+            + Text("\(getCurrentScore(), specifier: "%.0f")")
+                .font(.headline)
 
+        
+        Button(action: {self.showingInfo = true}) {
+            Image(systemName: "info.circle")
+        }
+            .alert(isPresented: $showingInfo) {
+                Alert(title: Text("Your Eco Score"), message: Text("We estimate your modes of transport throughout the day. The more eco-friendly your commute is, the more points you earn!"), dismissButton: .default(Text("OK")))
+            }
+        }
+    }
     
     private func loadStoredImage() -> UIImage? {
         let results = (try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]) ?? []
@@ -46,8 +62,8 @@ struct ProfileView: View {
         return nil
     }
     
-    private func getCurrentScore() -> UserScore {
-        return (try? DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore()
+    private func getCurrentScore() -> Double {
+        return (try? DBMS.retrieveLatestScore()) ?? 0
     }
     
     private func getDailyCarbon() -> Double {

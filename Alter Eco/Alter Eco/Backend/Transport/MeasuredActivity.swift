@@ -39,6 +39,24 @@ public class MeasuredActivity : Equatable {
         self.end = end
     }
     
+    /// Returns how many points this activity is worth.
+    public var equivalentPoints: Double {
+        let measuredActivityKms = distance * KM_CONVERSION
+        
+        switch motionType {
+        case .car:
+            return measuredActivityKms * CAR_PTS
+        case .walking:
+            return measuredActivityKms * WALKING_PTS
+        case .plane:
+            return measuredActivityKms * PLANE_PTS
+        case .train:
+            return measuredActivityKms * TRAIN_PTS
+        default:
+            return 0
+        }
+    }
+    
     /// Checks equality of two activities within tolerance values.
     public static func ==(lhs: MeasuredActivity, rhs: MeasuredActivity) -> Bool {
         let differenceStart = lhs.start.timeIntervalSince(rhs.start)
@@ -90,4 +108,5 @@ public class MeasuredActivity : Equatable {
         
         return (speed > speedThreshold) ? .car : .walking
     }
+    
 }
