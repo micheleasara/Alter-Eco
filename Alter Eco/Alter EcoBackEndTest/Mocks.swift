@@ -4,6 +4,9 @@ import AlterEcoBackend
 // MARK: Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
 class DBWriterMock: DBWriter {
+    func saveForestItem(_ item: ForestItem) throws {
+    }
+    
     func append(foods: [Food]) throws {
     }
     
@@ -109,6 +112,13 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBManager {
+    func getForestItems() throws -> [ForestItem] {
+        return []
+    }
+    
+    func saveForestItem(_ item: ForestItem) throws {
+    }
+    
     func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void) {
     }
     

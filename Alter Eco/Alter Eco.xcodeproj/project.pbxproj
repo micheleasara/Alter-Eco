@@ -58,6 +58,9 @@
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7A24E0510100299047 /* GameViewModel.swift */; };
+		DE5E6E7D24E057F400299047 /* ForestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* ForestItem.swift */; };
+		DE5E6E7E24E057F400299047 /* ForestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* ForestItem.swift */; };
+		DE5E6E7F24E0585B00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE74ECF72482E4D10099F944 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* Utils.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
@@ -192,6 +195,7 @@
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		DE5E6E7A24E0510100299047 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
+		DE5E6E7C24E057F400299047 /* ForestItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForestItem.swift; sourceTree = "<group>"; };
 		DE74ECF62482E4D10099F944 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
@@ -406,6 +410,7 @@
 			children = (
 				DE8ECE8024DE0A0100641BA4 /* GameViewController.swift */,
 				DE5E6E7A24E0510100299047 /* GameViewModel.swift */,
+				DE5E6E7C24E057F400299047 /* ForestItem.swift */,
 			);
 			path = Gamification;
 			sourceTree = "<group>";
@@ -680,6 +685,7 @@
 				DEA0D1D624B5E02900FFDB00 /* Protocols.swift in Sources */,
 				DE3AC73924ACD82700D32E54 /* FoodListViewModel.swift in Sources */,
 				DE3AC73B24ACE0E700D32E54 /* BarcodeScanner.swift in Sources */,
+				DE5E6E7D24E057F400299047 /* ForestItem.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
 				DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */,
 				DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */,
@@ -724,6 +730,7 @@
 				DE3C10A52447B48000107AF4 /* Timers.swift in Sources */,
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
 				DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */,
+				DE5E6E7E24E057F400299047 /* ForestItem.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
@@ -733,6 +740,7 @@
 				DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */,
 				DEA0D1D724B5E15200FFDB00 /* Protocols.swift in Sources */,
 				DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */,
+				DE5E6E7F24E0585B00299047 /* Database2.0.xcdatamodeld in Sources */,
 				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
 				DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConverter.swift in Sources */,
