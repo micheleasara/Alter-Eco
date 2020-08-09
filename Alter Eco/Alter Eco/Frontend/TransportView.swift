@@ -4,7 +4,7 @@ import SwiftUI
     @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
     @ObservedObject var isTrackingPaused = (UIApplication.shared.delegate as! AppDelegate).isTrackingPaused
     @EnvironmentObject var awards: TransportAwardsManager
-    @EnvironmentObject var pieChartModel: TransportPieChartModel
+    @EnvironmentObject var pieChartModel: TransportPieChartViewModel
     
     var body: some View {
         ScrollView {
@@ -65,8 +65,8 @@ struct DetailView_Previews: PreviewProvider {
         let DBMS = CoreDataManager()
         return TransportView()
            .environmentObject(ScreenMeasurements())
-            .environmentObject(TransportBarChartModel(limit: Date(), DBMS: DBMS))
+            .environmentObject(TransportBarChartViewModel(limit: Date(), DBMS: DBMS))
             .environmentObject(TransportAwardsManager(DBMS: DBMS))
-            .environmentObject(TransportPieChartModel(DBMS: DBMS))
+            .environmentObject(TransportPieChartViewModel(DBMS: DBMS))
     }
 }

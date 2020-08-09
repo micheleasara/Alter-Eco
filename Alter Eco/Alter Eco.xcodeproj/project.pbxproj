@@ -10,10 +10,9 @@
 		2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E158242FB3EC00FD9B5F /* ProfileView.swift */; };
 		2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2186E15A242FB41000FD9B5F /* ImagePicker.swift */; };
 		552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552BB1D324448D2A0010EF6B /* ComparisonView.swift */; };
-		5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		55C85C5B243CB879006AD075 /* PrivacyInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */; };
 		55DA632B242AC557002CCD07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
-		573693832438F85F00992BB0 /* BarChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* BarChartModel.swift */; };
+		573693832438F85F00992BB0 /* TransportBarChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* TransportBarChartViewModel.swift */; };
 		9C17CA8424323D1D00378A67 /* WalkToHeathrowAirport.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */; };
 		9C17CA8724323D1D00378A67 /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
 		9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
@@ -42,7 +41,7 @@
 		DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
 		DE2B027F247EC1D900926935 /* ChartDataModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */; };
 		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
-		DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
+		DE2D583A24A4FD0E00BB14F0 /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* ChartModel.swift */; };
 		DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */; };
 		DE36CC2C24BC80B200825FAE /* SearchableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36CC2B24BC80B200825FAE /* SearchableList.swift */; };
 		DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
@@ -60,6 +59,9 @@
 		DE5E6E7D24E057F400299047 /* ForestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* ForestItem.swift */; };
 		DE5E6E7E24E057F400299047 /* ForestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* ForestItem.swift */; };
 		DE5E6E7F24E0585B00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
+		DE5E6E8124E091AB00299047 /* FoodPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */; };
+		DE5E6E8324E092BA00299047 /* TransportPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */; };
+		DE5E6E8424E092BA00299047 /* TransportPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */; };
 		DE74ECF72482E4D10099F944 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* Utils.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
@@ -91,14 +93,13 @@
 		DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
 		DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA1E867248A7988003EF0F5 /* SettingsView.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
-		DECD0956247DD36F0099747D /* BarChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* BarChartModel.swift */; };
+		DECD0956247DD36F0099747D /* TransportBarChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* TransportBarChartViewModel.swift */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
 		DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */; };
 		DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 		DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */; };
 		DEDE549724467B4E003FE0DE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE26244215FB00490481 /* CoreDataManager.swift */; };
-		DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591901D242C0FA400A80ED7 /* UserScore.swift */; };
 		DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C87AE282442408F00490481 /* ActivityList.swift */; };
 		DEDE54AC24467B4E003FE0DE /* CarToParisCDGToMilanLIN.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */; };
 		DEDE54AD24467B4E003FE0DE /* EarlsCourtStation.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9CD5942A242968DE00B1D0B4 /* EarlsCourtStation.gpx */; };
@@ -110,7 +111,7 @@
 		DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
 		DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
-		DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
+		DEE2B28524A677EB0093181B /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* ChartModel.swift */; };
 		DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFEEC502448987C009BE765 /* MultiTimerTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -142,10 +143,9 @@
 		2186E158242FB3EC00FD9B5F /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		2186E15A242FB41000FD9B5F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		552BB1D324448D2A0010EF6B /* ComparisonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComparisonView.swift; sourceTree = "<group>"; };
-		5591901D242C0FA400A80ED7 /* UserScore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScore.swift; sourceTree = "<group>"; };
 		55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyInfoView.swift; sourceTree = "<group>"; };
 		55DA632A242AC557002CCD07 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Alter Eco/Frontend/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
-		573693822438F85F00992BB0 /* BarChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartModel.swift; sourceTree = "<group>"; };
+		573693822438F85F00992BB0 /* TransportBarChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChartViewModel.swift; sourceTree = "<group>"; };
 		9C17CA7C24323D1C00378A67 /* WalkToHeathrowAirport.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = WalkToHeathrowAirport.gpx; sourceTree = "<group>"; };
 		9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = KingsCrossToUCL.gpx; sourceTree = "<group>"; };
 		9C17CA8024323D1C00378A67 /* CarToParisCDGToMilanLIN.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = CarToParisCDGToMilanLIN.gpx; sourceTree = "<group>"; };
@@ -180,7 +180,7 @@
 		DE054C85248EFE3B001B8EB1 /* TestMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMain.swift; sourceTree = "<group>"; };
 		DE2B027E247EC1D900926935 /* ChartDataModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartDataModelTest.swift; sourceTree = "<group>"; };
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
-		DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewModel.swift; sourceTree = "<group>"; };
+		DE2D583924A4FD0E00BB14F0 /* ChartModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
 		DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChart.swift; sourceTree = "<group>"; };
 		DE36CC2B24BC80B200825FAE /* SearchableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableList.swift; sourceTree = "<group>"; };
 		DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRetrieval.swift; sourceTree = "<group>"; };
@@ -194,6 +194,8 @@
 		DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		DE5E6E7A24E0510100299047 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		DE5E6E7C24E057F400299047 /* ForestItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForestItem.swift; sourceTree = "<group>"; };
+		DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodPieChartViewModel.swift; sourceTree = "<group>"; };
+		DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportPieChartViewModel.swift; sourceTree = "<group>"; };
 		DE74ECF62482E4D10099F944 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
@@ -351,11 +353,8 @@
 				DE8ECE7F24DE094200641BA4 /* Gamification */,
 				DE3C10A32447B48000107AF4 /* Timers.swift */,
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
-				5591901D242C0FA400A80ED7 /* UserScore.swift */,
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
-				573693822438F85F00992BB0 /* BarChartModel.swift */,
-				DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */,
-				DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */,
+				DE2D583924A4FD0E00BB14F0 /* ChartModel.swift */,
 				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 			);
 			path = Backend;
@@ -437,6 +436,8 @@
 				DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */,
 				DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */,
 				DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */,
+				DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */,
+				DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */,
 			);
 			path = Food;
 			sourceTree = "<group>";
@@ -447,6 +448,8 @@
 				9CD5942D242968DE00B1D0B4 /* ActivityEstimator.swift */,
 				9C87AE282442408F00490481 /* ActivityList.swift */,
 				9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */,
+				DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */,
+				573693822438F85F00992BB0 /* TransportBarChartViewModel.swift */,
 			);
 			path = Transport;
 			sourceTree = "<group>";
@@ -684,7 +687,7 @@
 				DE3AC73B24ACE0E700D32E54 /* BarcodeScanner.swift in Sources */,
 				DE5E6E7D24E057F400299047 /* ForestItem.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
-				DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */,
+				DE2D583A24A4FD0E00BB14F0 /* ChartModel.swift in Sources */,
 				DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */,
 				DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */,
 				9CD5943A242968DF00B1D0B4 /* TransportView.swift in Sources */,
@@ -692,8 +695,9 @@
 				DE994B882483E03200D3788B /* Title.swift in Sources */,
 				DE8ECE8124DE0A0100641BA4 /* GameViewController.swift in Sources */,
 				9C87AE27244215FB00490481 /* CoreDataManager.swift in Sources */,
+				DE5E6E8324E092BA00299047 /* TransportPieChartViewModel.swift in Sources */,
 				9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */,
-				573693832438F85F00992BB0 /* BarChartModel.swift in Sources */,
+				573693832438F85F00992BB0 /* TransportBarChartViewModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */,
 				DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */,
 				DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */,
@@ -709,8 +713,8 @@
 				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,
 				DE8F937E24A21639002D85E6 /* PieChart.swift in Sources */,
 				DE8F937C24A0D0C8002D85E6 /* FoodListView.swift in Sources */,
-				5591901E242C0FA400A80ED7 /* UserScore.swift in Sources */,
 				DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */,
+				DE5E6E8124E091AB00299047 /* FoodPieChartViewModel.swift in Sources */,
 				DE36CC2C24BC80B200825FAE /* SearchableList.swift in Sources */,
 				9C87AE292442408F00490481 /* ActivityList.swift in Sources */,
 				DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */,
@@ -725,22 +729,22 @@
 			files = (
 				DE3C10A52447B48000107AF4 /* Timers.swift in Sources */,
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
-				DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */,
+				DEE2B28524A677EB0093181B /* ChartModel.swift in Sources */,
 				DE5E6E7E24E057F400299047 /* ForestItem.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
 				DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */,
 				DEA0D1DC24B60A8100FFDB00 /* FoodRetrieval.swift in Sources */,
+				DE5E6E8424E092BA00299047 /* TransportPieChartViewModel.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* CoreDataManager.swift in Sources */,
 				DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */,
 				DEA0D1D724B5E15200FFDB00 /* Protocols.swift in Sources */,
 				DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */,
 				DE5E6E7F24E0585B00299047 /* Database2.0.xcdatamodeld in Sources */,
-				DEDE54A524467B4E003FE0DE /* UserScore.swift in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
 				DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConverter.swift in Sources */,
-				DECD0956247DD36F0099747D /* BarChartModel.swift in Sources */,
+				DECD0956247DD36F0099747D /* TransportBarChartViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

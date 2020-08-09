@@ -17,9 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
-            let transportBarChartModel = TransportBarChartModel(limit: Date(), DBMS: DBMS)
-            let transportPieChartModel = TransportPieChartModel(DBMS: DBMS)
-            let foodPieChartModel = FoodPieChartModel(DBMS: DBMS)
+            let transportBarChartModel = TransportBarChartViewModel(limit: Date(), DBMS: DBMS)
+            let transportPieChartModel = TransportPieChartViewModel(DBMS: DBMS)
+            let foodPieChartModel = FoodPieChartViewModel(DBMS: DBMS)
             DBMS.addActivityWrittenCallback { _ in
                 let now = Date()
                 transportBarChartModel.updateUpTo(now)

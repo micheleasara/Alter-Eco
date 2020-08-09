@@ -3,7 +3,7 @@ import SwiftUI
 public struct FoodView: View {
     @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
     @EnvironmentObject var foodAwards: FoodAwardsManager
-    @EnvironmentObject var pieChartModel: FoodPieChartModel
+    @EnvironmentObject var pieChartModel: FoodPieChartViewModel
     @EnvironmentObject var foodListModel: FoodListViewModel
     @State private var showFoodList: Bool = false
     @State private var showScanner: Bool = false
@@ -64,6 +64,6 @@ struct FoodView_Previews: PreviewProvider {
         let DBMS = CoreDataManager()
         return FoodView()
             .environmentObject(ScreenMeasurements())
-            .environmentObject(FoodPieChartModel(DBMS: DBMS))
+            .environmentObject(FoodPieChartViewModel(DBMS: DBMS))
     }
 }

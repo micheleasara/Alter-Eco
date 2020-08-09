@@ -4,7 +4,7 @@ import CoreData
 
 struct ProfileView: View {
     @EnvironmentObject private var screenMeasurements: ScreenMeasurements
-    @EnvironmentObject private var chartModel: TransportBarChartModel
+    @EnvironmentObject private var chartModel: TransportBarChartViewModel
     @EnvironmentObject private var gameViewModel: GameViewModel
     @Environment(\.DBMS) private var DBMS
     @State private var showingInfo = false
