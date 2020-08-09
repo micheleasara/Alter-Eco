@@ -42,10 +42,10 @@ struct ContentView: View {
 }
 
 struct MainView: View {
-    @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
-    @State var showInfo: Bool = false
-    @State var showSettings: Bool = false
-    @EnvironmentObject private var isGameOpen: Observable<Bool>
+    @EnvironmentObject private var measurementsOnLaunch: ScreenMeasurements
+    @EnvironmentObject private var gameViewModel: GameViewModel
+    @State private var showInfo: Bool = false
+    @State private var showSettings: Bool = false
     
     var body: some View {
         VStack {
@@ -55,7 +55,7 @@ struct MainView: View {
             } else if showSettings {
                 titleAndBackButton.padding(.top)
                 SettingsView()
-            } else if isGameOpen.rawValue {
+            } else if gameViewModel.isGameOn {
                 GameView()
             } else {
                 titleAndInfoButton.padding(.top)

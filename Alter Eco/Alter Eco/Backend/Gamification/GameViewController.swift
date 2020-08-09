@@ -156,7 +156,8 @@ public class GameViewController: UIViewController {
                                             internalName: node.name ?? ""))
     }
     
-    @objc private func moveNodeByTouch(panGesture: UIPanGestureRecognizer) {
+    @objc
+    private func moveNodeByTouch(panGesture: UIPanGestureRecognizer) {
         let location = panGesture.location(in: self.view)
 
         switch panGesture.state {

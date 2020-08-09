@@ -3,10 +3,10 @@ import SwiftUI
 import CoreData
 
 struct ProfileView: View {
-    @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    @EnvironmentObject var chartModel: TransportBarChartModel
-    @Environment(\.DBMS) var DBMS
-    @EnvironmentObject var isGameOpen: Observable<Bool>
+    @EnvironmentObject private var screenMeasurements: ScreenMeasurements
+    @EnvironmentObject private var chartModel: TransportBarChartModel
+    @EnvironmentObject private var gameViewModel: GameViewModel
+    @Environment(\.DBMS) private var DBMS
 
     var body: some View {
         let dailyCarbon = getDailyCarbon()
@@ -21,7 +21,7 @@ struct ProfileView: View {
                 .padding()
                 
                 Button(action: {
-                    self.isGameOpen.rawValue = true
+                    self.gameViewModel.isGameOn = true
                 }) {
                     Text("Tap to enter your virtual forest")
                 }
@@ -39,7 +39,7 @@ struct ProfileView: View {
     private func loadStoredImage() -> UIImage? {
         let results = (try? DBMS.executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]) ?? []
         if results.count > 0 {
-            return UIImage(data: results[0].value(forKey: "imageP")! as! Data)
+            return UIImage(data: results[0].value(forKey: "imageP") as? Data ?? Data())
         }
         
         // if not found
@@ -47,19 +47,13 @@ struct ProfileView: View {
     }
     
     private func getCurrentScore() -> UserScore {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            return (try? appDelegate.DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore()
-        }
-        return UserScore.getInitialScore()
+        return (try? DBMS.retrieveLatestScore()) ?? UserScore.getInitialScore()
     }
     
     private func getDailyCarbon() -> Double {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            var now = Date()
-            now = now.setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? now
-            return (try? appDelegate.DBMS.carbonFromPollutingMotions(from: now, interval: DAY_IN_SECONDS)) ?? 0
-        }
-        return 0
+        var now = Date()
+        now = now.setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? now
+        return (try? DBMS.carbonFromPollutingMotions(from: now, interval: DAY_IN_SECONDS)) ?? 0
     }
     
 }
