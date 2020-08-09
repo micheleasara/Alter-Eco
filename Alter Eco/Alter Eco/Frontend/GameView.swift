@@ -52,7 +52,7 @@ public struct OptionMenu: View {
             Group {
                 if showingItems {
                     itemsListPopup
-                } else {
+                } else if !viewModel.isEditModeOn {
                     shopButton
                 }
             }
