@@ -24,7 +24,7 @@ public let QUERY_AIRPORTS: String = "airport"
 
 // MARK: - Region-Of-Interest (ROI) activities constants
 /// Defines minimum distance in meters between two airports for a flight to have occurred.
-public let MIN_DISTANCE_FOR_FLIGHT: Double = 4000
+public let MIN_DISTANCE_FOR_FLIGHT: Double = 3500
 /// Defines minimum distance in meters between two stations for a trip to have occurred.
 public let MIN_DISTANCE_TRAIN_TRIP: Double = GPS_DISTANCE_THRESHOLD
 /// Idle time (in seconds) after which the activity estimator should forget the user was in a station.
@@ -81,13 +81,11 @@ public let CAR_PTS: Double = 3
 public let TRAIN_PTS: Double = 7
 /// Points for flights.
 public let PLANE_PTS: Double = 0
-/// Number of points needed to pass to the next league.
-public let POINTS_REQUIRED_FOR_NEXT_LEAGUE: Double = 1000
 
 // MARK: - Other
-/// Average carbon output for a day in the UK in kg/km.
+/// Average carbon output for a day in the UK in kg.
 public let AVERAGE_UK_DAILY_CARBON: Double = 2.2
-/// Average carbon output for a week in London, in kg.
+/// Average carbon output for a week in London in kg.
 public let LONDON_AVG_CARBON_WEEK = 15.8
 /// One hour in seconds.
 public let HOUR_IN_SECONDS: Double = 60 * 60

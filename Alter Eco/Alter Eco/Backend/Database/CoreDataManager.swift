@@ -7,18 +7,13 @@ public class CoreDataManager : DBManager {
     // utility to get carbon from food items
     private let foodConverter = FoodToCarbonConverter()
 
-    // contains the function called when an activity has been written to the database
-    private var activityWrittenCallbacks: [(MeasuredActivity) -> Void] = []
-    // contains the function called when a list of foods has been written to the database
-    private var foodsWrittenCallbacks: [([Food]) -> Void] = []
+    // contains the functions called when an activity or a food has been written to the database
+    private var newPollutingItemCallbacks: [(PollutingItemType) -> Void] = []
     
-    public func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {
-        self.activityWrittenCallbacks.append(callback)
+    public func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void) {
+        newPollutingItemCallbacks.append(callback)
     }
     
-    public func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void) {
-        self.foodsWrittenCallbacks.append(callback)
-    }
     
     public func append(foods: [Food]) throws {
         for food in foods {
@@ -32,8 +27,8 @@ public class CoreDataManager : DBManager {
                  "quantityUnit": food.quantity?.unit.symbol as Any,
                  "category": food.category?.rawValue as Any])
         }
-        for callback in foodsWrittenCallbacks {
-            callback(foods)
+        for callback in newPollutingItemCallbacks {
+            callback(.food)
         }
     }
     
@@ -45,9 +40,8 @@ public class CoreDataManager : DBManager {
              "start": activity.start,
              "end": activity.end])
         
-        // call registered observers with the activity just written
-        for callback in activityWrittenCallbacks {
-            callback(activity)
+        for callback in newPollutingItemCallbacks {
+            callback(.transportActivity)
         }
     }
     
@@ -157,6 +151,14 @@ public class CoreDataManager : DBManager {
     public func carbonFromFoods(predicate: String?, args: [Any]?) throws -> Measurement<UnitMass> {
         let foods = try queryFoods(predicate: predicate, args: args)
         return foodConverter.getCarbon(fromFoods: foods)
+    }
+    
+    public func carbonWithinInterval(from date: Date, addingInterval interval: Double) throws -> Measurement<UnitMass> {
+        let end = date.addingTimeInterval(DAY_IN_SECONDS)
+        let transport = try carbonFromPollutingMotions(from: date, interval: DAY_IN_SECONDS)
+        let foods = try carbonFromFoods(predicate: "date >= %@ AND date <= %@", args: [date, end]).value
+        
+        return Measurement(value: transport + foods, unit: .kilograms)
     }
     
     public func updateScore(activity: MeasuredActivity) throws {

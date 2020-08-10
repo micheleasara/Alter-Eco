@@ -9,13 +9,24 @@ public class GameViewModel: ObservableObject {
     /// Determines if the smog effect is enabled or not.
     @Published public var isSmogOn: Bool = false
     /// Determines if the 3D scene should be shown or not.
-    @Published public var isGameOn: Bool = false
+    public var isGameOn: Bool {
+        willSet {
+            objectWillChange.send()
+            // refresh smog state everytime we open the game
+            if newValue {
+                refreshSmogState()
+                print("smog is \(isSmogOn)")
+            }
+        }
+    }
+    
     /// interacts with the database.
     private let DBMS: DBManager
     
     /// Initializes a new instance of this view model using the database manager provided.
     public init(DBMS: DBManager) {
         self.DBMS = DBMS
+        isGameOn = false
     }
     
     /**
@@ -29,15 +40,16 @@ public class GameViewModel: ObservableObject {
         return false
     }
     
+    /// Queries the database and sets the smog state appropriately.
+    public func refreshSmogState() {
+        let start = Date().toLocalTime().setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? Date()
+        if let dailyTotal = (try? DBMS.carbonWithinInterval(from: start, addingInterval: DAY_IN_SECONDS))?.value {
+            isSmogOn = dailyTotal > AVERAGE_UK_DAILY_CARBON
+        }
+    }
+    
     /// Returns a controller which handles 3D rendering and other game-related activities.
     public func getViewController() -> GameViewController {
         return GameViewController(mainScenePath: "MainScene.scn", DBMS: DBMS)
-    }
-    
-    public func endItemTransaction() {
-        if let item = itemToAdd,
-            let currentScore = try? DBMS.retrieveLatestScore() {
-            try? DBMS.updateScore(toValue: currentScore - item.cost)
-        }
     }
 }

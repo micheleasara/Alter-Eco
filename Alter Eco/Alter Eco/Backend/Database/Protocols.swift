@@ -28,6 +28,14 @@ public protocol DBReader {
      */
     func carbonFromFoods(predicate: String?, args: [Any]?) throws -> Measurement<UnitMass>
     
+    /**
+     Retrieves the carbon equivalent associated with the polluting items (e.g. food, transport activities) within the given interval.
+     - Parameter from: the starting date.
+     - Parameter addingInterval: the interval added to the starting date.
+     - Returns: The carbon equivalent value in kg.
+     */
+    func carbonWithinInterval(from date: Date, addingInterval interval: Double) throws -> Measurement<UnitMass>
+    
     /// Returns all forest items contained in the database. Only items with non-nil attributes are returned.
     func getForestItems() throws -> [ForestItem]
     
@@ -61,16 +69,17 @@ public protocol DBWriter {
     func delete(entity: String, rowNumber: Int) throws
     /// Deletes all entries in the given entity.
     func deleteAll(entity: String) throws
+    /// Adds a function to be called whenever potentially polluting items (e.g. transport activities or foods) are written to the database.
+    func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void)
+}
+
+public enum PollutingItemType {
+    case food
+    case transportActivity
 }
 
 /// Represents an interface to an object able to read, write and perform sophisticated queries on Alter Eco's databases.
 public protocol DBManager : AnyObject, DBReader, DBWriter {
-    /// Adds a function to be called whenever an activity is written to the database.
-    func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void)
-
-    /// Adds a function to be called whenever foods are written to the database.
-    func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void)
-
     /**
     Returns the cumulative distance for the given motion type and in the specified timeframe.
      - Parameter motionType: the only motion type to consider.

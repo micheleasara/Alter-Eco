@@ -13,21 +13,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
         let context = DBMS.persistentContainer.viewContext
         let contentView = ContentView().environment(\.managedObjectContext, context)
 
-        // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
             let transportBarChartModel = TransportBarChartViewModel(limit: Date(), DBMS: DBMS)
             let transportPieChartModel = TransportPieChartViewModel(DBMS: DBMS)
             let foodPieChartModel = FoodPieChartViewModel(DBMS: DBMS)
-            DBMS.addActivityWrittenCallback { _ in
+            let gameViewModel = GameViewModel(DBMS: DBMS)
+            // update charts and set smog effect
+            DBMS.addNewPollutingItemCallback { type in
                 let now = Date()
-                transportBarChartModel.updateUpTo(now)
-                transportPieChartModel.updateUpTo(now)
-            }
-            DBMS.addFoodsWrittenCallback { _ in
-                print("Added foods to the database")
-                foodPieChartModel.updateUpTo(Date())
+
+                if type == .transportActivity {
+                    transportBarChartModel.updateUpTo(now)
+                    transportPieChartModel.updateUpTo(now)
+                } else {
+                    foodPieChartModel.updateUpTo(now)
+                }
+                gameViewModel.refreshSmogState()
             }
             
             window.rootViewController = UIHostingController(rootView: contentView
@@ -38,7 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(transportPieChartModel)
                 .environmentObject(foodPieChartModel)
                 .environmentObject(FoodListViewModel(DBMS: DBMS))
-                .environmentObject(GameViewModel(DBMS: DBMS)))
+                .environmentObject(gameViewModel))
             
             self.window = window
             window.makeKeyAndVisible()

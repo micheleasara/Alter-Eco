@@ -128,7 +128,6 @@ class DBManagerMock: DBWriterMock, DBManager {
     }
     
     func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double {return 0}
-    func setActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {}
     func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {return 0}
     func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {return 0}
     func updateLeague(newLeague: String) throws {}
