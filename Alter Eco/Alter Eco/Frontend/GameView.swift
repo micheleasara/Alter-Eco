@@ -31,7 +31,10 @@ public struct SceneKitView: UIViewControllerRepresentable {
     public func updateUIViewController(_ uiViewController: GameViewController, context: Context) {
         uiViewController.isEditModeOn(viewModel.isEditModeOn)
         if let item = viewModel.itemToAdd {
-            uiViewController.letUserPlaceNode(fromShopItem: item, nodePlacedCallback: { self.viewModel.itemToAdd = nil })
+            uiViewController.letUserPlaceNode(fromShopItem: item, nodePlacedCallback: {
+                self.viewModel.itemToAdd = nil
+                self.viewModel.refreshCurrentPoints()
+            })
         }
         uiViewController.isSmogOn(viewModel.isSmogOn)
     }
@@ -130,17 +133,18 @@ public struct OptionMenu: View {
         VStack {
             HStack(alignment: .top) {
                 VStack(alignment: .leading) {
-                   itemsList.padding()
+                    itemsList
+                    Text(String(format: "Available points: %.0f", viewModel.currentPoints)).padding(.top)
                 }
                 
                 Spacer()
                 Button(action: { self.showingItems = false }) {
                     Image(systemName: "xmark.circle")
-                }.foregroundColor(Color.white).padding()
+                }.foregroundColor(Color.white)
             }
+            .padding()
             .background(Color.yellow)
             .cornerRadius(20)
-            .padding()
             Spacer()
         }
     }
@@ -153,6 +157,7 @@ public struct OptionMenu: View {
                     Button(action: {
                         self.selectedItemIdx = i
                         self.showingConfirmation = true
+                        self.viewModel.refreshCurrentPoints()
                     }) { Image(systemName: "plus.square")
                     }.foregroundColor(Color.black)
                 }
@@ -160,7 +165,7 @@ public struct OptionMenu: View {
             }
         }.alert(isPresented: $showingConfirmation) {
             let shopItem = self.availableItems[self.selectedItemIdx]
-            if viewModel.hasEnoughPoints(requiredPts: shopItem.cost) {
+            if viewModel.currentPoints >= shopItem.cost {
                 return getConfirmationAlert(item: shopItem)
             } else {
                 return notEnoughPointsAlert

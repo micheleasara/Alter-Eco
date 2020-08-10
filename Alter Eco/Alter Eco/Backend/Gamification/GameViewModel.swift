@@ -2,6 +2,8 @@ import SwiftUI
 
 /// Responsible for publishing data relevant to the game view.
 public class GameViewModel: ObservableObject {
+    /// The currently available points.
+    @Published public var currentPoints: Double = 0
     /// Determines whether the user can move forest items.
     @Published public var isEditModeOn: Bool = false
     /// Represents an item which the user is in the process of adding.
@@ -15,7 +17,6 @@ public class GameViewModel: ObservableObject {
             // refresh smog state everytime we open the game
             if newValue {
                 refreshSmogState()
-                print("smog is \(isSmogOn)")
             }
         }
     }
@@ -27,17 +28,7 @@ public class GameViewModel: ObservableObject {
     public init(DBMS: DBManager) {
         self.DBMS = DBMS
         isGameOn = false
-    }
-    
-    /**
-     Returns true if the user has more or the same amount of points compared to the value provided.
-     - Parameter requiredPts: the value which is compared against the amount of points stored in the database.
-     */
-    public func hasEnoughPoints(requiredPts: Double) -> Bool {
-        if let currentPts = try? DBMS.retrieveLatestScore() {
-            return currentPts >= requiredPts
-        }
-        return false
+        refreshCurrentPoints()
     }
     
     /// Queries the database and sets the smog state appropriately.
@@ -45,6 +36,13 @@ public class GameViewModel: ObservableObject {
         let start = Date().toLocalTime().setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? Date()
         if let dailyTotal = (try? DBMS.carbonWithinInterval(from: start, addingInterval: DAY_IN_SECONDS))?.value {
             isSmogOn = dailyTotal > AVERAGE_UK_DAILY_CARBON
+        }
+    }
+    
+    /// Queries the database and sets the current points to the most recent value.
+    public func refreshCurrentPoints() {
+        if let points = try? DBMS.retrieveLatestScore() {
+            currentPoints = points
         }
     }
     
