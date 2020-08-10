@@ -8,7 +8,8 @@ public class FoodToCarbonConverter {
         return bundle.url(forResource: "WordEmbedding", withExtension: "mlmodelc")!
     }
     
-    private var embedding = try! NLEmbedding(contentsOf: FoodToCarbonConverter.urlOfModelInThisBundle)
+    // default to iOS embedding for english if available, otherwise use bundle model
+    private var embedding = NLEmbedding.wordEmbedding(for: .english) ?? (try! NLEmbedding(contentsOf: FoodToCarbonConverter.urlOfModelInThisBundle))
     
     /// Mapping of lowercase words identifying a liquid type to a density in kg/l.
     private let liquidsDensities: Dictionary<String, Double> = ["oil":0.9, "water":1, "liquor":0.94]

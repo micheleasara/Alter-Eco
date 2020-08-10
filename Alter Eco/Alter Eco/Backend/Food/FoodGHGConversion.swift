@@ -93,6 +93,7 @@ extension FoodToCarbonConverter {
         "sea bass fish": (3.55, .seafood),
         "haddock fish": (3.37, .seafood),
         "egg": (3.39, .dairiesAndEggs),
+        "chicken egg": (3.39, .dairiesAndEggs),
         "salmon": (3.76, .seafood),
         "fish": (4.41, .seafood),
         "cod fish": (3.49, .seafood),
