@@ -68,6 +68,7 @@ struct ProfileView: View {
     
     private func getDailyCarbon() -> Double {
         let dayStart = Date().toLocalTime().setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? Date()
+
         return (try? DBMS.carbonWithinInterval(from: dayStart, addingInterval: DAY_IN_SECONDS))?.value ?? 0
     }
     

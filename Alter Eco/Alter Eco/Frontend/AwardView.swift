@@ -83,7 +83,7 @@ public class TransportAwardsManager: AwardsManager {
             Awards(
                 id: 1,
                 name: "Beating the Average",
-                description: "Used less carbon than the London average for one week",
+                description: "Used less carbon than the London transport average for one week",
                 badgeTitle: "badge_london",
                 awarded: UserDefaults.standard.bool(forKey: String(1))
             ),
@@ -119,7 +119,7 @@ public class TransportAwardsManager: AwardsManager {
             UserDefaults.standard.set(true, forKey: String(0))
         }
         
-        if (try! DBMS.carbonFromPollutingMotions(from: now, interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK && timeInterval > WEEK_IN_SECONDS) {
+        if (try! DBMS.carbonFromPollutingMotions(from: now, interval: -WEEK_IN_SECONDS) < LONDON_AVG_CARBON_WEEK_TRANSPORT && timeInterval > WEEK_IN_SECONDS) {
             UserDefaults.standard.set(true, forKey: String(1))
         }
         

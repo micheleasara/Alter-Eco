@@ -84,9 +84,9 @@ public let PLANE_PTS: Double = 0
 
 // MARK: - Other
 /// Average carbon output for a day in the UK in kg.
-public let AVERAGE_UK_DAILY_CARBON: Double = 2.2
+public let AVERAGE_UK_DAILY_CARBON: Double = 13.7
 /// Average carbon output for a week in London in kg.
-public let LONDON_AVG_CARBON_WEEK = 15.8
+public let LONDON_AVG_CARBON_WEEK_TRANSPORT = 15.8
 /// One hour in seconds.
 public let HOUR_IN_SECONDS: Double = 60 * 60
 /// 24 hours in seconds.
