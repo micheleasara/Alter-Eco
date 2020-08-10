@@ -68,7 +68,7 @@ class DatabaseAndUserScoreTest: XCTestCase {
         let expectation = self.expectation(description: "callback")
         let testActivity = MeasuredActivity(motionType: .car, distance: 10000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100))
         
-        DBMS.addActivityWrittenCallback(callback: {activity in expectation.fulfill()})
+        DBMS.addNewPollutingItemCallback(callback: {type in expectation.fulfill()})
         try! DBMS.append(activity: testActivity)
 
         // wait for the expectation to be fullfilled, or time out after 5 seconds

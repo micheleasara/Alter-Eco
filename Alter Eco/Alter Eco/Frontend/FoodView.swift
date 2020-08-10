@@ -15,7 +15,10 @@ public struct FoodView: View {
             }
             else {
                 ScrollView {
-                    chartsAndAchievements
+                    VStack {
+                        chartsAndAchievements
+                        Text("Powered by OpenFoodFacts").font(.caption).italic().padding()
+                    }
                 }
             }
         }
@@ -23,7 +26,6 @@ public struct FoodView: View {
     
     private var chartsAndAchievements: some View {
         VStack(alignment: .center) {
-            //FoodChart().frame(height: measurementsOnLaunch.longitudinal / 2.5)
             
             // show pie chart only if we have data
             if pieChartModel.values.reduce(0, +) > 0 {

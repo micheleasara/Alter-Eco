@@ -73,8 +73,11 @@ public protocol DBWriter {
     func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void)
 }
 
+/// Represents an item which is potentially polluting.
 public enum PollutingItemType {
+    /// Specifies the item is food.
     case food
+    /// Specifies the item is a transport activity.
     case transportActivity
 }
 

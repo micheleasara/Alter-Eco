@@ -1,6 +1,7 @@
 import SwiftUI
 
-public struct ImagePicker: UIViewControllerRepresentable{
+/// Represents a graphical picker to select an image from the device.
+public struct ImagePicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
     private var callback: ((UIImage?) -> Void)!
     

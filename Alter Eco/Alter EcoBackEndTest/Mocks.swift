@@ -4,6 +4,9 @@ import AlterEcoBackend
 // MARK: Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
 class DBWriterMock: DBWriter {
+    func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void) {
+    }
+    
     func updateScore(toValue value: Double) throws {
     }
     
@@ -107,6 +110,10 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBWriterMock, DBManager {
+    func carbonWithinInterval(from date: Date, addingInterval interval: Double) throws -> Measurement<UnitMass> {
+        return Measurement(value: 0, unit: .kilograms)
+    }
+    
     func carbonFromFoods(predicate: String?, args: [Any]?) throws -> Measurement<UnitMass> {
         return Measurement(value: 0, unit: .kilograms)
     }

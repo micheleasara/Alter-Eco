@@ -14,6 +14,7 @@ public class PieChartViewModel: ObservableObject {
     @Published public var colours: [Color] = [.primary]
     @Published public var legendNames: [String] = [""]
     
+    /// Updates and publishes all given arguments.
     public func update(values: [Double], imageNames: [String],
                   colours: [Color], legendNames: [String]) {
         self.values = values
