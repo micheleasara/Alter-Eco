@@ -235,6 +235,7 @@ public class GameViewController: UIViewController {
     private func endNodeMoving() {
         if let node = movingNode {
             node.physicsBody?.isAffectedByGravity = true
+            node.physicsBody?.applyForce(SCNVector3(0, -1, 0), asImpulse: true)
             saveToDatabase(node: node)
         }
 
