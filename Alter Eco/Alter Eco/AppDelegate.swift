@@ -9,7 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     /// Request s gps updates.
     internal let manager = CLLocationManager()
     /// Interfaces with the database.
-    public var DBMS: DBManager!
+    public let DBMS: DBManager
     /// Estimates activities based on given information (such as location updates).
     internal var activityEstimator: ActivityEstimator<WeightedActivityList>!
     /// Location of last request for stations nearby. Used to avoid too many requests.
@@ -23,11 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     /// Defines radius of search for airports in meters.
     internal var airportRequestRadius: Double = MAX_AIRPORT_REQUEST_RADIUS
     
-    var scene = SceneDelegate()
+    internal var scene = SceneDelegate()
     
     override init() {
-        super.init()
         self.DBMS = CoreDataManager()
+        super.init()
         
         // if this is the first launch, make sure settings are initialised correctly
         if !UserDefaults.standard.bool(forKey: "skipIntroduction") {

@@ -13,7 +13,7 @@ public class GameViewModel: ObservableObject {
     /// Determines if the 3D scene should be shown or not.
     public var isGameOn: Bool {
         willSet {
-            objectWillChange.send()
+            objectWillChange.send() // emulate @Published
             // refresh smog state everytime we open the game
             if newValue {
                 refreshSmogState()

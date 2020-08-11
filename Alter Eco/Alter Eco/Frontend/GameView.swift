@@ -7,7 +7,7 @@ public struct GameView: View {
         Group {
             ZStack {
                 Text("Loading 3D scene...")
-                SceneKitView()
+                SceneKitView(itemToAdd: $viewModel.itemToAdd, isSmogOn: $viewModel.isSmogOn, isEditModeOn: $viewModel.isEditModeOn)
                 OptionMenu()
             }
             
@@ -21,6 +21,11 @@ public struct GameView: View {
 /// Bridges between SwiftUI and SceneKit.
 public struct SceneKitView: UIViewControllerRepresentable {
     @EnvironmentObject private var viewModel: GameViewModel
+    // using Binding instead of the EnvironmentObject as it forces
+    // updateUIViewController to be called with the new values being already set
+    @Binding var itemToAdd: ShopItem?
+    @Binding var isSmogOn: Bool
+    @Binding var isEditModeOn: Bool
     
     public typealias UIViewControllerType = GameViewController
 
@@ -29,14 +34,14 @@ public struct SceneKitView: UIViewControllerRepresentable {
     }
     
     public func updateUIViewController(_ uiViewController: GameViewController, context: Context) {
-        uiViewController.isEditModeOn(viewModel.isEditModeOn)
-        if let item = viewModel.itemToAdd {
+        uiViewController.isEditModeOn(isEditModeOn)
+        if let item = itemToAdd {
             uiViewController.letUserPlaceNode(fromShopItem: item, nodePlacedCallback: {
-                self.viewModel.itemToAdd = nil
+                self.itemToAdd = nil
                 self.viewModel.refreshCurrentPoints()
             })
         }
-        uiViewController.isSmogOn(viewModel.isSmogOn)
+        uiViewController.isSmogOn(isSmogOn)
     }
 }
 
@@ -176,7 +181,9 @@ public struct OptionMenu: View {
     private func getConfirmationAlert(item: ShopItem) -> Alert {
         Alert(title: Text("Confirm"),
               message: Text(String(format: "Are you sure you want to spend %.0f points for one %@?", item.cost, item.displayedName)),
-              primaryButton: .default(Text("Yes"), action: { self.viewModel.itemToAdd = item }),
+              primaryButton: .default(Text("Yes"), action: {
+                print("Tapped yes")
+                self.viewModel.itemToAdd = item }),
               secondaryButton: .cancel(Text("No")))
     }
     
