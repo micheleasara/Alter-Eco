@@ -34,7 +34,7 @@ public class OpenFoodFacts: RemoteFoodRetriever, RemoteFoodUploader {
     /// Address of the OpenFoodFacts API for upload. Should be terminated with a barcode and the fields to upload.
     private let APIUploadBaseAddress = "https://world.openfoodfacts.org/cgi/product_jqm2.pl?code="
 
-    private let foodCarbonConverter = FoodToCarbonConverter()
+    private let foodCarbonConverter: FoodTypeRetriever = FoodToCarbonManager()
     /// Contains words which are filtered out during preprocessing.
     private let STOPWORDS = Set(["a", "the", "and", "or", "nor", "neither", "product", "products", "food", "foods",
     "tree", "based", "their", "beverage", "beverages", "grocery", "groceries", "with"])

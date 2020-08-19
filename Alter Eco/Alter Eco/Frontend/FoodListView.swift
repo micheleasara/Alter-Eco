@@ -240,7 +240,7 @@ public struct FoodToAddView: View {
             }
         }
         .sheet(isPresented: $editingType) {
-            SearchableList(list: Array(FoodToCarbonConverter.foodTypesInfo.keys),
+            SearchableList(list: Array(FoodToCarbonManager.foodTypesInfo.keys),
                            selected: self.$type)
         }
     }
@@ -308,7 +308,7 @@ public struct FoodInfoView: View {
     }
 
     private var foodTypeLabel: some View {
-        var list = Array(FoodToCarbonConverter.foodTypesInfo.keys)
+        var list = Array(FoodToCarbonManager.foodTypesInfo.keys)
         // only display this food's types if they are complete
         // that is, they include every possible type
         if let types = food.types, types.count >= list.count {

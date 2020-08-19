@@ -14,7 +14,7 @@ public class Food: Hashable, ObservableObject {
     public let barcode: String
     /// The broad category (e.g. meats, diaries etc.) calculated from the first type in the list of possible types.
     public var category: Category? {
-        return FoodToCarbonConverter.foodTypesInfo[types?.first ?? ""]?.category
+        return FoodToCarbonManager.foodTypesInfo[types?.first ?? ""]?.category
     }
     
     public init(barcode: String, name: String? = nil,

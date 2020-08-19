@@ -18,7 +18,7 @@ public class FoodListViewModel: ObservableObject {
         return converter.getCarbon(fromFoods: replaceNilQuantitiesWithDefault(in: productsWithTypes))
     }
     
-    private let converter = FoodToCarbonConverter()
+    private let converter: FoodToCarbonConverter = FoodToCarbonManager()
     private let uploader: RemoteFoodUploader = OpenFoodFacts()
     private let DBMS: DBManager
     

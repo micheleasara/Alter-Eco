@@ -1,6 +1,6 @@
 import Foundation
 
-extension FoodToCarbonConverter {
+extension FoodToCarbonManager {
     /// Database of food types (lowercase) containing information about their GHG emission values in  kgCOeq/kg and their categories.
     public static let foodTypesInfo: Dictionary<String, (carbonDensity: Double, category: Food.Category)> = [
         "onion": (0.18, .vegetablesAndDerived),

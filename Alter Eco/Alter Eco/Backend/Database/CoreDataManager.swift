@@ -5,7 +5,7 @@ import CoreData
 /// Represents a database manager that provides an I/O interface with the CoreData framework.
 public class CoreDataManager : DBManager {
     // utility to get carbon from food items
-    private let foodConverter = FoodToCarbonConverter()
+    private let foodConverter: FoodToCarbonConverter = FoodToCarbonManager()
 
     // contains the functions called when an activity or a food has been written to the database
     private var newPollutingItemCallbacks: [(PollutingItemType) -> Void] = []

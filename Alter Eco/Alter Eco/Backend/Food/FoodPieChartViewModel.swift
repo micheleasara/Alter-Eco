@@ -3,7 +3,7 @@ import Foundation
 /// Responsible for retrieving and publishing the data shown in the food pie chart.
 public class FoodPieChartViewModel: PieChartModel {
     private let DBMS: DBManager
-    private let converter = FoodToCarbonConverter()
+    private let converter: FoodToCarbonConverter = FoodToCarbonManager()
 
     /// Initializes a new instance of the view model with the database manager provided.
     public init(DBMS: DBManager) {

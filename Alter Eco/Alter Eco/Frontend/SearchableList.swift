@@ -63,6 +63,6 @@ struct SearchableListItem: View {
 
 struct SearchableList_Previews: PreviewProvider {
     static var previews: some View {
-        SearchableList(list: Array(FoodToCarbonConverter.foodTypesInfo.keys), selected: .constant(""))
+        SearchableList(list: Array(FoodToCarbonManager.foodTypesInfo.keys), selected: .constant(""))
     }
 }

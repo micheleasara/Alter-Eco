@@ -44,7 +44,7 @@
 		DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */; };
 		DE36CC2C24BC80B200825FAE /* SearchableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36CC2B24BC80B200825FAE /* SearchableList.swift */; };
 		DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
-		DE3AC73324ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */; };
+		DE3AC73324ACD76200D32E54 /* FoodToCarbonConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConversion.swift */; };
 		DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
 		DE3AC73924ACD82700D32E54 /* FoodListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */; };
 		DE3AC73B24ACE0E700D32E54 /* BarcodeScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */; };
@@ -89,7 +89,7 @@
 		DEA0D1D724B5E15200FFDB00 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D524B5E02900FFDB00 /* Protocols.swift */; };
 		DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA0D1D024B5D81C00FFDB00 /* Food.swift */; };
 		DEA0D1DC24B60A8100FFDB00 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
-		DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */; };
+		DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73224ACD76200D32E54 /* FoodToCarbonConversion.swift */; };
 		DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
 		DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA1E867248A7988003EF0F5 /* SettingsView.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
@@ -182,7 +182,7 @@
 		DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChart.swift; sourceTree = "<group>"; };
 		DE36CC2B24BC80B200825FAE /* SearchableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableList.swift; sourceTree = "<group>"; };
 		DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRetrieval.swift; sourceTree = "<group>"; };
-		DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodToCarbonConverter.swift; sourceTree = "<group>"; };
+		DE3AC73224ACD76200D32E54 /* FoodToCarbonConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodToCarbonConversion.swift; sourceTree = "<group>"; };
 		DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodGHGConversion.swift; sourceTree = "<group>"; };
 		DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodListViewModel.swift; sourceTree = "<group>"; };
 		DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarcodeScanner.swift; sourceTree = "<group>"; };
@@ -422,7 +422,7 @@
 				DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */,
 				DEA0D1D024B5D81C00FFDB00 /* Food.swift */,
 				DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */,
-				DE3AC73224ACD76200D32E54 /* FoodToCarbonConverter.swift */,
+				DE3AC73224ACD76200D32E54 /* FoodToCarbonConversion.swift */,
 				DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */,
 				DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */,
 				DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */,
@@ -665,7 +665,7 @@
 				DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */,
 				DE8ECE9924DE0B5C00641BA4 /* GameView.swift in Sources */,
 				DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */,
-				DE3AC73324ACD76200D32E54 /* FoodToCarbonConverter.swift in Sources */,
+				DE3AC73324ACD76200D32E54 /* FoodToCarbonConversion.swift in Sources */,
 				DE8F9378249FEAB8002D85E6 /* FoodView.swift in Sources */,
 				9CD594232429686900B1D0B4 /* SplashScreen.swift in Sources */,
 				9CD594412429691E00B1D0B4 /* ContentView.swift in Sources */,
@@ -731,7 +731,7 @@
 				DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */,
 				DE5E6E7F24E0585B00299047 /* Database2.0.xcdatamodeld in Sources */,
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
-				DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConverter.swift in Sources */,
+				DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConversion.swift in Sources */,
 				DECD0956247DD36F0099747D /* TransportBarChartViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -960,7 +960,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
 				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;
@@ -985,7 +985,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
 				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;

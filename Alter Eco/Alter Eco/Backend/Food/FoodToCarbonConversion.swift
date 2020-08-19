@@ -1,6 +1,7 @@
 import NaturalLanguage
 
-public protocol FoodToCarbonConverter2 {
+/// Represents an object able to convert food items into a carbon equivalent.
+public protocol FoodToCarbonConverter {
     /**
      Returns the carbon emissions in kg associated with the group of food products provided.
      - Parameter fromFoods: the list of food products which is used to compute the carbon equivalent value.
@@ -16,25 +17,30 @@ public protocol FoodToCarbonConverter2 {
     func getCarbon(fromFood food: Food) -> Measurement<UnitMass>?
 }
 
-/// An entity which contains and offers tools to access the food carbon database.
-public class NLPFoodToCarbonConverter: FoodToCarbonConverter2 {
-    /// Returns the URL for the word embedding model assuming it is in this class's bundle.
-    public class var urlOfModelInThisBundle: URL {
-        let bundle = Bundle(for: NLPFoodToCarbonConverter.self)
-        return bundle.url(forResource: "WordEmbedding", withExtension: "mlmodelc")!
-    }
-    
-    // default to iOS embedding for english if available, otherwise use bundle model
-    private var embedding = NLEmbedding.wordEmbedding(for: .english) ?? (try! NLEmbedding(contentsOf: NLPFoodToCarbonConverter.urlOfModelInThisBundle))
-    
-    /// Mapping of lowercase words identifying a liquid type to a density in kg/l.
-    private let liquidsDensities: Dictionary<String, Double> = ["oil":0.9, "water":1, "liquor":0.94]
-    
+/// Represents an entity which can retrieve food types.
+public protocol FoodTypeRetriever {
     /**
      Returns a list of food types matching the given english keywords.
      - Parameter keywords: a list of english keywords describing a food product to be used to determine possible food types.
      - Returns: A list of food types matching the given english keywords and in descending order according to how strong the match is.
      */
+    func keywordsToTypes(_ keywords: [String]) -> [String]
+}
+
+/// An NLP-based entity which contains and offers tools to access the food carbon database.
+public class FoodToCarbonManager: FoodToCarbonConverter, FoodTypeRetriever {
+    /// Returns the URL for the word embedding model assuming it is in this class's bundle.
+    public class var urlOfModelInThisBundle: URL {
+        let bundle = Bundle(for: FoodToCarbonManager.self)
+        return bundle.url(forResource: "WordEmbedding", withExtension: "mlmodelc")!
+    }
+    
+    // default to iOS embedding for english if available, otherwise use bundle model
+    private var embedding = NLEmbedding.wordEmbedding(for: .english) ?? (try! NLEmbedding(contentsOf: FoodToCarbonManager.urlOfModelInThisBundle))
+    
+    /// Mapping of lowercase words identifying a liquid type to a density in kg/l.
+    private let liquidsDensities: Dictionary<String, Double> = ["oil":0.9, "water":1, "liquor":0.94]
+    
     public func keywordsToTypes(_ keywords: [String]) -> [String] {
         // lemmatize words and get a vector representation of the whole list
         let words = lemmatize(words: keywords)
@@ -42,7 +48,7 @@ public class NLPFoodToCarbonConverter: FoodToCarbonConverter2 {
         
         // compute cosine similarity between vector and all the foods within the carbon-conversion database
         var results = Dictionary<String, Double>()
-        for food in NLPFoodToCarbonConverter.foodTypesInfo.keys {
+        for food in FoodToCarbonManager.foodTypesInfo.keys {
             var foodVec = [Double]()
             if !embedding.contains(food) {
                 // some entries in the carbon conversion database have spaces
@@ -60,11 +66,6 @@ public class NLPFoodToCarbonConverter: FoodToCarbonConverter2 {
         return results.sorted{$0.value < $1.value}.map{$0.key}
     }
 
-    /**
-     Returns the carbon emissions in kg associated with the group of food products provided.
-     - Parameter fromFoods: the list of food products which is used to compute the carbon equivalent value.
-     - Returns: The carbon emissions in kg. If not enough information is available to determine a carbon emission, the resulting value for that product is considered 0.
-     */
     public func getCarbon(fromFoods foods: [Food]) -> Measurement<UnitMass> {
         let zeroKg = Measurement<UnitMass>(value: 0, unit: UnitMass.kilograms)
         var total = zeroKg
@@ -75,15 +76,10 @@ public class NLPFoodToCarbonConverter: FoodToCarbonConverter2 {
         return total
     }
     
-    /**
-     Returns the carbon emissions in kg associated with a food product.
-     - Parameter fromFood: the food product which is used to compute a carbon equivalent value.
-     - Returns: The carbon equivalent in kilograms, or nil if not enough information is available.
-     */
     public func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
         guard let type = food.types?.first else { return nil }
         guard let quantityInKg = toKg(food: food) else { return nil }
-        guard let carbonDensity = NLPFoodToCarbonConverter.foodTypesInfo[type]?.carbonDensity else { return nil }
+        guard let carbonDensity = FoodToCarbonManager.foodTypesInfo[type]?.carbonDensity else { return nil }
         
         return Measurement<UnitMass>(value: carbonDensity * quantityInKg.value, unit: .kilograms)
     }
