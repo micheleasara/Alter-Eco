@@ -45,7 +45,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(FoodAwardsManager(DBMS: DBMS))
                 .environmentObject(transportPieChartModel)
                 .environmentObject(foodPieChartModel)
-                .environmentObject(FoodListViewModel(DBMS: DBMS))
+                .environmentObject(FoodListViewModel(converter: FoodToCarbonManager(), uploader: OpenFoodFacts(), DBMS: DBMS))
                 .environmentObject(gameViewModel))
             
             self.window = window

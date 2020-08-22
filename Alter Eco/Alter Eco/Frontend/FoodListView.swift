@@ -403,7 +403,10 @@ struct FoodListView_Previews: PreviewProvider {
         ]
         
         let notFound = [Food(barcode: "8456743")]
-        let model = FoodListViewModel(foods: foods, notFound: notFound, DBMS: CoreDataManager() )
+        let model = FoodListViewModel(foods: foods, notFound: notFound,
+                                      converter: FoodToCarbonManager(),
+                                      uploader: OpenFoodFacts(),
+                                      DBMS: CoreDataManager() )
         return Group {
             FoodListView(isVisible: .constant(true)).environmentObject(model)
             FoodToAddView(food: notFound.first!, parentModel: model)

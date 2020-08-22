@@ -5,18 +5,33 @@ import AlterEcoBackend
 
 // MARK: Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
 
+class RemoteFoodUploaderMock: RemoteFoodUploader {
+    public var uploadArgs: [(food: Food, completionHandler: (Data?, URLResponse?, Error?) -> Void)] = []
+    func upload(food: Food, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        uploadArgs.append((food, completionHandler))
+    }
+}
+
+class FoodToCarbonConverterMock: FoodToCarbonConverter {
+    public var getCarbonArrayArgs: [[Food]] = []
+    func getCarbon(fromFoods foods: [Food]) -> Measurement<UnitMass> {
+        getCarbonArrayArgs.append(foods)
+        return Measurement(value: 0, unit: .kilograms)
+    }
+    
+    public var getCarbonArgs: [Food] = []
+    func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
+        getCarbonArgs.append(food)
+        return Measurement(value: 0, unit: .kilograms)
+    }
+}
+
+
 class RemoteFoodRetrieverMock: RemoteFoodRetriever {
     public var fetchFoodArgs: [(barcode: String, completionHandler: (Food?, RemoteFoodRetrievalError?) -> Void)] = []
     func fetchFood(barcode: String,
                    completionHandler: @escaping (Food?, RemoteFoodRetrievalError?) -> Void) {
         fetchFoodArgs.append((barcode, completionHandler))
-    }
-}
-
-class RemoteFoodUploaderMock: RemoteFoodUploader {
-    public var uploadArgs: [(food: Food, completionHandler: (Data?, URLResponse?, Error?) -> Void)] = []
-    func upload(food: Food, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        uploadArgs.append((food, completionHandler))
     }
 }
 
@@ -57,13 +72,17 @@ class DBWriterMock: DBWriter {
     func updateScore(toValue value: Double) throws {
     }
     
+    var appendFoodArrayArgs: [[Food]] = []
     func append(foods: [Food]) throws {
+        appendFoodArrayArgs.append(foods)
     }
     
-    func append(food: Food) throws {}
+    var appendFoodArgs: [Food] = []
+    func append(food: Food) throws {
+        appendFoodArgs.append(food)
+    }
     
     var appendArgs: [MeasuredActivity] = []
-    
     func append(activity: MeasuredActivity) throws {
         appendArgs.append(activity)
     }

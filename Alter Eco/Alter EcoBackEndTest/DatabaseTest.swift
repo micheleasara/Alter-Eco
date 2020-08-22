@@ -3,7 +3,7 @@ import CoreLocation
 import CoreData
 @testable import AlterEcoBackend
 
-class DatabaseAndUserScoreTest: XCTestCase {
+class DatabaseTest: XCTestCase {
     
     var DBMS: CoreDataManager!
 

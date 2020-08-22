@@ -18,12 +18,17 @@ public class FoodListViewModel: ObservableObject {
         return converter.getCarbon(fromFoods: replaceNilQuantitiesWithDefault(in: productsWithTypes))
     }
     
-    private let converter: FoodToCarbonConverter = FoodToCarbonManager()
-    private let uploader: RemoteFoodUploader = OpenFoodFacts()
-    private let DBMS: DBManager
+    private let converter: FoodToCarbonConverter
+    private let uploader: RemoteFoodUploader
+    private let DBMS: DBWriter
     
-    public init(foods: [Food] = [], notFound: [Food] = [], DBMS: DBManager) {
+    public init(foods: [Food] = [], notFound: [Food] = [],
+                converter: FoodToCarbonConverter,
+                uploader: RemoteFoodUploader,
+                DBMS: DBWriter) {
         self.DBMS = DBMS
+        self.converter = converter
+        self.uploader = uploader
         update(foods: foods, notFound: notFound)
     }
     
