@@ -53,6 +53,9 @@
 		DE3C10A52447B48000107AF4 /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A32447B48000107AF4 /* Timers.swift */; };
 		DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
 		DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3C10A62447C5A100107AF4 /* Constants.swift */; };
+		DE42485724F14E7A00541B2D /* FoodScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42485624F14E7A00541B2D /* FoodScannerViewModel.swift */; };
+		DE42485824F14E7A00541B2D /* FoodScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42485624F14E7A00541B2D /* FoodScannerViewModel.swift */; };
+		DE42485A24F1713000541B2D /* FoodScannerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42485924F1713000541B2D /* FoodScannerViewModelTest.swift */; };
 		DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7A24E0510100299047 /* GameViewModel.swift */; };
 		DE5E6E7D24E057F400299047 /* GameItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* GameItems.swift */; };
@@ -123,13 +126,6 @@
 			remoteGlobalIDString = CD200B3E23E3885100629E73;
 			remoteInfo = "Alter Eco";
 		};
-		9CD5948624296E2700B1D0B4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CD200B3723E3885100629E73 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CD200B3E23E3885100629E73;
-			remoteInfo = "Alter Eco";
-		};
 		DEDE54BC24467D31003FE0DE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CD200B3723E3885100629E73 /* Project object */;
@@ -169,7 +165,6 @@
 		9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimatorTest.swift; sourceTree = "<group>"; };
 		9CD5945A24296BD100B1D0B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Alter EcoBackEndTests/Info.plist"; sourceTree = "<group>"; };
 		9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoBackEndTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoFullUITest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatabaseAndUserScoreTest.swift; path = "Alter EcoBackEndTest/DatabaseAndUserScoreTest.swift"; sourceTree = SOURCE_ROOT; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD200B4B23E3885700629E73 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -189,6 +184,8 @@
 		DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		DE3C10A32447B48000107AF4 /* Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		DE3C10A62447C5A100107AF4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		DE42485624F14E7A00541B2D /* FoodScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodScannerViewModel.swift; sourceTree = "<group>"; };
+		DE42485924F1713000541B2D /* FoodScannerViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodScannerViewModelTest.swift; sourceTree = "<group>"; };
 		DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		DE5E6E7A24E0510100299047 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		DE5E6E7C24E057F400299047 /* GameItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameItems.swift; sourceTree = "<group>"; };
@@ -234,13 +231,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9CD5947E24296E2700B1D0B4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		CD200B3C23E3885100629E73 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -261,6 +251,7 @@
 		9CD5947124296D9200B1D0B4 /* Alter EcoBackEndTest */ = {
 			isa = PBXGroup;
 			children = (
+				DE42485924F1713000541B2D /* FoodScannerViewModelTest.swift */,
 				DE054C85248EFE3B001B8EB1 /* TestMain.swift */,
 				DE2B0280247ED28C00926935 /* Mocks.swift */,
 				9CFAF4BB242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift */,
@@ -288,7 +279,6 @@
 			children = (
 				CD200B3F23E3885100629E73 /* Alter Eco.app */,
 				9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */,
-				9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */,
 				DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */,
 			);
 			name = Products;
@@ -342,7 +332,6 @@
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
 				DE2D583924A4FD0E00BB14F0 /* ChartModel.swift */,
-				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -368,6 +357,7 @@
 				55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */,
 				DEA1E867248A7988003EF0F5 /* SettingsView.swift */,
 				DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */,
+				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 				DE8ECE9824DE0B5C00641BA4 /* GameView.swift */,
 				DE74ECF62482E4D10099F944 /* Utils.swift */,
 				DE2D583E24A517DB00BB14F0 /* Charts */,
@@ -425,6 +415,7 @@
 				DE3AC73224ACD76200D32E54 /* FoodToCarbonConversion.swift */,
 				DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */,
 				DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */,
+				DE42485624F14E7A00541B2D /* FoodScannerViewModel.swift */,
 				DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */,
 			);
 			path = Food;
@@ -474,24 +465,6 @@
 			productReference = 9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		9CD5948024296E2700B1D0B4 /* Alter EcoFullUITest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9CD5948824296E2700B1D0B4 /* Build configuration list for PBXNativeTarget "Alter EcoFullUITest" */;
-			buildPhases = (
-				9CD5947D24296E2700B1D0B4 /* Sources */,
-				9CD5947E24296E2700B1D0B4 /* Frameworks */,
-				9CD5947F24296E2700B1D0B4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9CD5948724296E2700B1D0B4 /* PBXTargetDependency */,
-			);
-			name = "Alter EcoFullUITest";
-			productName = "Alter EcoFullUITest";
-			productReference = 9CD5948124296E2700B1D0B4 /* Alter EcoFullUITest.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		CD200B3E23E3885100629E73 /* Alter Eco */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD200B6923E3885800629E73 /* Build configuration list for PBXNativeTarget "Alter Eco" */;
@@ -540,10 +513,6 @@
 						CreatedOnToolsVersion = 11.3.1;
 						TestTargetID = DEDE548C24467B4E003FE0DE;
 					};
-					9CD5948024296E2700B1D0B4 = {
-						CreatedOnToolsVersion = 11.3.1;
-						TestTargetID = CD200B3E23E3885100629E73;
-					};
 					CD200B3E23E3885100629E73 = {
 						CreatedOnToolsVersion = 11.3;
 					};
@@ -564,7 +533,6 @@
 			targets = (
 				CD200B3E23E3885100629E73 /* Alter Eco */,
 				9CD5946F24296D9200B1D0B4 /* Alter EcoBackEndTest */,
-				9CD5948024296E2700B1D0B4 /* Alter EcoFullUITest */,
 				DEDE548C24467B4E003FE0DE /* AlterEcoBackend */,
 			);
 		};
@@ -572,13 +540,6 @@
 
 /* Begin PBXResourcesBuildPhase section */
 		9CD5946E24296D9200B1D0B4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9CD5947F24296E2700B1D0B4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -637,6 +598,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE42485A24F1713000541B2D /* FoodScannerViewModelTest.swift in Sources */,
 				DE2B027F247EC1D900926935 /* ChartDataModelTest.swift in Sources */,
 				DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */,
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
@@ -645,13 +607,6 @@
 				DE054C86248EFE3B001B8EB1 /* TestMain.swift in Sources */,
 				9CFAF4BC242CE9E7000B75A7 /* DatabaseAndUserScoreTest.swift in Sources */,
 				9CD5947C24296DAD00B1D0B4 /* ActivityEstimatorTest.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9CD5947D24296E2700B1D0B4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -683,6 +638,7 @@
 				DE8ECE8124DE0A0100641BA4 /* GameViewController.swift in Sources */,
 				9C87AE27244215FB00490481 /* CoreDataManager.swift in Sources */,
 				DE5E6E8324E092BA00299047 /* TransportPieChartViewModel.swift in Sources */,
+				DE42485724F14E7A00541B2D /* FoodScannerViewModel.swift in Sources */,
 				9CD5943F2429691C00B1D0B4 /* SceneDelegate.swift in Sources */,
 				573693832438F85F00992BB0 /* TransportBarChartViewModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */,
@@ -733,6 +689,7 @@
 				DEDE54A724467B4E003FE0DE /* ActivityList.swift in Sources */,
 				DEA0D1DD24B60A8400FFDB00 /* FoodToCarbonConversion.swift in Sources */,
 				DECD0956247DD36F0099747D /* TransportBarChartViewModel.swift in Sources */,
+				DE42485824F14E7A00541B2D /* FoodScannerViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,11 +700,6 @@
 			isa = PBXTargetDependency;
 			target = CD200B3E23E3885100629E73 /* Alter Eco */;
 			targetProxy = 9CD5947524296D9300B1D0B4 /* PBXContainerItemProxy */;
-		};
-		9CD5948724296E2700B1D0B4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CD200B3E23E3885100629E73 /* Alter Eco */;
-			targetProxy = 9CD5948624296E2700B1D0B4 /* PBXContainerItemProxy */;
 		};
 		DEDE54BD24467D31003FE0DE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -795,48 +747,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AlterEcoBackend.app/AlterEcoBackend";
-			};
-			name = Release;
-		};
-		9CD5948924296E2700B1D0B4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WSTC8F6Z3G;
-				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "imperial.Alter-EcoFullUITest";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Alter Eco";
-			};
-			name = Debug;
-		};
-		9CD5948A24296E2700B1D0B4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WSTC8F6Z3G;
-				INFOPLIST_FILE = "Alter EcoFullUITest/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "imperial.Alter-EcoFullUITest";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "Alter Eco";
 			};
 			name = Release;
 		};
@@ -1057,15 +967,6 @@
 			buildConfigurations = (
 				9CD5947824296D9300B1D0B4 /* Debug */,
 				9CD5947924296D9300B1D0B4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9CD5948824296E2700B1D0B4 /* Build configuration list for PBXNativeTarget "Alter EcoFullUITest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9CD5948924296E2700B1D0B4 /* Debug */,
-				9CD5948A24296E2700B1D0B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

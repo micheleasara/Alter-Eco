@@ -1,101 +1,11 @@
 import SwiftUI
 import AVFoundation
 
-/// View model for the food scanning process. Responsible for retrieving all food information from the scanned barcodes.
-public class FoodScannerViewModel: ObservableObject {
-    /// The list of retrieved food items which have been retrieved so far.
-    public var retrievedFoods: [Food] = []
-    /// The list of food items which could not be retrieved as not present in the database.
-    public var foodsNotFound: [Food] = []
-    /// Determines if the retrieval process has been completed.
-    @Published public var retrievalCompleted = false
-    
-    private var numFoodsToRetrieve = 0
-    private let foodRetriever: RemoteFoodRetriever
-    private var scannerDelegate: ScannerDelegate?
-    
-    /**
-     Initializes a new instance the view model for the food scanner.
-     - Parameter foodRetriever: the object which will be used to retrieve food information from a barcode.
-     - Parameter scannerDelegate: the controller associated with the barcode scanning process. If nil, the controller will be instantiated when needed.
-     */
-    public init(foodRetriever: RemoteFoodRetriever, scannerDelegate: ScannerDelegate? = nil) {
-        self.foodRetriever = foodRetriever
-        self.scannerDelegate = scannerDelegate
-    }
-    
-    /**
-     Resets the state of this view model.
-     - Parameter scannerDelegate: the new controller associated with the barcode scanning process. If nil, the controller will be instantiated when needed.
-     */
-    public func reset(scannerDelegate: ScannerDelegate? = nil) {
-        self.scannerDelegate = scannerDelegate
-        retrievedFoods.removeAll()
-        foodsNotFound.removeAll()
-        retrievalCompleted = false
-    }
-    
-    /// Returns the current controller associated with the barcode scanning process. If no controller exists, it is instantiated.
-    public func getScannerDelegate() -> ScannerDelegate {
-        if scannerDelegate == nil {
-            scannerDelegate = ScannerViewController()
-        }
-        scannerDelegate?.setCodesRetrievalCallback(onCodesRetrieval)
-        return scannerDelegate ?? ScannerViewController()
-    }
-    
-    private func onCodesRetrieval(codes: Set<String>) {
-        if !codes.isEmpty {
-            numFoodsToRetrieve = codes.count
-            scannerDelegate?.displayWaitingSpinner()
-            for code in codes {
-                foodRetriever.fetchFood(barcode: code, completionHandler: onFoodRetrieval(food:error:))
-            }
-        } else {
-            scannerDelegate?.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: "Could not read barcodes."))
-        }
-    }
-    
-    private func onFoodRetrieval(food: Food?, error: RemoteFoodRetrievalError?) {
-        DispatchQueue.main.sync {
-            if let food = food {
-                retrievedFoods.append(food)
-            } else if let error = error {
-                switch error {
-                case .network(localizedDescription: let description):
-                    scannerDelegate?.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: description))
-                case .httpFailure(localizedDescription: let description):
-                    scannerDelegate?.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: description))
-                case .foodNotFound(barcode: let barcode):
-                    foodsNotFound.append(Food(barcode: barcode))
-                }
-            }
-            
-            let retrieved = retrievedFoods.count + foodsNotFound.count
-            if retrieved >= numFoodsToRetrieve {
-                retrievalCompleted = true
-            }
-        }
-    }
-}
-
-/// Responsible for coordinating the barcode scanning process using a camera feed.
-public protocol ScannerDelegate: AVCaptureMetadataOutputObjectsDelegate {
-    /// Sets the function to be called when all barcodes have been scanned.
-    func setCodesRetrievalCallback(_ callback: @escaping (Set<String>) -> Void)
-    /// Displays a spinner to signify work in progress.
-    func displayWaitingSpinner()
-    /// To be called when a runtime AVError occurs.
-    func onRuntimeAVError(error: AVError)
-    /// Displays an error alert and dismisses the view.
-    func displayErrorAndDismiss(error: LocalizedError)
-}
-
 /// Connects SwiftUI to UIKit and represents the interface for the barcode scanning of food products.
 public struct FoodScannerView: UIViewControllerRepresentable {
     public typealias UIViewControllerType = ScannerViewController
     @Environment(\.presentationMode) public var presentationMode
-    @ObservedObject public var viewModel: FoodScannerViewModel
+    @ObservedObject public var viewModel: FoodScannerViewModel<ScannerViewController>
     // binding required to ensure updateUIViewController is called once a published value is set
     @Binding public var retrievalCompleted: Bool
     
@@ -144,11 +54,10 @@ public class ScannerViewController: UIViewController, ScannerDelegate {
                 setFocusArea()
                 addControls()
                 scanner?.startScanning()
-            } catch let e as IdentifiableError {
-                displayErrorAndDismiss(error: e)
+            } catch let e as LocalizedError {
+                displayErrorAndDismiss(withMessage: e.localizedDescription)
             } catch {
-                let error = IdentifiableError(localizedDescription: "An error occurred while loading the scanner.")
-                displayErrorAndDismiss(error: error)
+                displayErrorAndDismiss(withMessage: "An error occurred while loading the scanner.")
             }
         }
     }
@@ -182,7 +91,7 @@ public class ScannerViewController: UIViewController, ScannerDelegate {
     }
     
     public func onRuntimeAVError(error: AVError) {
-        displayErrorAndDismiss(error: IdentifiableError(localizedDescription: error.localizedDescription))
+        displayErrorAndDismiss(withMessage: error.localizedDescription)
     }
     
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -205,18 +114,19 @@ public class ScannerViewController: UIViewController, ScannerDelegate {
     }
     
     /// Displays an error alert and dismisses the view in a thread-safe way.
-    public func displayErrorAndDismiss(error: LocalizedError) {
+    public func displayErrorAndDismiss(withMessage message: String) {
         // Errors are displayed through UIKit, rather than SwiftUI, to avoid presentation warnings
         if Thread.isMainThread {
-            unsafeDisplayErrorAndDismiss(error: error)
+            unsafeDisplayErrorAndDismiss(message: message)
         } else { // run gui code on main thread
             DispatchQueue.main.sync {
-                unsafeDisplayErrorAndDismiss(error: error)
+                unsafeDisplayErrorAndDismiss(message: message)
             }
         }
     }
     
-    private func unsafeDisplayErrorAndDismiss(error: LocalizedError) {
+    // caution: this method is not thread safe
+    private func unsafeDisplayErrorAndDismiss(message: String) {
         if let alert = errorAlert {
             // do not attempt displaying a second alert if one is already being shown
             guard !alert.isBeingPresented else { return }
@@ -224,7 +134,7 @@ public class ScannerViewController: UIViewController, ScannerDelegate {
         
         let defaultAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in self?.dismiss(animated: true, completion: nil) }
         errorAlert = UIAlertController(title: "Error",
-                                      message: error.localizedDescription,
+                                      message: message,
                                       preferredStyle: .alert)
         errorAlert!.addAction(defaultAction)
         

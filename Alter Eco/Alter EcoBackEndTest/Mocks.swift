@@ -1,7 +1,54 @@
 import Foundation
+import AVFoundation
+import UIKit
 import AlterEcoBackend
 
 // MARK: Xcode does not offer any mocking package as of now (05/2020), so mocks are created manually
+
+class RemoteFoodRetrieverMock: RemoteFoodRetriever {
+    public var fetchFoodArgs: [(barcode: String, completionHandler: (Food?, RemoteFoodRetrievalError?) -> Void)] = []
+    func fetchFood(barcode: String,
+                   completionHandler: @escaping (Food?, RemoteFoodRetrievalError?) -> Void) {
+        fetchFoodArgs.append((barcode, completionHandler))
+    }
+}
+
+class RemoteFoodUploaderMock: RemoteFoodUploader {
+    public var uploadArgs: [(food: Food, completionHandler: (Data?, URLResponse?, Error?) -> Void)] = []
+    func upload(food: Food, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        uploadArgs.append((food, completionHandler))
+    }
+}
+
+class ScannerDelegateMock: UIViewController, ScannerDelegate {
+    public var setCodesRetrievalCallbackArgs: [(Set<String>) -> Void] = []
+    func setCodesRetrievalCallback(_ callback: @escaping (Set<String>) -> Void) {
+        setCodesRetrievalCallbackArgs.append(callback)
+    }
+    
+    public var displayWaitingSpinnerCallCount = 0
+    func displayWaitingSpinner() {
+        displayWaitingSpinnerCallCount += 1
+    }
+    
+    public var onRuntimeAVErrorArgs: [AVError] = []
+    func onRuntimeAVError(error: AVError) {
+        onRuntimeAVErrorArgs.append(error)
+    }
+    
+    public var displayErrorAndDismissArgs: [String] = []
+    func displayErrorAndDismiss(withMessage message: String) {
+        displayErrorAndDismissArgs.append(message)
+    }
+    
+    required init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
 class DBWriterMock: DBWriter {
     func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void) {
