@@ -1,64 +1,126 @@
 import SwiftUI
 import AVFoundation
 
-/// Connects SwiftUI to UIKit and is responsible for coordinating the scanner and food retrieval calls.
-public struct ScannerView: UIViewControllerRepresentable {
-    public typealias UIViewControllerType = ScannerDelegate
-    @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var foodListModel: FoodListViewModel
-    @State private var retrievedFoods: [Food] = []
-    @State private var numFoodsToRetrieve = 0
-    @State private var foodsNotFound: [Food] = []
-    private let foodRetriever: RemoteFoodRetriever = OpenFoodFacts()
-    private let controller = ScannerDelegate()
-
-    public func makeUIViewController(context: Context) -> ScannerDelegate {
-        controller.setCodesRetrievalCallback(onCodesRetrieval)
-        return controller
+/// View model for the food scanning process. Responsible for retrieving all food information from the scanned barcodes.
+public class FoodScannerViewModel: ObservableObject {
+    /// The list of retrieved food items which have been retrieved so far.
+    public var retrievedFoods: [Food] = []
+    /// The list of food items which could not be retrieved as not present in the database.
+    public var foodsNotFound: [Food] = []
+    /// Determines if the retrieval process has been completed.
+    @Published public var retrievalCompleted = false
+    
+    private var numFoodsToRetrieve = 0
+    private let foodRetriever: RemoteFoodRetriever
+    private var scannerDelegate: ScannerDelegate?
+    
+    /**
+     Initializes a new instance the view model for the food scanner.
+     - Parameter foodRetriever: the object which will be used to retrieve food information from a barcode.
+     - Parameter scannerDelegate: the controller associated with the barcode scanning process. If nil, the controller will be instantiated when needed.
+     */
+    public init(foodRetriever: RemoteFoodRetriever, scannerDelegate: ScannerDelegate? = nil) {
+        self.foodRetriever = foodRetriever
+        self.scannerDelegate = scannerDelegate
     }
     
-    public func updateUIViewController(_ uiViewController: ScannerDelegate, context: Context) {}
-        
+    /**
+     Resets the state of this view model.
+     - Parameter scannerDelegate: the new controller associated with the barcode scanning process. If nil, the controller will be instantiated when needed.
+     */
+    public func reset(scannerDelegate: ScannerDelegate? = nil) {
+        self.scannerDelegate = scannerDelegate
+        retrievedFoods.removeAll()
+        foodsNotFound.removeAll()
+        retrievalCompleted = false
+    }
+    
+    /// Returns the current controller associated with the barcode scanning process. If no controller exists, it is instantiated.
+    public func getScannerDelegate() -> ScannerDelegate {
+        if scannerDelegate == nil {
+            scannerDelegate = ScannerViewController()
+        }
+        scannerDelegate?.setCodesRetrievalCallback(onCodesRetrieval)
+        return scannerDelegate ?? ScannerViewController()
+    }
+    
     private func onCodesRetrieval(codes: Set<String>) {
-        if codes.count > 0 {
+        if !codes.isEmpty {
             numFoodsToRetrieve = codes.count
-            controller.displayWaitingSpinner()
+            scannerDelegate?.displayWaitingSpinner()
             for code in codes {
                 foodRetriever.fetchFood(barcode: code, completionHandler: onFoodRetrieval(food:error:))
             }
         } else {
-            controller.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: "Could not read barcodes."))
+            scannerDelegate?.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: "Could not read barcodes."))
         }
     }
     
     private func onFoodRetrieval(food: Food?, error: RemoteFoodRetrievalError?) {
-        if let food = food {
-            retrievedFoods.append(food)
-        } else if let error = error {
-            switch error {
-            case .network(localizedDescription: let description):
-                controller.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: description))
-            case .httpFailure(localizedDescription: let description):
-                controller.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: description))
-            case .foodNotFound(barcode: let barcode):
-                foodsNotFound.append(Food(barcode: barcode))
+        DispatchQueue.main.sync {
+            if let food = food {
+                retrievedFoods.append(food)
+            } else if let error = error {
+                switch error {
+                case .network(localizedDescription: let description):
+                    scannerDelegate?.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: description))
+                case .httpFailure(localizedDescription: let description):
+                    scannerDelegate?.displayErrorAndDismiss(error: IdentifiableError(localizedDescription: description))
+                case .foodNotFound(barcode: let barcode):
+                    foodsNotFound.append(Food(barcode: barcode))
+                }
+            }
+            
+            let retrieved = retrievedFoods.count + foodsNotFound.count
+            if retrieved >= numFoodsToRetrieve {
+                retrievalCompleted = true
             }
         }
-        
-        let retrieved = retrievedFoods.count + foodsNotFound.count
-        if retrieved >= numFoodsToRetrieve {
-            DispatchQueue.main.sync {
-                foodListModel.update(foods: retrievedFoods, notFound: foodsNotFound)
-            }
+    }
+}
+
+/// Responsible for coordinating the barcode scanning process using a camera feed.
+public protocol ScannerDelegate: AVCaptureMetadataOutputObjectsDelegate {
+    /// Sets the function to be called when all barcodes have been scanned.
+    func setCodesRetrievalCallback(_ callback: @escaping (Set<String>) -> Void)
+    /// Displays a spinner to signify work in progress.
+    func displayWaitingSpinner()
+    /// To be called when a runtime AVError occurs.
+    func onRuntimeAVError(error: AVError)
+    /// Displays an error alert and dismisses the view.
+    func displayErrorAndDismiss(error: LocalizedError)
+}
+
+/// Connects SwiftUI to UIKit and represents the interface for the barcode scanning of food products.
+public struct FoodScannerView: UIViewControllerRepresentable {
+    public typealias UIViewControllerType = ScannerViewController
+    @Environment(\.presentationMode) public var presentationMode
+    @ObservedObject public var viewModel: FoodScannerViewModel
+    // binding required to ensure updateUIViewController is called once a published value is set
+    @Binding public var retrievalCompleted: Bool
+    
+    public func makeUIViewController(context: Context) -> ScannerViewController {
+        if let scannerDelegate = viewModel.getScannerDelegate() as? ScannerViewController {
+            return scannerDelegate
+        } else {
+            // only other alternative I could think of to allow
+            // for testing like we do here with a protocol, was making
+            // an abstract class that was then implemented by the controller class
+            fatalError("Could not cast into controller for food scanning.")
+        }
+    }
+    
+    public func updateUIViewController(_ uiViewController: ScannerViewController, context: Context) {
+        if retrievalCompleted {
             presentationMode.wrappedValue.dismiss()
         }
     }
 }
 
-/// Represents the UIKit graphical interface that overlaps the camera feed and forwards barcodes read by the scanner.
-public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+/// Controller for the UIKit graphical interface and the camera feed. Responsible forwarding barcodes read by the scanner.
+public class ScannerViewController: UIViewController, ScannerDelegate {
     private var scanner: BarcodeScanner?
-    private var callback: (Set<String>) -> Void = { food in }
+    private var callback: ((Set<String>) -> Void)?
     
     private var itemReadLabel = UILabel()
     private var labelDisappearWorker: DispatchWorkItem?
@@ -69,7 +131,6 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
     
     private var scannedCodes = Set<String>()
     
-    /// Sets the function to be called when all barcodes have been scanned.
     public func setCodesRetrievalCallback(_ callback: @escaping (Set<String>) -> Void) {
         self.callback = callback
     }
@@ -79,7 +140,7 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
         // if not nil, it means this is not the first time this view has appeared
         if spinner == nil {
             do {
-                self.scanner = try BarcodeScanner(withDelegate: self)
+                self.scanner = try BarcodeScanner(withController: self)
                 setFocusArea()
                 addControls()
                 scanner?.startScanning()
@@ -127,17 +188,18 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
     public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         // update layout once the screen has finished rotating
-        coordinator.animate(alongsideTransition: nil) {_ in
-            if self.spinner == nil { // camera should only appear if the spinner is not on screen
-                self.scanner?.updateVideoLayout()
-                self.setFocusArea()
-                let buttonVisible = self.continueButton.isHidden
-                self.continueButton.removeFromSuperview()
-                self.itemReadLabel.removeFromSuperview()
-                self.addControls()
-                self.continueButton.isHidden = buttonVisible
+        coordinator.animate(alongsideTransition: nil) {[weak self] _ in
+            guard let strongSelf = self else { return }
+            if strongSelf.spinner == nil { // camera should only appear if the spinner is not on screen
+                strongSelf.scanner?.updateVideoLayout()
+                strongSelf.setFocusArea()
+                let buttonVisible = strongSelf.continueButton.isHidden
+                strongSelf.continueButton.removeFromSuperview()
+                strongSelf.itemReadLabel.removeFromSuperview()
+                strongSelf.addControls()
+                strongSelf.continueButton.isHidden = buttonVisible
             } else { // adjust spinner
-                self.displayWaitingSpinner()
+                strongSelf.displayWaitingSpinner()
             }
         }
     }
@@ -160,7 +222,7 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
             guard !alert.isBeingPresented else { return }
         }
         
-        let defaultAction = UIAlertAction(title: "OK", style: .default) { _ in self.dismiss(animated: true, completion: nil) }
+        let defaultAction = UIAlertAction(title: "OK", style: .default) { [weak self] _ in self?.dismiss(animated: true, completion: nil) }
         errorAlert = UIAlertController(title: "Error",
                                       message: error.localizedDescription,
                                       preferredStyle: .alert)
@@ -193,7 +255,7 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
     @objc
     private func onButtonTapped(sender: UIButton) {
         scanner?.stopScanning()
-        callback(scannedCodes)
+        callback?(scannedCodes)
     }
     
     private func notifyUserOfScan(withBarcode code: String) {
@@ -207,7 +269,8 @@ public class ScannerDelegate: UIViewController, AVCaptureMetadataOutputObjectsDe
         itemReadLabel.adjustsFontForContentSizeCategory = true
         itemReadLabel.center = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
         itemReadLabel.sizeToFit()
-        labelDisappearWorker = DispatchWorkItem { self.itemReadLabel.isHidden = true }
+        labelDisappearWorker = DispatchWorkItem { [weak self] in
+            self?.itemReadLabel.isHidden = true }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: labelDisappearWorker!)
     }
     

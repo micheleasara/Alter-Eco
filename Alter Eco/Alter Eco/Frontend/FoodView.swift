@@ -7,6 +7,8 @@ public struct FoodView: View {
     @EnvironmentObject var foodListModel: FoodListViewModel
     @State private var showFoodList: Bool = false
     @State private var showScanner: Bool = false
+    @State private var scannerViewModel = FoodScannerViewModel(foodRetriever: OpenFoodFacts(),
+                                                    scannerDelegate: ScannerViewController())
     
     public var body: some View {
         VStack {
@@ -16,7 +18,7 @@ public struct FoodView: View {
             else {
                 ScrollView {
                     VStack {
-                        chartsAndAchievements
+                        charts
                         Text("Powered by OpenFoodFacts").font(.caption).italic().padding()
                     }
                 }
@@ -24,7 +26,7 @@ public struct FoodView: View {
         }
     }
     
-    private var chartsAndAchievements: some View {
+    private var charts: some View {
         VStack(alignment: .center) {
             
             // show pie chart only if we have data
@@ -50,13 +52,14 @@ public struct FoodView: View {
                 }
                 }.padding()
             .sheet(isPresented: $showScanner, onDismiss: {
+                self.foodListModel.update(foods: self.scannerViewModel.retrievedFoods, notFound: self.scannerViewModel.foodsNotFound)
+                self.scannerViewModel.reset()
                 self.showFoodList = !self.foodListModel.isEmpty
-            }) { ScannerView().environmentObject(self.foodListModel) }
-            
-//            Text("Achievements")
-//                .font(.headline)
-//                .fontWeight(.semibold)
-//            AwardView(awardsManager: foodAwards)
+            }) {
+                // environment object required as ScannerView is UIViewControllerRepresentable
+                FoodScannerView(viewModel: self.scannerViewModel, retrievalCompleted: self.$scannerViewModel.retrievalCompleted)
+                .environmentObject(self.foodListModel)
+            }
         }
     }
 }

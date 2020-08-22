@@ -5,16 +5,16 @@ import SwiftUI
 /// Represents a live camera scanner to detect a list of barcodes.
 public class BarcodeScanner: NSObject {
     private var captureSession : AVCaptureSession?
-    private var delegate: ScannerDelegate!
+    private weak var controller: ScannerViewController?
     private let sessionQueue = DispatchQueue(label: "com.altereco.sessionqueue")
     private var previewLayer: AVCaptureVideoPreviewLayer? = nil
     private var metadataOut: AVCaptureMetadataOutput? = nil
 
-    /// Initializes a new instance with the delegate provided. The delegate is responsible for event handling.
-    public init(withDelegate delegate: ScannerDelegate) throws
+    /// Initializes a new instance with the controller provided. The controller is responsible for event handling.
+    public init(withController controller: ScannerViewController) throws
     {
         super.init()
-        self.delegate = delegate
+        self.controller = controller
         try scannerSetup()
         // handler for runtime errors
         NotificationCenter.default.addObserver(self,
@@ -44,9 +44,8 @@ public class BarcodeScanner: NSObject {
     
     /// Updates the video layout according to the current interface layout of the device.
     public func updateVideoLayout() {
-        if let previewLayer = previewLayer {
-            let cameraView = delegate.view!
-            
+        if let previewLayer = previewLayer,
+            let cameraView = controller?.view {
             previewLayer.frame = cameraView.bounds
             previewLayer.videoGravity = .resizeAspectFill
             let orientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
@@ -66,7 +65,7 @@ public class BarcodeScanner: NSObject {
     private func scannerSetup() throws {
         metadataOut = AVCaptureMetadataOutput()
         self.captureSession = try self.makeCaptureSession(withMetadata: metadataOut!)
-        metadataOut!.setMetadataObjectsDelegate(delegate, queue: DispatchQueue.main)
+        metadataOut!.setMetadataObjectsDelegate(controller, queue: DispatchQueue.main)
         metadataOut!.metadataObjectTypes = self.metaObjectTypes()
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
         updateVideoLayout()
@@ -105,6 +104,6 @@ public class BarcodeScanner: NSObject {
     @objc
     private func sessionRuntimeError(notification: NSNotification) {
         guard let error = notification.userInfo?[AVCaptureSessionErrorKey] as? AVError else { return }
-        DispatchQueue.main.async { self.delegate.onRuntimeAVError(error: error) }
+        DispatchQueue.main.async { self.controller?.onRuntimeAVError(error: error) }
     }
 }
