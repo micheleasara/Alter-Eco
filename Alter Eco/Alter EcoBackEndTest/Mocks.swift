@@ -171,6 +171,14 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBWriterMock, DBManager {
+    func saveForestItem(_ item: ForestItem) throws {}
+    
+    var getFirstDateCalls: Int = 0
+    func getFirstDate() throws -> Date? {
+        getFirstDateCalls += 1
+        return Date(timeIntervalSince1970: 0)
+    }
+    
     func carbonWithinInterval(from date: Date, addingInterval interval: Double) throws -> Measurement<UnitMass> {
         return Measurement(value: 0, unit: .kilograms)
     }
@@ -182,7 +190,6 @@ class DBManagerMock: DBWriterMock, DBManager {
     var carbonWithinIntervalMotionTypes = [MeasuredActivity.MotionType]()
     var carbonWithinIntervalFroms = [Date]()
     var carbonWithinIntervalIntervals = [TimeInterval]()
-    var updateScoreArgs: [MeasuredActivity] = []
 
     func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {
         carbonWithinIntervalMotionTypes.append(motionType)
@@ -191,6 +198,7 @@ class DBManagerMock: DBWriterMock, DBManager {
         return 0
     }
     
+    var updateScoreArgs: [MeasuredActivity] = []
     func updateScore(activity: MeasuredActivity) throws {
         updateScoreArgs.append(activity)
     }
@@ -198,16 +206,9 @@ class DBManagerMock: DBWriterMock, DBManager {
     func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double {return 0}
     func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {return 0}
     func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {return 0}
-    func updateLeague(newLeague: String) throws {}
     func retrieveLatestScore() throws -> Double { 0 }
-    func updateLeagueIfEnoughPoints() throws {}
-    func getFirstDate() throws -> Date {return Date(timeIntervalSince1970: 0)}
     func queryActivities(predicate: String?, args: [Any]?) throws -> [MeasuredActivity] {return []}
     func executeQuery(entity: String, predicate: String?, args: [Any]?) throws -> [Any] {return []}
-    func getFirstDate() throws -> Date? { return nil}
     func getForestItems() throws -> [ForestItem] { return [] }
-    func saveForestItem(_ item: ForestItem) throws {}
-    func addFoodsWrittenCallback(callback: @escaping ([Food]) -> Void) {}
     func queryFoods(predicate: String?, args: [Any]?) throws -> [Food] { return [] }
-    func addActivityWrittenCallback(callback: @escaping (MeasuredActivity) -> Void) {}
 }

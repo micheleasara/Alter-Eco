@@ -1,7 +1,7 @@
 import XCTest
 @testable import AlterEcoBackend
 
-class ChartDataModelTest: XCTestCase {
+class TransportBarChartViewModelTest: XCTestCase {
     var DBMS: DBManagerMock!
     var model: TransportBarChartViewModel!
     let limit = Date(timeIntervalSince1970: 0)
