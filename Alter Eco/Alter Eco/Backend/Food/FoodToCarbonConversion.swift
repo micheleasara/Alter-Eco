@@ -45,17 +45,17 @@ public class FoodToCarbonManager: FoodToCarbonConverter, FoodTypeRetriever {
     /// Mapping of lowercase words identifying a liquid type to a density in kg/l.
     public let liquidsDensities: Dictionary<String, Double> = ["oil":0.9, "water":1, "liquor":0.94]
     
-    // default to iOS embedding for english if available, otherwise use bundle model
-    private var embedding = NLEmbedding.wordEmbedding(for: .english) ?? (try! NLEmbedding(contentsOf: FoodToCarbonManager.urlOfModelInThisBundle))
+    /// Defaults to iOS embedding for english if available, otherwise uses bundle model.
+    public let embedding = NLEmbedding.wordEmbedding(for: .english) ?? (try! NLEmbedding(contentsOf: FoodToCarbonManager.urlOfModelInThisBundle))
     
     public func keywordsToTypes(_ keywords: [String]) -> [String] {
         // lemmatize words and get a vector representation of the whole list
         let words = lemmatize(words: keywords)
         let vector = getMultiWordVector(words: words, embedding: embedding)
-        
+
         // compute cosine similarity between vector and all the foods within the carbon-conversion database
         var results = Dictionary<String, Double>()
-        for food in FoodToCarbonManager.getAvailableTypes() {
+        for food in Self.getAvailableTypes() {
             var foodVec = [Double]()
             if !embedding.contains(food) {
                 // some entries in the carbon conversion database have spaces
@@ -86,7 +86,7 @@ public class FoodToCarbonManager: FoodToCarbonConverter, FoodTypeRetriever {
     public func getCarbon(fromFood food: Food) -> Measurement<UnitMass>? {
         guard let type = food.types?.first else { return nil }
         guard let quantityInKg = toKg(food: food) else { return nil }
-        guard let carbonDensity = FoodToCarbonManager.getTypeInfo(type)?.carbonDensity else { return nil }
+        guard let carbonDensity = Self.getTypeInfo(type)?.carbonDensity else { return nil }
         
         return Measurement<UnitMass>(value: carbonDensity * quantityInKg.value, unit: .kilograms)
     }

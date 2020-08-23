@@ -58,6 +58,7 @@
 		DE42485A24F1713000541B2D /* FoodScannerViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42485924F1713000541B2D /* FoodScannerViewModelTest.swift */; };
 		DE42485C24F1BD5A00541B2D /* FoodListViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42485B24F1BD5A00541B2D /* FoodListViewModelTest.swift */; };
 		DE42485D24F1BD6500541B2D /* FoodListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73824ACD82700D32E54 /* FoodListViewModel.swift */; };
+		DE42486124F2CA8600541B2D /* FoodToCarbonManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42486024F2CA8600541B2D /* FoodToCarbonManagerTest.swift */; };
 		DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7A24E0510100299047 /* GameViewModel.swift */; };
 		DE5E6E7D24E057F400299047 /* GameItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* GameItems.swift */; };
@@ -189,6 +190,7 @@
 		DE42485624F14E7A00541B2D /* FoodScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodScannerViewModel.swift; sourceTree = "<group>"; };
 		DE42485924F1713000541B2D /* FoodScannerViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodScannerViewModelTest.swift; sourceTree = "<group>"; };
 		DE42485B24F1BD5A00541B2D /* FoodListViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodListViewModelTest.swift; sourceTree = "<group>"; };
+		DE42486024F2CA8600541B2D /* FoodToCarbonManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodToCarbonManagerTest.swift; sourceTree = "<group>"; };
 		DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		DE5E6E7A24E0510100299047 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		DE5E6E7C24E057F400299047 /* GameItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameItems.swift; sourceTree = "<group>"; };
@@ -259,6 +261,7 @@
 				DE42485924F1713000541B2D /* FoodScannerViewModelTest.swift */,
 				DE42485B24F1BD5A00541B2D /* FoodListViewModelTest.swift */,
 				9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */,
+				DE42486024F2CA8600541B2D /* FoodToCarbonManagerTest.swift */,
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
 				DEFEEC502448987C009BE765 /* MultiTimerTest.swift */,
 				DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */,
@@ -603,6 +606,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE42485A24F1713000541B2D /* FoodScannerViewModelTest.swift in Sources */,
+				DE42486124F2CA8600541B2D /* FoodToCarbonManagerTest.swift in Sources */,
 				DE2B027F247EC1D900926935 /* ChartDataModelTest.swift in Sources */,
 				DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */,
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
