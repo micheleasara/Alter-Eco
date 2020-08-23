@@ -112,7 +112,7 @@ public class FoodListViewModel: ObservableObject {
     
     /// Saves the products with types in the database. Products with no quantity are given a default specified by defaultQuantity.
     public func save() {
-        try? DBMS.append(foods: replaceNilQuantitiesWithDefault(in: productsWithTypes))
+        try? DBMS.append(foods: replaceNilQuantitiesWithDefault(in: productsWithTypes), withDate: Date())
     }
     
     private func replaceNilQuantitiesWithDefault(in foods: [Food]) -> [Food] {

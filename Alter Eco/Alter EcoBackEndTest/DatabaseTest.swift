@@ -6,14 +6,15 @@ import CoreData
 class DatabaseTest: XCTestCase {
     
     var DBMS: CoreDataManager!
-
+    let foodConverterMock = FoodToCarbonConverterMock()
+    
     override func setUp() {
         super.setUp()
-        DBMS = CoreDataManager()
+        DBMS = CoreDataManager(foodConverter: foodConverterMock)
         DBMS.persistentContainer = mockPersistentContainer(managedObject: DBMS.managedObjectModel)
     }
     
-    // the following function is for integrations tests
+    // the following function is for tests
     // it generates a synchronous and volatile database
     func mockPersistentContainer(managedObject: NSManagedObjectModel) -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "Database2.0", managedObjectModel: managedObject)
@@ -147,4 +148,56 @@ class DatabaseTest: XCTestCase {
         }
     }
     
+    func testTotalCarbonRetrievalIncludesFoodAndTransport() {
+        let start = Date(timeIntervalSince1970: 0)
+        let activity = MeasuredActivity(motionType: .car, distance: 10000, start: start, end: start.addingTimeInterval(100))
+        let food = Food(barcode: "123", quantity: Food.Quantity(value: 140, unit: UnitMass.grams), types: FoodToCarbonManager.getAvailableTypes())
+        try! DBMS.append(foods: [food], withDate: start)
+        try! DBMS.append(activity: activity)
+        
+        let result = try! DBMS.carbonWithinInterval(from: start, addingInterval: 200).value
+        XCTAssert(result == DBMS.computeCarbonUsage(distance: activity.distance, type: activity.motionType) + foodConverterMock.getCarbon(fromFood: food)!.value)
+    }
+    
+    func testAllEntriesInATableCanBeDeleted() {
+        for _ in 0..<4 {
+            try! DBMS.append(activity: MeasuredActivity(motionType: .car, distance: 10000, start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100)))
+        }
+        XCTAssertFalse(try! DBMS.queryActivities(predicate: nil, args: nil).isEmpty)
+        
+        try! DBMS.deleteAll(entity: "Event")
+        XCTAssert(try! DBMS.queryActivities(predicate: nil, args: nil).isEmpty)
+    }
+    
+    func testEntryCanBeDeletedByIndex() {
+        for i in 0..<4 {
+            try! DBMS.append(activity: MeasuredActivity(motionType: .car, distance: Double(i), start: Date(timeIntervalSince1970: 0), end: Date(timeIntervalSince1970: 100)))
+        }
+        
+        let beforeDelete = try! DBMS.queryActivities(predicate: nil, args: nil)
+        try! DBMS.delete(entity: "Event", rowNumber: 1)
+        let afterDelete = try! DBMS.queryActivities(predicate: nil, args: nil)
+        
+        for activity in afterDelete {
+            XCTAssert(beforeDelete.contains(activity))
+        }
+        XCTAssertFalse(afterDelete.contains(beforeDelete[1]))
+    }
+    
+    func testForestItemsIOIsConsistent() {
+        let item = ForestItem(id: "123", x: 0, y: 3, z: 6, internalName: "fake")
+        try! DBMS.saveForestItem(item)
+        let stored = try! DBMS.getForestItems()
+        XCTAssert(stored == [item], "stored = \(stored)\nitem = \(item)")
+    }
+    
+    func testForestItemIsUpdatedIfAlreadyExistant() {
+        var item = ForestItem(id: "123", x: 0, y: 3, z: 6, internalName: "fake")
+        try! DBMS.saveForestItem(item)
+        item.internalName = "changed"
+        item.x = 11
+        try! DBMS.saveForestItem(item)
+        let stored = try! DBMS.getForestItems()
+        XCTAssert(stored == [item], "stored = \(stored)\nitem = \(item)")
+    }
 }

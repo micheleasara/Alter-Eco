@@ -77,7 +77,7 @@ public class NumbersFilter: ObservableObject {
 
 public struct DBManagerKey: EnvironmentKey {
     public typealias Value = DBManager
-    public static var defaultValue: DBManager = (UIApplication.shared.delegate as? AppDelegate)?.DBMS ?? CoreDataManager()
+    public static var defaultValue: DBManager = (UIApplication.shared.delegate as? AppDelegate)?.DBMS ?? CoreDataManager(foodConverter: FoodToCarbonManager())
 }
 
 public extension EnvironmentValues {

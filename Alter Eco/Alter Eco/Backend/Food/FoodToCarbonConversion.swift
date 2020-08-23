@@ -20,10 +20,13 @@ public protocol FoodToCarbonConverter {
 /// Represents an entity which can retrieve food types.
 public protocol FoodTypeRetriever {
     
+    /// Container for food type information such as carbon density in kgCO2/kg and category.
     typealias FoodTypeInfo = (carbonDensity: Double, category: Food.Category)
     
+    /// Returns the characteristics of the given food type.
     static func getTypeInfo(_ type: String) -> FoodTypeInfo?
     
+    /// Returns a list of all available food types.
     static func getAvailableTypes() -> [String]
     
     /**
@@ -48,6 +51,8 @@ public class FoodToCarbonManager: FoodToCarbonConverter, FoodTypeRetriever {
     /// Defaults to iOS embedding for english if available, otherwise uses bundle model.
     public let embedding = NLEmbedding.wordEmbedding(for: .english) ?? (try! NLEmbedding(contentsOf: FoodToCarbonManager.urlOfModelInThisBundle))
     
+    public init() {}
+    
     public func keywordsToTypes(_ keywords: [String]) -> [String] {
         // lemmatize words and get a vector representation of the whole list
         let words = lemmatize(words: keywords)
@@ -68,7 +73,6 @@ public class FoodToCarbonManager: FoodToCarbonConverter, FoodTypeRetriever {
             let dist = 1 - (cosineSim(foodVec, vector) ?? -1)
             results[food] = dist
         }
-        
         // sort by similarity and return the associated food types from the carbon conversion db
         return results.sorted{$0.value < $1.value}.map{$0.key}
     }
@@ -117,7 +121,7 @@ public class FoodToCarbonManager: FoodToCarbonConverter, FoodTypeRetriever {
     }
     
     /// Returns the density of the liquid which most closely matches the liquid type given. Returns nil in case of failure.
-    private func getDensityLiquid(type: String) -> Double? {   
+    private func getDensityLiquid(type: String) -> Double? {
          var density = liquidsDensities["water"]
          var bestMatch = -1.0
          let vectorFood = getMultiWordVector(words: type.components(separatedBy: " "), embedding: embedding)

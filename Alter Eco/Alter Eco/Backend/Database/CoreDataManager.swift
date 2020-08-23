@@ -3,26 +3,30 @@ import SwiftUI
 import CoreData
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework.
-public class CoreDataManager : DBManager {
+public class CoreDataManager: DBManager {
     // utility to get carbon from food items
-    private let foodConverter: FoodToCarbonConverter = FoodToCarbonManager()
+    private let foodConverter: FoodToCarbonConverter
 
     // contains the functions called when an activity or a food has been written to the database
     private var newPollutingItemCallbacks: [(PollutingItemType) -> Void] = []
+    
+    public init(foodConverter: FoodToCarbonConverter = FoodToCarbonManager()) {
+        self.foodConverter = foodConverter
+    }
     
     public func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void) {
         newPollutingItemCallbacks.append(callback)
     }
     
     
-    public func append(foods: [Food]) throws {
+    public func append(foods: [Food], withDate date: Date = Date() ) throws {
         for food in foods {
             try setValuesForKeys(entity: "FoodProduct",
                                  keyedValues:
                 ["barcode" : food.barcode,
                  "name": food.name as Any,
                  "type": food.types?.first as Any,
-                 "date": Date(),
+                 "date": date,
                  "quantityValue": food.quantity?.value as Any,
                  "quantityUnit": food.quantity?.unit.symbol as Any,
                  "category": food.getCategory(using: FoodToCarbonManager.self)?.rawValue as Any])

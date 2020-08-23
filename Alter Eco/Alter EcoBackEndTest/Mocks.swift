@@ -72,14 +72,9 @@ class DBWriterMock: DBWriter {
     func updateScore(toValue value: Double) throws {
     }
     
-    var appendFoodArrayArgs: [[Food]] = []
-    func append(foods: [Food]) throws {
-        appendFoodArrayArgs.append(foods)
-    }
-    
-    var appendFoodArgs: [Food] = []
-    func append(food: Food) throws {
-        appendFoodArgs.append(food)
+    var appendFoodsArgs: [(foods: [Food], withDate: Date)] = []
+    func append(foods: [Food], withDate: Date) throws {
+        appendFoodsArgs.append((foods, withDate))
     }
     
     var appendArgs: [MeasuredActivity] = []

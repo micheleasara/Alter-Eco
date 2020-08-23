@@ -88,7 +88,8 @@ class FoodListViewModelTest: XCTestCase {
         viewModel.update(foods: foods, notFound: notFound)
         let withTypes = viewModel.productsWithTypes
         viewModel.save()
-        XCTAssert(DBMS.appendFoodArrayArgs == [withTypes])
+        XCTAssert(DBMS.appendFoodsArgs.count == 1)
+        XCTAssert(DBMS.appendFoodsArgs.first!.foods == withTypes)
     }
     
     func testFoodsWithNoQuantityAreSavedWithDefaultQuantity() {
@@ -96,8 +97,8 @@ class FoodListViewModelTest: XCTestCase {
                      Food(barcode: "456", types: ["chicken"])]
         viewModel.update(foods: foods, notFound: [])
         viewModel.save()
-        XCTAssertFalse(DBMS.appendFoodArrayArgs == [foods])
+        XCTAssertFalse(DBMS.appendFoodsArgs.first!.foods == foods)
         foods.forEach { $0.quantity = viewModel.defaultQuantity }
-        XCTAssert(DBMS.appendFoodArrayArgs == [foods])
+        XCTAssert(DBMS.appendFoodsArgs.first!.foods == foods)
     }
 }

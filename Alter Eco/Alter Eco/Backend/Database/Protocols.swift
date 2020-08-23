@@ -62,7 +62,7 @@ public protocol DBWriter {
     /// Appends an activity to the Event entity.
     func append(activity: MeasuredActivity) throws
     /// Appends a list of food products to the FoodProduct entity.
-    func append(foods: [Food]) throws
+    func append(foods: [Food], withDate: Date) throws
     /// Updates the score to a given value.
     func updateScore(toValue value: Double) throws
     /// Deletes an entry from the given entity identified by a rows number.

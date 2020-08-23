@@ -30,9 +30,9 @@ class FoodToCarbonManagerTest: XCTestCase {
     }
     
     func testUsingATypeAsKeywordReturnsSameTypeAsMostLikely() {
-        let first = types.first!
-        let result = manager.keywordsToTypes([first]).first!
-        XCTAssert(result == first, "result = \(result) first = \(first)")
+        let first = FoodToCarbonManager.getAvailableTypes().first!
+        let result = manager.keywordsToTypes(first.components(separatedBy: " ")).first!
+        XCTAssert(result == first, "result = \(result)\nfirst = \(first)")
     }
     
     func testCarbonOfBeveragesIsComputedUsingDensities() {
