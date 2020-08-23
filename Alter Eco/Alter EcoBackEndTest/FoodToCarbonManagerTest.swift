@@ -44,6 +44,16 @@ class FoodToCarbonManagerTest: XCTestCase {
         XCTAssert(result.unit == UnitMass.kilograms)
     }
     
+    func testCarbonIsNilIfInsufficientInfo() {
+        let food = Food(barcode: "123")
+        XCTAssertNil(manager.getCarbon(fromFood: food))
+        food.setAsMostLikelyType(types.first!)
+        XCTAssertNil(manager.getCarbon(fromFood: food))
+        food.quantity = Food.Quantity(value: 300, unit: UnitMass.grams)
+        food.setAsMostLikelyType("non existant type")
+        XCTAssertNil(manager.getCarbon(fromFood: food))
+    }
+    
     func testURLModelInBundleIsValid() {
         XCTAssertNoThrow(try NLEmbedding(contentsOf: FoodToCarbonManager.urlOfModelInThisBundle))
     }

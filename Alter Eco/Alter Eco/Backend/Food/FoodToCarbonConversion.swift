@@ -117,7 +117,7 @@ public class FoodToCarbonManager: FoodToCarbonConverter, FoodTypeRetriever {
     }
     
     /// Returns the density of the liquid which most closely matches the liquid type given. Returns nil in case of failure.
-    private func getDensityLiquid(type: String) -> Double? {         
+    private func getDensityLiquid(type: String) -> Double? {   
          var density = liquidsDensities["water"]
          var bestMatch = -1.0
          let vectorFood = getMultiWordVector(words: type.components(separatedBy: " "), embedding: embedding)
