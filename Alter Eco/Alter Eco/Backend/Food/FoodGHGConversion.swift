@@ -1,8 +1,17 @@
 import Foundation
 
 extension FoodToCarbonManager {
+    public static func getTypeInfo(_ type: String) -> FoodTypeInfo? {
+        return foodTypesInfo[type]
+    }
+    
+    public static func getAvailableTypes() -> [String] {
+        return Array(foodTypesInfo.keys)
+    }
+    
+    
     /// Database of food types (lowercase) containing information about their GHG emission values in  kgCOeq/kg and their categories.
-    public static let foodTypesInfo: Dictionary<String, (carbonDensity: Double, category: Food.Category)> = [
+    private static let foodTypesInfo: Dictionary<String, FoodTypeInfo> = [
         "onion": (0.18, .vegetablesAndDerived),
         "celery": (0.18, .vegetablesAndDerived),
         "potato": (0.20, .carbohydrates),

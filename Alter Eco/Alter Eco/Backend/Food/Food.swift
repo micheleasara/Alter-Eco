@@ -13,8 +13,8 @@ public class Food: Hashable, ObservableObject {
     /// A barcode identifying this product.
     public let barcode: String
     /// The broad category (e.g. meats, diaries etc.) calculated from the first type in the list of possible types.
-    public var category: Category? {
-        return FoodToCarbonManager.foodTypesInfo[types?.first ?? ""]?.category
+    public func getCategory(using retriever: FoodTypeRetriever.Type) -> Category? {
+        return retriever.getTypeInfo(types?.first ?? "")?.category
     }
     
     public init(barcode: String, name: String? = nil,

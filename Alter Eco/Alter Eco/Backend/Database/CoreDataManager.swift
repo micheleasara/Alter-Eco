@@ -25,7 +25,7 @@ public class CoreDataManager : DBManager {
                  "date": Date(),
                  "quantityValue": food.quantity?.value as Any,
                  "quantityUnit": food.quantity?.unit.symbol as Any,
-                 "category": food.category?.rawValue as Any])
+                 "category": food.getCategory(using: FoodToCarbonManager.self)?.rawValue as Any])
         }
         for callback in newPollutingItemCallbacks {
             callback(.food)
