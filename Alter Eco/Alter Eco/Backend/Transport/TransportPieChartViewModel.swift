@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 /// View model for the pie chart representing transportation data.
-public class TransportPieChartViewModel: PieChartModel {
+public class TransportPieChartViewModel: PieChartViewModel {
     private static let MOTION_TO_IMAGE:
         [MeasuredActivity.MotionType:String] = [.car:"car", .plane:"plane", .train:"train"]
     private static let MOTION_TO_LEGEND:

@@ -183,7 +183,9 @@ class DBManagerMock: DBWriterMock, DBManager {
         return Measurement(value: 0, unit: .kilograms)
     }
     
+    var carbonFromFoodsArgs: [(predicate: String?, args: [Any]?)] = []
     func carbonFromFoods(predicate: String?, args: [Any]?) throws -> Measurement<UnitMass> {
+        carbonFromFoodsArgs.append((predicate, args))
         return Measurement(value: 0, unit: .kilograms)
     }
     

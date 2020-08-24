@@ -109,7 +109,7 @@ extension Food {
 
 extension Food {
     /// Represents the set of broad categories to which a food type may belong.
-    public enum Category: String {
+    public enum Category: String, CaseIterable {
         /// For vegetables and derived products.
         case vegetablesAndDerived = "vegetables and derived"
         /// For fruits.
