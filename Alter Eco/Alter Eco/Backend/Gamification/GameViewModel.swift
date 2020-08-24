@@ -45,9 +45,4 @@ public class GameViewModel: ObservableObject {
             currentPoints = points
         }
     }
-    
-    /// Returns a controller which handles 3D rendering and other game-related activities.
-    public func getViewController() -> GameViewController {
-        return GameViewController(mainScenePath: "MainScene.scn", DBMS: DBMS)
-    }
 }

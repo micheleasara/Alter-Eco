@@ -65,6 +65,8 @@
 		DE42486924F31D4600541B2D /* FoodQuantityTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42486824F31D4600541B2D /* FoodQuantityTest.swift */; };
 		DE42486A24F3279400541B2D /* FoodPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */; };
 		DE42486C24F327B800541B2D /* FoodPieChartViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42486B24F327B800541B2D /* FoodPieChartViewModelTest.swift */; };
+		DE42486D24F33F0900541B2D /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7A24E0510100299047 /* GameViewModel.swift */; };
+		DE42486F24F33F5500541B2D /* GameViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE42486E24F33F5500541B2D /* GameViewModelTest.swift */; };
 		DE5E6E7924DF00CC00299047 /* Database2.0.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7724DF00CC00299047 /* Database2.0.xcdatamodeld */; };
 		DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7A24E0510100299047 /* GameViewModel.swift */; };
 		DE5E6E7D24E057F400299047 /* GameItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E7C24E057F400299047 /* GameItems.swift */; };
@@ -202,6 +204,7 @@
 		DE42486624F31BE400541B2D /* FoodRetrievalErrorsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRetrievalErrorsTest.swift; sourceTree = "<group>"; };
 		DE42486824F31D4600541B2D /* FoodQuantityTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodQuantityTest.swift; sourceTree = "<group>"; };
 		DE42486B24F327B800541B2D /* FoodPieChartViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodPieChartViewModelTest.swift; sourceTree = "<group>"; };
+		DE42486E24F33F5500541B2D /* GameViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModelTest.swift; sourceTree = "<group>"; };
 		DE5E6E7824DF00CC00299047 /* Database2.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Database2.0.xcdatamodel; sourceTree = "<group>"; };
 		DE5E6E7A24E0510100299047 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		DE5E6E7C24E057F400299047 /* GameItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameItems.swift; sourceTree = "<group>"; };
@@ -275,6 +278,7 @@
 				DE42486024F2CA8600541B2D /* FoodToCarbonManagerTest.swift */,
 				DE42486224F3149400541B2D /* TransportPieChartViewModelTest.swift */,
 				9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */,
+				DE42486E24F33F5500541B2D /* GameViewModelTest.swift */,
 				DEFEEC502448987C009BE765 /* MultiTimerTest.swift */,
 				DE42486624F31BE400541B2D /* FoodRetrievalErrorsTest.swift */,
 				DE42486824F31D4600541B2D /* FoodQuantityTest.swift */,
@@ -629,6 +633,7 @@
 				9CD5947B24296DAA00B1D0B4 /* MeasuredActivityTest.swift in Sources */,
 				DE42486724F31BE400541B2D /* FoodRetrievalErrorsTest.swift in Sources */,
 				DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */,
+				DE42486F24F33F5500541B2D /* GameViewModelTest.swift in Sources */,
 				DE2B0281247ED28C00926935 /* Mocks.swift in Sources */,
 				DE42485C24F1BD5A00541B2D /* FoodListViewModelTest.swift in Sources */,
 				DE054C86248EFE3B001B8EB1 /* TestMain.swift in Sources */,
@@ -709,6 +714,7 @@
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
 				DE5E6E8524E0C30A00299047 /* WordEmbedding.mlmodel in Sources */,
+				DE42486D24F33F0900541B2D /* GameViewModel.swift in Sources */,
 				DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */,
 				DEA0D1DC24B60A8100FFDB00 /* FoodRetrieval.swift in Sources */,
 				DE5E6E8424E092BA00299047 /* TransportPieChartViewModel.swift in Sources */,

@@ -179,7 +179,9 @@ class DBManagerMock: DBWriterMock, DBManager {
         return Date(timeIntervalSince1970: 0)
     }
     
+    var carbonWithinIntervalTotalArgs: [(from: Date, addingInterval: Double)] = []
     func carbonWithinInterval(from date: Date, addingInterval interval: Double) throws -> Measurement<UnitMass> {
+        carbonWithinIntervalTotalArgs.append((date, interval))
         return Measurement(value: 0, unit: .kilograms)
     }
     
@@ -205,10 +207,16 @@ class DBManagerMock: DBWriterMock, DBManager {
         updateScoreArgs.append(activity)
     }
     
+    var retrieveLatestScoreCalls = 0
+    func retrieveLatestScore() throws -> Double {
+        retrieveLatestScoreCalls += 1
+        return 0
+    }
+
+    
     func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double {return 0}
     func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double {return 0}
     func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double {return 0}
-    func retrieveLatestScore() throws -> Double { 0 }
     func queryActivities(predicate: String?, args: [Any]?) throws -> [MeasuredActivity] {return []}
     func executeQuery(entity: String, predicate: String?, args: [Any]?) throws -> [Any] {return []}
     func getForestItems() throws -> [ForestItem] { return [] }

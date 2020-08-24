@@ -20,6 +20,7 @@ public struct GameView: View {
 
 /// Bridges between SwiftUI and SceneKit.
 public struct SceneKitView: UIViewControllerRepresentable {
+    @Environment(\.DBMS) private var DBMS
     @EnvironmentObject private var viewModel: GameViewModel
     // using Binding instead of the EnvironmentObject as it forces
     // updateUIViewController to be called with the new values being already set
@@ -30,7 +31,7 @@ public struct SceneKitView: UIViewControllerRepresentable {
     public typealias UIViewControllerType = GameViewController
 
     public func makeUIViewController(context: Context) -> GameViewController {
-        return viewModel.getViewController()
+        return GameViewController(mainScenePath: "MainScene.scn", DBMS: DBMS)
     }
     
     public func updateUIViewController(_ uiViewController: GameViewController, context: Context) {
