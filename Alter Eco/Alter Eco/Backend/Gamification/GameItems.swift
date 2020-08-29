@@ -24,4 +24,6 @@ public struct ShopItem {
     public let internalName: String
     /// Amount of points required for this item.
     public let cost: Double
+    /// Name used to identify the image resource associated with this item.
+    public let imageName: String
 }

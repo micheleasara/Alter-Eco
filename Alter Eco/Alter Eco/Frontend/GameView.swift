@@ -1,5 +1,6 @@
 import SwiftUI
 
+/// Represents the view of the virtual forest.
 public struct GameView: View {
     @EnvironmentObject private var viewModel: GameViewModel
 
@@ -8,7 +9,7 @@ public struct GameView: View {
             ZStack {
                 Text("Loading 3D scene...")
                 SceneKitView(itemToAdd: $viewModel.itemToAdd, isSmogOn: $viewModel.isSmogOn, isEditModeOn: $viewModel.isEditModeOn)
-                OptionMenu()
+                GameOverlayView()
             }
             
             if viewModel.itemToAdd != nil {
@@ -46,17 +47,17 @@ public struct SceneKitView: UIViewControllerRepresentable {
     }
 }
 
-/// Represents the menu overlaying the 3D scene view.
-public struct OptionMenu: View {
+/// Represents the view overlaying the 3D scene.
+public struct GameOverlayView: View {
     @EnvironmentObject private var viewModel: GameViewModel
     @State private var showingItems = false
     @State private var showingConfirmation = false
     @State private var selectedItemIdx: Int = 0
     
     private let availableItems: [ShopItem] =
-        [ShopItem(displayedName: "Apple tree", internalName: "appleTree", cost: 500),
-         ShopItem(displayedName: "Pine", internalName: "pine", cost: 350),
-         ShopItem(displayedName: "Rounded tree", internalName: "roundedTree", cost: 300)]
+        [ShopItem(displayedName: "Apple tree", internalName: "appleTree", cost: 500, imageName: "appleTree"),
+         ShopItem(displayedName: "Pine", internalName: "pine", cost: 350, imageName: "pineTree"),
+         ShopItem(displayedName: "Rounded tree", internalName: "roundedTree", cost: 300, imageName: "roundedTree")]
     
     public var body: some View {
         HStack(alignment: .top) {
@@ -157,17 +158,22 @@ public struct OptionMenu: View {
     
     private var itemsList: some View {
         ForEach(0..<availableItems.count, id: \.self) { i in
-            VStack(alignment: .leading, spacing: 1) {
-                HStack() {
-                    Text(self.availableItems[i].displayedName).bold().foregroundColor(Color.black)
-                    Button(action: {
-                        self.selectedItemIdx = i
-                        self.showingConfirmation = true
-                        self.viewModel.refreshCurrentPoints()
-                    }) { Image(systemName: "plus.square")
-                    }.foregroundColor(Color.black)
+            HStack() {
+                Image(self.availableItems[i].imageName).resizable().frame(width: 30, height: 35).border(Color.black)
+                
+                VStack(alignment: .leading, spacing: 1) {
+                    HStack() {
+                        Text(self.availableItems[i].displayedName).bold().foregroundColor(Color.black)
+                        Button(action: {
+                            self.selectedItemIdx = i
+                            self.showingConfirmation = true
+                            self.viewModel.refreshCurrentPoints()
+                        }) { Image(systemName: "plus.square")
+                        }.foregroundColor(Color.black)
+                    }
+                    
+                    Text(String(format: "%.0f points", self.availableItems[i].cost)).italic().foregroundColor(Color.init(red: 0.3, green: 0.3, blue: 0.3))
                 }
-                Text(String(format: "%.0f points", self.availableItems[i].cost)).italic().foregroundColor(Color.init(red: 0.3, green: 0.3, blue: 0.3))
             }
         }.alert(isPresented: $showingConfirmation) {
             let shopItem = self.availableItems[self.selectedItemIdx]
@@ -196,6 +202,6 @@ public struct OptionMenu: View {
 
 struct OptionMenu_Previews: PreviewProvider {
     static var previews: some View {
-        OptionMenu().environmentObject(GameViewModel(DBMS: CoreDataManager()))
+        GameOverlayView().environmentObject(GameViewModel(DBMS: CoreDataManager()))
     }
 }

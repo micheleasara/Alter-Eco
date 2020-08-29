@@ -2,6 +2,8 @@ import Foundation
 import CoreLocation
 import MapKit
 
+// MARK:- A possible TODO would be to remove CoreLocation dependencies
+
 /**
  The activity estimator's responsibility is to elaborate location information to infer what kind of activity (e.g. transportation) the user is doing and to then save it in the database.
  

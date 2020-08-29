@@ -188,13 +188,15 @@ struct BarChart_Previews: PreviewProvider {
         return Group {
             BarChart(values: [0,0,0,0], xLabels: ["a","b","c","d"], infoOnBarTap: ["","","",""], colour: Color.green, yAxisTicksCount: 4).padding()
                 .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
-            .previewDisplayName("0-valued bars and 4 y-ticks")
+            .previewDisplayName("0-valued, 4 y-ticks")
             
             ForEach(barsToLabelsRatios, id: \.self) { r in
                 previewWithRatio(numBars: 12, ratio: r)
                     .previewLayout(PreviewLayout.fixed(width: 300, height: 160))
                 .previewDisplayName("Bars to labels ratio: " + String(r))
             }
+            
+            previewWithRatio(numBars: 5, ratio: 1).environment(\.colorScheme, .dark).previewLayout(PreviewLayout.fixed(width: 300, height: 160)).background(Color.black).previewDisplayName("Dark mode")
         }
     }
     

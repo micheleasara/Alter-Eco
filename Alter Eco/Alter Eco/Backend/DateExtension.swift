@@ -1,20 +1,24 @@
 import Foundation
 
 /// Provides thread-safe date formatting according to the invariant "en_US_POSIX" locale and with GMT timezone.
-public class FixedDateFormatting {
+public class FixedDateFormatter {
     /// Singleton instance
-    private static let dateFormatterManager = FixedDateFormatting()
+    private static let INSTANCE = FixedDateFormatter()
     /// Queue used to run formatting requests thread safely.
-    private static let queue = DispatchQueue(label: "com.altereco.fixeddateformatting")
+    private let queue = DispatchQueue(label: "com.altereco.fixeddateformatting")
     // cached date formatter as suggested in
     //https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html#//apple_ref/doc/uid/TP40002369-SW10
-    private var dateFormatter = DateFormatter()
+    private var formatter = DateFormatter()
+    
+    /// Returns the singleton instance.
+    public static func getInstance() -> FixedDateFormatter {
+        return INSTANCE
+    }
     
     /// Returns a string representation of the given date according to the format provided.
-    public static func string(date: Date, format: String) -> String {
+    public func string(date: Date, format: String) -> String {
         var formatted: String = ""
         queue.sync {
-            let formatter = dateFormatterManager.getFormatter()
             formatter.dateFormat = format
             formatted = formatter.string(from: date)
         }
@@ -22,26 +26,21 @@ public class FixedDateFormatting {
     }
     
     /// Returns a date representation of the given string according to the format provided. Returns nil in case of failure.
-    public static func date(from: String, format: String) -> Date? {
+    public func date(from: String, format: String) -> Date? {
         var date: Date?
         queue.sync {
-            let formatter = dateFormatterManager.getFormatter()
             formatter.dateFormat = format
             date = formatter.date(from: from)
         }
         return date
     }
     
-    private func getFormatter() -> DateFormatter {
-        return dateFormatter
-    }
-    
     private init() {
         // ensure timezone is fixed to GMT
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)!
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)!
         // invariant locale is "en_US_POSIX", see
         // https://developer.apple.com/library/archive/qa/qa1480/_index.html
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = Locale(identifier: "en_US_POSIX")
     }
 }
 
@@ -49,12 +48,12 @@ public class FixedDateFormatting {
 extension Date {
     /// Returns the full day name in english.
     public func getDayName() -> String{
-        return FixedDateFormatting.string(date: self, format: "EEEE")
+        return FixedDateFormatter.getInstance().string(date: self, format: "EEEE")
     }
     
     /// Returns the full month name in english.
     public func getMonthName() -> String {
-        return FixedDateFormatting.string(date: self, format: "MMMM")
+        return FixedDateFormatter.getInstance().string(date: self, format: "MMMM")
     }
     
     /** Returns the resulting of adding a specified number of months.
@@ -74,7 +73,7 @@ extension Date {
     
     /// Converts a date to a string in the format yyyy-MM-dd.
     public func toInternationalString() -> String {
-        return FixedDateFormatting.string(date: self, format: "yyyy-MM-dd")
+        return FixedDateFormatter.getInstance().string(date: self, format: "yyyy-MM-dd")
     }
     
     /** Returns the date set to the hour provided.
@@ -82,9 +81,10 @@ extension Date {
     - Returns: the date set to the hour provided, or nil if the action failed.
     */
     public func setToSpecificHour(hour: String) -> Date? {
-        let yearMonthDay = FixedDateFormatting.string(date: self, format: "yyyy-MM-dd")
+        let formatter = FixedDateFormatter.getInstance()
+        let yearMonthDay = formatter.string(date: self, format: "yyyy-MM-dd")
         let formattedStr = yearMonthDay + " " + hour + " +0000"
-        return FixedDateFormatting.date(from: formattedStr, format: "yyyy-MM-dd HH:mm:ss ZZZ")
+        return formatter.date(from: formattedStr, format: "yyyy-MM-dd HH:mm:ss ZZZ")
     }
     
     /** Returns the date set to the day provided.
@@ -92,12 +92,13 @@ extension Date {
     - Returns: the date set to the day provided, or nil if the action failed.
     */
     public func setToSpecificDay(day: Int) -> Date? {
-        let yearMonth = FixedDateFormatting.string(date: self, format: "yyyy-MM")
-        let hour = FixedDateFormatting.string(date: self, format: "HH:mm:ss ZZZ")
+        let formatter = FixedDateFormatter.getInstance()
+        let yearMonth = formatter.string(date: self, format: "yyyy-MM")
+        let hour = formatter.string(date: self, format: "HH:mm:ss ZZZ")
         let dayStr = (day > 9) ? String(day) : "0" + String(day)
         
         let formattedStr = yearMonth + "-" + dayStr + " " + hour
-        return FixedDateFormatting.date(from: formattedStr, format: "yyyy-MM-dd HH:mm:ss ZZZ")
+        return formatter.date(from: formattedStr, format: "yyyy-MM-dd HH:mm:ss ZZZ")
     }
     
     /** Returns the date set to the month provided.
@@ -105,17 +106,18 @@ extension Date {
     - Returns: the date set to the month provided, or nil if the action failed.
     */
     public func setToSpecificMonth(month: Int) -> Date? {
-        let dayHour = FixedDateFormatting.string(date: self, format: "dd HH:mm:ss ZZZ")
-        let year = FixedDateFormatting.string(date: self, format: "yyyy")
+        let formatter = FixedDateFormatter.getInstance()
+        let dayHour = formatter.string(date: self, format: "dd HH:mm:ss ZZZ")
+        let year = formatter.string(date: self, format: "yyyy")
         let monthStr = (month > 9) ? String(month) : "0" + String(month)
 
         let formattedStr = year + "-" + monthStr + "-" + dayHour
-        return FixedDateFormatting.date(from: formattedStr, format: "yyyy-MM-dd HH:mm:ss ZZZ")
+        return formatter.date(from: formattedStr, format: "yyyy-MM-dd HH:mm:ss ZZZ")
     }
     
     /// Returns the year as a string. Year format is yyyy.
     public func getYearAsString() -> String {
-        return FixedDateFormatting.string(date: self, format: "yyyy")
+        return FixedDateFormatter.getInstance().string(date: self, format: "yyyy")
     }
 
     /// Converts date from GMT to local time.

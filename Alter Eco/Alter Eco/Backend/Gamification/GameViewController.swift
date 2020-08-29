@@ -1,5 +1,4 @@
 import SceneKit
-import CoreData
 
 /// Represents the controller for the virtual forest.
 public class GameViewController: UIViewController {
