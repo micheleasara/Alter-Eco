@@ -266,7 +266,13 @@ public class ActivityEstimator<T:ActivityList> {
     /// Computes and stores ROI-based activity.
     private func addROIBasedActivity(currentRegionOfInterest: CLLocation, previousRegionOfInterest: inout CLLocation?, speed: Double, motionType: MeasuredActivity.MotionType) {
         guard previousRegionOfInterest != nil else { return }
-        let activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
+        var activityDistance = abs(speed * (previousRegionOfInterest!.timestamp.timeIntervalSince(currentRegionOfInterest.timestamp)))
+        let pointToPointDistance = previousRegionOfInterest!.distance(from: currentRegionOfInterest)
+        // point to point distance is assumed to be the shortest possible distance
+        // so if it is bigger, the speed estimation did not work
+        if pointToPointDistance > activityDistance {
+            activityDistance = pointToPointDistance
+        }
         
         print("Used train/plane to travel distance: ", activityDistance, " m")
         let activity = MeasuredActivity(motionType: motionType, distance: activityDistance, start: previousRegionOfInterest!.timestamp, end: currentRegionOfInterest.timestamp)
