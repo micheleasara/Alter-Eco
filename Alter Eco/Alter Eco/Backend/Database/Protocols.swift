@@ -5,6 +5,36 @@ import CoreData
 /// Represents an interface for a reader of Alter Eco's databases.
 public protocol DBReader {
     /**
+    Returns the cumulative distance for the given motion type and in the specified timeframe.
+     - Parameter motionType: the only motion type to consider.
+     - Parameter from: starting date.
+     - Parameter interval: interval to be added to the starting date.
+     */
+    func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double
+    /**
+    Returns the cumulative distance for all motion types in the specified timeframe.
+     - Parameter from: starting date.
+     - Parameter interval: interval to be added to the starting date.
+     */
+    func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double
+
+    /**
+    Returns the cumulative carbon output for the given motion type and in the specified timeframe.
+     - Parameter motionType: the only motion type to consider.
+     - Parameter from: starting date.
+     - Parameter interval: interval to be added to the starting date.
+     */
+    func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from:Date, interval:TimeInterval) throws -> Double
+    
+    /**
+    Returns the cumulative carbon output in kg for all polluting motion types and in the specified timeframe.
+     - Parameter from: starting date.
+     - Parameter interval: interval to be added to the starting date.
+     - Remark: walking is considered not polluting and does not contribute to the returned value.
+     */
+    func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double
+    
+    /**
     Queries the Event entity with a predicate.
     - Parameter predicate: predicate used to select rows.
     - Parameter args: list of arguments to include in the predicate.
@@ -82,37 +112,7 @@ public enum PollutingItemType {
 }
 
 /// Represents an interface to an object able to read, write and perform sophisticated queries on Alter Eco's databases.
-public protocol DBManager : AnyObject, DBReader, DBWriter {
-    /**
-    Returns the cumulative distance for the given motion type and in the specified timeframe.
-     - Parameter motionType: the only motion type to consider.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     */
-    func distanceWithinInterval(motionType: MeasuredActivity.MotionType, from: Date, interval: TimeInterval) throws -> Double
-    /**
-    Returns the cumulative distance for all motion types in the specified timeframe.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     */
-    func distanceWithinIntervalAll(from: Date, interval: TimeInterval) throws -> Double
-
-    /**
-    Returns the cumulative carbon output for the given motion type and in the specified timeframe.
-     - Parameter motionType: the only motion type to consider.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     */
-    func carbonWithinInterval(motionType: MeasuredActivity.MotionType, from:Date, interval:TimeInterval) throws -> Double
-    
-    /**
-    Returns the cumulative carbon output in kg for all polluting motion types and in the specified timeframe.
-     - Parameter from: starting date.
-     - Parameter interval: interval to be added to the starting date.
-     - Remark: walking is considered not polluting and does not contribute to the returned value.
-     */
-    func carbonFromPollutingMotions(from: Date, interval: TimeInterval) throws -> Double
-    
+public protocol DBManager : DBReader, DBWriter {
     /// Writes updates the entry associated with the id of the given forest item if it exists. Otherwise, a new item is written to the database.
     func saveForestItem(_ item: ForestItem) throws
     /// Updates the score by adding the score computed from a given activity.
