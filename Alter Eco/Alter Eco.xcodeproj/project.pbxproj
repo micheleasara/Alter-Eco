@@ -358,6 +358,7 @@
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
 				DE2D583924A4FD0E00BB14F0 /* UpdatableChart.swift */,
+				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -383,7 +384,6 @@
 				55C85C5A243CB879006AD075 /* PrivacyInfoView.swift */,
 				DEA1E867248A7988003EF0F5 /* SettingsView.swift */,
 				DE3AC73C24ACE15A00D32E54 /* ScannerView.swift */,
-				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 				DE8ECE9824DE0B5C00641BA4 /* GameView.swift */,
 				DE74ECF62482E4D10099F944 /* Utils.swift */,
 				DE2D583E24A517DB00BB14F0 /* Charts */,

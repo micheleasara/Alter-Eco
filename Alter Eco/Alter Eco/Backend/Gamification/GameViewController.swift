@@ -87,6 +87,21 @@ public class GameViewController: UIViewController {
         setupNodes()
     }
     
+    /// Notifies the view controller that its view was added to a view hierarchy.
+    public override func viewDidAppear(_ animated: Bool) {
+        if !UserDefaults.standard.bool(forKey: "skipVirtualForestIntro") {
+            displayWelcomeAlert()
+            UserDefaults.standard.set(true, forKey: "skipVirtualForestIntro")
+        }
+    }
+    
+    private func displayWelcomeAlert() {
+        let alert = UIAlertController(title: "Welcome",
+                                      message: "Welcome to your virtual forest!\n\nUse your points to buy items in the shop, and move them around by pressing \"Edit\".\n\nAlso... be careful! Make sure your emissions do not reach 100%, or you will pollute the forest!",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
+        self.present(alert, animated: true)
+    }
     
     private func addGrayFilter() {
         if let grayFilter = CIFilter(name: "CIColorMonochrome") {
@@ -175,7 +190,8 @@ public class GameViewController: UIViewController {
         let errorAlert = UIAlertController(title: "Error",
                                       message: "Ops, something went wrong!",
                                       preferredStyle: .alert)
-        
+        errorAlert.addAction(UIAlertAction(title: "OK", style: .default) { _ in })
+
         self.present(errorAlert, animated: true)
     }
     
