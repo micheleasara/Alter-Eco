@@ -66,6 +66,9 @@ class ScannerDelegateMock: UIViewController, ScannerDelegate {
 }
 
 class DBWriterMock: DBWriter {
+    func delete(entity: String, predicate: String?, args: [Any]?) throws {
+    }
+    
     func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void) {
     }
     

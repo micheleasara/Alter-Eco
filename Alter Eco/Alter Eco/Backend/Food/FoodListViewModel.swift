@@ -20,12 +20,12 @@ public class FoodListViewModel: ObservableObject {
     
     private let converter: FoodToCarbonConverter
     private let uploader: RemoteFoodUploader
-    private let DBMS: DBWriter
+    private let DBMS: DBManager
     
     public init(foods: [Food] = [], notFound: [Food] = [],
                 converter: FoodToCarbonConverter,
                 uploader: RemoteFoodUploader,
-                DBMS: DBWriter) {
+                DBMS: DBManager) {
         self.DBMS = DBMS
         self.converter = converter
         self.uploader = uploader
@@ -112,6 +112,12 @@ public class FoodListViewModel: ObservableObject {
     
     /// Saves the products with types in the database. Products with no quantity are given a default specified by defaultQuantity.
     public func save() {
+        let now = Date()
+        let start = now.toLocalTime().setToSpecificHour(hour: "00:00:00")?.toGlobalTime() ?? Date()
+        if let results = try? DBMS.queryFoods(predicate: "date < %@ AND date >= %@", args: [now, start]),
+            results.isEmpty, let currentScore = try? DBMS.retrieveLatestScore() {
+            try? DBMS.updateScore(toValue: currentScore + Double(FIRST_FOOD_SCAN_PTS))
+        }
         try? DBMS.append(foods: replaceNilQuantitiesWithDefault(in: productsWithTypes), withDate: Date())
     }
     

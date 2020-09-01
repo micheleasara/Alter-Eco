@@ -94,6 +94,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
     
     func sceneDidEnterBackground(_ scene: UIScene) {
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            appDelegate.scheduleAppRefresh()
             if appDelegate.isTrackingPaused.rawValue {
                 appDelegate.inactivityAndPausedNotification()
             }

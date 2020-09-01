@@ -5,7 +5,7 @@ class FoodListViewModelTest: XCTestCase {
     
     let uploaderMock = RemoteFoodUploaderMock()
     let converterMock = FoodToCarbonConverterMock()
-    let DBMS = DBWriterMock()
+    let DBMS = DBManagerMock()
     var viewModel: FoodListViewModel!
     
     override func setUp() {

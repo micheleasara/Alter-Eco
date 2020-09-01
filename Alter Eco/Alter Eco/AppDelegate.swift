@@ -2,7 +2,7 @@ import UIKit
 import CoreLocation
 import MapKit
 import CoreData
-
+import BackgroundTasks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     internal var airportRequestRadius: Double = MAX_AIRPORT_REQUEST_RADIUS
     
     internal var scene = SceneDelegate()
+    internal let databaseCleanUpId = "com.altereco.database.cleanup"
     
     override init() {
         self.DBMS = CoreDataManager()
@@ -35,13 +36,81 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             UserDefaults.standard.set(true, forKey: "autoPauseEnabled")
         }
         
+        // configure estimator of motion activities
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
         activityEstimator.setInAirportCallback(callback: userIsInAnAirport(airport:))
     }
     
+    /// Schedules an app refresh in the background to perform database cleanup.
+    func scheduleAppRefresh() {
+        print("Scheduling app refresh")
+        let request = BGAppRefreshTaskRequest(identifier: databaseCleanUpId)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: HOUR_IN_SECONDS)
+            
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule app refresh: \(error)")
+        }
+    }
+    
+    private func handleAppRefresh(task: BGAppRefreshTask) {
+        print("App refresh method was called")
+        var workItem: DispatchWorkItem?
+        workItem = DispatchWorkItem() { [weak self] in
+            for type in MeasuredActivity.MotionType.allCases {
+                if workItem?.isCancelled ?? true { break }
+                self?.cleanUpDatabase(forType: type)
+            }
+            if let workItem = workItem, !workItem.isCancelled {
+                task.setTaskCompleted(success: true)
+            }
+            workItem = nil // resolve reference cycle
+        }
+        
+        task.expirationHandler = {
+            workItem?.cancel()
+            task.setTaskCompleted(success: false)
+        }
+        
+        DispatchQueue.main.async(execute: workItem!)
+    }
+    
+    private func cleanUpDatabase(forType type: MeasuredActivity.MotionType) {
+        let oneMonthAgo = Date().toLocalTime().addMonths(numMonthsToAdd: -1).toGlobalTime()
+        guard let monthStart = oneMonthAgo.toLocalTime().getStartOfMonth()?.toGlobalTime() else { return }
+        guard oneMonthAgo.timeIntervalSince(monthStart) > DAY_IN_SECONDS else { return }
+
+        if let results = try? DBMS.queryActivities(predicate: "start >= %@ AND end <= %@ AND motionType == %@",
+                                              args: [monthStart, oneMonthAgo, MeasuredActivity.motionTypeToString(type: type)]),
+            !results.isEmpty {
+
+        var totalDistance = 0.0
+        var earliest = Date()
+        var latest = Date(timeIntervalSince1970: 0)
+        for activity in results {
+            if activity.start < earliest {
+                earliest = activity.start
+            }
+            if activity.end > latest {
+                latest = activity.end
+            }
+            totalDistance += activity.distance
+        }
+
+        try? DBMS.delete(entity: "Event", predicate: "start >= %@ AND end <= %@ AND motionType == %@",
+                         args: [monthStart, oneMonthAgo, MeasuredActivity.motionTypeToString(type: type)])
+        try? DBMS.append(activity: MeasuredActivity(motionType: type, distance: totalDistance, start: earliest, end: latest))
+    }
+}
+    
     // MARK:- UISceneSession Lifecycle
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: databaseCleanUpId, using: nil) { task in
+            self.handleAppRefresh(task: task as! BGAppRefreshTask)
+        }
+        
         return true
     }
 

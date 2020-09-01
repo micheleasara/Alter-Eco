@@ -97,6 +97,8 @@ public protocol DBWriter {
     func updateScore(toValue value: Double) throws
     /// Deletes an entry from the given entity identified by a rows number.
     func delete(entity: String, rowNumber: Int) throws
+    /// Deletes the entries in the given entity that match the predicate provided.
+    func delete(entity: String, predicate: String?, args: [Any]?) throws
     /// Deletes all entries in the given entity.
     func deleteAll(entity: String) throws
     /// Adds a function to be called whenever potentially polluting items (e.g. transport activities or foods) are written to the database.

@@ -4,6 +4,15 @@ import CoreData
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework.
 public class CoreDataManager: DBManager {
+    public func delete(entity: String, predicate: String?, args: [Any]?) throws {
+        if let results = try executeQuery(entity: entity, predicate: predicate, args: args) as? [NSManagedObject] {
+            for result in results {
+                try delete(result)
+            }
+        }
+        
+    }
+    
     // utility to get carbon from food items
     private let foodConverter: FoodToCarbonConverter
 

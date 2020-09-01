@@ -72,15 +72,17 @@ public let KM_CONVERSION: Double = 0.001
 // https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2019
 // all units have been converted to kilogram/kilometer
 
-// MARK: - League constants
-/// Points for walking.
+// MARK: - Points constants
+/// Points for walking per km.
 public let WALKING_PTS: Double = 10
-/// Points for car rides.
+/// Points for car rides per km.
 public let CAR_PTS: Double = 3
-/// Points for train rides.
+/// Points for train rides per km.
 public let TRAIN_PTS: Double = 7
-/// Points for flights.
+/// Points for flights per km.
 public let PLANE_PTS: Double = 0
+/// Points for the first food scan of the day.
+public let FIRST_FOOD_SCAN_PTS = 15
 
 // MARK: - Other
 /// Average carbon output for a day in the UK in kg.
