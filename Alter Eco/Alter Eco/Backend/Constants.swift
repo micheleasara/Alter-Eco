@@ -74,11 +74,11 @@ public let KM_CONVERSION: Double = 0.001
 
 // MARK: - Points constants
 /// Points for walking per km.
-public let WALKING_PTS: Double = 10
+public let WALKING_PTS: Double = 30
 /// Points for car rides per km.
-public let CAR_PTS: Double = 3
+public let CAR_PTS: Double = 2
 /// Points for train rides per km.
-public let TRAIN_PTS: Double = 7
+public let TRAIN_PTS: Double = 5
 /// Points for flights per km.
 public let PLANE_PTS: Double = 0
 /// Points for the first food scan of the day.

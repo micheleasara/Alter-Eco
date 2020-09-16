@@ -75,8 +75,11 @@
 		DE5E6E8124E091AB00299047 /* FoodPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */; };
 		DE5E6E8324E092BA00299047 /* TransportPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */; };
 		DE5E6E8424E092BA00299047 /* TransportPieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */; };
-		DE5E6E8524E0C30A00299047 /* WordEmbedding.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */; };
 		DE74ECF72482E4D10099F944 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE74ECF62482E4D10099F944 /* Utils.swift */; };
+		DE752A0A25127040008704C0 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE752A0925127040008704C0 /* ProfileViewModel.swift */; };
+		DE752A1225128000008704C0 /* WordEmbedding.mlmodel in Resources */ = {isa = PBXBuildFile; fileRef = DE752A1125128000008704C0 /* WordEmbedding.mlmodel */; };
+		DE752A192512811B008704C0 /* WordEmbedding.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = DE752A1125128000008704C0 /* WordEmbedding.mlmodel */; };
+		DE752A1D25128145008704C0 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE752A0925127040008704C0 /* ProfileViewModel.swift */; };
 		DE77727924523BAD002D28A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */; };
 		DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE847297247B0D0C00420F9E /* BarWithInfo.swift */; };
 		DE8ECE8124DE0A0100641BA4 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE8024DE0A0100641BA4 /* GameViewController.swift */; };
@@ -91,7 +94,6 @@
 		DE8ECE9624DE0AE000641BA4 /* roundedTree.scn in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8C24DE0AE000641BA4 /* roundedTree.scn */; };
 		DE8ECE9724DE0AE000641BA4 /* stem-texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DE8ECE8D24DE0AE000641BA4 /* stem-texture.jpg */; };
 		DE8ECE9924DE0B5C00641BA4 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE9824DE0B5C00641BA4 /* GameView.swift */; };
-		DE8ECE9D24DE148F00641BA4 /* WordEmbedding.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */; };
 		DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9375249FE8AB002D85E6 /* AwardView.swift */; };
 		DE8F9378249FEAB8002D85E6 /* FoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9377249FEAB8002D85E6 /* FoodView.swift */; };
 		DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9379249FEF52002D85E6 /* MainBarChart.swift */; };
@@ -211,6 +213,8 @@
 		DE5E6E8024E091AB00299047 /* FoodPieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodPieChartViewModel.swift; sourceTree = "<group>"; };
 		DE5E6E8224E092BA00299047 /* TransportPieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportPieChartViewModel.swift; sourceTree = "<group>"; };
 		DE74ECF62482E4D10099F944 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		DE752A0925127040008704C0 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		DE752A1125128000008704C0 /* WordEmbedding.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = WordEmbedding.mlmodel; sourceTree = "<group>"; };
 		DE77727824523BAD002D28A6 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DE847297247B0D0C00420F9E /* BarWithInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarWithInfo.swift; sourceTree = "<group>"; };
 		DE8ECE8024DE0A0100641BA4 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -225,7 +229,6 @@
 		DE8ECE8C24DE0AE000641BA4 /* roundedTree.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = roundedTree.scn; sourceTree = "<group>"; };
 		DE8ECE8D24DE0AE000641BA4 /* stem-texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "stem-texture.jpg"; sourceTree = "<group>"; };
 		DE8ECE9824DE0B5C00641BA4 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
-		DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = WordEmbedding.mlmodel; sourceTree = "<group>"; };
 		DE8F9375249FE8AB002D85E6 /* AwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardView.swift; sourceTree = "<group>"; };
 		DE8F9377249FEAB8002D85E6 /* FoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodView.swift; sourceTree = "<group>"; };
 		DE8F9379249FEF52002D85E6 /* MainBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBarChart.swift; sourceTree = "<group>"; };
@@ -358,6 +361,7 @@
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
 				DE2D583924A4FD0E00BB14F0 /* UpdatableChart.swift */,
+				DE752A0925127040008704C0 /* ProfileViewModel.swift */,
 				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 			);
 			path = Backend;
@@ -435,7 +439,7 @@
 		DEA0D1D224B5DEE800FFDB00 /* Food */ = {
 			isa = PBXGroup;
 			children = (
-				DE8ECE9B24DE131600641BA4 /* WordEmbedding.mlmodel */,
+				DE752A1125128000008704C0 /* WordEmbedding.mlmodel */,
 				DEA0D1D024B5D81C00FFDB00 /* Food.swift */,
 				DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */,
 				DE3AC73224ACD76200D32E54 /* FoodToCarbonConversion.swift */,
@@ -533,7 +537,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Imperial College London";
 				TargetAttributes = {
 					9CD5946F24296D9200B1D0B4 = {
@@ -577,6 +581,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE752A1225128000008704C0 /* WordEmbedding.mlmodel in Resources */,
 				DE8ECE9724DE0AE000641BA4 /* stem-texture.jpg in Resources */,
 				DE8ECE9124DE0AE000641BA4 /* smog.scn in Resources */,
 				9C17CA8824323D1D00378A67 /* CarToParisCDGToMilanLIN.gpx in Resources */,
@@ -678,6 +683,7 @@
 				573693832438F85F00992BB0 /* TransportBarChartViewModel.swift in Sources */,
 				9CD59435242968DF00B1D0B4 /* BarChart.swift in Sources */,
 				DE847298247B0D0C00420F9E /* BarWithInfo.swift in Sources */,
+				DE752A0A25127040008704C0 /* ProfileViewModel.swift in Sources */,
 				DE5E6E7B24E0510100299047 /* GameViewModel.swift in Sources */,
 				DE74ECF72482E4D10099F944 /* Utils.swift in Sources */,
 				DE3AC73D24ACE15A00D32E54 /* ScannerView.swift in Sources */,
@@ -685,7 +691,6 @@
 				DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */,
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
-				DE8ECE9D24DE148F00641BA4 /* WordEmbedding.mlmodel in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
 				DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */,
 				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,
@@ -711,12 +716,13 @@
 				DE5E6E7E24E057F400299047 /* GameItems.swift in Sources */,
 				DE42486A24F3279400541B2D /* FoodPieChartViewModel.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,
+				DE752A1D25128145008704C0 /* ProfileViewModel.swift in Sources */,
 				DEDE549524467B4E003FE0DE /* MeasuredActivity.swift in Sources */,
 				DE3C10A82447C5A100107AF4 /* Constants.swift in Sources */,
-				DE5E6E8524E0C30A00299047 /* WordEmbedding.mlmodel in Sources */,
 				DE42486D24F33F0900541B2D /* GameViewModel.swift in Sources */,
 				DEA0D1DB24B60A7E00FFDB00 /* Food.swift in Sources */,
 				DEA0D1DC24B60A8100FFDB00 /* FoodRetrieval.swift in Sources */,
+				DE752A192512811B008704C0 /* WordEmbedding.mlmodel in Sources */,
 				DE5E6E8424E092BA00299047 /* TransportPieChartViewModel.swift in Sources */,
 				DEDE549724467B4E003FE0DE /* CoreDataManager.swift in Sources */,
 				DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */,
@@ -814,6 +820,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -874,6 +881,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;

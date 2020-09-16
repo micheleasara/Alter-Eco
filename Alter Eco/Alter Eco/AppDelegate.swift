@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // configure estimator of motion activities
         let activityList = WeightedActivityList(activityWeights: ACTIVITY_WEIGHTS_DICT)
         activityEstimator = ActivityEstimator<WeightedActivityList>(activityList: activityList, numChangeActivity: CHANGE_ACTIVITY_THRESHOLD, timers: MultiTimer(), DBMS: DBMS)
-        activityEstimator.setInAirportCallback(callback: userIsInAnAirport(airport:))
+        activityEstimator.setInAirportCallback(callback: userIsInAnAirport(airport:))        
     }
     
     /// Schedules an app refresh in the background to perform database cleanup.

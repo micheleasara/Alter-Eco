@@ -40,7 +40,6 @@ public struct SceneKitView: UIViewControllerRepresentable {
         if let item = itemToAdd {
             uiViewController.letUserPlaceNode(fromShopItem: item, nodePlacedCallback: {
                 self.itemToAdd = nil
-                self.viewModel.refreshCurrentPoints()
             })
         }
         uiViewController.isSmogOn(isSmogOn)
@@ -167,7 +166,6 @@ public struct GameOverlayView: View {
                         Button(action: {
                             self.selectedItemIdx = i
                             self.showingConfirmation = true
-                            self.viewModel.refreshCurrentPoints()
                         }) { Image(systemName: "plus.square")
                         }.foregroundColor(Color.black)
                     }

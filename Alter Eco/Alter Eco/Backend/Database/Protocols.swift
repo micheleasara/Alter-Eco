@@ -75,6 +75,9 @@ public protocol DBReader {
     /// Returns the earliest start date within the Event entity.
     func getFirstDate() throws -> Date?
     
+    /// Retrieves the profile picture stored in the database.
+    func getProfilePicture() throws -> UIImage? 
+    
     /**
     Queries the given entity with a predicate.
     - Parameter entity: entity name as a string.
@@ -103,6 +106,8 @@ public protocol DBWriter {
     func deleteAll(entity: String) throws
     /// Adds a function to be called whenever potentially polluting items (e.g. transport activities or foods) are written to the database.
     func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void)
+    /// Adds a function to be called when the score changes.
+    func addScoreChangedCallback(callback: @escaping (Double) -> Void)
 }
 
 /// Represents an item which is potentially polluting.

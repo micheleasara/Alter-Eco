@@ -3,7 +3,7 @@ import SwiftUI
 
 public struct ComparisonView: View {
     @EnvironmentObject var screenMeasurements: ScreenMeasurements
-    @State private(set) var dailyCarbon: Double
+    public let dailyCarbon: Double
     
     public var body: some View {
           VStack {
@@ -29,7 +29,7 @@ public struct ComparisonView: View {
         if proportion <= 1 {
             return String(format: "So far today you've emitted %.0f%% of the UK daily average carbon emissions.", proportion * 100)
         } else {
-            // only display up to 1sd if necessary
+            // only display up to 1 significant digit if necessary
             let emissions = (proportion / 0.1).rounded() * 0.1
             return String(format: "So far today you've emitted %g times the UK daily average carbon emissions.", emissions)
         }

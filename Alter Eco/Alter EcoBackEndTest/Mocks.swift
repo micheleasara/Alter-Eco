@@ -66,6 +66,10 @@ class ScannerDelegateMock: UIViewController, ScannerDelegate {
 }
 
 class DBWriterMock: DBWriter {
+    func addScoreChangedCallback(callback: @escaping (Double) -> Void) {
+        
+    }
+    
     func delete(entity: String, predicate: String?, args: [Any]?) throws {
     }
     
@@ -174,6 +178,10 @@ class ActivityListMock : ActivityList {
 }
 
 class DBManagerMock: DBWriterMock, DBManager {
+    func getProfilePicture() throws -> UIImage? {
+        return nil
+    }
+    
     func saveForestItem(_ item: ForestItem) throws {}
     
     var getFirstDateCalls: Int = 0

@@ -97,7 +97,6 @@ extension FoodToCarbonManager {
         "mustard seed": (2.09, .vegetablesAndDerived),
         "tuna": (2.6, .seafood),
         "rice": (2.66, .carbohydrates),
-        "whiting fish": (2.66, .seafood),
         "duck": (3.09, .meats),
         "sea bass fish": (3.55, .seafood),
         "haddock fish": (3.37, .seafood),

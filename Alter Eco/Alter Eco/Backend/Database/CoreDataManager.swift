@@ -4,13 +4,9 @@ import CoreData
 
 /// Represents a database manager that provides an I/O interface with the CoreData framework.
 public class CoreDataManager: DBManager {
-    public func delete(entity: String, predicate: String?, args: [Any]?) throws {
-        if let results = try executeQuery(entity: entity, predicate: predicate, args: args) as? [NSManagedObject] {
-            for result in results {
-                try delete(result)
-            }
-        }
-        
+    private var scoreChangedCallbacks: [(Double) -> Void] = []
+    public func addScoreChangedCallback(callback: @escaping (Double) -> Void) {
+        self.scoreChangedCallbacks.append(callback)
     }
     
     // utility to get carbon from food items
@@ -21,6 +17,23 @@ public class CoreDataManager: DBManager {
     
     public init(foodConverter: FoodToCarbonConverter = FoodToCarbonManager()) {
         self.foodConverter = foodConverter
+    }
+    
+    public func getProfilePicture() throws -> UIImage? {
+        let results = (try executeQuery(entity: "ProfilePic", predicate: nil, args: nil) as? [NSManagedObject]) ?? []
+        if !results.isEmpty {
+            return UIImage(data: results.first?.value(forKey: "imageP") as? Data ?? Data())
+        }
+        return nil
+    }
+    
+    public func delete(entity: String, predicate: String?, args: [Any]?) throws {
+        if let results = try executeQuery(entity: entity, predicate: predicate, args: args) as? [NSManagedObject] {
+            for result in results {
+                try delete(result)
+            }
+        }
+        
     }
     
     public func addNewPollutingItemCallback(callback: @escaping (PollutingItemType) -> Void) {
@@ -167,10 +180,9 @@ public class CoreDataManager: DBManager {
     }
     
     public func carbonWithinInterval(from date: Date, addingInterval interval: Double) throws -> Measurement<UnitMass> {
-        let end = date.addingTimeInterval(DAY_IN_SECONDS)
-        let transport = try carbonFromPollutingMotions(from: date, interval: DAY_IN_SECONDS)
+        let end = date.addingTimeInterval(interval)
+        let transport = try carbonFromPollutingMotions(from: date, interval: interval)
         let foods = try carbonFromFoods(predicate: "date >= %@ AND date <= %@", args: [date, end]).value
-        
         return Measurement(value: transport + foods, unit: .kilograms)
     }
     
@@ -189,6 +201,9 @@ public class CoreDataManager: DBManager {
             result.setValue(value, forKey: "score")
         } else { // initialize score
             try setValuesForKeys(entity: "Score", keyedValues: ["score": value])
+        }
+        for callback in scoreChangedCallbacks {
+            callback(value)
         }
     }
     

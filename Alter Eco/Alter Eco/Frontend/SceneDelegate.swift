@@ -23,6 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
             let transportPieChartModel = TransportPieChartViewModel(DBMS: DBMS)
             let foodPieChartModel = FoodPieChartViewModel(DBMS: DBMS)
             let gameViewModel = GameViewModel(DBMS: DBMS)
+            let profileViewModel = ProfileViewModel(DBMS: DBMS)
+            
             DBMS.addNewPollutingItemCallback { type in
                 let now = Date()
 
@@ -33,8 +35,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                     foodPieChartModel.updateUpTo(now)
                 }
                 gameViewModel.refreshSmogState()
+                profileViewModel.refreshDailyCarbon()
                 
                 self.lastRefresh = now.toLocalTime()
+            }
+            
+            DBMS.addScoreChangedCallback { newScore in
+                profileViewModel.score = newScore
+                gameViewModel.currentPoints = newScore
             }
             
             // set environment objects and hosting controller
@@ -46,7 +54,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(transportPieChartModel)
                 .environmentObject(foodPieChartModel)
                 .environmentObject(FoodListViewModel(converter: FoodToCarbonManager(), uploader: OpenFoodFacts(), DBMS: DBMS))
-                .environmentObject(gameViewModel))
+                .environmentObject(gameViewModel)
+                .environmentObject(profileViewModel))
             
             self.window = window
             window.makeKeyAndVisible()
