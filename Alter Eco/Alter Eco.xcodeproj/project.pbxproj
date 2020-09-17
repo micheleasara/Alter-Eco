@@ -96,7 +96,6 @@
 		DE8ECE9924DE0B5C00641BA4 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8ECE9824DE0B5C00641BA4 /* GameView.swift */; };
 		DE8F9376249FE8AB002D85E6 /* AwardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9375249FE8AB002D85E6 /* AwardView.swift */; };
 		DE8F9378249FEAB8002D85E6 /* FoodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9377249FEAB8002D85E6 /* FoodView.swift */; };
-		DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F9379249FEF52002D85E6 /* MainBarChart.swift */; };
 		DE8F937C24A0D0C8002D85E6 /* FoodListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */; };
 		DE8F937E24A21639002D85E6 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE8F937D24A21639002D85E6 /* PieChart.swift */; };
 		DE994B882483E03200D3788B /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE994B872483E03200D3788B /* Title.swift */; };
@@ -176,7 +175,6 @@
 		9CD594462429696D00B1D0B4 /* MeasuredActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasuredActivity.swift; sourceTree = "<group>"; };
 		9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasuredActivityTest.swift; sourceTree = "<group>"; };
 		9CD5945824296BD100B1D0B4 /* ActivityEstimatorTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityEstimatorTest.swift; sourceTree = "<group>"; };
-		9CD5945A24296BD100B1D0B4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Alter EcoBackEndTests/Info.plist"; sourceTree = "<group>"; };
 		9CD5947024296D9200B1D0B4 /* Alter EcoBackEndTest.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Alter EcoBackEndTest.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CFAF4BB242CE9E7000B75A7 /* DatabaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DatabaseTest.swift; path = "Alter EcoBackEndTest/DatabaseTest.swift"; sourceTree = SOURCE_ROOT; };
 		CD200B3F23E3885100629E73 /* Alter Eco.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alter Eco.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,7 +229,6 @@
 		DE8ECE9824DE0B5C00641BA4 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		DE8F9375249FE8AB002D85E6 /* AwardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AwardView.swift; sourceTree = "<group>"; };
 		DE8F9377249FEAB8002D85E6 /* FoodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodView.swift; sourceTree = "<group>"; };
-		DE8F9379249FEF52002D85E6 /* MainBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBarChart.swift; sourceTree = "<group>"; };
 		DE8F937B24A0D0C8002D85E6 /* FoodListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodListView.swift; sourceTree = "<group>"; };
 		DE8F937D24A21639002D85E6 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		DE994B872483E03200D3788B /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
@@ -289,7 +286,6 @@
 				9CD5945624296BB800B1D0B4 /* MeasuredActivityTest.swift */,
 				DE42486B24F327B800541B2D /* FoodPieChartViewModelTest.swift */,
 				DE2B027E247EC1D900926935 /* TransportBarChartViewModelTest.swift */,
-				9CD5945A24296BD100B1D0B4 /* Info.plist */,
 			);
 			path = "Alter EcoBackEndTest";
 			sourceTree = "<group>";
@@ -403,7 +399,6 @@
 				9CD59429242968DE00B1D0B4 /* BarChart.swift */,
 				DE847297247B0D0C00420F9E /* BarWithInfo.swift */,
 				DE8F937D24A21639002D85E6 /* PieChart.swift */,
-				DE8F9379249FEF52002D85E6 /* MainBarChart.swift */,
 				DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */,
 			);
 			path = Charts;
@@ -692,7 +687,6 @@
 				2186E159242FB3EC00FD9B5F /* ProfileView.swift in Sources */,
 				DE3C10A42447B48000107AF4 /* Timers.swift in Sources */,
 				9CD59438242968DF00B1D0B4 /* HighlightView.swift in Sources */,
-				DE8F937A249FEF52002D85E6 /* MainBarChart.swift in Sources */,
 				552BB1D424448D2A0010EF6B /* ComparisonView.swift in Sources */,
 				DE8F937E24A21639002D85E6 /* PieChart.swift in Sources */,
 				DE8F937C24A0D0C8002D85E6 /* FoodListView.swift in Sources */,
@@ -966,14 +960,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
 				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1;
 				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoBackend;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -989,14 +985,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Alter Eco/Preview Content\"";
 				DEVELOPMENT_TEAM = WSTC8F6Z3G;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Alter Eco copy-Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Alter Eco/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = AlterEcoBackend;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
