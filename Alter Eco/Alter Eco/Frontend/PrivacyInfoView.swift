@@ -42,7 +42,7 @@ public struct PrivacyInfoView: View {
             Text("Privacy and Data")
             .bold()
             
-            Text("We care about your privacy! We want you to feel comfortable using our app and knowing that your data is protected.\n\nThat is why all of your information is stored locally on your device, and can not be seen by anybody else - not even us at Alter Eco! This includes all your transport data, profile pictures, nicknames and even which awards you have won.\n\nIf you  would like to remove your data from your device, simply delete the app from your phone.")
+            Text("We care about your privacy! We want you to feel comfortable using our app and knowing that your data is protected.\n\nThat is why all of your information is stored locally on your device, and can not be seen by anybody else - not even us at Alter Eco! This includes all your transport data, food habits, profile pictures, nicknames and even which awards you have won.\n\nIf you  would like to remove your data from your device, simply delete the app from your phone.")
                     .fontWeight(.regular)
                     .fixedSize(horizontal: false, vertical: true)
         }
@@ -52,7 +52,7 @@ public struct PrivacyInfoView: View {
         VStack(alignment: .leading) {
             Text("Credits")
             .bold()
-            Text("Icons made by Freepik and Prosymbols from Flaticon.")
+            Text("Icons made by Freepik, Flat Icon and Prosymbols from www.flaticon.com")
                     .fontWeight(.regular)
                     .fixedSize(horizontal: false, vertical: true)
         }
