@@ -19,7 +19,8 @@ public struct FoodView: View {
                 ScrollView {
                     VStack {
                         charts
-                        Text("Powered by OpenFoodFacts").font(.caption).italic().padding()
+                        Text("The first scan of the day gives you points!").font(.caption)
+                        Text("Powered by Open Food Facts").font(.caption).italic().padding()
                     }
                 }
             }
