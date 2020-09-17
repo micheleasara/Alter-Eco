@@ -40,7 +40,7 @@
 		DE054C87248EFED4001B8EB1 /* TestMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE054C85248EFE3B001B8EB1 /* TestMain.swift */; };
 		DE2B027F247EC1D900926935 /* TransportBarChartViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B027E247EC1D900926935 /* TransportBarChartViewModelTest.swift */; };
 		DE2B0281247ED28C00926935 /* Mocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2B0280247ED28C00926935 /* Mocks.swift */; };
-		DE2D583A24A4FD0E00BB14F0 /* UpdatableChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* UpdatableChart.swift */; };
+		DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
 		DE2D583C24A5167D00BB14F0 /* TransportBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */; };
 		DE36CC2C24BC80B200825FAE /* SearchableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE36CC2B24BC80B200825FAE /* SearchableList.swift */; };
 		DE3AC73024ACD73F00D32E54 /* FoodRetrieval.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */; };
@@ -108,6 +108,7 @@
 		DEA0D1DE24B60A8700FFDB00 /* FoodGHGConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3AC73524ACD78C00D32E54 /* FoodGHGConversion.swift */; };
 		DEA1E868248A7988003EF0F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA1E867248A7988003EF0F5 /* SettingsView.swift */; };
 		DEA51B3424816F71008FB8E3 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA51B3324816F71008FB8E3 /* IntroductionView.swift */; };
+		DEAE00952513B7790007BBB4 /* snowPine.scn in Resources */ = {isa = PBXBuildFile; fileRef = DEAE00942513B7790007BBB4 /* snowPine.scn */; };
 		DECD0956247DD36F0099747D /* TransportBarChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 573693822438F85F00992BB0 /* TransportBarChartViewModel.swift */; };
 		DEDE5487244603E0003FE0DE /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE5486244603E0003FE0DE /* DateExtension.swift */; };
 		DEDE548B24463D98003FE0DE /* WeightedActivityListTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */; };
@@ -126,7 +127,7 @@
 		DEDE54B424467B4E003FE0DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55DA632A242AC557002CCD07 /* Assets.xcassets */; };
 		DEDE54B524467B4E003FE0DE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD200B4B23E3885700629E73 /* Preview Assets.xcassets */; };
 		DEDE54B624467B4E003FE0DE /* KingsCrossToUCL.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CA7F24323D1C00378A67 /* KingsCrossToUCL.gpx */; };
-		DEE2B28524A677EB0093181B /* UpdatableChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* UpdatableChart.swift */; };
+		DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */; };
 		DEFEEC512448987C009BE765 /* MultiTimerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEFEEC502448987C009BE765 /* MultiTimerTest.swift */; };
 /* End PBXBuildFile section */
 
@@ -184,7 +185,7 @@
 		DE054C85248EFE3B001B8EB1 /* TestMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMain.swift; sourceTree = "<group>"; };
 		DE2B027E247EC1D900926935 /* TransportBarChartViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChartViewModelTest.swift; sourceTree = "<group>"; };
 		DE2B0280247ED28C00926935 /* Mocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mocks.swift; sourceTree = "<group>"; };
-		DE2D583924A4FD0E00BB14F0 /* UpdatableChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatableChart.swift; sourceTree = "<group>"; };
+		DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartViewModel.swift; sourceTree = "<group>"; };
 		DE2D583B24A5167D00BB14F0 /* TransportBarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportBarChart.swift; sourceTree = "<group>"; };
 		DE36CC2B24BC80B200825FAE /* SearchableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableList.swift; sourceTree = "<group>"; };
 		DE3AC72F24ACD73F00D32E54 /* FoodRetrieval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodRetrieval.swift; sourceTree = "<group>"; };
@@ -236,6 +237,7 @@
 		DEA0D1D524B5E02900FFDB00 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DEA1E867248A7988003EF0F5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DEA51B3324816F71008FB8E3 /* IntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
+		DEAE00942513B7790007BBB4 /* snowPine.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = snowPine.scn; sourceTree = "<group>"; };
 		DEDE5486244603E0003FE0DE /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		DEDE548A24463D98003FE0DE /* WeightedActivityListTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedActivityListTest.swift; sourceTree = "<group>"; };
 		DEDE54BA24467B4E003FE0DE /* AlterEcoBackend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlterEcoBackend.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -356,7 +358,7 @@
 				DE3C10A32447B48000107AF4 /* Timers.swift */,
 				DE3C10A62447C5A100107AF4 /* Constants.swift */,
 				DEDE5486244603E0003FE0DE /* DateExtension.swift */,
-				DE2D583924A4FD0E00BB14F0 /* UpdatableChart.swift */,
+				DE2D583924A4FD0E00BB14F0 /* PieChartViewModel.swift */,
 				DE752A0925127040008704C0 /* ProfileViewModel.swift */,
 				DE3AC73A24ACE0E700D32E54 /* BarcodeScanner.swift */,
 			);
@@ -422,6 +424,7 @@
 				DE8ECE8A24DE0AE000641BA4 /* foliage.jpg */,
 				DE8ECE8524DE0ADF00641BA4 /* MainScene.scn */,
 				DE8ECE8B24DE0AE000641BA4 /* pine.scn */,
+				DEAE00942513B7790007BBB4 /* snowPine.scn */,
 				DE8ECE8C24DE0AE000641BA4 /* roundedTree.scn */,
 				DE8ECE8724DE0ADF00641BA4 /* smog.scn */,
 				DE8ECE8D24DE0AE000641BA4 /* stem-texture.jpg */,
@@ -583,6 +586,7 @@
 				DE8ECE8F24DE0AE000641BA4 /* MainScene.scn in Resources */,
 				DE8ECE9324DE0AE000641BA4 /* Stylized_Grass_002_normal.jpg in Resources */,
 				9CD59436242968DF00B1D0B4 /* EarlsCourtStation.gpx in Resources */,
+				DEAE00952513B7790007BBB4 /* snowPine.scn in Resources */,
 				9CD594202429686900B1D0B4 /* SouthKensingtonStation.gpx in Resources */,
 				9CD594262429686900B1D0B4 /* WalkToSupermarket.gpx in Resources */,
 				9C17CA8924323D1D00378A67 /* CarTripToHeathrowAirport.gpx in Resources */,
@@ -664,7 +668,7 @@
 				DE3AC73B24ACE0E700D32E54 /* BarcodeScanner.swift in Sources */,
 				DE5E6E7D24E057F400299047 /* GameItems.swift in Sources */,
 				2186E15B242FB41000FD9B5F /* ImagePicker.swift in Sources */,
-				DE2D583A24A4FD0E00BB14F0 /* UpdatableChart.swift in Sources */,
+				DE2D583A24A4FD0E00BB14F0 /* PieChartViewModel.swift in Sources */,
 				DE3AC73624ACD78C00D32E54 /* FoodGHGConversion.swift in Sources */,
 				DE3C10A72447C5A100107AF4 /* Constants.swift in Sources */,
 				9CD5943A242968DF00B1D0B4 /* TransportView.swift in Sources */,
@@ -706,7 +710,7 @@
 			files = (
 				DE3C10A52447B48000107AF4 /* Timers.swift in Sources */,
 				DEDE548E24467B4E003FE0DE /* ActivityEstimator.swift in Sources */,
-				DEE2B28524A677EB0093181B /* UpdatableChart.swift in Sources */,
+				DEE2B28524A677EB0093181B /* PieChartViewModel.swift in Sources */,
 				DE5E6E7E24E057F400299047 /* GameItems.swift in Sources */,
 				DE42486A24F3279400541B2D /* FoodPieChartViewModel.swift in Sources */,
 				DEDE548F24467B4E003FE0DE /* DateExtension.swift in Sources */,

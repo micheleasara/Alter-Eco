@@ -56,7 +56,8 @@ public struct GameOverlayView: View {
     private let availableItems: [ShopItem] =
         [ShopItem(displayedName: "Apple tree", internalName: "appleTree", cost: 500, imageName: "appleTree"),
          ShopItem(displayedName: "Pine", internalName: "pine", cost: 350, imageName: "pineTree"),
-         ShopItem(displayedName: "Rounded tree", internalName: "roundedTree", cost: 300, imageName: "roundedTree")]
+         ShopItem(displayedName: "Rounded tree", internalName: "roundedTree", cost: 300, imageName: "roundedTree"),
+         ShopItem(displayedName: "Snowed pine", internalName: "snowPine", cost: 400, imageName: "snowPine")]
     
     public var body: some View {
         HStack(alignment: .top) {
