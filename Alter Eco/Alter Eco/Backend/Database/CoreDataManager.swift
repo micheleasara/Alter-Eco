@@ -195,6 +195,8 @@ public class CoreDataManager: DBManager {
     }
     
     public func updateScore(toValue value: Double) throws {
+        let managedContext = try getManagedContext()
+
         // retrieve current score
         let queryResult = try executeQuery(entity: "Score") as? [NSManagedObject] ?? []
         if let result = queryResult.first {
@@ -205,6 +207,7 @@ public class CoreDataManager: DBManager {
         for callback in scoreChangedCallbacks {
             callback(value)
         }
+        try managedContext.save()
     }
     
     public func saveForestItem(_ item: ForestItem) throws {
