@@ -52,7 +52,7 @@ public struct PrivacyInfoView: View {
         VStack(alignment: .leading) {
             Text("Credits")
             .bold()
-            Text("Icons made by Freepik, Flat Icon and Prosymbols from www.flaticon.com")
+            Text("Icons made by Freepik, Eucalyp, Flat Icon and Prosymbols from www.flaticon.com")
                     .fontWeight(.regular)
                     .fixedSize(horizontal: false, vertical: true)
         }
