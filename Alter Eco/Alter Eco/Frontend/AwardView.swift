@@ -100,13 +100,6 @@ public class TransportAwardsManager: AwardsManager {
                 description: "No car or bus travel for one month",
                 badgeTitle: "badge_wheels",
                 awarded: UserDefaults.standard.bool(forKey: String(3))
-            ),
-            Awards(
-                id: 4,
-                name: "COVID-19",
-                description: "Travelled less than 300m in a week",
-                badgeTitle: "badge_crown",
-                awarded: UserDefaults.standard.bool(forKey: String(4))
             )]
     }
     
@@ -129,10 +122,6 @@ public class TransportAwardsManager: AwardsManager {
         
         if (try! DBMS.carbonWithinInterval(motionType: MeasuredActivity.MotionType.car, from: now, interval: -30*DAY_IN_SECONDS) == 0 && timeInterval > 30*DAY_IN_SECONDS) {
             UserDefaults.standard.set(true, forKey: String(3))
-        }
-        
-        if (try! DBMS.distanceWithinIntervalAll(from: now, interval: -30*DAY_IN_SECONDS) < 300 && timeInterval > 30*DAY_IN_SECONDS) {
-            UserDefaults.standard.set(true, forKey: String(4))
         }
     }
 }
