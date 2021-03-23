@@ -2,7 +2,6 @@ import SwiftUI
 
 public struct FoodView: View {
     @EnvironmentObject var measurementsOnLaunch: ScreenMeasurements
-    @EnvironmentObject var foodAwards: FoodAwardsManager
     @EnvironmentObject var pieChartModel: FoodPieChartViewModel
     @EnvironmentObject var foodListModel: FoodListViewModel
     @State private var showFoodList: Bool = false

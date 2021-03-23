@@ -50,7 +50,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, CLLocationManagerDelega
                 .environmentObject(screenMeasurements)
                 .environmentObject(transportBarChartModel)
                 .environmentObject(TransportAwardsManager(DBMS: DBMS))
-                .environmentObject(FoodAwardsManager(DBMS: DBMS))
                 .environmentObject(transportPieChartModel)
                 .environmentObject(foodPieChartModel)
                 .environmentObject(FoodListViewModel(converter: FoodToCarbonManager(), uploader: OpenFoodFacts(), DBMS: DBMS))

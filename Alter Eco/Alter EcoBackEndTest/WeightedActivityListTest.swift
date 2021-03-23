@@ -1,13 +1,4 @@
-//
-//  WeightedActivityListTest.swift
-//  Alter EcoBackEndTest
-//
-//  Created by Deli De leon de miguel on 14/04/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import XCTest
-//@testable import Alter_Eco
 @testable import AlterEcoBackend
 
 class WeightedActivityListTest: XCTestCase {

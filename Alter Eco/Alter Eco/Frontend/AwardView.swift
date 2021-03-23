@@ -36,35 +36,6 @@ public class AwardsManager: ObservableObject {
     }
 }
 
-public class FoodAwardsManager: AwardsManager {
-    public override init(DBMS: DBManager) {
-        super.init(DBMS: DBMS)
-        updateAwards()
-    }
-    
-    public func updateAwards() {
-        setAwardsValidity()
-        awards = [Awards(
-                id: 5,
-                name: "Contributor",
-                description: "Add 5 new items to the database",
-                badgeTitle: "badge_plane",
-                awarded: UserDefaults.standard.bool(forKey: String(5))
-            ),
-            Awards(
-                id: 6,
-                name: "Super contributor",
-                description: "Add 10 new items to the database",
-                badgeTitle: "super_contributor",
-                awarded: UserDefaults.standard.bool(forKey: String(6))
-            )]
-    }
-    
-    private func setAwardsValidity() {
-        // TODO: implementation
-    }
-}
-
 public class TransportAwardsManager: AwardsManager {
     public override init(DBMS: DBManager) {
         super.init(DBMS: DBMS)

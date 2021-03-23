@@ -1,11 +1,3 @@
-//
-//  MultiTimerTest.swift
-//  Alter EcoBackEndTest
-//
-//  Created by Deli De leon de miguel on 16/04/2020.
-//  Copyright © 2020 Imperial College London. All rights reserved.
-//
-
 import XCTest
 @testable import AlterEcoBackend
 

@@ -30,6 +30,7 @@ class FoodToCarbonManagerTest: XCTestCase {
     }
     
     func testUsingATypeAsKeywordReturnsSameTypeAsMostLikely() {
+        // this test is by far the slowest, so faster alternatives would be an improvement
         for type in FoodToCarbonManager.getAvailableTypes() {
             let results = manager.keywordsToTypes(type.components(separatedBy: " "))
             let result = results.first!
